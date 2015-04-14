@@ -63,7 +63,7 @@
 
         <footer class="footer">
             <div class="container">
-                <p class="text-muted">&copy; 2015 A-Team</p>
+                <p class="text-muted">&copy; 2015 A-Team, ver. 0.1</p>
             </div>
         </footer>
 
