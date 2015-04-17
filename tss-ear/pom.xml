@@ -37,7 +37,7 @@
                 <artifactId>maven-ear-plugin</artifactId>
                 <version>${version.ear.plugin}</version>
                 <configuration>
-                    <!-- Tell Maven we are using Java EE 7 -->
+                    <!-- Tell Maven we are using Java EE 7. It's possible also with EJB 2.x -->
                     <version>7</version>
                     <!-- Use Java EE ear libraries as needed. Java EE ear libraries 
                     are in easy way to package any libraries needed in the ear, and automatically 
@@ -55,23 +55,8 @@
                             <artifactId>tss-ejb</artifactId>
                         </ejbModule>
                     </modules>
-                    <!--<outputDirectory>deployments</outputDirectory>-->
-                    <!--<earName>ROOT</earName>-->
                 </configuration>
             </plugin>
-            
-            <!--            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.15</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.netcracker</groupId>
-                        <artifactId>tss-checkstyle</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>-->
         </plugins>
     </build>
     
