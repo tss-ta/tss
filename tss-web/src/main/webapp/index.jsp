@@ -14,9 +14,9 @@
         <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
         <title>Taxi Service System</title>
         <!-- Bootstrap -->
-        <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/resources/css/custom.css" rel="stylesheet">
-        <link href="/resources/img/favicon.ico"  rel="shortcut icon" type="image/x-icon" />
+        <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+        <link href="resources/css/custom.css" rel="stylesheet">
+        <link href="resources/img/favicon.ico"  rel="shortcut icon" type="image/x-icon" />
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
