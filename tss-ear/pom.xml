@@ -48,7 +48,7 @@
                         <webModule>
                             <groupId>com.netcracker</groupId>
                             <artifactId>tss-web</artifactId>
-                            <contextRoot>/</contextRoot>
+                            <contextRoot>/tss</contextRoot>
                         </webModule>
                         <ejbModule>
                             <groupId>com.netcracker</groupId>
