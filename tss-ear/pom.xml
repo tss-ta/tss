@@ -55,8 +55,8 @@
                             <artifactId>tss-ejb</artifactId>
                         </ejbModule>
                     </modules>
-                    <outputDirectory>deployments</outputDirectory>
-                    <earName>ROOT</earName>
+                    <!--<outputDirectory>deployments</outputDirectory>-->
+                    <!--<earName>ROOT</earName>-->
                 </configuration>
             </plugin>
             
