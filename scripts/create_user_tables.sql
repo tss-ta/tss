@@ -1,11 +1,11 @@
-DROP TABLE "User_Group";
-DROP TABLE "User_Role";
-DROP TABLE "User";
-DROP TABLE "Group";
-DROP TABLE "Role";
+DROP TABLE user_group;
+DROP TABLE user_role;
+DROP TABLE tss_user;
+DROP TABLE tss_group;
+DROP TABLE role;
 
 
-CREATE TABLE "User"
+CREATE TABLE tss_user
 (
   username character varying(40) NOT NULL,
   email character varying(40),
@@ -15,21 +15,21 @@ CREATE TABLE "User"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE "User"
+ALTER TABLE tss_user
   OWNER TO postgres;
 
-INSERT INTO "User" VALUES
+INSERT INTO tss_user VALUES
   ('Adam', 'adam.sandler@gmail.com', 'adampassword');
-INSERT INTO "User" VALUES
+INSERT INTO tss_user VALUES
   ('Mike', 'mike.cole@gmail.com', 'mikepassword');
-INSERT INTO "User" VALUES
+INSERT INTO tss_user VALUES
   ('Sara', 'sara.smith@gmail.com', 'sarapassword');
-INSERT INTO "User" VALUES
+INSERT INTO tss_user VALUES
   ('Vade', 'vade.gordon@gmail.com', 'vadepassword');
 
 
 
-CREATE TABLE "Group"
+CREATE TABLE tss_group
 (
   group_id integer NOT NULL,
   name character(100),
@@ -39,18 +39,18 @@ CREATE TABLE "Group"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE "Group"
+ALTER TABLE tss_group
   OWNER TO postgres;
 
-INSERT INTO "Group" VALUES
+INSERT INTO tss_group VALUES
   (1, 'readonly', 'readonly_group');
-INSERT INTO "Group" VALUES
+INSERT INTO tss_group VALUES
   (2, 'managers', 'managers_group');
-INSERT INTO "Group" VALUES
+INSERT INTO tss_group VALUES
   (3, 'black_list', 'black_list_group');
 
 
-CREATE TABLE "Role"
+CREATE TABLE role
 (
   rolename character varying(40) NOT NULL,
   CONSTRAINT rolename PRIMARY KEY (rolename)
@@ -58,70 +58,70 @@ CREATE TABLE "Role"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE "Role"
+ALTER TABLE role
   OWNER TO postgres;
 
-INSERT INTO "Role" VALUES
+INSERT INTO role VALUES
   ('admin');
-INSERT INTO "Role" VALUES
+INSERT INTO role VALUES
   ('driver');
-INSERT INTO "Role" VALUES
+INSERT INTO role VALUES
   ('customer');
 
 
-CREATE TABLE "User_Group"
+CREATE TABLE user_group
 (
   username character(40) NOT NULL,
   group_id integer NOT NULL,
   CONSTRAINT username_groupid PRIMARY KEY (username, group_id),
   CONSTRAINT group_id FOREIGN KEY (group_id)
-      REFERENCES "Group" (group_id) MATCH SIMPLE
+      REFERENCES tss_group (group_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT username FOREIGN KEY (username)
-      REFERENCES "User" (username) MATCH SIMPLE
+      REFERENCES tss_user (username) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE "User_Group"
+ALTER TABLE user_group
   OWNER TO postgres;
 
-INSERT INTO "User_Group" VALUES
+INSERT INTO user_group VALUES
   ('Adam', 2);
-INSERT INTO "User_Group" VALUES
+INSERT INTO user_group VALUES
   ('Sara', 2);
-INSERT INTO "User_Group" VALUES
+INSERT INTO user_group VALUES
   ('Mike', 1);
-INSERT INTO "User_Group" VALUES
+INSERT INTO user_group VALUES
   ('Vade', 3);
-INSERT INTO "User_Group" VALUES
+INSERT INTO user_group VALUES
   ('Mike', 3);
 
 
-CREATE TABLE "User_Role"
+CREATE TABLE user_role
 (
   username character varying(40) NOT NULL,
   rolename character varying(40) NOT NULL,
   CONSTRAINT username_rolename PRIMARY KEY (username, rolename),
   CONSTRAINT rolename FOREIGN KEY (rolename)
-      REFERENCES "Role" (rolename) MATCH SIMPLE
+      REFERENCES role (rolename) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT username FOREIGN KEY (username)
-      REFERENCES "User" (username) MATCH SIMPLE
+      REFERENCES tss_user (username) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE "User_Role"
+ALTER TABLE user_role
   OWNER TO postgres;
 
-INSERT INTO "User_Role" VALUES
+INSERT INTO user_role VALUES
   ('Mike', 'admin');
-INSERT INTO "User_Role" VALUES
+INSERT INTO user_role VALUES
   ('Sara', 'admin');
-INSERT INTO "User_Role" VALUES
+INSERT INTO user_role VALUES
   ('Vade', 'customer');
-INSERT INTO "User_Role" VALUES
+INSERT INTO user_role VALUES
   ('Mike', 'customer');
