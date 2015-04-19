@@ -16,7 +16,7 @@
 
     <properties>
         <spring.framework.version>4.1.6.RELEASE</spring.framework.version>
-        <spring.security.version>4.0.0.RELEASE</spring.security.version>
+        <spring.security.version>3.2.7.RELEASE</spring.security.version>
     </properties>
 
     <dependencies>

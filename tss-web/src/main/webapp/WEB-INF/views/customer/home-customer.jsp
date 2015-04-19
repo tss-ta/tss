@@ -35,7 +35,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-10">
             <h1>${title}</h1>
-            <p>Content should be here.</p>
+            <p>Customer home.</p>
         </div>
         <div class="col-md-1"></div>
     </div><!-- /.row -->
