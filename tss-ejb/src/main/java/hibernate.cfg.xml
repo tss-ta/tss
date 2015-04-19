@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.datasource">java:comp/env/jdbc/PostgresqlDS</property>
+        <property name="hibernate.default_schema">public</property> <!-- Not sure that it needed -->
+
+        <property name="connection_pool_size">100</property>
+
+        <property name="hbm2ddl.auto">update</property>
+
+    </session-factory>
+</hibernate-configuration>
