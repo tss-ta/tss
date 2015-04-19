@@ -1,0 +1,12 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Kyrylo Berehovyi
+  Date: 19/04/2015
+  Time: 19:59
+--%>
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">&copy; 2015 A-Team, ver. 0.1</p>
+    </div>
+</footer>
