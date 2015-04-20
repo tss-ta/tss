@@ -9,11 +9,11 @@ INSERT INTO tss_user VALUES
 
 
 INSERT INTO tss_group VALUES
-  (1, 'readonly', 'readonly_group');
+  (1, 'readonly');
 INSERT INTO tss_group VALUES
-  (2, 'managers', 'managers_group');
+  (2, 'managers');
 INSERT INTO tss_group VALUES
-  (3, 'black_list', 'black_list_group');
+  (3, 'black_list');
 
 
 INSERT INTO role VALUES
@@ -44,3 +44,11 @@ INSERT INTO user_role VALUES
   ('Vade', 'customer');
 INSERT INTO user_role VALUES
   ('Mike', 'customer');
+
+
+INSERT INTO group_role VALUES
+  ('admin', '2');
+INSERT INTO group_role VALUES
+  ('driver', '1');
+INSERT INTO group_role VALUES
+  ('customer', '3');
