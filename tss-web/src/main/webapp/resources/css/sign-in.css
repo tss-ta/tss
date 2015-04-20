@@ -47,7 +47,14 @@ body {
 }
 .form-signin button[type="submit"] {
     background-color: #555;
+    border-radius: 22px;
     color: #fff;
-    border-radius: 0;
     border: none;
+    outline: none;
+}
+.form-signin button[type="submit"]:hover {
+    background-color: #00B83A;
+}
+.form-signin button[type="submit"]:focus {
+    outline: none;
 }

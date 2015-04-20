@@ -27,13 +27,11 @@
 
         <form-login
                 login-page="/signin"
-                default-target-url="/"
                 authentication-failure-url="/signin?error"
                 login-processing-url="/auth"
                 username-parameter="email"
                 password-parameter="password"
                 authentication-success-handler-ref="customSuccessHandler"/>
-
     </http>
 
     <authentication-manager>

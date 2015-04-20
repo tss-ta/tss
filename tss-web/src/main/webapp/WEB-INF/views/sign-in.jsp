@@ -34,6 +34,11 @@
 <div class="container">
 
     <form class="form-signin" action="/auth" method="post" autocomplete="off">
+
+        <%-- Delete Chrome autocomplete --%>
+        <input style="display:none" type="text" name="fakeusernameremembered"/>
+        <input style="display:none" type="password" name="fakepasswordremembered"/>
+
         <h2 class="form-signin-heading">Please Sign In</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
