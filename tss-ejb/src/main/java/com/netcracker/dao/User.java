@@ -6,12 +6,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+
+/**
+*
+* @author Stanislav Zabielin
+*/
 @Entity
 @Table(name = "tss_user")
 public class User implements Serializable {
 	
 	@Id
+	@NotNull
 	@Column(name="username")
 	private String username;
 	
