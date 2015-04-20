@@ -31,4 +31,9 @@
         <!--<appender-ref ref="file" />--> 
     </root>
 
+    <category
+            name="org.springframework.security">
+        <priority value="debug" />
+    </category>
+
 </log4j:configuration>
