@@ -27,34 +27,15 @@
         <![endif]-->
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" 
-                            data-toggle="collapse" data-target="#navbar" 
-                            aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">TSS</a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="rh_info.html">App info</a></li>
-                        <li><a href="snoop.jsp">Snoop page</a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
+
+        <%@ include file="partials/header.jspf" %>
 
         <div class="container-fluid">
 
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <h1>Taxi Service System</h1>
+                    <h1>${title}</h1>
                     <p>Content should be here.</p>
                 </div>
                 <div class="col-md-1"></div>
@@ -62,15 +43,11 @@
 
         </div><!-- /.container -->
 
-        <footer class="footer">
-            <div class="container">
-                <p class="text-muted">&copy; 2015 A-Team, ver. 0.1</p>
-            </div>
-        </footer>
+        <%@ include file="partials/footer.jspf" %>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="/resources/js/jquery-1.11.2.min.js"></script>
+        <script src="resources/js/jquery-1.11.2.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="/resources/js/bootstrap.min.js"></script>
+        <script src="resources/js/bootstrap.min.js"></script>
     </body>
 </html>
