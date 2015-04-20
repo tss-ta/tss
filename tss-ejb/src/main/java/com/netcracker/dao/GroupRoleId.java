@@ -2,45 +2,34 @@ package com.netcracker.dao;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Embeddable;
 
 /**
-*
-* @author Stanislav Zabielin
-*/
-@Entity
-@Table(name = "role")
-public class Role implements Serializable {
+ *
+ * @author Stanislav Zabielin
+ */
+@Embeddable
+public class GroupRoleId implements Serializable {
 	
-	public Role() {
+	String rolename;
+
+	Integer group_id;
+
+	
+	public GroupRoleId() {
 	}
-	
-	public Role(String rolename) {
+
+	public GroupRoleId(String rolename, int group_id) {
 		super();
 		this.rolename = rolename;
-	}
-
-	@Id
-	@NotNull
-	@Column(name="rolename")
-	private String rolename;
-
-	public String getRolename() {
-		return rolename;
-	}
-
-	public void setRolename(String rolename) {
-		this.rolename = rolename;
+		this.group_id = group_id;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + group_id;
 		result = prime * result
 				+ ((rolename == null) ? 0 : rolename.hashCode());
 		return result;
@@ -54,7 +43,9 @@ public class Role implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Role other = (Role) obj;
+		GroupRoleId other = (GroupRoleId) obj;
+		if (group_id != other.group_id)
+			return false;
 		if (rolename == null) {
 			if (other.rolename != null)
 				return false;
@@ -62,7 +53,5 @@ public class Role implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }

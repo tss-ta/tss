@@ -2,40 +2,27 @@ package com.netcracker.dao;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Embeddable;
 
 /**
-*
-* @author Stanislav Zabielin
-*/
-@Entity
-@Table(name = "role")
-public class Role implements Serializable {
-	
-	public Role() {
+ *
+ * @author Stanislav Zabielin
+ */
+@Embeddable
+public class UserRoleId implements Serializable {
+
+	public UserRoleId() {
 	}
-	
-	public Role(String rolename) {
+
+	public UserRoleId(String username, String rolename) {
 		super();
+		this.username = username;
 		this.rolename = rolename;
 	}
 
-	@Id
-	@NotNull
-	@Column(name="rolename")
-	private String rolename;
+	String username;
 
-	public String getRolename() {
-		return rolename;
-	}
-
-	public void setRolename(String rolename) {
-		this.rolename = rolename;
-	}
+	String rolename;
 
 	@Override
 	public int hashCode() {
@@ -43,6 +30,8 @@ public class Role implements Serializable {
 		int result = 1;
 		result = prime * result
 				+ ((rolename == null) ? 0 : rolename.hashCode());
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -54,15 +43,18 @@ public class Role implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Role other = (Role) obj;
+		UserRoleId other = (UserRoleId) obj;
 		if (rolename == null) {
 			if (other.rolename != null)
 				return false;
 		} else if (!rolename.equals(other.rolename))
 			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
 		return true;
 	}
-	
-	
 
 }
