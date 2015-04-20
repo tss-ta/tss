@@ -27,7 +27,7 @@
 </head>
 <body>
 
-<%@ include file="partials/header.jspf" %>
+<%@ include file="WEB-INF/views/partials/header.jspf" %>
 
 <div class="container">
 
@@ -38,7 +38,7 @@
 
 </div><!-- /.container -->
 
-<%@ include file="partials/footer.jspf" %>
+<%@ include file="WEB-INF/views/partials/footer.jspf" %>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/resources/js/jquery-1.11.2.min.js"></script>

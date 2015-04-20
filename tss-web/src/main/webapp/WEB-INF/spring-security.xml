@@ -23,11 +23,11 @@
         <intercept-url pattern="/customer**" access="hasRole('ROLE_CUSTOMER')" />
 
         <!-- access denied page -->
-        <access-denied-handler error-page="/403" />
+        <access-denied-handler error-page="/403.jsp" />
 
         <form-login
-                login-page="/signin"
-                authentication-failure-url="/signin?error"
+                login-page="/signin.jsp"
+                authentication-failure-url="/signin.jsp?error"
                 login-processing-url="/auth"
                 username-parameter="email"
                 password-parameter="password"

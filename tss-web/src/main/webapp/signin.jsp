@@ -17,10 +17,10 @@
     <title>Taxi Service System Sign In</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/tss/resources/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/resources/css/sign-in.css" rel="stylesheet">
+    <link href="/tss/resources/css/sign-in.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
 
 <div class="container">
 
-    <form class="form-signin" action="/auth" method="post" autocomplete="off">
+    <form class="form-signin" action="auth" method="post" autocomplete="off">
 
         <%-- Delete Chrome autocomplete --%>
         <input style="display:none" type="text" name="fakeusernameremembered"/>
@@ -45,13 +45,14 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
         <%--<div class="checkbox">--%>
-            <%--<label>--%>
-                <%--<input type="checkbox" value="remember-me"> Remember me--%>
-            <%--</label>--%>
+        <%--<label>--%>
+        <%--<input type="checkbox" value="remember-me"> Remember me--%>
+        <%--</label>--%>
         <%--</div>--%>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
+
 
 </div> <!-- /container -->
 
