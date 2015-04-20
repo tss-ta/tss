@@ -44,3 +44,11 @@ INSERT INTO user_role VALUES
   ('Vade', 'customer');
 INSERT INTO user_role VALUES
   ('Mike', 'customer');
+
+
+INSERT INTO group_role VALUES
+  ('admin', '2');
+INSERT INTO group_role VALUES
+  ('driver', '1');
+INSERT INTO group_role VALUES
+  ('customer', '3');
