@@ -29,11 +29,6 @@
             <artifactId>h2</artifactId>
             <version>1.4.187</version>
         </dependency>
-	<dependency>
-	    <groupId>org.hibernate</groupId>
-	    <artifactId>hibernate-entitymanager</artifactId>
-	    <version>4.3.9.Final</version>
-	</dependency>
 
         
         <!-- Test dependencies -->
