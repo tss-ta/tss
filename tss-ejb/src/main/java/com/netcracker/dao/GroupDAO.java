@@ -1,5 +1,7 @@
 package com.netcracker.dao;
 
+import com.netcracker.entity.Group;
+
 /**
 *
 * @author Stanislav Zabielin
