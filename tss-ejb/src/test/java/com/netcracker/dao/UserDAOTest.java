@@ -13,7 +13,6 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.internal.SessionImpl;
 import org.junit.Test;
 
 import junit.framework.TestCase;
