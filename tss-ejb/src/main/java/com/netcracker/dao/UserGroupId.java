@@ -2,6 +2,7 @@ package com.netcracker.dao;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
@@ -16,6 +17,7 @@ public class UserGroupId implements Serializable {
 		this.group_id = group_id;
 	}
 
+	@Column(name = "username", columnDefinition = "bpchar")
 	String username;
 
 	Integer group_id;

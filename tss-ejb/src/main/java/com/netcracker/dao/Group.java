@@ -29,7 +29,7 @@ public class Group {
 	private Integer groupId;
 	
 	@NotNull
-	@Column(name="name")
+	@Column(name="name",  columnDefinition="bpchar")
 	private String name;
 
 	
