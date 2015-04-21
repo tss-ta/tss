@@ -1,5 +1,7 @@
 package com.netcracker.dao;
 
+import com.netcracker.entity.Role;
+
 
 /**
 *

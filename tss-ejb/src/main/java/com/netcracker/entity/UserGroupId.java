@@ -1,35 +1,32 @@
-package com.netcracker.dao;
+package com.netcracker.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-/**
- *
- * @author Stanislav Zabielin
- */
 @Embeddable
-public class UserRoleId implements Serializable {
+public class UserGroupId implements Serializable {
 
-	public UserRoleId() {
+	public UserGroupId() {
 	}
 
-	public UserRoleId(String username, String rolename) {
+	public UserGroupId(String username, int group_id) {
 		super();
 		this.username = username;
-		this.rolename = rolename;
+		this.group_id = group_id;
 	}
 
+	@Column(name = "username", columnDefinition = "bpchar")
 	String username;
 
-	String rolename;
+	Integer group_id;
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((rolename == null) ? 0 : rolename.hashCode());
+		result = prime * result + group_id;
 		result = prime * result
 				+ ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -43,11 +40,8 @@ public class UserRoleId implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserRoleId other = (UserRoleId) obj;
-		if (rolename == null) {
-			if (other.rolename != null)
-				return false;
-		} else if (!rolename.equals(other.rolename))
+		UserGroupId other = (UserGroupId) obj;
+		if (group_id != other.group_id)
 			return false;
 		if (username == null) {
 			if (other.username != null)
