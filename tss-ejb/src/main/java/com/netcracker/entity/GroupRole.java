@@ -1,4 +1,4 @@
-package com.netcracker.dao;
+package com.netcracker.entity;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -15,31 +15,21 @@ import javax.validation.constraints.NotNull;
  * @author Stanislav Zabielin
  */
 @Entity
-@Table(name = "user_group")
-public class UserGroup {
+@Table(name = "group_role")
+public class GroupRole {
 
-	public UserGroup() {
+	public GroupRole() {
 	}
 
-	public UserGroup(String username, int group_id) {
+	public GroupRole(String rolename, int group_id) {
 		super();
-		id.username = username;
+		id.rolename = rolename;
 		id.group_id = group_id;
 	}
-	
+
 	@EmbeddedId
 	@NotNull
-	UserGroupId id = new UserGroupId();
-
-	public String getUsername() {
-		return id.username;
-	}
-
-	public void setUsername(String username) {
-		id.username = username;
-	}
-
-	
+	GroupRoleId id = new GroupRoleId();
 
 	public Integer getGroup_id() {
 		return id.group_id;
@@ -47,6 +37,14 @@ public class UserGroup {
 
 	public void setGroup_id(Integer group_id) {
 		id.group_id = group_id;
+	}
+
+	public String getRolename() {
+		return id.rolename;
+	}
+
+	public void setRolename(String rolename) {
+		id.rolename = rolename;
 	}
 
 	@Override
@@ -65,7 +63,7 @@ public class UserGroup {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserGroup other = (UserGroup) obj;
+		GroupRole other = (GroupRole) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -73,7 +71,5 @@ public class UserGroup {
 			return false;
 		return true;
 	}
-
-	
 
 }

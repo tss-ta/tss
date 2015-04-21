@@ -1,5 +1,8 @@
 package com.netcracker.dao;
 
+import com.netcracker.entity.UserRole;
+import com.netcracker.entity.UserRoleId;
+
 public class UserRoleDAO extends GenericDAO<UserRole> {
 
 	@Override
