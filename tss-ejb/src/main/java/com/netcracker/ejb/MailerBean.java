@@ -5,8 +5,7 @@
  */
 package com.netcracker.ejb;
 
-import com.netcracker.dao.User;
-import com.netcracker.dao.UserDAO;
+
 import java.rmi.RemoteException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
