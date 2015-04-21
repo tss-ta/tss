@@ -8,7 +8,7 @@
 
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="validate" />
-            <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/TestUnitEntityManagerFactory" />
+            <property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/EntityManagerFactory" />
             <property name="hibernate.show_sql" value="true" />
         </properties>
     </persistence-unit>

@@ -65,7 +65,7 @@ public abstract class GenericDAO<T> {
 		try {
 			initCtx = new InitialContext();
 			EntityManagerFactory emf = (EntityManagerFactory) initCtx
-					.lookup("java:jboss/TestUnitEntityManagerFactory");
+					.lookup("java:jboss/EntityManagerFactory");
 			em = emf.createEntityManager();
 		} catch (NamingException e) {
 			e.printStackTrace();
