@@ -1,4 +1,4 @@
-package com.netcracker.dao;
+package com.netcracker.entity;
 
 import java.io.Serializable;
 

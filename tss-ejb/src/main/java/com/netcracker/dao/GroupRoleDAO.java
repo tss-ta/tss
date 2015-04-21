@@ -1,5 +1,8 @@
 package com.netcracker.dao;
 
+import com.netcracker.entity.GroupRole;
+import com.netcracker.entity.GroupRoleId;
+
 /**
 *
 * @author Stanislav Zabielin

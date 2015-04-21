@@ -1,5 +1,8 @@
 package com.netcracker.dao;
 
+import com.netcracker.entity.UserGroup;
+import com.netcracker.entity.UserGroupId;
+
 /**
 *
 * @author Stanislav Zabielin
