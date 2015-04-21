@@ -3,6 +3,8 @@
   Date: 19/04/2015
   Time: 21:27
 --%>
+<%@page import="com.netcracker.dao.User"%>
+<%@page import="com.netcracker.dao.UserDAO"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -36,6 +38,18 @@
         <div class="col-md-10">
             <h1>${title}</h1>
             <p>Admin Content should be here.</p>
+            				<%
+				out.println("Here:");
+					UserDAO UserDao = new UserDAO();
+					User user = new User("Tom", "tom@aol.com", "tompass");
+					UserDao.delete(user);
+					UserDao.persist(user);
+					if (user.equals(UserDao.get("Tom")))
+						out.println("No worries.");
+					else
+						out.println("Not happy.");
+					UserDao.close();
+				%>
         </div>
         <div class="col-md-1"></div>
     </div><!-- /.row -->
