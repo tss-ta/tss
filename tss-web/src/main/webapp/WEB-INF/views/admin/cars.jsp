@@ -57,6 +57,7 @@
                         <td>WI-FI</td>
                         <td>air-conditioner</td>
                         <td>applicible for animal</td>
+                        <td>driver</td>
                         </thead>
 
                         <tbody>
@@ -66,6 +67,7 @@
                                 <td>-</td>
                                 <td>+</td>
                                 <td>+</td>
+                                <td>driver</td>
                                 <td><a href="admin">edit</a></td>
                             </tr>
                             <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
@@ -76,22 +78,7 @@
                             </c:forEach> --%>
                         </tbody>
                     </table>
-                    <%@ include file="../partials/pagination.jspf" %>
-                    <!--                    <table>
-                                            <td class="col-md-3">
-                                                <a href="admin?page=1&menu=${param.menu}" > First </a>
-                                            </td>
-                                            <td class="col-md-3">
-                                                <a href="admin?page=${param.page - 1}&menu=${param.menu}" > Previous </a>
-                                            </td>
-                                            <td> ${param.page} </td>
-                                            <td>
-                                                <a href="admin?page=${param.page + 1}&menu=${param.menu}"> Next</a>
-                                            </td>
-                                            <td>
-                                                <a href="admin?page=last&menu=${param.menu}"> Last </a>
-                                            </td>
-                                        </table>-->
+                    <%@ include file="pagination.jspf" %>
                 </div>
                 <div class="col-md-1"></div>
             </div><!-- /.row -->

@@ -40,28 +40,28 @@
                         <ul class="nav navbar-nav">
                             <li><a href="admin?menu=cars">Cars</a></li>
                             <li><a href="admin?menu=drivers">Drivers</a></li>
-                            <li class="active"><a href="admin?menu=customers">Customers</a></li>
-                            <li><a href="admin?menu=groups">Groups</a></li>
+                            <li><a href="admin?menu=customers">Customers</a></li>
+                            <li class="active"><a href="admin?menu=groups">Groups</a></li>
                             <li><a href="admin?menu=tariffs">Tariffs</a></li>
                             <li><a href="admin?menu=reports">Reports</a></li>
                         </ul>
                     </nav>
                     <p>
-                        <a href="admin?action=adduser">Add user</a> 
+                        <a href="admin?action=addgroip">Add group</a> 
 
                     </p>
                     <table class="table table-striped table-bordered">
                         <thead class="tablehead">
-                        <td>username</td>
-                        <td>group</td>
-                        <td>email</td>
+                            <td>group</td>
+                            <td>roles</td>
+                            <td>additional info</td>
                         </thead>
 
                         <tbody>
                             <tr>
-                                <td>usr0</td>
-                                <td>1</td>
-                                <td>m@i.ua</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td><a href="admin">edit</a></td>
                             </tr>
                             <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
