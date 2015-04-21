@@ -68,16 +68,9 @@ public abstract class GenericDAO<T> {
 					.lookup("java:jboss/TestUnitEntityManagerFactory");
 			em = emf.createEntityManager();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// initCtx.lookup();
 		return em;
-		// if (em != null && em.isOpen())
-		// return em;
-		// else
-		// return Persistence.createEntityManagerFactory("entityManager")
-		// .createEntityManager();
 	}
 
 }
