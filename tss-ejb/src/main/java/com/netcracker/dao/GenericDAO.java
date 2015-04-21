@@ -3,7 +3,11 @@ package com.netcracker.dao;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -57,11 +61,16 @@ public abstract class GenericDAO<T> {
 	}
 
 	public EntityManager createEntityManager() {
-		if (em != null && em.isOpen())
-			return em;
-		else
-			return Persistence.createEntityManagerFactory("entityManager")
-					.createEntityManager();
+		Context initCtx;
+		try {
+			initCtx = new InitialContext();
+			EntityManagerFactory emf = (EntityManagerFactory) initCtx
+					.lookup("java:jboss/EntityManagerFactory");
+			em = emf.createEntityManager();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		return em;
 	}
 
 }
