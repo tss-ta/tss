@@ -28,6 +28,12 @@ public class AdminHomeServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/admin/reports.jsp").forward(req, resp);
         } else if ("customers".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/customers.jsp").forward(req, resp);
+        }else if ("drivers".equals(menu)) {
+            req.getRequestDispatcher("/WEB-INF/views/admin/drivers.jsp").forward(req, resp);
+        }else if ("tariffs".equals(menu)) {
+            req.getRequestDispatcher("/WEB-INF/views/admin/tariffs.jsp").forward(req, resp);
+        }else if ("groups".equals(menu)) {
+            req.getRequestDispatcher("/WEB-INF/views/admin/groups.jsp").forward(req, resp);
         } else {
 
             req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);

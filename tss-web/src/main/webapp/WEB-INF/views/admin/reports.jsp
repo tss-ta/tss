@@ -71,7 +71,7 @@
                         </tbody>
                     </table>
 
-                    <%@ include file="../partials/pagination.jspf" %>
+                    <%@ include file="pagination.jspf" %>
                 </div>
                 <div class="col-md-1"></div>
             </div><!-- /.row -->
