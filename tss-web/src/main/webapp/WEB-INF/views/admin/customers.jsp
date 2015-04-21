@@ -52,20 +52,16 @@
                     </p>
                     <table class="table table-striped table-bordered">
                         <thead class="tablehead">
-                        <td>car no</td>
-                        <td>type</td>
-                        <td>WI-FI</td>
-                        <td>air-conditioner</td>
-                        <td>applicible for animal</td>
+                        <td>username</td>
+                        <td>group</td>
+                        <td>email</td>
                         </thead>
 
                         <tbody>
                             <tr>
-                                <td>AI7777KM</td>
-                                <td>van</td>
-                                <td>-</td>
-                                <td>+</td>
-                                <td>+</td>
+                                <td>usr0</td>
+                                <td>1</td>
+                                <td>m@i.ua</td>
                                 <td><a href="admin">edit</a></td>
                             </tr>
                             <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
