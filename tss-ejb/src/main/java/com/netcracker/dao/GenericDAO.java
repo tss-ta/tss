@@ -8,13 +8,14 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 /**
  *
  * @author Stanislav Zabielin
+ *
  */
+
 public abstract class GenericDAO<T> {
 
 	protected Class<T> entityClass;
@@ -27,34 +28,45 @@ public abstract class GenericDAO<T> {
 				.getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
-	public T get(String key) {
-		return em.find(entityClass, key);
+	public T get(int id) {
+		return em.find(entityClass, id);
 	}
 
-	public T get(int key) {
-		return em.find(entityClass, key);
-	}
-
+    @Deprecated
 	public List<T> getAll() {
 		Query q = em.createQuery("select u from entityClass u");
 		List<T> list = q.getResultList();
 		return list;
 	}
 
-	public void delete(T t) {
-		em.getTransaction().begin();
-		t = em.merge(t);
-		em.remove(t);
-		em.getTransaction().commit();
+    public List<T> getPage(int pageNumber, int pageSize) {
+        if (pageNumber <= 0)
+            throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
+        if (pageSize <= 0)
+            throw new IllegalArgumentException("Argument 'pageSize' <= 0");
+
+        Query query = em.createQuery("From " + entityClass.getSimpleName());
+        query.setFirstResult((pageNumber-1) * pageSize);
+        query.setMaxResults(pageSize);
+        return (List<T>)query.getResultList();
+    }
+
+
+	public void delete(T entity) {
+        validateEntityOnNull(entity);
+		entity = em.merge(entity);
+		em.remove(entity);
 	}
 
-	public void persist(T t) {
-		em.getTransaction().begin();
-		em.persist(t);
-		em.getTransaction().commit();
+	public void persist(T entity) {
+        validateEntityOnNull(entity);
+		em.persist(entity);
 	}
 
-	public abstract void update(T t);
+	public void update(T entity) {
+        validateEntityOnNull(entity);
+        em.merge(entity);
+    }
 
 	public void close() {
 		em.close();
@@ -72,5 +84,10 @@ public abstract class GenericDAO<T> {
 		}
 		return em;
 	}
+
+    private void validateEntityOnNull(T entity) {
+        if (entity == null)
+            throw new IllegalArgumentException("Argument 'entity' is null");
+    }
 
 }

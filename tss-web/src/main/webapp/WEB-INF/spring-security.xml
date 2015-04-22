@@ -15,12 +15,20 @@
         <beans:constructor-arg name="strength" value="11" />
     </beans:bean>
 
+    <beans:bean id='userDetailsService' class='com.netcracker.tss.web.config.security.CustomUserDetailsService'>
+    </beans:bean>
+
+    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="userDetailsService"/>
+        <beans:property name="passwordEncoder" ref="encoder"/>
+    </beans:bean>
+
     <!-- enable use-expressions -->
     <http auto-config="true" use-expressions="true">
 
-        <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
-        <intercept-url pattern="/driver**" access="hasRole('ROLE_DRIVER')" />
-        <intercept-url pattern="/customer**" access="hasRole('ROLE_CUSTOMER')" />
+        <intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
+        <intercept-url pattern="/driver**" access="hasRole('DRIVER')" />
+        <intercept-url pattern="/customer**" access="hasRole('CUSTOMER')" />
 
         <!-- access denied page -->
         <access-denied-handler error-page="/403.jsp" />
@@ -32,19 +40,21 @@
                 username-parameter="email"
                 password-parameter="password"
                 authentication-success-handler-ref="customSuccessHandler"/>
+        <logout logout-url="/signout"
+                logout-success-url="/" />
     </http>
 
     <authentication-manager>
-        <authentication-provider>
-            <password-encoder ref="encoder"/>
-            <user-service>
-                <!-- password is 'pass' -->
-                <user name="customer" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_CUSTOMER" />
-                <user name="admin" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_ADMIN" />
-                <user name="driver" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_DRIVER" />
-                <user name="guest" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_GUEST" />
-            </user-service>
-        </authentication-provider>
+        <authentication-provider ref="daoAuthenticationProvider" />
+            <!--<password-encoder ref="encoder"/>-->
+            <!--<user-service>-->
+                <!--&lt;!&ndash; password is 'pass' &ndash;&gt;-->
+                <!--<user name="customer" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_CUSTOMER" />-->
+                <!--<user name="admin" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_ADMIN" />-->
+                <!--<user name="driver" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_DRIVER" />-->
+                <!--<user name="guest" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_GUEST" />-->
+            <!--</user-service>-->
+        <!--</authentication-provider>-->
     </authentication-manager>
 
 </beans:beans>
