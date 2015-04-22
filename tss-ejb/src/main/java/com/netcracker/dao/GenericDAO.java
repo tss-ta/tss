@@ -15,79 +15,86 @@ import javax.persistence.Query;
  * @author Stanislav Zabielin
  *
  */
-
 public abstract class GenericDAO<T> {
 
-	protected Class<T> entityClass;
+    protected Class<T> entityClass;
 
-	protected EntityManager em;
+    protected EntityManager em;
 
-	public GenericDAO() {
-		em = createEntityManager();
-		entityClass = (Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
-	}
+    public GenericDAO() {
+        em = createEntityManager();
+        entityClass = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 
-	public T get(int id) {
-		return em.find(entityClass, id);
-	}
+    public T get(int id) {
+        return em.find(entityClass, id);
+    }
 
     @Deprecated
-	public List<T> getAll() {
-		Query q = em.createQuery("select u from entityClass u");
-		List<T> list = q.getResultList();
-		return list;
-	}
+    public List<T> getAll() {
+        Query q = em.createQuery("select u from entityClass u");
+        List<T> list = q.getResultList();
+        return list;
+    }
 
     public List<T> getPage(int pageNumber, int pageSize) {
-        if (pageNumber <= 0)
+        if (pageNumber <= 0) {
             throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
-        if (pageSize <= 0)
+        }
+        if (pageSize <= 0) {
             throw new IllegalArgumentException("Argument 'pageSize' <= 0");
+        }
 
         Query query = em.createQuery("From " + entityClass.getSimpleName());
-        query.setFirstResult((pageNumber-1) * pageSize);
+        query.setFirstResult((pageNumber - 1) * pageSize);
         query.setMaxResults(pageSize);
-        return (List<T>)query.getResultList();
+        return (List<T>) query.getResultList();
     }
 
-
-	public void delete(T entity) {
+    public void delete(T entity) {
         validateEntityOnNull(entity);
-		entity = em.merge(entity);
-		em.remove(entity);
-	}
+        em.getTransaction().begin();
+        entity = em.merge(entity);
+        em.remove(entity);
+        em.getTransaction().commit();
+    }
 
-	public void persist(T entity) {
+    public void persist(T entity) {
         validateEntityOnNull(entity);
-		em.persist(entity);
-	}
+        em.getTransaction().begin();
+        em.persist(entity);
+        em.getTransaction().commit();
+    }
 
-	public void update(T entity) {
+    public void update(T entity) {
         validateEntityOnNull(entity);
+        em.getTransaction().begin();
         em.merge(entity);
+        em.getTransaction().commit();
     }
 
-	public void close() {
-		em.close();
-	}
+    public void close() {
+        em.close();
+    }
 
-	public EntityManager createEntityManager() {
-		Context initCtx;
-		try {
-			initCtx = new InitialContext();
-			EntityManagerFactory emf = (EntityManagerFactory) initCtx
-					.lookup("java:jboss/EntityManagerFactory");
-			em = emf.createEntityManager();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-		return em;
-	}
+    public EntityManager createEntityManager() {
+        Context initCtx;
+        try {
+            initCtx = new InitialContext();
+            EntityManagerFactory emf = (EntityManagerFactory) initCtx
+                    .lookup("java:jboss/EntityManagerFactory");
+            em = emf.createEntityManager();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return em;
+    }
 
     private void validateEntityOnNull(T entity) {
-        if (entity == null)
+        if (entity == null) {
             throw new IllegalArgumentException("Argument 'entity' is null");
+        }
     }
 
 }

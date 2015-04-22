@@ -10,9 +10,10 @@ DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS tss_role;
 
 
+
 CREATE TABLE tss_user
 (
-  id integer NOT NULL ,
+  id serial NOT NULL ,
   username character varying(40),
   email character varying(40),
   pass_hash character varying(60),

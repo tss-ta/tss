@@ -7,49 +7,53 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
-*
-* @author Stanislav Zabielin
-*
+ *
+ * @author Stanislav Zabielin
+ * 
 */
-
 @Entity
 @Table(name = "tss_user")
 public class User implements Serializable {
-	
-	@Id
-	private Integer id;
 
-    @Column(name="username")
-	private String username;
-	
-	@Column(name="email")
-	private String email;
+    @Id
+//    @SequenceGenerator(sequenceName = "tss_user_id_seq", name = "tssUserIdSequence")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tssUserIdSequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
+    private Integer id;
 
-    @Column(name="pass_hash")
-	private String passwordHash;
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "pass_hash")
+    private String passwordHash;
 
     @OneToMany
     @JoinTable(
-               name="tss_user_role",
-               joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName="id"))
+            name = "tss_user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<Role>();
 
     @OneToMany
     @JoinTable(
-            name="tss_user_group",
-            joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name="group_id", referencedColumnName="id"))
+            name = "tss_user_group",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
     private List<Group> groups = new ArrayList<Group>();
 
-	public User() {}
+    public User() {
+    }
 
-	public User(String username, String email, String passwordHash) {
-		super();
-		this.username = username;
-		this.email = email;
-		this.passwordHash = passwordHash;
-	}
+    public User(String username, String email, String passwordHash) {
+        super();
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
 
     public Integer getId() {
         return id;
@@ -68,28 +72,28 @@ public class User implements Serializable {
     }
 
     public String getUsername() {
-		return username;
-	}
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
     public List<Group> getGroups() {
         return groups;
@@ -109,15 +113,27 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         User user = (User) o;
 
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (passwordHash != null ? !passwordHash.equals(user.passwordHash) : user.passwordHash != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) {
+            return false;
+        }
+        if (id != null ? !id.equals(user.id) : user.id != null) {
+            return false;
+        }
+        if (passwordHash != null ? !passwordHash.equals(user.passwordHash) : user.passwordHash != null) {
+            return false;
+        }
+        if (username != null ? !username.equals(user.username) : user.username != null) {
+            return false;
+        }
 
         return true;
     }
