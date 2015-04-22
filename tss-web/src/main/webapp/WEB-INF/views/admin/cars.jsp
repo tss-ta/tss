@@ -64,7 +64,7 @@
                         </ul>
                     </nav>
                     <p>
-                        <a href="/admin?action=addcar&menu=${param.menu}">Add new car</a>
+                        <a href="/admin?action=addcar">Add new car</a>
 
                     </p>
                     <table class="table table-striped table-bordered">

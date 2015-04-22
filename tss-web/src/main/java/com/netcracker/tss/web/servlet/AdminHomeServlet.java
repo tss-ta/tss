@@ -24,12 +24,10 @@ public class AdminHomeServlet extends HttpServlet {
 //        switch (menu){
 //            case "car": car
 //        }
-        
-        
-        if ("addcar".equals(action)){
+
+        if ("addcar".equals(action)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/addcar.jsp").forward(req, resp);
         }
-        
 
         if ("cars".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);
@@ -37,11 +35,11 @@ public class AdminHomeServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/admin/reports.jsp").forward(req, resp);
         } else if ("customers".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/customers.jsp").forward(req, resp);
-        }else if ("drivers".equals(menu)) {
+        } else if ("drivers".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/drivers.jsp").forward(req, resp);
-        }else if ("tariffs".equals(menu)) {
+        } else if ("tariffs".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/tariffs.jsp").forward(req, resp);
-        }else if ("groups".equals(menu)) {
+        } else if ("groups".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/groups.jsp").forward(req, resp);
         } else {
 
@@ -51,30 +49,49 @@ public class AdminHomeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String action = req.getParameter("action");
-        if ("newcar".equals(action)){
+        String action = req.getParameter("action");
+
+        if ("newcar".equals(action)) {
             CarDao carDao = new CarDao();
-            carDao.persist(new Car(1, true, 1, true, true, true));
+            carDao.persist(new Car(req.getParameter("plate"), isOn(req.getParameter("avaliable")), 
+                    Integer.parseInt(req.getParameter("category")), isOn(req.getParameter("animalable")),
+                    isOn(req.getParameter("wi-fi")), isOn(req.getParameter("conditioner"))));
+            carDao.close();
         }
-                           PrintWriter out = resp.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet controller</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>!!! " + 11111111 + "</h1>");
-            out.println("<h1>!!! " + action + "</h1>");
-                        out.println("<h3>!!! " + req.getParameterMap()+ "</h3>");
-                        out.println("<h3>!!! " + req.getParameterNames()+ "</h3>");
-                        
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }
+                    req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);
+//        PrintWriter out = resp.getWriter();
+//        try {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet controller</title>");
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>!!! " + 11111111 + "</h1>");
+//            out.println("<h1>!!! " + action + "</h1>");
+//            out.println("<h1>pl " + req.getParameter("plate") + "</h1>");
+//            out.println("<h1>wifi " + req.getParameter("wi-fi") + "</h1>");
+//            out.println("<h1>cond " + req.getParameter("conditioner") + "</h1>");
+//            out.println("<h1>aval " + req.getParameter("avaliable") + "</h1>");
+//                        out.println("<h1>anim " + req.getParameter("animalable") + "</h1>");
+//            out.println("<h1>cat " + req.getParameter("category") + "</h1>");
+//
+//            out.println("<h3>!!! " + req.getParameterMap().toString() + "</h3>");
+//            out.println("<h3>!!! " + req.getParameterNames().toString() + "</h3>");
+//
+//            out.println("</body>");
+//            out.println("</html>");
+//        } finally {
+//            out.close();
+//        }
     }
     
+    private boolean isOn (String checkBoxText){
+        return "on".equals(checkBoxText);
+    }
+//    private int toInt (String number) {
+//        return Integer.parseInt(number);
+//    }
+
 }
