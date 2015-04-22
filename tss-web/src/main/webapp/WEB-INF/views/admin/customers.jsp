@@ -56,7 +56,7 @@
                         </ul>
                     </nav>
                     <p>
-                        <a href="admin?action=adduser">Add user</a> 
+                        <a href="admin?action=adduser&menu=${param.menu}">Add user</a> 
 
                     </p>
                     <table class="table table-striped table-bordered">
