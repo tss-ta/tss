@@ -1,8 +1,12 @@
 DROP TABLE IF EXISTS tss_user_group;
 DROP TABLE IF EXISTS tss_user_role;
 DROP TABLE IF EXISTS tss_group_role;
+DROP TABLE IF EXISTS user_group;
+DROP TABLE IF EXISTS user_role;
+DROP TABLE IF EXISTS group_role;
 DROP TABLE IF EXISTS tss_user;
 DROP TABLE IF EXISTS tss_group;
+DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS tss_role;
 
 
