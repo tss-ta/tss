@@ -1,33 +1,29 @@
-<%--
-  User: Kyrylo Berehovyi
-  Date: 19/04/2015
-  Time: 19:55
---%>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">TSS</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sign <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/signin.jsp">Sign In</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/signup.jsp">Sign Up</a></li>
-                    </ul>
-                <li><a href="/signout">Sign Out</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
+<!-----start-header----->
+	<div class="header">
+		<!---start-wrap---->
+		<div class="wrap">
+			<!---start-top-header---->
+			<div class="top-header">
+				<div class="clear"></div>
+			</div>
+			<!---End-top-header---->
+			<!----start-main-header----->
+			<div class="main-header">
+				<div class="logo">
+					<a href="index.html"><img src="/resources/images/logo1.png"
+						title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li><a href="/signin.jsp">Sign In</a></li>
+						<li><a href="/signup.jsp">Sign Up</a></li>
+						<li><a href="#">Guest</a></li>
+						<li><a href="/signout">Sign Out</a></li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<!----End-main-header----->
+		</div>
+	</div>
