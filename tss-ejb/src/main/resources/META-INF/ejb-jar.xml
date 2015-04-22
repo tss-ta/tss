@@ -2,23 +2,23 @@
 <!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
 <ejb-jar>
 
-  <!--<enterprise-beans>-->
+    <!--<enterprise-beans>-->
     <!--<session>-->
-      <!--&lt;!&ndash;<ejb-name>MailerBean</ejb-name>&ndash;&gt;-->
-      <!--<local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>-->
-      <!--<local>com.netcracker.ejb.MailerBeanLocal</local>-->
-      <!--<ejb-class>com.netcracker.ejb.MailerBean</ejb-class>-->
-      <!--<session-type>Stateless</session-type>-->
-      <!--<transaction-type>Container</transaction-type>-->
-      <!---->
-       <!--<ejb-local-ref>-->
-                <!--<ejb-ref-name>ejb/MailerBean</ejb-ref-name>-->
-                <!--<ejb-ref-type>Session</ejb-ref-type>-->
-                <!--<local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>-->
-                <!--<local>com.netcracker.ejb.MailerBeanLocal</local>-->
-        <!--</ejb-local-ref>-->
+    <!--&lt;!&ndash;<ejb-name>MailerBean</ejb-name>&ndash;&gt;-->
+    <!--<local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>-->
+    <!--<local>com.netcracker.ejb.MailerBeanLocal</local>-->
+    <!--<ejb-class>com.netcracker.ejb.MailerBean</ejb-class>-->
+    <!--<session-type>Stateless</session-type>-->
+    <!--<transaction-type>Container</transaction-type>-->
+    <!---->
+    <!--<ejb-local-ref>-->
+    <!--<ejb-ref-name>ejb/MailerBean</ejb-ref-name>-->
+    <!--<ejb-ref-type>Session</ejb-ref-type>-->
+    <!--<local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>-->
+    <!--<local>com.netcracker.ejb.MailerBeanLocal</local>-->
+    <!--</ejb-local-ref>-->
     <!--</session>-->
-  <!--</enterprise-beans>-->
+    <!--</enterprise-beans>-->
 
     <!-- Test implementation added by @bbuallbest -->
     <description>Example of a session bean</description>
@@ -41,6 +41,23 @@
                 <local>com.netcracker.ejb.TestLocal</local>
             </ejb-local-ref>
         </session>
-    </enterprise-beans>
+        <session>
+            <description>An EJB named RegistrationBean</description>
+            <display-name>RegistrationBean</display-name>
+            <ejb-name>RegistrationBean</ejb-name>
+            <local-home>com.netcracker.ejb.RegistrationBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.RegistrationBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.RegistrationBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/RegistrationBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.RegistrationBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.RegistrationBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+   </enterprise-beans>
 
 </ejb-jar>
