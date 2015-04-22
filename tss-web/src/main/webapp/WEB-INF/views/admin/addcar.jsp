@@ -21,9 +21,9 @@
 
         <link href="/resources/css/style.css" rel="stylesheet" type="text/css"
               media="all" />
-<!--        <link href='http://fonts.googleapis.com/css?family=Raleway'
-              rel='stylesheet' type='text/css'>-->
-<!--        <link rel="stylesheet" href="css/responsiveslides.css">-->
+                <link href='http://fonts.googleapis.com/css?family=Raleway'
+                      rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/responsiveslides.css">
 
 
         <!-- Bootstrap core CSS -->
@@ -77,27 +77,28 @@
             <form action="/admin" method="post">
 
 
-                <h2>Add car</h2>
-                <p>license plate</p>
+                <h2 class="form-signin-heading">Add car</h2>
+                <p class="form-signin-heading">license plate</p>
                 <input type="text" name="plate">
                 <p>category</p>
-                <select>
-                    <option>business</option>
-                    <option>econom</option>
-                    <option>van</option>
+                <select name="category">
+                    <option value="1">business</option>
+                    <option value="2">econom</option>
+                    <option value="3">van</option>
                 </select>
-
-                <input type="checkbox" value="avaliable" name="availible" >
-                <input type="checkbox" value="animaliable">
-                <input type="checkbox" value="wi-fi">
-                <input type="checkbox" value="conditioner">
+                <div class="checkbox">
+                    <label class="checkbox"><input type="checkbox" name="avaliable" > availible</label>
+                    <label class="checkbox"><input type="checkbox" name="animalable">animaliable</label>
+                    <label class="checkbox"><input type="checkbox" name="wi-fi">wi-fi</label>
+                    <label class="checkbox"><input type="checkbox" name="conditioner"> conditioner</label>
+                </div>
                 <input type="hidden" name="action" value="newcar">
 
 
 
 
 
-                <button class="btn btn-lg btn-primary btn-block" type="submit">add car</button>
+                <button class="btn btn-lg btn-primary" type="submit">add car</button>
             </form>
 
 

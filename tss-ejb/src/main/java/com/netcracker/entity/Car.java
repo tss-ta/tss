@@ -61,9 +61,6 @@ public class Car implements Serializable {
     public Car() {
     }
 
-    public Car(Integer id) {
-        this.id = id;
-    }
 
     public Car(boolean avalible, int category, boolean animalable, boolean wifi, boolean conditioner) {
         this.avalible = avalible;
@@ -72,22 +69,22 @@ public class Car implements Serializable {
         this.wifi = wifi;
         this.conditioner = conditioner;
     }
-    public Car(Integer id, boolean avalible, int category, boolean animalable, boolean wifi, boolean conditioner) {
-        this.id = id;
+    public Car(String licPlace, boolean avalible, int category, boolean animalable, boolean wifi, boolean conditioner) {
         this.avalible = avalible;
         this.category = category;
         this.animalable = animalable;
         this.wifi = wifi;
         this.conditioner = conditioner;
+        this.licPlate = licPlace;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
 
     public boolean getAvalible() {
         return avalible;

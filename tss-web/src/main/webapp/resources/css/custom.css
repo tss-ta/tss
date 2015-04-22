@@ -23,4 +23,8 @@ body {
 /*    padding-right: 15px;*/
 /*    padding-left: 15px;*/
 }
+.tablehead{
+    font-style: italic;
+    background-color: paleturquoise;
+}
 

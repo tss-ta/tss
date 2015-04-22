@@ -38,7 +38,7 @@ public class RegistrationServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirPassword");
-        System.out.println(userName + email + password);
+
 
         if (password.equals(confirmPassword)) {
             RegistrationBean rb = new RegistrationBean();
@@ -69,7 +69,7 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
     }
 
     /**
