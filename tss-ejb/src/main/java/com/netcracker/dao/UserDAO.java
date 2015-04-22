@@ -2,24 +2,24 @@ package com.netcracker.dao;
 
 import com.netcracker.entity.User;
 
+import javax.persistence.Query;
+
 
 /**
 *
 * @author Stanislav Zabielin
+*
 */
+
 public class UserDAO extends GenericDAO<User> {
 	
 	public UserDAO() {
 		super();
 	}
-	
-	@Override
-	public void update(User user) {
-		User tmp = get(user.getUsername());
-		em.getTransaction().begin();
-		tmp.setEmail(user.getEmail());
-		tmp.setPassword(user.getPassword());
-		em.getTransaction().commit();
-	}
 
+    public User getByEmail(String email) {
+        Query query = em.createQuery("Select u FROM User u WHERE u.email = :email");
+        query.setParameter("email", email);
+        return  (User)query.getSingleResult();
+    }
 }

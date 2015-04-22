@@ -1,44 +1,73 @@
 package com.netcracker.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import javax.persistence.*;
 
 /**
 *
 * @author Stanislav Zabielin
+*
 */
+
 @Entity
 @Table(name = "tss_user")
 public class User implements Serializable {
 	
 	@Id
-	@NotNull
-	@Column(name="username")
+	private Integer id;
+
+    @Column(name="username")
 	private String username;
 	
 	@Column(name="email")
 	private String email;
-	@Column(name="password")
-	private String password;
-	
-	public User() {
-	}
 
+    @Column(name="pass_hash")
+	private String passwordHash;
 
-	public User(String username, String email, String password) {
+    @OneToMany
+    @JoinTable(
+               name="tss_user_role",
+               joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName="id"))
+    private List<Role> roles = new ArrayList<Role>();
+
+    @OneToMany
+    @JoinTable(
+            name="tss_user_group",
+            joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name="group_id", referencedColumnName="id"))
+    private List<Group> groups = new ArrayList<Group>();
+
+	public User() {}
+
+	public User(String username, String email, String passwordHash) {
 		super();
 		this.username = username;
 		this.email = email;
-		this.password = password;
+		this.passwordHash = passwordHash;
 	}
 
-	public String getUsername() {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getUsername() {
 		return username;
 	}
 
@@ -54,55 +83,64 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getPasswordHash() {
+		return passwordHash;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 
+    public List<Group> getGroups() {
+        return groups;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
-		return result;
-	}
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
 
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
-	}
-	
-	
+    public void addGroup(Group group) {
+        groups.add(group);
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (passwordHash != null ? !passwordHash.equals(user.passwordHash) : user.passwordHash != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (passwordHash != null ? passwordHash.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("id=").append(id);
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", passwordHash='").append(passwordHash).append('\'');
+        sb.append(", roles=").append(roles);
+        sb.append(", groups=").append(groups);
+        sb.append('}');
+        return sb.toString();
+    }
 }

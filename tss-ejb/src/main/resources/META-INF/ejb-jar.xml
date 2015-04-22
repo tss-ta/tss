@@ -2,45 +2,45 @@
 <!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
 <ejb-jar>
 
-  <enterprise-beans>
-    <session>
-      <ejb-name>MailerBean</ejb-name>
-      <local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>
-      <local>com.netcracker.ejb.MailerBeanLocal</local>
-      <ejb-class>com.netcracker.ejb.MailerBean</ejb-class>
-      <session-type>Stateless</session-type>
-      <transaction-type>Container</transaction-type>
-      
-       <ejb-local-ref>
-                <ejb-ref-name>ejb/MailerBean</ejb-ref-name>
-                <ejb-ref-type>Session</ejb-ref-type>
-                <local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>
-                <local>com.netcracker.ejb.MailerBeanLocal</local>
-        </ejb-local-ref>
-    </session>
-  </enterprise-beans>
+  <!--<enterprise-beans>-->
+    <!--<session>-->
+      <!--&lt;!&ndash;<ejb-name>MailerBean</ejb-name>&ndash;&gt;-->
+      <!--<local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>-->
+      <!--<local>com.netcracker.ejb.MailerBeanLocal</local>-->
+      <!--<ejb-class>com.netcracker.ejb.MailerBean</ejb-class>-->
+      <!--<session-type>Stateless</session-type>-->
+      <!--<transaction-type>Container</transaction-type>-->
+      <!---->
+       <!--<ejb-local-ref>-->
+                <!--<ejb-ref-name>ejb/MailerBean</ejb-ref-name>-->
+                <!--<ejb-ref-type>Session</ejb-ref-type>-->
+                <!--<local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>-->
+                <!--<local>com.netcracker.ejb.MailerBeanLocal</local>-->
+        <!--</ejb-local-ref>-->
+    <!--</session>-->
+  <!--</enterprise-beans>-->
 
     <!-- Test implementation added by @bbuallbest -->
-<!--    <description>Example of a session bean</description>
+    <description>Example of a session bean</description>
     <display-name>MyTimeBeanEJBName</display-name>
     <enterprise-beans>
         <session id="Session_MyTime">
             <description>An EJB named MyTimeBean</description>
             <display-name>TestBeanName</display-name>
             <ejb-name>TestBean</ejb-name>
-            <local-home>org.bbuallbest.TestLocalHome</local-home>
-            <local>org.bbuallbest.TestLocal</local>
-            <ejb-class>org.bbuallbest.TestBean</ejb-class>
+            <local-home>com.netcracker.ejb.TestLocalHome</local-home>
+            <local>com.netcracker.ejb.TestLocal</local>
+            <ejb-class>com.netcracker.ejb.TestBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
 
             <ejb-local-ref>
                 <ejb-ref-name>ejb/TestBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
-                <local-home>org.bbuallbest.TestLocalHome</local-home>
-                <local>org.bbuallbest.TestLocal</local>
+                <local-home>com.netcracker.ejb.TestLocalHome</local-home>
+                <local>com.netcracker.ejb.TestLocal</local>
             </ejb-local-ref>
         </session>
-    </enterprise-beans>-->
+    </enterprise-beans>
 
 </ejb-jar>
