@@ -40,9 +40,9 @@
                         <ul class="nav navbar-nav">
                             <li><a href="admin?menu=cars">Cars</a></li>
                             <li><a href="admin?menu=drivers">Drivers</a></li>
-                            <li class="active"><a href="admin?menu=customers">Customers</a></li>
+                            <li><a href="admin?menu=customers">Customers</a></li>
                             <li><a href="admin?menu=groups">Groups</a></li>
-                            <li><a href="admin?menu=tariffs">Tariffs</a></li>
+                            <li class="active"><a href="admin?menu=tariffs">Tariffs</a></li>
                             <li><a href="admin?menu=reports">Reports</a></li>
                         </ul>
                     </nav>
@@ -52,16 +52,28 @@
                     </p>
                     <table class="table table-striped table-bordered">
                         <thead class="tablehead">
-                        <td>username</td>
-                        <td>group</td>
-                        <td>email</td>
+                        <td>service</td>
+                        <td>tariff type</td>
+                        <td>car type</td>
+                        <td>day of week</td>
+                        <td>from time</td>
+                        <td>to time</td>
+                        <td>price</td>
+                        <td>active from date</td>
+                        <td>active to date</td>
                         </thead>
 
                         <tbody>
                             <tr>
-                                <td>usr0</td>
-                                <td>1</td>
-                                <td>m@i.ua</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td><a href="admin">edit</a></td>
                             </tr>
                             <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
