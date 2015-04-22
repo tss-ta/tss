@@ -739,7 +739,7 @@ body {
 	background: #000;
 	color: #FFF;
 	padding: 10px;
-	display: inline-block transition: 0.5s ease;
+/*	display: inline-block transition: 0.5s ease;*/
 	-o-transition: 0.5s ease;
 	-webkit-transition: 0.5s ease;
 }

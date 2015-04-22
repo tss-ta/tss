@@ -54,7 +54,7 @@
                         </ul>
                     </nav>
                     <p>
-                        <a href="admin?action=adduser">Add user</a> 
+                        <a href="admin?action=adddriver&menu=${param.menu}">Add driver</a> 
 
                     </p>
                     <table class="table table-striped table-bordered">
@@ -63,6 +63,7 @@
                         <td>first name</td>
                         <td>last name</td>
                         <td>driver licence</td>
+                        <td>active</td>
                         <td>hired date</td>
                         <td>fired date</td>
                         <td>salary</td>
@@ -73,6 +74,7 @@
 
                         <tbody>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

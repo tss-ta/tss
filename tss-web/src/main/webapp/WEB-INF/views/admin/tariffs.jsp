@@ -54,7 +54,6 @@
                         </ul>
                     </nav>
                     <p>
-                        <a href="admin?action=adduser">Add user</a> 
 
                     </p>
                     <table class="table table-striped table-bordered">
