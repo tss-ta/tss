@@ -15,6 +15,13 @@
     <link rel="icon" href="/resources/img/favicon.ico">
 
     <title>Taxi Service System Sign In</title>
+    
+     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"
+	     media="all" />
+    	<link href='http://fonts.googleapis.com/css?family=Raleway'
+	    rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/responsiveslides.css">
+        <script src="/resources/js/responsiveslides.min.js"></script>
 
     <!-- Bootstrap core CSS -->
     <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -30,6 +37,37 @@
 </head>
 
 <body>
+
+<!-----start-header----->
+	<div class="header">
+		<!---start-wrap---->
+		<div class="wrap">
+			<!---start-top-header---->
+			<div class="top-header">
+				<div class="clear"></div>
+			</div>
+			<!---End-top-header---->
+			<!----start-main-header----->
+			<div class="main-header">
+				<div class="logo">
+					<a href="index.html"><img src="/resources/images/logo1.png"
+						title="logo" /></a>
+				</div>
+				<div class="top-nav">
+					<ul>
+						<li><a href="/signout">Home</a></li>
+						<li class="active"><a href="/signin.jsp">Sign In</a></li>
+						<li><a href="/signup.jsp">Sign Up</a></li>
+						<li><a href="#">Guest</a></li>
+						<li><a href="/signout">Sign Out</a></li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<!----End-main-header----->
+		</div>
+	</div>
 
 <div class="container">
 
@@ -55,6 +93,8 @@
 
 
 </div> <!-- /container -->
+
+ <%@ include file="WEB-INF/views/partials/footer.jspf" %>
 
 </body>
 </html>

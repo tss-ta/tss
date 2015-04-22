@@ -12,6 +12,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
     <title>Taxi Service System</title>
+    
+     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"
+	     media="all" />
+    	<link href='http://fonts.googleapis.com/css?family=Raleway'
+	    rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/responsiveslides.css">
+        <script src="/resources/js/responsiveslides.min.js"></script>
 
     <!-- Bootstrap -->
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
