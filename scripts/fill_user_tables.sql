@@ -1,11 +1,21 @@
+
+-- password is 'pass'
 INSERT INTO tss_user VALUES
-  ('Adam', 'adam.sandler@gmail.com', 'adampassword');
+  (DEFAULT, 'Adam', 'adam.sandler@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
-  ('Mike', 'mike.cole@gmail.com', 'mikepassword');
+  (DEFAULT, 'Mike', 'mike.cole@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
-  ('Sara', 'sara.smith@gmail.com', 'sarapassword');
+  (DEFAULT, 'Sara', 'sara.smith@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
-  ('Vade', 'vade.gordon@gmail.com', 'vadepassword');
+  (DEFAULT, 'Vade', 'vade.gordon@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Adam', 'adam1.sandler@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Joey', 'joey.vdome@net.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Samantha', 's.smith@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Trevor', 'trevor.rovert@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 
 
 INSERT INTO tss_group VALUES
@@ -16,39 +26,49 @@ INSERT INTO tss_group VALUES
   (3, 'black_list');
 
 
-INSERT INTO role VALUES
-  ('admin');
-INSERT INTO role VALUES
-  ('driver');
-INSERT INTO role VALUES
-  ('customer');
+INSERT INTO tss_role VALUES
+  (1, 'ADMIN');
+INSERT INTO tss_role VALUES
+  (2, 'DRIVER');
+INSERT INTO tss_role VALUES
+  (3, 'CUSTOMER');
 
 
-INSERT INTO user_group VALUES
-  ('Adam', 2);
-INSERT INTO user_group VALUES
-  ('Sara', 2);
-INSERT INTO user_group VALUES
-  ('Mike', 1);
-INSERT INTO user_group VALUES
-  ('Vade', 3);
-INSERT INTO user_group VALUES
-  ('Mike', 3);
+INSERT INTO tss_user_group VALUES
+  (1, 2);
+INSERT INTO tss_user_group VALUES
+  (3, 2);
+INSERT INTO tss_user_group VALUES
+  (2, 1);
+INSERT INTO tss_user_group VALUES
+  (4, 3);
+INSERT INTO tss_user_group VALUES
+  (2, 3);
 
 
-INSERT INTO user_role VALUES
-  ('Mike', 'admin');
-INSERT INTO user_role VALUES
-  ('Sara', 'admin');
-INSERT INTO user_role VALUES
-  ('Vade', 'customer');
-INSERT INTO user_role VALUES
-  ('Mike', 'customer');
+INSERT INTO tss_user_role VALUES
+  (2, 1);
+INSERT INTO tss_user_role VALUES
+  (3, 1);
+INSERT INTO tss_user_role VALUES
+  (4, 3);
+INSERT INTO tss_user_role VALUES
+  (2, 3);
+INSERT INTO tss_user_role VALUES
+  (1, 1);
+INSERT INTO tss_user_role VALUES
+  (5, 1);
+INSERT INTO tss_user_role VALUES
+  (6, 3);
+INSERT INTO tss_user_role VALUES
+  (7, 3);
+INSERT INTO tss_user_role VALUES
+  (8, 2);
 
 
-INSERT INTO group_role VALUES
-  ('admin', '2');
-INSERT INTO group_role VALUES
-  ('driver', '1');
-INSERT INTO group_role VALUES
-  ('customer', '3');
+INSERT INTO tss_group_role VALUES
+  (1, 2);
+INSERT INTO tss_group_role VALUES
+  (2, 1);
+INSERT INTO tss_group_role VALUES
+  (3, 3);

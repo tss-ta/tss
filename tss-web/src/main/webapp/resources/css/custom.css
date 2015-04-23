@@ -4,10 +4,8 @@
 */
 
 body {
-    padding-top: 50px;
 }
 .starter-template {
-    padding: 40px 15px;
     /*    text-align: center;*/
 }
 
@@ -24,5 +22,9 @@ body {
     margin-top: 20px;
 /*    padding-right: 15px;*/
 /*    padding-left: 15px;*/
+}
+.tablehead{
+    font-style: italic;
+    background-color: paleturquoise;
 }
 

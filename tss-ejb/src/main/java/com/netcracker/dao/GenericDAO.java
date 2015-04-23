@@ -3,50 +3,98 @@ package com.netcracker.dao;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
+/**
+ *
+ * @author Stanislav Zabielin
+ *
+ */
 public abstract class GenericDAO<T> {
 
-	protected Class<T> entityClass;
+    protected Class<T> entityClass;
 
-	protected EntityManager em;
+    protected EntityManager em;
 
-	public GenericDAO() {
-		em = createEntityManager();
-		entityClass = (Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
-	}
+    public GenericDAO() {
+        em = createEntityManager();
+        entityClass = (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 
-	public T get(String key) {
-		return em.find(entityClass, key);
-	}
+    public T get(int id) {
+        return em.find(entityClass, id);
+    }
 
-	public List<T> getAll() {
-		Query q = em.createQuery("select u from entityClass u");
-		List<T> userList = q.getResultList();
-		return userList;
-	}
+    @Deprecated
+    public List<T> getAll() {
+        Query q = em.createQuery("select u from entityClass u");
+        List<T> list = q.getResultList();
+        return list;
+    }
 
-	public void delete(T t) {
-		t = em.merge(t);
-		em.remove(t);
-	}
+    public List<T> getPage(int pageNumber, int pageSize) {
+        if (pageNumber <= 0) {
+            throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
+        }
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Argument 'pageSize' <= 0");
+        }
 
-	public void persist(T t) {
-		em.getTransaction().begin();
-		em.persist(t);
-		em.getTransaction().commit();
-	}
+        Query query = em.createQuery("From " + entityClass.getSimpleName());
+        query.setFirstResult((pageNumber - 1) * pageSize);
+        query.setMaxResults(pageSize);
+        return (List<T>) query.getResultList();
+    }
 
-	public void close() {
-		em.close();
-	}
+    public void delete(T entity) {
+        validateEntityOnNull(entity);
+        em.getTransaction().begin();
+        entity = em.merge(entity);
+        em.remove(entity);
+        em.getTransaction().commit();
+    }
 
-	public EntityManager createEntityManager() {
-		return Persistence.createEntityManagerFactory("entityManager")
-				.createEntityManager();
-	}
+    public void persist(T entity) {
+        validateEntityOnNull(entity);
+        em.getTransaction().begin();
+        em.persist(entity);
+        em.getTransaction().commit();
+    }
+
+    public void update(T entity) {
+        validateEntityOnNull(entity);
+        em.getTransaction().begin();
+        em.merge(entity);
+        em.getTransaction().commit();
+    }
+
+    public void close() {
+        em.close();
+    }
+
+    public EntityManager createEntityManager() {
+        Context initCtx;
+        try {
+            initCtx = new InitialContext();
+            EntityManagerFactory emf = (EntityManagerFactory) initCtx
+                    .lookup("java:jboss/EntityManagerFactory");
+            em = emf.createEntityManager();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return em;
+    }
+
+    private void validateEntityOnNull(T entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("Argument 'entity' is null");
+        }
+    }
 
 }

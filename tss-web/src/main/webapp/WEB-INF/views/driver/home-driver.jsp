@@ -12,11 +12,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
     <title>Taxi Service System</title>
+    
+     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"
+	     media="all" />
+    	<link href='http://fonts.googleapis.com/css?family=Raleway'
+	    rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/responsiveslides.css">
+        <script src="/resources/js/responsiveslides.min.js"></script>
 
     <!-- Bootstrap -->
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/css/custom.css" rel="stylesheet">
-    <link href="/resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/css/custom.css" rel="stylesheet">
+    <link href="resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -45,8 +52,8 @@
 <%@ include file="../partials/footer.jspf" %>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="/resources/js/jquery-1.11.2.min.js"></script>
+<script src="resources/js/jquery-1.11.2.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/resources/js/bootstrap.min.js"></script>
+<script src="resources/js/bootstrap.min.js"></script>
 </body>
 </html>
