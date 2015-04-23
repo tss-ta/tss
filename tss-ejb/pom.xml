@@ -7,7 +7,11 @@
         <groupId>com.netcracker</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
     <groupId>com.netcracker</groupId>
     <artifactId>tss-ejb</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -21,7 +25,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <!-- This version is for JDK 1.7, 1.8 - see https://jdbc.postgresql.org/download.html -->
+            <!--             This version is for JDK 1.7, 1.8 - see https://jdbc.postgresql.org/download.html -->
             <version>9.2-1004-jdbc41</version>
         </dependency>
         <dependency>
@@ -29,6 +33,17 @@
             <artifactId>h2</artifactId>
             <version>1.4.187</version>
         </dependency>
+        <dependency>
+            <groupId>javax</groupId> 
+            <artifactId>javaee-api</artifactId> 
+            <version>7.0</version> 
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.3.1.Final</version>
+        </dependency>
+
 
         
         <!-- Test dependencies -->
@@ -69,7 +84,7 @@
                 <artifactId>maven-ejb-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
-                    <ejbVersion>2.1</ejbVersion>
+                    <ejbVersion>2.0</ejbVersion>
                 </configuration>
             </plugin>
         </plugins>
