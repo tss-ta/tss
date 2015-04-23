@@ -1,17 +1,29 @@
 package com.netcracker.dao;
 
-public class UserDAO extends GenericDAO<User> {
-	
-	public UserDAO() {
-		super();
-	}
-	
-	public void update(User user) {
-		User tmp = get(user.getUsername());
-		em.getTransaction().begin();
-		tmp.setEmail(user.getEmail());
-		tmp.setPassword(user.getPassword());
-		em.getTransaction().commit();
-	}
+import com.netcracker.entity.User;
+import javax.persistence.NoResultException;
 
+import javax.persistence.Query;
+
+/**
+ *
+ * @author Stanislav Zabielin
+ * 
+*/
+public class UserDAO extends GenericDAO<User> {
+
+    public UserDAO() {
+        super();
+    }
+
+    public User getByEmail(String email) {
+        Query query = em.createQuery("Select u FROM User u WHERE u.email = :email");
+        query.setParameter("email", email);
+        User user = null;
+        try {
+            user = (User) query.getSingleResult();
+        } catch (NoResultException e) {
+        }
+        return user;
+    }
 }

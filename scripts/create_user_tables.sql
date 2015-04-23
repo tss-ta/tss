@@ -1,72 +1,79 @@
-DROP TABLE user_group;
-DROP TABLE user_role;
-DROP TABLE group_role;
-DROP TABLE tss_user;
-DROP TABLE tss_group;
-DROP TABLE role;
+DROP TABLE IF EXISTS tss_user_group;
+DROP TABLE IF EXISTS tss_user_role;
+DROP TABLE IF EXISTS tss_group_role;
+DROP TABLE IF EXISTS user_group;
+DROP TABLE IF EXISTS user_role;
+DROP TABLE IF EXISTS group_role;
+DROP TABLE IF EXISTS tss_user;
+DROP TABLE IF EXISTS tss_group;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS tss_role;
+
 
 
 CREATE TABLE tss_user
 (
-  username character varying(40) NOT NULL,
+  id serial NOT NULL ,
+  username character varying(40),
   email character varying(40),
-  password character varying(40),
-  CONSTRAINT username PRIMARY KEY (username)
+  pass_hash character varying(60),
+  CONSTRAINT tss_usr_pk PRIMARY KEY (id)
 );
 
 
 CREATE TABLE tss_group
 (
-  group_id integer NOT NULL,
+  id integer NOT NULL,
   name character(100),
-  CONSTRAINT group_id PRIMARY KEY (group_id)
+  CONSTRAINT tss_grp_pk PRIMARY KEY (id)
 );
 
 
-CREATE TABLE role
+CREATE TABLE tss_role
 (
+  id integer NOT NULL,
   rolename character varying(40) NOT NULL,
-  CONSTRAINT rolename PRIMARY KEY (rolename)
+  CONSTRAINT tss_rl_pk PRIMARY KEY (id)
 );
 
 
-CREATE TABLE user_group
+CREATE TABLE tss_user_group
 (
-  username character(40) NOT NULL,
+  user_id integer NOT NULL,
   group_id integer NOT NULL,
-  CONSTRAINT username_groupid PRIMARY KEY (username, group_id),
-  CONSTRAINT group_id FOREIGN KEY (group_id)
-      REFERENCES tss_group (group_id) MATCH SIMPLE
+  CONSTRAINT tss_usr_grp_pk PRIMARY KEY (user_id, group_id),
+  CONSTRAINT tss_usr_grp_grp_id_fk FOREIGN KEY (group_id)
+      REFERENCES tss_group (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT username FOREIGN KEY (username)
-      REFERENCES tss_user (username) MATCH SIMPLE
+  CONSTRAINT tss_usr_grp_usr_id_fk FOREIGN KEY (user_id)
+      REFERENCES tss_user (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 
-CREATE TABLE user_role
+CREATE TABLE tss_user_role
 (
-  username character varying(40) NOT NULL,
-  rolename character varying(40) NOT NULL,
-  CONSTRAINT username_rolename PRIMARY KEY (username, rolename),
-  CONSTRAINT rolename FOREIGN KEY (rolename)
-      REFERENCES role (rolename) MATCH SIMPLE
+  user_id integer NOT NULL,
+  role_id integer NOT NULL,
+  CONSTRAINT tss_usr_rl_pk PRIMARY KEY (user_id, role_id),
+  CONSTRAINT tss_usr_rl_rl_id_fk FOREIGN KEY (role_id)
+      REFERENCES tss_role (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT username FOREIGN KEY (username)
-      REFERENCES tss_user (username) MATCH SIMPLE
+  CONSTRAINT tss_usr_rl_usr_id_fk FOREIGN KEY (user_id)
+      REFERENCES tss_user (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 
-CREATE TABLE group_role
+CREATE TABLE tss_group_role
 (
-  rolename character varying(40) NOT NULL,
+  role_id integer NOT NULL,
   group_id integer NOT NULL,
-  CONSTRAINT rolename_groupid PRIMARY KEY (rolename, group_id),
-  CONSTRAINT group_id FOREIGN KEY (group_id)
-      REFERENCES tss_group (group_id) MATCH SIMPLE
+  CONSTRAINT tss_grp_rl_pk PRIMARY KEY (role_id, group_id),
+  CONSTRAINT tss_grp_rl_grp_id_fk FOREIGN KEY (group_id)
+      REFERENCES tss_group (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT rolename FOREIGN KEY (rolename)
-      REFERENCES role (rolename) MATCH SIMPLE
+  CONSTRAINT tss_grp_rl_rl_id_fk FOREIGN KEY (role_id)
+      REFERENCES tss_role (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
