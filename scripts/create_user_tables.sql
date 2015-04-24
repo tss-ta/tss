@@ -6,8 +6,9 @@ DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS group_role;
 DROP TABLE IF EXISTS tss_user;
 DROP TABLE IF EXISTS tss_group;
-DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS tss_role;
+DROP TABLE IF EXISTS car;
+
 
 
 
@@ -34,6 +35,18 @@ CREATE TABLE tss_role
   id integer NOT NULL,
   rolename character varying(40) NOT NULL,
   CONSTRAINT tss_rl_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE car
+(
+  id serial NOT NULL,
+  lic_plate CHARACTER VARYING(10) NOT NULL,
+  category INTEGER NOT NULL,
+  available BOOLEAN,
+  animalable BOOLEAN,
+  wifi BOOLEAN,
+  conditioner BOOLEAN,
+  CONSTRAINT car_pk PRIMARY KEY (id)
 );
 
 

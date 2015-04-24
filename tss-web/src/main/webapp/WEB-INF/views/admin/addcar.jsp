@@ -85,6 +85,7 @@
                     <option value="1">business</option>
                     <option value="2">econom</option>
                     <option value="3">van</option>
+                    <option value="4">cargo</option>
                 </select>
                 <div class="checkbox">
                     <label class="checkbox"><input type="checkbox" name="avaliable" > availible</label>

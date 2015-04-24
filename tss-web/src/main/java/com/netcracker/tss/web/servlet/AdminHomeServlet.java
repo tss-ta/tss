@@ -9,12 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Created by Kyrylo Berehovyi on 20/04/2015.
  */
 @WebServlet(urlPatterns = "/admin")
 public class AdminHomeServlet extends HttpServlet {
+
+    public static final String ATTRIBUTE_CARS = "cars_page";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,10 +30,14 @@ public class AdminHomeServlet extends HttpServlet {
 
         if ("addcar".equals(action)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/addcar.jsp").forward(req, resp);
-        }
+        } else if ("cars".equals(menu)) {
+            CarDao carDao = new CarDao();
+            List<Car> cars = carDao.getPage(1, 10);
+            carDao.close();
 
-        if ("cars".equals(menu)) {
+            req.setAttribute(ATTRIBUTE_CARS, cars);
             req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);
+            return;
         } else if ("reports".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/reports.jsp").forward(req, resp);
         } else if ("customers".equals(menu)) {
@@ -50,15 +57,22 @@ public class AdminHomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
+        List<Car> cars = null;
 
         if ("newcar".equals(action)) {
             CarDao carDao = new CarDao();
             carDao.persist(new Car(req.getParameter("plate"), isOn(req.getParameter("avaliable")), 
                     Integer.parseInt(req.getParameter("category")), isOn(req.getParameter("animalable")),
                     isOn(req.getParameter("wi-fi")), isOn(req.getParameter("conditioner"))));
+            cars = carDao.getPage(1, 10);
             carDao.close();
         }
-                    req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);
+
+        if(cars != null) {
+            req.setAttribute(ATTRIBUTE_CARS, cars);
+        }
+
+        req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);
 //        PrintWriter out = resp.getWriter();
 //        try {
 //            /* TODO output your page here. You may use following sample code. */
