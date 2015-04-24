@@ -39,7 +39,6 @@ public class RegistrationServlet extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirPassword");
 
-
         if (password.equals(confirmPassword)) {
             RegistrationBean rb = new RegistrationBean();
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -47,12 +46,13 @@ public class RegistrationServlet extends HttpServlet {
             User user = new User(userName, email, password);
             if (rb.checkUser(user)) {
                 rb.registrate(user);
-                request.getRequestDispatcher("/WEB-INF/views/customer/home-customer.jsp").forward(request, response);
+         //       request.getRequestDispatcher("/customer").forward(request, response);
+               response.sendRedirect("/customer");
             } else {
-                request.getRequestDispatcher("/signup.jsp").forward(request, response);
+                response.sendRedirect("/signup.jsp");
             }
         } else {
-            request.getRequestDispatcher("/signup.jsp").forward(request, response);
+            response.sendRedirect("/signup.jsp");
         }
 
     }

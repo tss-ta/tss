@@ -31,7 +31,7 @@ public class RegistrationBean implements SessionBean {
     public boolean checkUser(User user) {
 	UserDAO dao = new UserDAO();
         User userFromDB = dao.getByEmail(user.getEmail());
-        dao.close()
+        dao.close();
         if (userFromDB == null) {
             return true;
         }
