@@ -4,6 +4,7 @@
   Time: 21:27
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -79,22 +80,20 @@
                         </thead>
 
                         <tbody>
+
+                        <c:forEach items="${cars_page}" var="car">
                             <tr>
-                                <td>AI7777KM</td>
-                                <td>van</td>
-                                <td>-</td>
-                                <td>+</td>
-                                <td>+</td>
-                                <td>+</td>
-                                <td>driver</td>
+                                <td>${car.getLicPlate()}</td>
+                                <td>${car.getCategory()}</td>
+                                <td>${car.getWifi()}</td>
+                                <td>${car.getConditioner()}</td>
+                                <td>${car.getAnimalable()}</td>
+                                <td>${car.getAvailable()}</td>
+                                <td>no_driver</td>
                                 <td><a href="admin">edit</a></td>
                             </tr>
-                            <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
-                                    <tr>
-                                        <td>${array.frequency}</td>
-                                        <td>${array.voltage}</td>
-                                    </tr>
-        </c:forEach> --%>
+                        </c:forEach>
+
                         </tbody>
                     </table>
                     <%@ include file="pagination.jspf"%>

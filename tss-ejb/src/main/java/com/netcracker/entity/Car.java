@@ -6,14 +6,7 @@
 package com.netcracker.entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,50 +20,64 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Car.findAll", query = "SELECT c FROM Car c"),
     @NamedQuery(name = "Car.findById", query = "SELECT c FROM Car c WHERE c.id = :id"),
-    @NamedQuery(name = "Car.findByAvalible", query = "SELECT c FROM Car c WHERE c.avalible = :avalible"),
+    @NamedQuery(name = "Car.findByAvailable", query = "SELECT c FROM Car c WHERE c.available = :available"),
     @NamedQuery(name = "Car.findByCategory", query = "SELECT c FROM Car c WHERE c.category = :category"),
     @NamedQuery(name = "Car.findByAnimalable", query = "SELECT c FROM Car c WHERE c.animalable = :animalable"),
     @NamedQuery(name = "Car.findByWifi", query = "SELECT c FROM Car c WHERE c.wifi = :wifi"),
     @NamedQuery(name = "Car.findByConditioner", query = "SELECT c FROM Car c WHERE c.conditioner = :conditioner"),
     @NamedQuery(name = "Car.findByLicPlate", query = "SELECT c FROM Car c WHERE c.licPlate = :licPlate")})
+@Table(name = "car")
 public class Car implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @Column(name = "id", updatable = false)
     private Integer id;
-    @Basic(optional = false)
+
+    @Column(name = "available")
+//    @Basic(optional = false)
     @NotNull
-    private boolean avalible;
-    @Basic(optional = false)
+    private boolean available;
+
+    @Column(name = "category")
+//    @Basic(optional = false)
     @NotNull
     private int category;
-    @Basic(optional = false)
+
+    @Column(name = "animalable")
+//    @Basic(optional = false)
     @NotNull
     private boolean animalable;
+
+    @Column(name = "wifi")
     @Basic(optional = false)
     @NotNull
     private boolean wifi;
+
+    @Column(name = "conditioner")
     @Basic(optional = false)
     @NotNull
     private boolean conditioner;
+
     @Size(max = 10)
     @Column(name = "lic_plate")
+    @NotNull
     private String licPlate;
 
     public Car() {
     }
 
 
-    public Car(boolean avalible, int category, boolean animalable, boolean wifi, boolean conditioner) {
-        this.avalible = avalible;
-        this.category = category;
-        this.animalable = animalable;
-        this.wifi = wifi;
-        this.conditioner = conditioner;
-    }
-    public Car(String licPlace, boolean avalible, int category, boolean animalable, boolean wifi, boolean conditioner) {
-        this.avalible = avalible;
+//    public Car(boolean available, int category, boolean animalable, boolean wifi, boolean conditioner) {
+//        this.available = available;
+//        this.category = category;
+//        this.animalable = animalable;
+//        this.wifi = wifi;
+//        this.conditioner = conditioner;
+//    }
+
+    public Car(String licPlace, boolean available, int category, boolean animalable, boolean wifi, boolean conditioner) {
+        this.available = available;
         this.category = category;
         this.animalable = animalable;
         this.wifi = wifi;
@@ -86,12 +93,12 @@ public class Car implements Serializable {
 //        this.id = id;
 //    }
 
-    public boolean getAvalible() {
-        return avalible;
+    public boolean getAvailable() {
+        return available;
     }
 
-    public void setAvalible(boolean avalible) {
-        this.avalible = avalible;
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public int getCategory() {
