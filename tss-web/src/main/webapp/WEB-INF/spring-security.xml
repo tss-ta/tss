@@ -35,7 +35,7 @@
 
         <form-login
                 login-page="/signin.jsp"
-                authentication-failure-url="/signin.jsp?error"
+                authentication-failure-url="/signin.jsp?error=true"
                 login-processing-url="/auth"
                 username-parameter="email"
                 password-parameter="password"
