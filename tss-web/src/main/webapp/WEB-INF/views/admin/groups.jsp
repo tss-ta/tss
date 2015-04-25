@@ -61,20 +61,19 @@
                         <thead class="tablehead">
                             <td>group</td>
                             <td>roles</td>
-                            <td>additional info</td>
+<!--                            <td>additional info</td>-->
                         </thead>
 
                         <tbody>
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td><a href="admin">edit</a></td>
                             </tr>
-                            <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
+                            <%--                        <c:forEach var = "group" items = "${requestScope.groups}">
                                                         <tr>
-                                                            <td>${array.frequency}</td>
-                                                            <td>${array.voltage}</td>
+                                                            <td>${group.name}</td>
+                                                            <td><c:forEach var = "role" items = "${group.roles}">${role};</c:forEach></td>
                                                         </tr>
                             </c:forEach> --%>
                         </tbody>
