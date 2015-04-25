@@ -6,7 +6,9 @@
 package com.netcracker.ejb;
 
 
+import com.netcracker.DTO.GroupDTO;
 import com.netcracker.entity.User;
+import java.util.List;
 import javax.ejb.EJBLocalObject;
 
 
@@ -16,6 +18,7 @@ import javax.ejb.EJBLocalObject;
  */
 
 public interface GroupBeanLocal extends EJBLocalObject {
-    void registrate(User user);
-    boolean checkUser(User user);
+    void addGroup(GroupDTO groupDTO);
+    void editGroup(GroupDTO groupDTO);
+    List<GroupDTO> getGroup(int pageNumber, int paginationStep);
 }

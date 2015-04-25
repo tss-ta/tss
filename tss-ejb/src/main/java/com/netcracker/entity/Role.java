@@ -17,8 +17,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "tss_role")
 @NamedQueries({
-    @NamedQuery(name = "findAll", query = "SELECT r FROM tss_role r"),
-    @NamedQuery(name = "findByRolename", query = "SELECT r FROM Simpleforum r WHERE r.rolename = :rolename")})
+    @NamedQuery(name = "Role.findAllOrderedByName", query = "SELECT s FROM Role s"),
+    @NamedQuery(name = "Role.findByRolename", query = "SELECT s FROM Role s WHERE s.rolename = :rolename")})
 public class Role implements Serializable {
 
     @Id
