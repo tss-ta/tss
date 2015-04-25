@@ -26,7 +26,7 @@
     <!-- enable use-expressions -->
     <http auto-config="true" use-expressions="true">
 
-        <intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
+        <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
         <intercept-url pattern="/driver**" access="hasRole('DRIVER')" />
         <intercept-url pattern="/customer**" access="hasRole('CUSTOMER')" />
 
