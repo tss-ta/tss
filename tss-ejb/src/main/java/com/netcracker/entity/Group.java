@@ -1,56 +1,63 @@
 package com.netcracker.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
-*
-* @author Stanislav Zabielin
-*
+ *
+ * @author Stanislav Zabielin
+ * 
 */
-
 @Entity
 @Table(name = "tss_group")
-public class Group {
+@NamedQueries({
+    @NamedQuery(name = "findAll", query = "SELECT g FROM tss_group g ORDER BY g.name"),
+    @NamedQuery(name = "findByName", query = "SELECT g FROM tss_group g WHERE g.name = :name")})
+public class Group implements Serializable {
 
-	@Id
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name="name",  columnDefinition="bpchar")
-	private String name;
+    @Column(name = "name", columnDefinition = "bpchar")
+    private String name;
 
     @OneToMany
     @JoinTable(
-            name="tss_group_role",
-            joinColumns = @JoinColumn(name="group_id", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName="id"))
+            name = "tss_group_role",
+            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<Role>();
 
-    public Group() {}
+    public Group() {
+    }
 
-    public Group(int id, String name) {
-        super();
-        this.id = id;
+    public Group(String name) {
         this.name = name;
     }
-	
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer groupId) {
-		this.id = id;
-	}
+    public Group(String name, List<Role> roles) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Integer groupId) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public List<Role> getRoles() {
         return roles;
@@ -66,13 +73,21 @@ public class Group {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Group group = (Group) o;
 
-        if (id != null ? !id.equals(group.id) : group.id != null) return false;
-        if (name != null ? !name.equals(group.name) : group.name != null) return false;
+        if (id != null ? !id.equals(group.id) : group.id != null) {
+            return false;
+        }
+        if (name != null ? !name.equals(group.name) : group.name != null) {
+            return false;
+        }
 
         return true;
     }
