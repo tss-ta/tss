@@ -15,7 +15,7 @@ public class GroupDAO extends GenericDAO<Group> {
     }
 
     public List<Group> findPage(int pageNumber, int paginationStep) {
-        TypedQuery<Group> query = em.createNamedQuery("findAll", Group.class);
+        TypedQuery<Group> query = em.createNamedQuery("Group.findAllOrderedByName", Group.class);
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
         List<Group> groupPage = query.getResultList();
@@ -23,7 +23,7 @@ public class GroupDAO extends GenericDAO<Group> {
     }
         
     public Group findByName(String name) {
-        TypedQuery<Group> query = em.createNamedQuery("findByName", Group.class);
+        TypedQuery<Group> query = em.createNamedQuery("Group.findByName", Group.class);
         return query.getSingleResult();
     }
 }

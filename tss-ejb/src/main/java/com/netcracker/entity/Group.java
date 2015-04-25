@@ -14,8 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "tss_group")
 @NamedQueries({
-    @NamedQuery(name = "findAll", query = "SELECT g FROM tss_group g ORDER BY g.name"),
-    @NamedQuery(name = "findByName", query = "SELECT g FROM tss_group g WHERE g.name = :name")})
+    @NamedQuery(name = "Group.findAllOrderedByName", query = "SELECT s FROM Group s ORDER BY s.name"),
+    @NamedQuery(name = "Group.findByName", query = "SELECT s FROM Group s WHERE s.name = :name")})
 public class Group implements Serializable {
 
     @Id
