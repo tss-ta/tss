@@ -13,6 +13,7 @@ import javax.persistence.*;
 */
 @Entity
 @Table(name = "tss_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
 
     @Id
