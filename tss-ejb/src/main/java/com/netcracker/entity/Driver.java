@@ -35,10 +35,18 @@ public class Driver extends User {
 
     }
 
-    public Driver(String username, String email, String passwordHash, Category category, boolean available) {
+    public Driver(String username,
+                  String email,
+                  String passwordHash,
+                  Category category,
+                  boolean available,
+                  boolean isMale,
+                  boolean smokes) {
         super(username, email, passwordHash);
         this.category = category;
         this.available = available;
+        this.isMale = isMale;
+        this.smokes = smokes;
     }
 
     public Category getCategory() {
