@@ -78,6 +78,7 @@
         <input style="display:none" type="password" name="fakepasswordremembered"/>
 
         <h2 class="form-signin-heading">Please Sign In</h2>
+        <h5 class="form-signin-error-msg">Incorrect Email and/or Password!</h5>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
@@ -96,5 +97,27 @@
 
  <%@ include file="WEB-INF/views/partials/footer.jspf" %>
 
+    <script src="/resources/js/jquery-1.11.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            if(getUrlParameter("error") == "true") {
+                printErrorMessage();
+            }
+        });
+        function printErrorMessage() {
+            $(".form-signin-error-msg").css("visibility", "visible");
+            $("input").addClass("error");
+        };
+        function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
+        };
+    </script>
 </body>
 </html>

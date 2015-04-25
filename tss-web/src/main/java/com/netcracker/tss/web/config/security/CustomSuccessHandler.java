@@ -16,17 +16,25 @@ import java.util.Set;
 
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
+    private static final String ADMIN_ROLE = "ADMIN";
+    private static final String DRIVER_ROLE = "DRIVER";
+    private static final String CUSTOMER_ROLE = "CUSTOMER";
+
+    private static final String ADMIN_PAGE = "/admin?menu=cars";
+    private static final String DRIVER_PAGE = "/driver";
+    private static final String CUSTOMER_PAGE = "/customer";
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        if (roles.contains("ADMIN")){
-            response.sendRedirect("/admin?menu=cars");
+        if (roles.contains(ADMIN_ROLE)){
+            response.sendRedirect(ADMIN_PAGE);
             return;
-        } else if (roles.contains("DRIVER")) {
-            response.sendRedirect("/driver");
+        } else if (roles.contains(DRIVER_ROLE)) {
+            response.sendRedirect(DRIVER_PAGE);
             return;
-        } else if (roles.contains("CUSTOMER")) {
-            response.sendRedirect("/customer");
+        } else if (roles.contains(CUSTOMER_ROLE)) {
+            response.sendRedirect(CUSTOMER_PAGE);
             return;
         }
     }
