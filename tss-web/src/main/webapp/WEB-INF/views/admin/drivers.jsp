@@ -55,7 +55,7 @@
                         </ul>
                     </nav>
                     <p>
-                        <a href="admin?action=adddriver&menu=${param.menu}">Add driver</a> 
+                        <a href="/admin?action=adddriver">Add driver</a>
 
                     </p>
                     <table class="table table-striped table-bordered">
