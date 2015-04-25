@@ -1,0 +1,83 @@
+package com.netcracker.tss.web.servlet.admin;
+
+import com.netcracker.dao.DriverDAO;
+import com.netcracker.ejb.RegistrationBean;
+import com.netcracker.entity.Driver;
+import com.netcracker.entity.helpEntity.Category;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * Created by Kyrylo Berehovyi on 25/04/2015.
+ */
+
+@WebServlet(urlPatterns = "/admin/driver")
+public class AdminDriverServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if("adddriver".equals(action)) {
+            req.getRequestDispatcher("/WEB-INF/views/admin/add-driver.jsp").forward(req, resp);
+            return;
+        } else {
+            redirectToDrivers(1, 10, req, resp);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if ("newdriver".equals(action)) {
+            String passStr = req.getParameter("password");
+            String confirmPassStr = req.getParameter("confirmPassword");
+
+            if(passStr.equals(confirmPassStr)) {
+
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                String password  = encoder.encode(passStr);
+                RegistrationBean rb = new RegistrationBean();
+
+                Driver newDriver = new Driver(req.getParameter("drivername"),
+                        req.getParameter("email"),
+                        password,
+                        Category.valueOf(req.getParameter("category")),
+                        isOn(req.getParameter("available")),
+                        isOn(req.getParameter("isMale")),
+                        isOn(req.getParameter("smokes")));
+
+                if(rb.checkUser(newDriver)) {
+                    rb.registrate(newDriver);
+                } else {
+                    resp.sendRedirect("/add-driver.jsp");
+                    return;
+                }
+
+                redirectToDrivers(1, 10, req, resp);
+            } else {
+                resp.sendRedirect("/add-driver.jsp");
+            }
+
+        }
+    }
+
+    private void redirectToDrivers(int pageNumber, int pageSize, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        DriverDAO driverDAO = new DriverDAO();
+        List<Driver> drivers = driverDAO.getPage(pageNumber, pageSize);
+        driverDAO.close();
+
+        req.setAttribute("drivers_page", drivers);
+        req.getRequestDispatcher("/WEB-INF/views/admin/drivers.jsp").forward(req, resp);
+    }
+
+    private boolean isOn (String checkBoxText){
+        return "on".equals(checkBoxText);
+    }
+}
