@@ -36,6 +36,7 @@ public class AdminHomeServlet extends HttpServlet {
 
         if ("addcar".equals(action)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/addcar.jsp").forward(req, resp);
+            return;
         } else if("adddriver".equals(action)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/adddriver.jsp").forward(req, resp);
             return;
