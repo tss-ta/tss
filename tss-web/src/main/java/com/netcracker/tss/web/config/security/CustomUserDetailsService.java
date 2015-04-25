@@ -24,11 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserDAO userDAO = new UserDAO();
         com.netcracker.entity.User user = userDAO.getByEmail(email);
-
         if (user == null)
             throw new UsernameNotFoundException("user with email " + email + " not found");
-
-        return buildUserFromEntity(user);
+        UserDetails userDetails = buildUserFromEntity(user);
+        userDAO.close();
+        return userDetails;
     }
 
     private User buildUserFromEntity(com.netcracker.entity.User entity) {
