@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS tss_group_role;
 DROP TABLE IF EXISTS user_group;
 DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS group_role;
+DROP TABLE IF EXISTS driver;
 DROP TABLE IF EXISTS tss_user;
 DROP TABLE IF EXISTS tss_group;
 DROP TABLE IF EXISTS tss_role;
@@ -14,7 +15,7 @@ DROP TABLE IF EXISTS car;
 
 CREATE TABLE tss_user
 (
-  id serial NOT NULL ,
+  id serial NOT NULL,
   username character varying(40),
   email character varying(40),
   pass_hash character varying(60),
@@ -47,6 +48,24 @@ CREATE TABLE car
   wifi BOOLEAN,
   conditioner BOOLEAN,
   CONSTRAINT car_pk PRIMARY KEY (id)
+);
+
+
+CREATE TABLE driver
+(
+  driver_id integer NOT NULL,
+  category integer,
+  available boolean,
+  is_male boolean,
+  smokes boolean,
+  car_id integer,
+  CONSTRAINT pk_driv_id PRIMARY KEY (driver_id),
+  CONSTRAINT fk_user FOREIGN KEY (driver_id)
+  REFERENCES tss_user (id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_car FOREIGN KEY (car_id)
+  REFERENCES car (id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 

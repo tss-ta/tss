@@ -1,7 +1,10 @@
 package com.netcracker.tss.web.servlet;
 
 import com.netcracker.dao.CarDao;
+import com.netcracker.dao.DriverDAO;
 import com.netcracker.entity.Car;
+import com.netcracker.entity.Driver;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,19 +33,25 @@ public class AdminHomeServlet extends HttpServlet {
 
         if ("addcar".equals(action)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/addcar.jsp").forward(req, resp);
-        } else if ("cars".equals(menu)) {
+        }
+
+        if ("cars".equals(menu)) {
             CarDao carDao = new CarDao();
             List<Car> cars = carDao.getPage(1, 10);
             carDao.close();
 
             req.setAttribute(ATTRIBUTE_CARS, cars);
             req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);
-            return;
         } else if ("reports".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/reports.jsp").forward(req, resp);
         } else if ("customers".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/customers.jsp").forward(req, resp);
         } else if ("drivers".equals(menu)) {
+            DriverDAO driverDAO = new DriverDAO();
+            List<Driver> drivers = driverDAO.getPage(1, 10);
+            driverDAO.close();
+
+            req.setAttribute("drivers_page", drivers);
             req.getRequestDispatcher("/WEB-INF/views/admin/drivers.jsp").forward(req, resp);
         } else if ("tariffs".equals(menu)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/tariffs.jsp").forward(req, resp);

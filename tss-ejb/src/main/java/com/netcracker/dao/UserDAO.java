@@ -4,6 +4,7 @@ import com.netcracker.entity.User;
 import javax.persistence.NoResultException;
 
 import javax.persistence.Query;
+import java.util.List;
 
 /**
  *
