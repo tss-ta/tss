@@ -78,7 +78,7 @@ public class AdminGroupServlet extends HttpServlet {
     private void redirectToGroups(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             GroupBeanLocal groupBeanLocal = getGroupBean(req);
-            req.setAttribute("groups", groupBeanLocal.getGroup(1, 5));
+            req.setAttribute("groups", groupBeanLocal.getGroup(1, 10));
             req.getRequestDispatcher("/WEB-INF/views/admin/groups.jsp").forward(req, resp);
         } catch (RuntimeException e) {
             req.getRequestDispatcher("/500.jsp").forward(req, resp);

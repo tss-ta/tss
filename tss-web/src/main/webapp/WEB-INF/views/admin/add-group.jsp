@@ -62,7 +62,7 @@
 
 
 
-                <button class="btn btn-lg btn-primary" type="submit">add car</button>
+                <button class="btn btn-lg btn-primary" type="submit">add group</button>
             </form>
 
 
