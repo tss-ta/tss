@@ -27,21 +27,14 @@ public class AdminGroupServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        
 
         Context context;
         try {
             context = new InitialContext();
             GroupBeanLocalHome groupBeanLocalHome = (GroupBeanLocalHome) context.lookup("java:app/tss-ejb/GroupBean!com.netcracker.ejb.GroupBeanLocalHome");
-            GroupBeanLocal groupBeanLocal = groupBeanLocalHome.create();
+            GroupBeanLocal groupBeanLocal = groupBeanLocalHome.create();    
             req.setAttribute("groups", groupBeanLocal.getGroup(1, 5));
-//            List <GroupDTO> groups = new ArrayList<GroupDTO>();
-//            List <Roles> roles = new ArrayList<Roles>();
-//            roles.add(Roles.ADMIN);
-//            roles.add(Roles.CUSTOMER);
-//            groups.add(new GroupDTO("21", roles ));
-//                        groups.add(new GroupDTO("218", roles ));
-//            req.setAttribute("groups", groups);
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE, 
                     "Can't find groupBeanLocalHome with name java:app/tss-ejb/GroupBean!com.netcracker.ejb.GroupBeanLocal ", ex);
@@ -51,4 +44,11 @@ public class AdminGroupServlet extends HttpServlet {
 
         req.getRequestDispatcher("/WEB-INF/views/admin/groups.jsp").forward(req, resp);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+    
+    
 }
