@@ -2,6 +2,7 @@ package com.netcracker.dao;
 
 import com.netcracker.entity.Group;
 import java.util.List;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 /**
@@ -21,9 +22,16 @@ public class GroupDAO extends GenericDAO<Group> {
         List<Group> groupPage = query.getResultList();
         return groupPage;
     }
-        
+
+    /**
+     *
+     * @param name - name
+     * @return Group
+     * @throws NoResultException - if group with this name doesn't exist
+     */
     public Group findByName(String name) {
-        TypedQuery<Group> query = em.createNamedQuery("Group.findByName", Group.class);
-        return query.getSingleResult();
+            TypedQuery<Group> query = em.createNamedQuery("Group.findByName", Group.class);
+            query.setParameter("name", name);
+            return query.getSingleResult();
     }
 }

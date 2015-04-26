@@ -17,5 +17,5 @@ import javax.ejb.EJBLocalObject;
 
 public interface RegistrationBeanLocal extends EJBLocalObject {
     void registrate(User user);
-    boolean checkUser(User user);
+    boolean isUserExist(User user);
 }

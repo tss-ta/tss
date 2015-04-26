@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.netcracker.ejb;
 
 import com.netcracker.dao.RoleDAO;
@@ -13,6 +9,7 @@ import java.rmi.RemoteException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -21,21 +18,44 @@ import javax.ejb.SessionContext;
 public class RegistrationBean implements SessionBean {
 
     public void registrate(User user) {
-        Role role = new RoleDAO().get(3);
-        user.addRole(role);
-        UserDAO userDao =  new UserDAO();
-        userDao.persist(user);
-        userDao.close();
+        UserDAO userDao = null;
+        try {
+            Role role = new RoleDAO().get(3);//maybe by name?
+            user.addRole(role);
+            userDao = new UserDAO();
+            userDao.persist(user);
+        } finally {
+            if (userDao != null) {
+                userDao.close();
+            }
+        }
     }
 
-    public boolean checkUser(User user) {
-	UserDAO dao = new UserDAO();
-        User userFromDB = dao.getByEmail(user.getEmail());
-        dao.close();
-        if (userFromDB == null) {
-            return true;
+//    public boolean checkUser(User user) {
+//	UserDAO dao = new UserDAO();
+//        User userFromDB = dao.getByEmail(user.getEmail());
+//        dao.close();
+//        if (userFromDB == null) {
+//            return true;
+//        }
+//        return false;
+//    }
+    public boolean isUserExist(User user) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            User userFromDB = dao.getByEmail(user.getEmail());
+            if (userFromDB != null) {
+                return true;
+            }
+            return false;
+        } catch (NoResultException e) {
+            return false;
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
         }
-        return false;
     }
 
     @Override
