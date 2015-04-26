@@ -1,0 +1,50 @@
+<%--
+  User: Kyrylo Berehovyi
+  Date: 26/04/2015
+  Time: 16:24
+--%>
+<ul class="sidebar-nav">
+    <li class="sidebar-brand"><a href="/">Taxi Service</a></li>
+    <li>
+        <a href="/admin">
+            <span class="icon-container"><i class="fa fa-tachometer"></i></span>
+            <span class="icon-label">Dashboard</span>
+        </a>
+    </li>
+    <li>
+        <a href="/admin/customer">
+            <span class="icon-container"><i class="fa fa-user"></i></span>
+            <span class="icon-label">Customers</span>
+        </a>
+    </li>
+    <li>
+        <a href="/admin/driver">
+            <span class="icon-container"><i class="fa fa-child"></i></span>
+            <span class="icon-label">Drivers</span>
+        </a>
+    </li>
+    <li>
+        <a href="/admin/group">
+            <span class="icon-container"><i class="fa fa-users"></i></span>
+            <span class="icon-label">Groups</span>
+        </a>
+    </li>
+    <li>
+        <a href="/admin/car">
+            <span class="icon-container"><i class="fa fa-taxi"></i></span>
+            <span class="icon-label">Cars</span>
+        </a>
+    </li>
+    <li>
+        <a href="/admin/tariff">
+            <span class="icon-container"><i class="fa fa-usd"></i></span>
+            <span class="icon-label">Tariffs</span>
+        </a>
+    </li>
+    <li>
+        <a href="/admin/report">
+            <span class="icon-container"><i class="fa fa-line-chart"></i></span>
+            <span class="icon-label">Reports</span>
+        </a>
+    </li>
+</ul>
