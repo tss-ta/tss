@@ -1,0 +1,69 @@
+.navbar-custom {
+    background-color:#252D3A;
+    color:#fff;
+    border-radius:0;
+    border: none;
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-nav > li > a {
+    color:#8b939e;
+}
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-brand:focus,
+.navbar-custom .navbar-nav > li > a:hover {
+    color:#fff;
+}
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+    color: #fff;
+    background-color:transparent;
+}
+
+body,html,.row-offcanvas {
+    height:100%;
+}
+
+#sidebar {
+    width: inherit;
+    min-width: 180px;
+    max-width: 180px;
+    background-color:#252D3A;
+    float: left;
+    height:100%;
+    position:relative;
+    overflow-y:auto;
+    overflow-x:hidden;
+    margin-top: -20px;
+    padding-top: 10px;
+}
+#main {
+    height:100%;
+    overflow:auto;
+}
+
+/*
+ * off Canvas sidebar
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 768px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all 0.25s ease-out;
+        -moz-transition: all 0.25s ease-out;
+        transition: all 0.25s ease-out;
+        width:calc(100% + 180px);
+    }
+
+    .row-offcanvas-left
+    {
+        left: -180px;
+    }
+
+    .row-offcanvas-left.active {
+        left: 0;
+    }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+    }
+}

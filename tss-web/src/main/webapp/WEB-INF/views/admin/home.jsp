@@ -30,88 +30,143 @@
 <body>
 
 <%@ include file="partials/admin-header.jspf"%>
+<%--<div id="sidebar-wrapper">--%>
+    <%--<ul class="sidebar-nav">--%>
+        <%--<li><a href="#">Dashboard</a></li>--%>
+        <%--<li><a href="#">Cars</a></li>--%>
+        <%--<li><a href="#">Drivers</a></li>--%>
+        <%--<li><a href="#">Customers</a></li>--%>
+        <%--<li><a href="#">Groups</a></li>--%>
+        <%--<li><a href="#">Tariffs</a></li>--%>
+        <%--<li><a href="#">Reports</a></li>--%>
+    <%--</ul>--%>
+<%--</div>--%>
 
-<div class="container">
+<%--<div class="container">--%>
 
-    <div class="row">
-        <div class="col-md-2">
-            <ul class="nav nav-pills nav-stacked">
-                <li role="presentation" class="active"><a href="/admin"><i class="fa fa-tachometer"></i> Dashboard</a></li>
-                <li role="presentation"><a href="/admin/car"><i class="fa fa-taxi"></i> Cars</a></li>
-                <li role="presentation"><a href="/admin/driver"><i class="fa fa-child"></i> Drivers</a></li>
-                <li role="presentation"><a href="/admin/customer"><i class="fa fa-user"></i> Customers</a></li>
-                <li role="presentation"><a href="/admin/group"><i class="fa fa-users"></i> Groups</a></li>
-                <li role="presentation"><a href="/admin/tariff"><i class="fa fa-usd"></i> Tariffs</a></li>
-                <li role="presentation"><a href="/admin/report"><i class="fa fa-bar-chart"></i> Reports</a></li>
+    <%--<div class="row">--%>
+        <%--<div class="col-md-2">--%>
+            <%--<ul class="nav nav-pills nav-stacked">--%>
+                <%--<li role="presentation" class="active"><a href="/admin"><i class="fa fa-tachometer"></i> Dashboard</a></li>--%>
+                <%--<li role="presentation"><a href="/admin/car"><i class="fa fa-taxi"></i> Cars</a></li>--%>
+                <%--<li role="presentation"><a href="/admin/driver"><i class="fa fa-child"></i> Drivers</a></li>--%>
+                <%--<li role="presentation"><a href="/admin/customer"><i class="fa fa-user"></i> Customers</a></li>--%>
+                <%--<li role="presentation"><a href="/admin/group"><i class="fa fa-users"></i> Groups</a></li>--%>
+                <%--<li role="presentation"><a href="/admin/tariff"><i class="fa fa-usd"></i> Tariffs</a></li>--%>
+                <%--<li role="presentation"><a href="/admin/report"><i class="fa fa-bar-chart"></i> Reports</a></li>--%>
+            <%--</ul>--%>
+        <%--</div>--%>
+
+        <%--<div class="col-md-10">--%>
+            <%--<div class="col-md-4">--%>
+                <%--<div class="panel panel-default">--%>
+                    <%--<div class="panel-heading">--%>
+                        <%--<h3 class="panel-title">Panel title</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="panel-body">--%>
+                        <%--Panel content--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="col-md-4">--%>
+                <%--<div class="panel panel-default">--%>
+                    <%--<div class="panel-heading">--%>
+                        <%--<h3 class="panel-title">Panel title</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="panel-body">--%>
+                        <%--Panel content--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="col-md-4">--%>
+                <%--<div class="panel panel-default">--%>
+                    <%--<div class="panel-heading">--%>
+                        <%--<h3 class="panel-title">Panel title</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="panel-body">--%>
+                        <%--Panel content--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="col-md-4">--%>
+                <%--<div class="panel panel-default">--%>
+                    <%--<div class="panel-heading">--%>
+                        <%--<h3 class="panel-title">Panel title</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="panel-body">--%>
+                        <%--Panel content--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="col-md-4">--%>
+                <%--<div class="panel panel-default">--%>
+                    <%--<div class="panel-heading">--%>
+                        <%--<h3 class="panel-title">Panel title</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="panel-body">--%>
+                        <%--Panel content--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="col-md-4">--%>
+                <%--<div class="panel panel-default">--%>
+                    <%--<div class="panel-heading">--%>
+                        <%--<h3 class="panel-title">Panel title</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="panel-body">--%>
+                        <%--Panel content--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+
+<%--</div>--%>
+<!-- /.container -->
+<div class="row-offcanvas row-offcanvas-left">
+    <div id="sidebar" class="sidebar-offcanvas">
+        <div class="col-md-12">
+            <ul class="left-nav">
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
+                <li><a href="#">Section</a></li>
             </ul>
         </div>
-
-        <div class="col-md-10">
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
+    </div>
+    <div id="main">
+        <div class="col-md-12">
+            <p class="visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
+            </p>
+            <h2>Fixed + Fluid Bootstrap Template with Off-canvas Sidebar</h2>
+            <div class="row">
+                <div class="col-md-12"><div class="well"><p>Shrink the browser width to make the sidebar collapse off canvase.</p></div></div>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
+            <div class="row">
+                <div class="col-md-4"><div class="well"><p>4 cols</p></div></div>
+                <div class="col-md-4"><div class="well"><p>4 cols</p></div></div>
+                <div class="col-md-4"><div class="well"><p>4 cols</p></div></div>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
+            <div class="row">
+                <div class="col-lg-6 col-sm-6"><div class="well"><p>6 cols, 6 small cols</p></div></div>
+                <div class="col-lg-6 col-sm-6"><div class="well"><p>6 cols, 6 small cols</p></div></div>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Panel title</h3>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-6"><div class="well">4 cols, 6 small cols</div></div>
+                <div class="col-lg-4 col-sm-6"><div class="well">4 cols, 6 small cols</div></div>
+                <div class="col-lg-4 col-sm-12"><div class="well">4 cols, 12 small cols</div></div>
             </div>
         </div>
     </div>
+</div><!--/row-offcanvas -->
 
-</div>
-<!-- /.container -->
 
 <%@ include file="/WEB-INF/views/partials/footer.jspf"%>
 
