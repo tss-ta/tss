@@ -6,6 +6,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,7 +31,7 @@
     </head>
     <body>
 
-    <%@ include file="partials/admin-header.jspf" %>
+        <%@ include file="partials/admin-header.jspf" %>
 
         <div class="container-fluid">
 
@@ -40,31 +41,26 @@
                     <h1>${title}</h1>
 
                     <%@ include file="partials/menu.jspf" %>
-                    
+
                     <p>
                         <a href="admin?action=addgroip">Add group</a> 
 
                     </p>
                     <table class="table table-striped table-bordered">
                         <thead class="tablehead">
-                            <td>group</td>
-                            <td>roles</td>
-<!--                            <td>additional info</td>-->
+                        <td>group</td>
+                        <td>roles</td>
+                        <!--                            <td>additional info</td>-->
                         </thead>
 
                         <tbody>
+                        <c:forEach var = "group" items = "${requestScope.groups}">
                             <tr>
-                                <td></td>
-                                <td></td>
-<!--                                <td></td>-->
+                                <td>${group.name}</td>
+                                <td><c:forEach var = "role" items = "${group.roles}">${role};</c:forEach></td>
                                 <td><a href="admin">edit</a></td>
                             </tr>
-                            <%--                        <c:forEach var = "group" items = "${requestScope.groups}">
-                                                        <tr>
-                                                            <td>${group.name}</td>
-                                                            <td><c:forEach var = "role" items = "${group.roles}">${role};</c:forEach></td>
-                                                        </tr>
-                            </c:forEach> --%>
+                        </c:forEach> 
                         </tbody>
                     </table>
                     <%@ include file="partials/pagination.jspf" %>

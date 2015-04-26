@@ -13,6 +13,6 @@ import javax.ejb.EJBLocalHome;
  */
 public interface GroupBeanLocalHome extends EJBLocalHome {
 
-    RegistrationBean create();
+    GroupBeanLocal create();
 
 }

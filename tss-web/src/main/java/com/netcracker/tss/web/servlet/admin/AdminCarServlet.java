@@ -46,6 +46,7 @@ public class AdminCarServlet extends HttpServlet {
             carDao.persist(new Car(req.getParameter("plate"), isOn(req.getParameter("avaliable")),
                     Integer.parseInt(req.getParameter("category")), isOn(req.getParameter("animalable")),
                     isOn(req.getParameter("wi-fi")), isOn(req.getParameter("conditioner"))));
+            carDao.close();
 //            List<Car> cars = carDao.getPage(1, 10);
 //            carDao.close();
 //
