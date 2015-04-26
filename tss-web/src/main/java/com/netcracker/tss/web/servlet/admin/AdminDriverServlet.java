@@ -4,6 +4,7 @@ import com.netcracker.dao.DriverDAO;
 import com.netcracker.ejb.RegistrationBean;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helpEntity.Category;
+import com.netcracker.tss.web.util.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.ServletException;
@@ -23,6 +24,8 @@ public class AdminDriverServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("pageType", Page.ADMIN_DRIVERS.getPageType());
+
         String action = req.getParameter("action");
         if("adddriver".equals(action)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/add-driver.jsp").forward(req, resp);

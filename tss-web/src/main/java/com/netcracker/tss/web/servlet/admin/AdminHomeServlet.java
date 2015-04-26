@@ -6,6 +6,7 @@ import com.netcracker.ejb.RegistrationBean;
 import com.netcracker.entity.Car;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helpEntity.Category;
+import com.netcracker.tss.web.util.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.ServletException;
@@ -27,7 +28,7 @@ public class AdminHomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        req.setAttribute("pageType", Page.ADMIN_DASHBOARD.getPageType());
         req.getRequestDispatcher("/WEB-INF/views/admin/home.jsp").forward(req, resp);
 
 //        req.setAttribute("title", "Admin Page");

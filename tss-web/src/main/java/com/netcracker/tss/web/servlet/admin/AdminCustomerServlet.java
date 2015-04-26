@@ -1,5 +1,7 @@
 package com.netcracker.tss.web.servlet.admin;
 
+import com.netcracker.tss.web.util.Page;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ public class AdminCustomerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("pageType", Page.ADMIN_CUSTOMERS.getPageType());
         req.getRequestDispatcher("/WEB-INF/views/admin/customers.jsp").forward(req, resp);
     }
 }

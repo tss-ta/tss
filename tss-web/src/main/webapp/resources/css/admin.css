@@ -120,8 +120,13 @@ body {
     text-decoration: none;
     color: #fff;
     background-color: #1A202A;
+    border-left: 3px solid crimson;
 }
-
+.sidebar-nav li a.active {
+    text-decoration: none;
+    background-color: #1A202A;
+    border-left: 3px solid #fff;
+}
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
     text-decoration: none;
@@ -143,6 +148,7 @@ body {
 .sidebar-nav > .sidebar-brand a:hover {
     color: #fff;
     background: none;
+    border: none;
 }
 
 @media(min-width:768px) {
