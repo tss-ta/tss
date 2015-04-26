@@ -2,6 +2,7 @@ package com.netcracker.tss.web.servlet.admin;
 
 import com.netcracker.dao.CarDao;
 import com.netcracker.entity.Car;
+import com.netcracker.tss.web.util.Page;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +23,8 @@ public class AdminCarServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("pageType", Page.ADMIN_CARS.getPageType());
+
         String action = req.getParameter("action");
         if ("addcar".equals(action)) {
             req.getRequestDispatcher("/WEB-INF/views/admin/add-car.jsp").forward(req, resp);
