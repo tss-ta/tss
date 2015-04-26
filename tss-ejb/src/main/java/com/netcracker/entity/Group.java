@@ -41,6 +41,7 @@ public class Group implements Serializable {
 
     public Group(String name, List<Role> roles) {
         this.name = name;
+        this.roles = roles;
     }
 
     public Integer getId() {

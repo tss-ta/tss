@@ -43,7 +43,7 @@
                     <%@ include file="partials/menu.jspf" %>
 
                     <p>
-                        <a href="admin?action=addgroup">Add group</a> 
+                        <a href="/admin/group?action=addgroup">Add group</a> 
 
                     </p>
                     <table class="table table-striped table-bordered">

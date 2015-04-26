@@ -18,6 +18,7 @@ import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -31,11 +32,13 @@ public class GroupBean implements SessionBean {
         try {
             String groupName = groupDTO.getName();
             groupDAO = new GroupDAO();
+            roleDAO = new RoleDAO();
 
-            if (groupDAO.findByName(groupName) != null) {
+            if (isGroupPersist(groupName, groupDAO)) {
                 throw new IllegalArgumentException("Group with name " + groupName + " is already exist");
             }
             List<Role> roleList = toRoleList(groupDTO.getRoles(), roleDAO);
+
             groupDAO.persist(new Group(groupName, roleList));
         } finally {
             if (roleDAO != null) {
@@ -53,12 +56,12 @@ public class GroupBean implements SessionBean {
         try {
             int groupId = groupDTO.getId();
             groupDAO = new GroupDAO();
-            Group group = groupDAO.get(groupId);
+            Group group = groupDAO.get(groupId); 
 
-            if (group == null) {
-                throw new IllegalArgumentException("Group with id " + groupId 
-                        + " doesn't exist");
-            }
+//            if (group == null) { //isPersist
+//                throw new IllegalArgumentException("Group with id " + groupId
+//                        + " doesn't exist");
+//            }
             group.setName(groupDTO.getName());
             group.setRoles(toRoleList(groupDTO.getRoles(), roleDAO));
             groupDAO.update(group);
@@ -76,8 +79,7 @@ public class GroupBean implements SessionBean {
         List<Role> roleList = new ArrayList<>();
         Iterator<Roles> rolesIterator = roles.iterator();
         while (rolesIterator.hasNext()) {
-            String rolename = rolesIterator.next().getCatStr();
-            roleDAO = new RoleDAO();
+            String rolename = rolesIterator.next().toString();
             Role role = roleDAO.findByRolename(rolename);
             if (role == null) {
                 throw new IllegalArgumentException("Role with name " + rolename + " doesn't exist");
@@ -87,11 +89,29 @@ public class GroupBean implements SessionBean {
         return roleList;
     }
 
-    private boolean isPersist(String groupName, GroupDAO dao) {
-        if (dao.findByName(groupName) != null) {
-            return true;
+    private boolean isGroupPersist(String groupName, GroupDAO dao) {
+        try {
+            if (dao.findByName(groupName) != null) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NoResultException e) {
+            return false;
+        } catch (IllegalArgumentException e){
+            return false;
         }
-        return false;
+    }
+        private boolean isGroupPersist(int groupId, GroupDAO dao) {
+        try {
+            if (dao.get(groupId) != null) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     public List<GroupDTO> getGroup(int pageNumber, int paginationStep) {

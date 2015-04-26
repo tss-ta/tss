@@ -54,24 +54,18 @@ public abstract class GenericDAO<T> {
 
     public void delete(T entity) {
         validateEntityOnNull(entity);
-        em.getTransaction().begin();
         entity = em.merge(entity);
         em.remove(entity);
-        em.getTransaction().commit();
     }
 
     public void persist(T entity) {
         validateEntityOnNull(entity);
-        em.getTransaction().begin();
         em.persist(entity);
-        em.getTransaction().commit();
     }
 
     public void update(T entity) {
         validateEntityOnNull(entity);
-        em.getTransaction().begin();
         em.merge(entity);
-        em.getTransaction().commit();
     }
 
     public void close() {

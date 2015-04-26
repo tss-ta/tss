@@ -2,6 +2,8 @@ package com.netcracker.tss.web.servlet.admin;
 
 import com.netcracker.dao.DriverDAO;
 import com.netcracker.ejb.RegistrationBean;
+import com.netcracker.ejb.RegistrationBeanLocal;
+import com.netcracker.ejb.RegistrationBeanLocalHome;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helpEntity.Category;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 /**
  * Created by Kyrylo Berehovyi on 25/04/2015.
@@ -53,7 +60,7 @@ public class AdminDriverServlet extends HttpServlet {
                         isOn(req.getParameter("isMale")),
                         isOn(req.getParameter("smokes")));
 
-                if(rb.checkUser(newDriver)) {
+                if(!rb.isUserExist(newDriver)) {
                     rb.registrate(newDriver);
                 } else {
                     resp.sendRedirect("/add-driver.jsp");
@@ -79,5 +86,23 @@ public class AdminDriverServlet extends HttpServlet {
 
     private boolean isOn (String checkBoxText){
         return "on".equals(checkBoxText);
+    }
+        private RegistrationBeanLocal getRegistrationBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            RegistrationBeanLocalHome regBeanLocalHome = (RegistrationBeanLocalHome) context.lookup("java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
+            return regBeanLocalHome.create();
+        } catch (NamingException ex) {
+            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
+            throw new RuntimeException("Internal server error!" + 
+                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");// maybe have to create custom exception?
+        } catch (ClassCastException ex){
+                        Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
+            throw new RuntimeException("Internal server error!" + 
+                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
+        }
     }
 }
