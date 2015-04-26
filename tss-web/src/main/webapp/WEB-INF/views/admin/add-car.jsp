@@ -23,6 +23,8 @@
         <!-- Bootstrap core CSS -->
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/resources/css/admin.css" rel="stylesheet">
+        <link href="/resources/img/favicon.ico" rel="shortcut icon">
 
         <!-- Custom styles for this template -->
         <%--<link href="/resources/css/sign-in.css" rel="stylesheet">--%>
