@@ -3,6 +3,7 @@ package com.netcracker.tss.web.servlet.admin;
 import com.netcracker.dao.CarDao;
 import com.netcracker.entity.Car;
 import com.netcracker.tss.web.util.Page;
+import com.netcracker.tss.web.util.RequestAttribute;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,26 +20,30 @@ import java.util.List;
 @WebServlet(urlPatterns = "/admin/car")
 public class AdminCarServlet extends HttpServlet {
 
-    public static final String ATTRIBUTE_CARS = "cars_page";
+    public static final Page template = Page.ADMIN_TEMPLATE;
+    public static final Page defaultPageContent = Page.ADMIN_CARS_CONTENT;
+    public static final Page addCarPageContent = Page.ADMIN_ADD_CAR_CONTENT;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("pageType", Page.ADMIN_CARS.getPageType());
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), defaultPageContent.getType());
 
         String action = req.getParameter("action");
         if ("addcar".equals(action)) {
-            req.getRequestDispatcher("/WEB-INF/views/admin/add-car.jsp").forward(req, resp);
+            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), addCarPageContent.getAbsolutePath());
+            req.getRequestDispatcher(template.getAbsolutePath()).forward(req, resp);
             return;
         }
-        redirectToCars(1, 10, req, resp);
+        redirectToCars(2, 10, req, resp);
     }
     private void redirectToCars(int pageNumber, int pageSize, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CarDao carDao = new CarDao();
         List<Car> cars = carDao.getPage(pageNumber, pageSize);
         carDao.close();
 
-        req.setAttribute(ATTRIBUTE_CARS, cars);
-        req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);
+        req.setAttribute(RequestAttribute.CAR_LIST.getName(), cars);
+        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), defaultPageContent.getAbsolutePath());
+        req.getRequestDispatcher(template.getAbsolutePath()).forward(req, resp);
     }
 
     @Override
@@ -49,6 +54,7 @@ public class AdminCarServlet extends HttpServlet {
             carDao.persist(new Car(req.getParameter("plate"), isOn(req.getParameter("avaliable")),
                     Integer.parseInt(req.getParameter("category")), isOn(req.getParameter("animalable")),
                     isOn(req.getParameter("wi-fi")), isOn(req.getParameter("conditioner"))));
+            carDao.close();
 //            List<Car> cars = carDao.getPage(1, 10);
 //            carDao.close();
 //
