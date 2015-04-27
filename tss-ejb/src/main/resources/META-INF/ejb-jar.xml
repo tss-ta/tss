@@ -58,6 +58,24 @@
                 <local-home>com.netcracker.ejb.RegistrationBeanLocalHome</local-home>
                 <local>com.netcracker.ejb.RegistrationBeanLocal</local>
             </ejb-local-ref>
+        </session> 
+         
+        <session>
+            <description>An EJB named TaxiOrderBean</description>
+            <display-name>TaxiOrderBean</display-name>
+            <ejb-name>TaxiOrderBean</ejb-name>
+            <local-home>com.netcracker.ejb.TaxiOrderBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.TaxiOrderBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.TaxiOrderBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/TaxiOrderBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.TaxiOrderBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.TaxiOrderBeanLocal</local>
+            </ejb-local-ref>
         </session>  
         
         <session>
