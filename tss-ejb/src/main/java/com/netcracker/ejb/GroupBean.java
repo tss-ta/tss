@@ -76,6 +76,18 @@ public class GroupBean implements SessionBean {
         }
     }
 
+    public void deleteGroup(int id) {
+        GroupDAO groupDAO = null;
+        try {
+            groupDAO = new GroupDAO();
+            groupDAO.delete(new Group(id));
+        } finally {
+            if (groupDAO != null) {
+                groupDAO.close();
+            }
+        }
+    }
+
     private List<Role> toRoleList(List<Roles> roles, RoleDAO roleDAO) {
         List<Role> roleList = new ArrayList<>();
         Iterator<Roles> rolesIterator = roles.iterator();
