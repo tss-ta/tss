@@ -27,7 +27,7 @@ import javax.ejb.SessionContext;
 public class TaxiOrderBean implements SessionBean {
 
 	public void addTaxiOrder(User user, Route route, Address addFrom,
-			Address addTo, TaxiOrder taxiOrder, boolean isGuest) {
+			Address addTo, TaxiOrder taxiOrder) {
 		AddressDAO addressDAO = null;
 		RouteDAO routeDAO = null;
 		TaxiOrderDAO taxiOrderDAO = null;
