@@ -5,17 +5,55 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form action="/admin/group" method="post">
-    <h2 class="form-signin-heading">Add group</h2>
-    <p class="form-signin-heading">group name</p>
-    <input type="text" name="name">
-    <p>category</p>
-    <div class="checkbox">
-        <label class="checkbox"><input type="checkbox" name="admin" >admin</label>
-        <label class="checkbox"><input type="checkbox" name="driver">driver</label>
-        <label class="checkbox"><input type="checkbox" name="customer">customer</label>
-        <label class="checkbox"><input type="checkbox" name="banned">banned</label>
+<div class="row row-fix">
+    <div class="col-md-offset-1 col-md-10">
+        <div class="text-center">
+            <c:choose>
+                <c:when test="${param.action eq 'edit-group'}">
+                    <h1>Edit Group Form</h1>
+                </c:when>
+                <c:otherwise>
+                    <h1>Add Group Form</h1>
+                </c:otherwise>
+            </c:choose>           
+        </div>
     </div>
-    <input type="hidden" name="action" value="newgroup">
-    <button class="btn btn-lg btn-primary" type="submit">add group</button>
-</form>
+</div>
+<div class="row row-fix">
+    <div class="col-md-offset-3 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action="/admin/group" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="name" class="col-md-4 control-label">Group name</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="${param.name}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-5 col-sm-8">
+                            <label class="checkbox"><input type="checkbox" name="admin">admin</label>
+                            <label class="checkbox"><input type="checkbox" name="driver">driver</label>
+                            <label class="checkbox"><input type="checkbox" name="customer">customer</label>
+                            <label class="checkbox"><input type="checkbox" name="banned">banned</label>
+                        </div>
+                    </div>
+                    <c:choose>
+                        <c:when test="${param.action eq 'edit-group'}">
+                            <input type="hidden" name="action" value="edit-group">
+                            <input type="hidden" name="id" value="${param.id}">
+                        </c:when>
+                        <c:otherwise>
+                            <input type="hidden" name="action" value="newgroup">
+                        </c:otherwise>
+                    </c:choose> 
+                    <div class="form-group">
+                        <div class="col-sm-offset-5 col-sm-3">
+                            <button type="submit" class="btn btn-default">Add <i class="fa fa-users"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
