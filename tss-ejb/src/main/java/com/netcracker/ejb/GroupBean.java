@@ -56,7 +56,8 @@ public class GroupBean implements SessionBean {
         try {
             int groupId = groupDTO.getId();
             groupDAO = new GroupDAO();
-            Group group = groupDAO.get(groupId); 
+            roleDAO = new RoleDAO();
+            Group group = groupDAO.get(groupId);
 
 //            if (group == null) { //isPersist
 //                throw new IllegalArgumentException("Group with id " + groupId
@@ -98,11 +99,12 @@ public class GroupBean implements SessionBean {
             }
         } catch (NoResultException e) {
             return false;
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
-        private boolean isGroupPersist(int groupId, GroupDAO dao) {
+
+    private boolean isGroupPersist(int groupId, GroupDAO dao) {
         try {
             if (dao.get(groupId) != null) {
                 return true;
@@ -132,7 +134,7 @@ public class GroupBean implements SessionBean {
                     String roleName = roleIterator.next().getRolename();
                     rolesList.add(Roles.valueOf(roleName));
                 }
-                groupsDTOPage.add(new GroupDTO(groupName, rolesList));
+                groupsDTOPage.add(new GroupDTO(group.getId(), groupName, rolesList));
             }
             return groupsDTOPage;
         } finally {
