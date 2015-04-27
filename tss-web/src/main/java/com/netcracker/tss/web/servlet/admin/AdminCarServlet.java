@@ -27,10 +27,11 @@ public class AdminCarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), defaultPageContent.getType());
-        req.setAttribute(RequestAttribute.ALERT_MESSAGE.getName(), "Test Message");
+        req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Test error Message");
+        req.setAttribute(RequestAttribute.SUCCESS_MESSAGE.getName(), "Test success Message");
 
         String action = req.getParameter("action");
-        if ("addcar".equals(action)) {
+        if ("add-car".equals(action)) {
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), addCarPageContent.getAbsolutePath());
             req.getRequestDispatcher(template.getAbsolutePath()).forward(req, resp);
             return;
@@ -50,7 +51,7 @@ public class AdminCarServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        if ("newcar".equals(action)) {
+        if ("add-car".equals(action)) {
             CarDao carDao = new CarDao();
             carDao.persist(new Car(req.getParameter("plate"), isOn(req.getParameter("avaliable")),
                     Integer.parseInt(req.getParameter("category")), isOn(req.getParameter("animalable")),

@@ -18,7 +18,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-1">
-                    <a href="/admin/car?action=addcar" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
+                    <a href="/admin/car?action=add-car" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
                 </div>
                 <div class="col-md-offset-7 col-md-4">
                     <form>
