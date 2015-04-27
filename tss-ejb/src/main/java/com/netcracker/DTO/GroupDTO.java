@@ -14,7 +14,7 @@ import java.util.List;
  * @author maks
  */
 public class GroupDTO implements Serializable {
-
+ 
     private int id;
 
     private String name;
