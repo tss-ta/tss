@@ -17,6 +17,8 @@ public interface DriverLocal extends EJBLocalObject {
 
     public void editDriver(Driver driver);
 
+    public void deleteDriver(Integer driverId);
+
     public List<Driver> getDriverPage(int pageNumber, int pageSize);
 
     public void assignCar(Driver driver, Car car);

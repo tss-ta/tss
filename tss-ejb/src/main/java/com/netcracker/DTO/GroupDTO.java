@@ -5,7 +5,7 @@
  */
 package com.netcracker.DTO;
 
-import com.netcracker.entity.driverUtil.Roles;
+import com.netcracker.entity.helper.Roles;
 import java.io.Serializable;
 import java.util.List;
 

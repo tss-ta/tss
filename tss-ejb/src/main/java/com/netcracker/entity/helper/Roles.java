@@ -1,14 +1,14 @@
-package com.netcracker.entity.driverUtil;
+package com.netcracker.entity.helper;
 
 /**
  * Created by Illya on 25.04.2015.
  */
-public enum Category {
-    B("B"), C("C"), D("D");
+public enum Roles {
+    ADMIN("admin"), DRIVER("driver"), CUSTOMER("customer");
 
     private final String catStr;
 
-    Category(String catStr) {
+    Roles(String catStr) {
         this.catStr = catStr;
     }
 
