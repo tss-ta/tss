@@ -6,8 +6,8 @@
 package com.netcracker.ejb;
 
 
-import com.netcracker.DTO.GroupDTO;
-import com.netcracker.entity.User;
+import com.netcracker.dto.GroupDTO;
+
 import java.util.List;
 import javax.ejb.EJBLocalObject;
 

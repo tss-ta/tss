@@ -1,6 +1,8 @@
 
 -- password is 'pass'
 INSERT INTO tss_user VALUES
+  (DEFAULT, 'Pass', 'pass', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
   (DEFAULT, 'Adam', 'adam.sandler@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
   (DEFAULT, 'Mike', 'mike.cole@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
@@ -19,11 +21,11 @@ INSERT INTO tss_user VALUES
 
 
 INSERT INTO tss_group VALUES
-  (1, 'readonly');
+  (DEFAULT , 'readonly');
 INSERT INTO tss_group VALUES
-  (2, 'managers');
+  (DEFAULT , 'managers');
 INSERT INTO tss_group VALUES
-  (3, 'black_list');
+  (DEFAULT , 'black_list');
 
 
 INSERT INTO tss_role VALUES

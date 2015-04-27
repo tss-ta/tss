@@ -1,12 +1,7 @@
 package com.netcracker.tss.web.servlet.admin;
 
-import com.netcracker.dao.CarDao;
-import com.netcracker.dao.DriverDAO;
-import com.netcracker.ejb.RegistrationBean;
-import com.netcracker.entity.Car;
-import com.netcracker.entity.Driver;
-import com.netcracker.entity.driverUtil.Category;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.netcracker.tss.web.util.Page;
+import com.netcracker.tss.web.util.RequestAttribute;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,51 +15,17 @@ import java.util.List;
 /**
  * Created by Kyrylo Berehovyi on 20/04/2015.
  */
+
 @WebServlet(urlPatterns = "/admin")
 public class AdminHomeServlet extends HttpServlet {
 
-//    public static final String ATTRIBUTE_CARS = "cars_page";
+    private static final Page page = Page.ADMIN_DASHBOARD_CONTENT;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        req.getRequestDispatcher("/WEB-INF/views/admin/home.jsp").forward(req, resp);
-
-//        req.setAttribute("title", "Admin Page");
-//        String menu = req.getParameter("menu");
-//        String action = req.getParameter("action");
-////        switch (menu){
-////            case "car": car
-////        }
-//
-//        if ("addcar".equals(action)) {
-//            req.getRequestDispatcher("/WEB-INF/views/admin/add-car.jsp").forward(req, resp);
-//            return;
-//        } else if("adddriver".equals(action)) {
-//            req.getRequestDispatcher("/WEB-INF/views/admin/add-driver.jsp").forward(req, resp);
-//            return;
-//        }
-//
-//        if ("cars".equals(menu)) {
-//
-//            redirectToCars(1, 10, req, resp);
-//
-//        } else if ("reports".equals(menu)) {
-//            req.getRequestDispatcher("/WEB-INF/views/admin/reports.jsp").forward(req, resp);
-//        } else if ("customers".equals(menu)) {
-//            req.getRequestDispatcher("/WEB-INF/views/admin/customers.jsp").forward(req, resp);
-//        } else if ("drivers".equals(menu)) {
-//
-//            redirectToDrivers(1, 10, req, resp);
-//
-//        } else if ("tariffs".equals(menu)) {
-//            req.getRequestDispatcher("/WEB-INF/views/admin/tariffs.jsp").forward(req, resp);
-//        } else if ("groups".equals(menu)) {
-//            req.getRequestDispatcher("/WEB-INF/views/admin/groups.jsp").forward(req, resp);
-//        } else {
-//
-//            req.getRequestDispatcher("/WEB-INF/views/admin/cars.jsp").forward(req, resp);
-//        }
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DASHBOARD_CONTENT.getType());
+        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_DASHBOARD_CONTENT.getAbsolutePath());
+        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
     }
 
     @Override

@@ -18,7 +18,7 @@
         <!-- Bootstrap -->
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-        <link href="/resources/css/custom.css" rel="stylesheet">
+        <link href="/resources/css/admin.css" rel="stylesheet">
         <link href="/resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

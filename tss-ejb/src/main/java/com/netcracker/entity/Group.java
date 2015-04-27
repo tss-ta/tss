@@ -14,14 +14,15 @@ import java.util.List;
 @Entity
 @Table(name = "tss_group")
 @NamedQueries({
-    @NamedQuery(name = "Group.findAllOrderedByName", query = "SELECT s FROM Group s ORDER BY s.name"),
-    @NamedQuery(name = "Group.findByName", query = "SELECT s FROM Group s WHERE s.name = :name")})
+    @NamedQuery(name = "Group.findAllOrderedByName", query = "SELECT g FROM Group g ORDER BY g.name"),
+    @NamedQuery(name = "Group.findByName", query = "SELECT g FROM Group g WHERE g.name = :name")})
 public class Group implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+//    @Column(name = "name", columnDefinition = "bpchar")
     @Column(name = "name", columnDefinition = "bpchar")
     private String name;
 
