@@ -54,7 +54,12 @@ public class User implements Serializable {
         this.passwordHash = passwordHash;
     }
 
-    public Integer getId() {
+    public User(String username, String email) {
+    	 this.username = username;
+         this.email = email;
+	}
+
+	public Integer getId() {
         return id;
     }
 
