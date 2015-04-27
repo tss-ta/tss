@@ -10,7 +10,7 @@ import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
-import com.netcracker.entity.helpEntity.Roles;
+import com.netcracker.entity.helper.Roles;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;

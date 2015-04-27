@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author maks
  */
+
 @Entity
 @XmlRootElement
 @NamedQueries({
@@ -29,34 +30,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "car")
 public class Car implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Integer id;
 
     @Column(name = "available")
-//    @Basic(optional = false)
-    @NotNull
+//    @NotNull WTF????? o_O
     private boolean available;
 
     @Column(name = "category")
-//    @Basic(optional = false)
-    @NotNull
+//    @NotNull again..
     private int category;
 
     @Column(name = "animalable")
-//    @Basic(optional = false)
-    @NotNull
+//    @NotNull
     private boolean animalable;
 
     @Column(name = "wifi")
-    @Basic(optional = false)
-    @NotNull
+//    @NotNull
     private boolean wifi;
 
     @Column(name = "conditioner")
-    @Basic(optional = false)
-    @NotNull
+//    @NotNull  seriously?.. boolean?
     private boolean conditioner;
 
     @Size(max = 10)
@@ -64,17 +61,7 @@ public class Car implements Serializable {
     @NotNull
     private String licPlate;
 
-    public Car() {
-    }
-
-
-//    public Car(boolean available, int category, boolean animalable, boolean wifi, boolean conditioner) {
-//        this.available = available;
-//        this.category = category;
-//        this.animalable = animalable;
-//        this.wifi = wifi;
-//        this.conditioner = conditioner;
-//    }
+    public Car() {}
 
     public Car(String licPlace, boolean available, int category, boolean animalable, boolean wifi, boolean conditioner) {
         this.available = available;
@@ -88,10 +75,6 @@ public class Car implements Serializable {
     public Integer getId() {
         return id;
     }
-
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
 
     public boolean getAvailable() {
         return available;
@@ -142,28 +125,46 @@ public class Car implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Car)) {
-            return false;
-        }
-        Car other = (Car) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
+        Car car = (Car) o;
+
+        if (animalable != car.animalable) return false;
+        if (available != car.available) return false;
+        if (category != car.category) return false;
+        if (conditioner != car.conditioner) return false;
+        if (wifi != car.wifi) return false;
+        if (id != null ? !id.equals(car.id) : car.id != null) return false;
+        if (licPlate != null ? !licPlate.equals(car.licPlate) : car.licPlate != null) return false;
+
         return true;
     }
 
     @Override
-    public String toString() {
-        return "com.netcracker.entity.Car[ id=" + id + " ]";
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (available ? 1 : 0);
+        result = 31 * result + category;
+        result = 31 * result + (animalable ? 1 : 0);
+        result = 31 * result + (wifi ? 1 : 0);
+        result = 31 * result + (conditioner ? 1 : 0);
+        result = 31 * result + (licPlate != null ? licPlate.hashCode() : 0);
+        return result;
     }
-    
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Car{");
+        sb.append("id=").append(id);
+        sb.append(", available=").append(available);
+        sb.append(", category=").append(category);
+        sb.append(", animalable=").append(animalable);
+        sb.append(", wifi=").append(wifi);
+        sb.append(", conditioner=").append(conditioner);
+        sb.append(", licPlate='").append(licPlate).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

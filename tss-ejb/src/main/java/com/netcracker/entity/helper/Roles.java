@@ -1,4 +1,4 @@
-package com.netcracker.entity.helpEntity;
+package com.netcracker.entity.helper;
 
 /**
  * Created by Illya on 25.04.2015.

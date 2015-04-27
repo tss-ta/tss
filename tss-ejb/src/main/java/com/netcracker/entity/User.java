@@ -17,8 +17,6 @@ import javax.persistence.*;
 public class User implements Serializable {
 
     @Id
-//    @SequenceGenerator(sequenceName = "tss_user_id_seq", name = "tssUserIdSequence")
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tssUserIdSequence")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Integer id;

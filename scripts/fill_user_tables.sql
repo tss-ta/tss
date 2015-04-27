@@ -21,11 +21,11 @@ INSERT INTO tss_user VALUES
 
 
 INSERT INTO tss_group VALUES
-  (1, 'readonly');
+  (DEFAULT , 'readonly');
 INSERT INTO tss_group VALUES
-  (2, 'managers');
+  (DEFAULT , 'managers');
 INSERT INTO tss_group VALUES
-  (3, 'black_list');
+  (DEFAULT , 'black_list');
 
 
 INSERT INTO tss_role VALUES

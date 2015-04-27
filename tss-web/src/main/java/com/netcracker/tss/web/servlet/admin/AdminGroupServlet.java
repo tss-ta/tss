@@ -4,7 +4,9 @@ import com.netcracker.tss.web.util.Page;
 import com.netcracker.dto.GroupDTO;
 import com.netcracker.ejb.GroupBeanLocal;
 import com.netcracker.ejb.GroupBeanLocalHome;
-import com.netcracker.entity.helpEntity.Roles;
+import com.netcracker.entity.helper.Roles;
+import com.netcracker.tss.web.util.RequestAttribute;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,12 +33,13 @@ public class AdminGroupServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("pageType", defaultPage.getType());
-        req.setAttribute("pageContent", defaultPage.getAbsolutePath());
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), defaultPage.getType());
 
         String action = req.getParameter("action");
         if ("addgroup".equals(action)) {
-            req.getRequestDispatcher("/WEB-INF/views/admin/add-group.jsp").forward(req, resp);
+            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
+            req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+            return;
         }
         redirectToGroups(req, resp);
 
@@ -77,7 +80,8 @@ public class AdminGroupServlet extends HttpServlet {
                 redirectToGroups(req, resp);
             } 
             catch (RuntimeException e) {
-                req.getRequestDispatcher("/WEB-INF/views/admin/add-group.jsp").forward(req, resp);
+                req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
+                req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
             }
 
         }
@@ -87,6 +91,7 @@ public class AdminGroupServlet extends HttpServlet {
         try {
             GroupBeanLocal groupBeanLocal = getGroupBean(req);
             req.setAttribute("groups", groupBeanLocal.getGroup(1, 10));
+            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_GROUPS_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(template.getAbsolutePath()).forward(req, resp);
         } catch (RuntimeException e) {
             req.getRequestDispatcher("/500.jsp").forward(req, resp);
