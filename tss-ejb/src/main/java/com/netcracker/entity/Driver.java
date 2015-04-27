@@ -1,6 +1,6 @@
 package com.netcracker.entity;
 
-import com.netcracker.entity.driverUtil.Category;
+import com.netcracker.entity.helper.Category;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,7 +28,7 @@ public class Driver extends User {
     private boolean smokes;
 
     @OneToOne
-    @PrimaryKeyJoinColumn(name = "car_id")
+    @JoinColumn(name = "car_id")
     private Car car;
 
     public Driver() {

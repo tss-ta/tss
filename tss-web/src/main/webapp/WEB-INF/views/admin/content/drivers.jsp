@@ -41,7 +41,8 @@
                     <td>${driver.isMale()}</td>
                     <td>${driver.isSmokes()}</td>
                     <td>${driver.getCar()}</td>
-                    <td><a href="admin">edit</a></td>
+                    <td><a href="/admin/driver?action=editdriver&driverid=${driver.getId()}">edit</a></td>
+                    <td><a href="/admin/driver?action=deletedriver&driverid=${driver.getId()}">X</a></td>
                 </tr>
             </c:forEach>
 

@@ -5,7 +5,7 @@ import com.netcracker.dao.DriverCarDAO;
 import com.netcracker.dao.DriverDAO;
 import com.netcracker.entity.Car;
 import com.netcracker.entity.Driver;
-import com.netcracker.entity.driverUtil.DriverCar;
+import com.netcracker.entity.helper.DriverCar;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
@@ -18,11 +18,11 @@ import java.util.List;
  * Created by Illya on 26.04.2015.
  */
 public class DriverBean implements SessionBean {
+
     public DriverBean() {
     }
 
 
-    @Override
     public Driver getDriver(Integer id) {
         DriverDAO drDao = new DriverDAO();
         Driver driver = drDao.get(id);
@@ -31,21 +31,24 @@ public class DriverBean implements SessionBean {
         return driver;
     }
 
-    @Override
     public void addDriver(Driver driver) {
         DriverDAO drDao = new DriverDAO();
         drDao.persist(driver);
         drDao.close();
     }
 
-    @Override
     public void editDriver(Driver driver) {
         DriverDAO drDao = new DriverDAO();
         drDao.update(driver);
         drDao.close();
     }
 
-    @Override
+    public void deleteDriver(Integer driverId) {
+        DriverDAO drDao = new DriverDAO();
+        drDao.delete(drDao.get(driverId));
+        drDao.close();
+    }
+
     public List<Driver> getDriverPage(int pageNumber, int pageSize) {
         DriverDAO drDao = new DriverDAO();
         List<Driver> driversPage = drDao.getPage(pageNumber, pageSize);
@@ -54,7 +57,6 @@ public class DriverBean implements SessionBean {
         return driversPage;
     }
 
-    @Override
     public void assignCar(Driver driver, Car car) {
         DriverDAO drDAO = new DriverDAO();
         Driver foundDriver = drDAO.get(driver.getId());
@@ -73,7 +75,6 @@ public class DriverBean implements SessionBean {
         }
     }
 
-    @Override
     public void unassignCar(Driver driver, Car car) {
         DriverDAO drDAO = new DriverDAO();
         Driver foundDriver = drDAO.get(driver.getId());

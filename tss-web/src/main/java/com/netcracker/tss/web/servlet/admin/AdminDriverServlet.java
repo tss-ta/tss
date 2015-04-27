@@ -3,7 +3,9 @@ package com.netcracker.tss.web.servlet.admin;
 import com.netcracker.dao.DriverDAO;
 import com.netcracker.ejb.*;
 import com.netcracker.entity.Driver;
-import com.netcracker.entity.driverUtil.Category;
+import com.netcracker.entity.helper.Category;
+import com.netcracker.tss.web.util.Page;
+import com.netcracker.tss.web.util.RequestAttribute;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.ServletException;
@@ -30,6 +32,7 @@ public class AdminDriverServlet extends HttpServlet {
 
     public static final String ACTION_ADD_DRIVER = "adddriver";
     public static final String ACTION_EDIT_DRIVER = "editdriver";
+    public static final String ACTION_DELETE_DRIVER = "deletedriver";
 
     public static final String PAGE_ADD_DRIVER = "/WEB-INF/views/admin/add-driver.jsp";
 
@@ -54,24 +57,29 @@ public class AdminDriverServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if(ACTION_ADD_DRIVER.equals(action)) {
-            req.getRequestDispatcher(PAGE_ADD_DRIVER).forward(req, resp);
 
+            redirectToAddDriver(req, resp);
+            return;
         } else if(ACTION_EDIT_DRIVER.equals(action)) {
 
-            Driver driver = getDriverBean().getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
-            req.setAttribute(ATTRIBUTE_DRIVER, driver);
+            redirectToEditDriver(req, resp);
+            return;
+        } else if(ACTION_DELETE_DRIVER.equals(action)) {
 
-            req.getRequestDispatcher(PAGE_ADD_DRIVER).forward(req, resp);
-        } else {
+            getDriverBean().deleteDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
+
             redirectToDrivers(1, 10, req, resp);
+            return;
         }
+
+        redirectToDrivers(1, 10, req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if ("newdriver".equals(action)) {
-            Driver newDriver = createDriverFromRequest(req);
+            Driver newDriver = createDriverFromRequest(req, resp);
 
             if(newDriver != null) {
 
@@ -83,11 +91,22 @@ public class AdminDriverServlet extends HttpServlet {
             }
 
         } if(ACTION_EDIT_DRIVER.equals(action)) {
+            Driver driver = getDriverBean().getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
 
+            if(driver != null) {
+
+                Driver editedDriver = updateDriverFromRequest(driver, req, resp);
+
+                if(editedDriver != null) {
+                    getDriverBean().editDriver(editedDriver);
+                }
+            }
+
+            redirectToDrivers(1, 10, req, resp);
         }
     }
 
-    private Driver createDriverFromRequest(HttpServletRequest req) {
+    private Driver createDriverFromRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String passStr = req.getParameter(PARAMETER_PASSWORD);
         String confirmPassStr = req.getParameter(PARAMETER_CONFIRM_PASSWORD);
 
@@ -107,6 +126,38 @@ public class AdminDriverServlet extends HttpServlet {
                     isOn(req.getParameter(PARAMETER_SMOKES)));
 
             return newDriver;
+        } else {
+            redirectToAddDriver(req, resp);
+        }
+        return null;
+    }
+
+    private Driver updateDriverFromRequest(Driver driver, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String passStr = req.getParameter(PARAMETER_PASSWORD);
+        String confirmPassStr = req.getParameter(PARAMETER_CONFIRM_PASSWORD);
+
+        Driver updDriver;
+        if(driver != null) {
+            updDriver = driver;
+
+            if(passStr.equals(confirmPassStr)) {
+
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                String password = encoder.encode(passStr);
+
+
+                updDriver.setUsername(req.getParameter(PARAMETER_DRIVER_NAME));
+                updDriver.setPasswordHash(password);
+                updDriver.setCategory(Category.valueOf(req.getParameter(PARAMETER_CATEGORY)));
+                updDriver.setAvailable(isOn(req.getParameter(PARAMETER_AVAILABLE)));
+                updDriver.setMale(isOn(req.getParameter(PARAMETER_IS_MALE)));
+                updDriver.setSmokes(isOn(req.getParameter(PARAMETER_SMOKES)));
+
+
+                return updDriver;
+            }
+        } else {
+            redirectToAddDriver(req, resp);
         }
         return null;
     }
@@ -116,8 +167,27 @@ public class AdminDriverServlet extends HttpServlet {
 
         List<Driver> drivers = getDriverBean().getDriverPage(pageNumber, pageSize);
 
-        req.setAttribute("drivers_page", drivers);
-        req.getRequestDispatcher("/WEB-INF/views/admin/drivers.jsp").forward(req, resp);
+        req.setAttribute("driverList", drivers);
+
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
+        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
+        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+    }
+
+    private void redirectToAddDriver(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_DRIVER_CONTENT.getType());
+        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_DRIVER_CONTENT.getAbsolutePath());
+        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+    }
+
+    private void redirectToEditDriver(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Driver driver = getDriverBean().getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
+        req.setAttribute(ATTRIBUTE_DRIVER, driver);
+
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_DRIVER_CONTENT.getType());
+        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_DRIVER_CONTENT.getAbsolutePath());
+        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
     }
 
     private boolean isOn (String checkBoxText){
@@ -134,14 +204,14 @@ public class AdminDriverServlet extends HttpServlet {
                 return drvLocal;
             } catch (NamingException ex) {
                 Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                        "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
+                        "Can't find driverBeanLocalHome with name java:app/tss-ejb/DriverBean!com.netcracker.ejb.DriverLocalHome", ex);
                 throw new RuntimeException("Internal server error!" +
-                        "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");// maybe have to create custom exception?
+                        "Can't find driverBeanLocalHome with name java:app/tss-ejb/DriverBean!com.netcracker.ejb.DriverLocalHome");// maybe have to create custom exception?
             } catch (ClassCastException ex){
                 Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                        "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
+                        "Can't find driverBeanLocalHome with name java:app/tss-ejb/DriverBean!com.netcracker.ejb.DriverLocalHome", ex);
                 throw new RuntimeException("Internal server error!" +
-                        "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
+                        "Can't find driverBeanLocalHome with name java:app/tss-ejb/DriverBean!com.netcracker.ejb.DriverLocalHome");
             }
         } else {
             return drvLocal;

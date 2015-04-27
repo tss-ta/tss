@@ -11,16 +11,33 @@
     <input style="display:none" type="text" name="fakeusernameremembered"/>
     <input style="display:none" type="password" name="fakepasswordremembered"/>
 
-    <h2 class="form-signin-heading">Register Driver</h2>
+    <c:if test="${empty driver}">
+        <h2 class="form-signin-heading">Register Driver</h2>
+    </c:if>
+    <c:if test="${not empty driver}">
+        <h2 class="form-signin-heading">Edit Driver details</h2>
+    </c:if>
 
     <div class="row">
 
         <%--Column for registering account details--%>
         <div class="col-md-6">
             <label for="inputDriverName" class="sr-only">Driver name</label>
-            <input type="text" id="inputDriverName" name="drivername" class="form-control" placeholder="Driver name" required autofocus>
+            <c:if test="${empty driver}">
+                <input type="text" id="inputDriverName" name="drivername" class="form-control" placeholder="Driver name" required autofocus>
+            </c:if>
+            <c:if test="${not empty driver}">
+                <input type="text" id="inputDriverName" name="drivername" class="form-control" value="${driver.getUsername()}" autofocus>
+            </c:if>
+
             <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required>
+            <c:if test="${empty driver}">
+                <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required>
+            </c:if>
+            <c:if test="${not empty driver}">
+                <input type="text" id="inputEmail" name="email" class="form-control" value="${driver.getEmail()}" required>
+            </c:if>
+
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
             <label for="confirmInputPassword" class="sr-only">Confirm Password</label>
@@ -32,23 +49,44 @@
 
             <%--Choose driver category--%>
             <label for="inputCategory">Choose category</label>
-            <select id="inputCategory" name="category">
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-            </select>
+                <select id="inputCategory" name="category">
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                </select>
 
             <%--Choose driver options--%>
             <div class="checkbox">
-                <label class="checkbox"><input type="checkbox" name="available" >available</label>
-                <label class="checkbox"><input type="checkbox" name="isMale">is male</label>
-                <label class="checkbox"><input type="checkbox" name="smokes">smokes</label>
+                <label class="checkbox"><input id="availableChkBox" type="checkbox" name="available" >available</label>
+                <label class="checkbox"><input id="isMaleChkBox" type="checkbox" name="ismale">is male</label>
+                <label class="checkbox"><input id="smokesChkBox" type="checkbox" name="smokes">smokes</label>
             </div>
 
             <%--TODO: Assign some car to a driver--%>
 
-            <input type="hidden" name="action" value="newdriver">
+
         </div>
     </div> <%--Row end--%>
-    <button class="btn btn-lg btn-primary" type="submit">Register Driver</button>
+    <c:if test="${empty driver}">
+        <input type="hidden" name="action" value="newdriver">
+        <button class="btn btn-lg btn-primary" type="submit">Register Driver</button>
+    </c:if>
+    <c:if test="${not empty driver}">
+        <input type="hidden" name="action" value="editdriver">
+        <input type="hidden" name="driverid" value="${driver.getId()}">
+        <button class="btn btn-lg btn-primary" type="submit">Edit Driver</button>
+    </c:if>
+
+
+
 </form>
+    <c:if test="${not empty driver}">
+        <script src="/resources/js/jquery-1.11.2.min.js"></script>
+        <script>
+
+            $("#inputCategory").val("${driver.getCategory().getCatStr()}");
+            $("#availableChkBox").prop('checked', ${driver.isAvailable()});
+            $("#isMaleChkBox").prop('checked', ${driver.isMale()});
+            $("#smokesChkBox").prop('checked', ${driver.isSmokes()});
+        </script>
+    </c:if>

@@ -77,7 +77,8 @@
             </ejb-local-ref>
         </session>
         <session>
-            <ejb-name>DriverEJB</ejb-name>
+            <display-name>DriverBean</display-name>
+            <ejb-name>DriverBean</ejb-name>
             <local-home>com.netcracker.ejb.DriverLocalHome</local-home>
             <local>com.netcracker.ejb.DriverLocal</local>
             <ejb-class>com.netcracker.ejb.DriverBean</ejb-class>
