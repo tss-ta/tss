@@ -27,10 +27,6 @@ import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 
-/**
- * Created by Stanislav Zabielin
- */
-
 @WebServlet(urlPatterns = "/guest/order")
 public class GuestOrderServlet extends HttpServlet {
 
@@ -65,8 +61,7 @@ public class GuestOrderServlet extends HttpServlet {
 		taxiOrder.setBookingTime(new Date());
 		// if (ordernow[0] != null)
 		// taxiOrder.setOrderTime(new Date());
-		taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder,
-				true);
+		taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
 		req.setAttribute("added", "success");
 		req.getRequestDispatcher("/WEB-INF/views/customer/guest.jsp").forward(
 				req, resp);
