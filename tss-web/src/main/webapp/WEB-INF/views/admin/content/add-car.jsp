@@ -5,23 +5,68 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form action="/admin/car" method="post">
-    <h2 class="form-signin-heading">Add car</h2>
-    <p class="form-signin-heading">license plate</p>
-    <input type="text" name="plate">
-    <p>category</p>
-    <select name="category">
-        <option value="1">business</option>
-        <option value="2">econom</option>
-        <option value="3">van</option>
-        <option value="4">cargo</option>
-    </select>
-    <div class="checkbox">
-        <label class="checkbox"><input type="checkbox" name="avaliable" > availible</label>
-        <label class="checkbox"><input type="checkbox" name="animalable">animaliable</label>
-        <label class="checkbox"><input type="checkbox" name="wi-fi">wi-fi</label>
-        <label class="checkbox"><input type="checkbox" name="conditioner"> conditioner</label>
+<div class="row row-fix">
+    <div class="col-md-offset-1 col-md-10">
+        <div class="text-center">
+            <h1>Add Car Form</h1>
+        </div>
     </div>
-    <input type="hidden" name="action" value="newcar">
-    <button class="btn btn-lg btn-primary" type="submit">add car</button>
-</form>
+</div>
+
+<div class="row row-fix">
+    <div class="col-md-offset-3 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action="/admin/car?action=add-car" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="plate" class="col-md-4 control-label">License plate</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="plate" placeholder="License">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="available"> Available
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="animalable"> Animal transport
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="wi-fi"> WI-FI
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="conditioner"> Conditioner
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="plate" class="col-md-4 control-label">Type</label>
+                        <div class="col-sm-5">
+                            <select name="category" class="form-control">
+                                <option value="1">Business</option>
+                                <option value="2">Economy</option>
+                                <option value="3">Van</option>
+                                <option value="4">Cargo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-3">
+                            <button type="submit" class="btn btn-default">Add <i class="fa fa-taxi"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

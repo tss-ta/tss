@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Taxi Service System Admin Dashboard</title>
+    <title>Taxi Service System ${pageTitle}</title>
 
     <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
@@ -30,6 +30,18 @@
     <div id="page-content-wrapper">
         <div class="container-fluid">
             <%@ include file="partials/admin-header.jspf" %>
+
+            <c:if test="${not empty alertMessage}">
+                <div class="row row-fix">
+                    <div class="col-md-offset-1 col-md-10">
+                        <div class="alert alert-danger alert-dismissible text-center" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <i class="fa fa-exclamation"></i> ${alertMessage}
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+
         </div>
 
         <jsp:include page="${pageContent}" />
@@ -38,7 +50,7 @@
 
 </div>
 
-<script src="resources/js/jquery-1.11.2.min.js"></script>
-<script src="resources/js/bootstrap.min.js"></script>
+<script src="/resources/js/jquery-1.11.2.min.js"></script>
+<script src="/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

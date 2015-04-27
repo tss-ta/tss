@@ -12,6 +12,7 @@
         </div>
     </div>
 </div>
+
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
         <div class="panel panel-default">

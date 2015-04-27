@@ -7,7 +7,8 @@ public enum RequestAttribute {
     PAGE_CONTENT("pageContent"),
     PAGE_TYPE("pageType"),
     CAR_LIST("carList"),
-    DRIVER_LIST("driverList");
+    DRIVER_LIST("driverList"),
+    ALERT_MESSAGE("alertMessage");
 
     private String name;
 

@@ -27,6 +27,7 @@ public class AdminCarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), defaultPageContent.getType());
+        req.setAttribute(RequestAttribute.ALERT_MESSAGE.getName(), "Test Message");
 
         String action = req.getParameter("action");
         if ("addcar".equals(action)) {
