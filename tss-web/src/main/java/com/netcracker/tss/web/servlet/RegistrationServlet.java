@@ -7,6 +7,9 @@ package com.netcracker.tss.web.servlet;
 
 import com.netcracker.ejb.RegistrationBeanLocal;
 import com.netcracker.ejb.RegistrationBeanLocalHome;
+import com.netcracker.ejb.TaxiOrderBean;
+import com.netcracker.entity.Address;
+import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import java.io.IOException;
@@ -44,7 +47,7 @@ public class RegistrationServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirPassword");
-
+       
         if (password.equals(confirmPassword)) {
             RegistrationBeanLocal rb = getRegistrationBean(request);
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -52,7 +55,6 @@ public class RegistrationServlet extends HttpServlet {
             User user = new User(userName, email, password);
             if (!rb.isUserExist(user)) {
                 rb.registrate(user);
-                //       request.getRequestDispatcher("/customer").forward(request, response);
                 response.sendRedirect("/customer");
             } else {
                 response.sendRedirect("/signup.jsp");

@@ -30,4 +30,7 @@ public class UserDAO extends GenericDAO<User> {
             user = (User) query.getSingleResult();
         return user;
     }
+	public boolean isOpen() {
+		return em.isOpen();
+	}
 }
