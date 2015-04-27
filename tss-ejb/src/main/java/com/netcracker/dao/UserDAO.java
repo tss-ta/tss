@@ -16,15 +16,18 @@ public class UserDAO extends GenericDAO<User> {
     public UserDAO() {
         super();
     }
+    /**
+     * 
+     * @param email
+     * @return 
+     * @throws - if user with this email doesn't exist
+     */
 
     public User getByEmail(String email) {
         Query query = em.createQuery("Select u FROM User u WHERE u.email = :email");
         query.setParameter("email", email);
         User user = null;
-        try {
             user = (User) query.getSingleResult();
-        } catch (NoResultException e) {
-        }
         return user;
     }
 }

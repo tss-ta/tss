@@ -24,13 +24,13 @@
     <div id="wrapper">
 
         <div id="sidebar-wrapper">
-            <%@ include file="partials/sidebar.jspf" %>
+            <%@ include file="../partials/sidebar.jspf" %>
         </div>
 
         <div id="page-content-wrapper">
             <div class="container-fluid">
 
-                <%@ include file="partials/admin-header.jspf" %>
+                <%@ include file="../partials/admin-header.jspf" %>
 
                     <div class="row row-fix">
                         <div class="col-md-offset-1 col-md-10">
@@ -123,7 +123,7 @@
                                 </tbody>
                             </table>
 
-                            <%@ include file="partials/pagination.jspf"%>
+                            <%@ include file="../partials/pagination.jspf"%>
 
                         </div>
                     </div>

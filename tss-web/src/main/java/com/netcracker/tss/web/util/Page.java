@@ -5,21 +5,33 @@ package com.netcracker.tss.web.util;
  */
 
 public enum Page {
-    ADMIN_DASHBOARD("dashboard"),
-    ADMIN_CARS("cars"),
-    ADMIN_CUSTOMERS("customers"),
-    ADMIN_DRIVERS("drivers"),
-    ADMIN_GROUPS("groups"),
-    ADMIN_TARIFFS("tariffs"),
-    ADMIN_REPORTS("reports");
+    ADMIN_TEMPLATE("template", "admin/admin-template.jsp"),
+    ADMIN_DASHBOARD_CONTENT("dashboard", "admin/content/dashboard.jsp"),
+    ADMIN_CARS_CONTENT("cars", "admin/content/cars.jsp"),
+    ADMIN_ADD_CAR_CONTENT("cars", "admin/content/add-car.jsp"),
+    ADMIN_CUSTOMERS_CONTENT("customers", "admin/content/customers.jsp"),
+    ADMIN_DRIVERS_CONTENT("drivers", "admin/content/drivers.jsp"),
+    ADMIN_ADD_DRIVER_CONTENT("drivers", "admin/content/add-driver.jsp"),
+    ADMIN_GROUPS_CONTENT("groups", "admin/content/groups.jsp"),
+    ADMIN_ADD_GROUP_CONTENT("groups", "admin/content/add-group.jsp"),
+    ADMIN_TARIFFS_CONTENT("tariffs", "admin/content/tariffs.jsp"),
+    ADMIN_REPORTS_CONTENT("reports", "admin/content/reports.jsp");
 
-    private String pageType;
+    public static final String ROOT_PATH_PREFIX = "/WEB-INF/views/";
 
-    Page(String pageType) {
-        this.pageType = pageType;
+    private String type;
+    private String relativePath;
+
+    Page(String type, String relativePath) {
+        this.type = type;
+        this.relativePath = relativePath;
     }
 
-    public String getPageType() {
-        return pageType;
+    public String getType() {
+        return type;
+    }
+
+    public String getAbsolutePath() {
+        return ROOT_PATH_PREFIX + relativePath;
     }
 }

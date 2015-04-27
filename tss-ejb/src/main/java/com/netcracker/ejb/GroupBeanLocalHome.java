@@ -11,8 +11,8 @@ import javax.ejb.EJBLocalHome;
  *
  * @author Виктор
  */
-public interface RegistrationBeanLocalHome extends EJBLocalHome {
+public interface GroupBeanLocalHome extends EJBLocalHome {
 
-    RegistrationBeanLocal create();
+    GroupBeanLocal create();
 
 }

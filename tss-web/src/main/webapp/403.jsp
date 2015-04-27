@@ -32,7 +32,8 @@
 <div class="container">
 
     <div class="jumbotron">
-        <h1 class="text-danger">403</h1>
+        <h1 class="text-danger">403 Forbidden</h1>
+        <h3>Please, try again!</h3>
     </div>
 
 
