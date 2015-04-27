@@ -17,7 +17,7 @@
         <!-- Bootstrap -->
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-        <link href="/resources/css/custom.css" rel="stylesheet">
+        <link href="/resources/css/admin.css" rel="stylesheet">
         <link href="/resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -42,32 +42,19 @@
                     
                     <p>
 
+
                     </p>
                     <table class="table table-striped table-bordered">
                         <thead class="tablehead">
-                        <td>service</td>
-                        <td>tariff type</td>
-                        <td>car type</td>
-                        <td>day of week</td>
-                        <td>from time</td>
-                        <td>to time</td>
-                        <td>price</td>
-                        <td>active from date</td>
-                        <td>active to date</td>
+                        <td>name</td>
+                        <td>time</td>
                         </thead>
 
                         <tbody>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><a href="admin">edit</a></td>
+                                <td><a href="admin">customers report</a></td>
+                                <td>20-04-2015 13:14</td>
+
                             </tr>
                             <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
                                                         <tr>
@@ -77,6 +64,7 @@
                             </c:forEach> --%>
                         </tbody>
                     </table>
+
                     <%@ include file="partials/pagination.jspf" %>
                 </div>
                 <div class="col-md-1"></div>

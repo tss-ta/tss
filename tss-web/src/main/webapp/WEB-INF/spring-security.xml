@@ -46,15 +46,6 @@
 
     <authentication-manager>
         <authentication-provider ref="daoAuthenticationProvider" />
-            <!--<password-encoder ref="encoder"/>-->
-            <!--<user-service>-->
-                <!--&lt;!&ndash; password is 'pass' &ndash;&gt;-->
-                <!--<user name="customer" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_CUSTOMER" />-->
-                <!--<user name="admin" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_ADMIN" />-->
-                <!--<user name="driver" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_DRIVER" />-->
-                <!--<user name="guest" password="$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq" authorities="ROLE_GUEST" />-->
-            <!--</user-service>-->
-        <!--</authentication-provider>-->
     </authentication-manager>
 
 </beans:beans>

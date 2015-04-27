@@ -3,8 +3,7 @@
   Date: 19/04/2015
   Time: 21:27
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
@@ -18,20 +17,19 @@
         <!-- Bootstrap -->
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-        <link href="/resources/css/custom.css" rel="stylesheet">
-        <link href="/resources/img/favicon.ico" rel="shortcut icon"
-              type="image/x-icon" />
+        <link href="/resources/css/admin.css" rel="stylesheet">
+        <link href="/resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-                <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-                <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-                <![endif]-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
     <body>
 
-        <%@ include file="partials/admin-header.jspf"%>
+        <%@ include file="partials/admin-header.jspf" %>
 
         <div class="container-fluid">
 
@@ -43,47 +41,39 @@
                     <%@ include file="partials/menu.jspf" %>
 
                     <p>
-                        <a href="/admin/car?action=addcar">Add new car</a>
+                        <a href="admin?action=adduser&menu=${param.menu}">Add user</a> 
 
                     </p>
                     <table class="table table-striped table-bordered">
                         <thead class="tablehead">
-                        <td>car no</td>
-                        <td>type</td>
-                        <td>WI-FI</td>
-                        <td>air-conditioner</td>
-                        <td>applicible for animal</td>
-                        <td>active</td>
-                        <td>driver</td>
+                        <td>username</td>
+                        <td>group</td>
+                        <td>email</td>
                         </thead>
 
                         <tbody>
-
-                        <c:forEach items="${cars_page}" var="car">
                             <tr>
-                                <td>${car.getLicPlate()}</td>
-                                <td>${car.getCategory()}</td>
-                                <td>${car.getWifi()}</td>
-                                <td>${car.getConditioner()}</td>
-                                <td>${car.getAnimalable()}</td>
-                                <td>${car.getAvailable()}</td>
-                                <td>no_driver</td>
+                                <td>usr0</td>
+                                <td>1</td>
+                                <td>m@i.ua</td>
                                 <td><a href="admin">edit</a></td>
                             </tr>
-                        </c:forEach>
-
+                            <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
+                                                        <tr>
+                                                            <td>${array.frequency}</td>
+                                                            <td>${array.voltage}</td>
+                                                        </tr>
+                            </c:forEach> --%>
                         </tbody>
                     </table>
-                    <%@ include file="partials/pagination.jspf"%>
+                    <%@ include file="partials/pagination.jspf" %>
                 </div>
                 <div class="col-md-1"></div>
-            </div>
-            <!-- /.row -->
+            </div><!-- /.row -->
 
-        </div>
-        <!-- /.container -->
+        </div><!-- /.container -->
 
-        <%@ include file="/WEB-INF/views/partials/footer.jspf"%>
+        <%@ include file="../partials/footer.jspf" %>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="/resources/js/jquery-1.11.2.min.js"></script>
