@@ -5,7 +5,7 @@ import com.netcracker.dao.DriverDAO;
 import com.netcracker.ejb.RegistrationBean;
 import com.netcracker.entity.Car;
 import com.netcracker.entity.Driver;
-import com.netcracker.entity.helpEntity.Category;
+import com.netcracker.entity.driverUtil.Category;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.ServletException;

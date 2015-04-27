@@ -1,6 +1,6 @@
 package com.netcracker.entity;
 
-import com.netcracker.entity.helpEntity.Category;
+import com.netcracker.entity.driverUtil.Category;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

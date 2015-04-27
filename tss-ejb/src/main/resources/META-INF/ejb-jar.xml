@@ -76,6 +76,21 @@
                 <local>com.netcracker.ejb.GroupBeanLocal</local>
             </ejb-local-ref>
         </session>
-        
+        <session>
+            <ejb-name>DriverEJB</ejb-name>
+            <local-home>com.netcracker.ejb.DriverLocalHome</local-home>
+            <local>com.netcracker.ejb.DriverLocal</local>
+            <ejb-class>com.netcracker.ejb.DriverBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/DriverBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.DriverLocalHome</local-home>
+                <local>com.netcracker.ejb.DriverLocal</local>
+            </ejb-local-ref>
+        </session>
+
     </enterprise-beans>
 </ejb-jar>

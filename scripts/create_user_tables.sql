@@ -109,3 +109,20 @@ CREATE TABLE tss_group_role
       REFERENCES tss_role (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+
+CREATE TABLE driver_car
+(
+  driver_car_id serial NOT NULL,
+  driver_id integer,
+  car_id integer,
+  assign_time timestamp with time zone,
+  unassign_time timestamp with time zone,
+  CONSTRAINT pk_dr_car_id PRIMARY KEY (driver_car_id),
+  CONSTRAINT fk_car_id FOREIGN KEY (car_id)
+  REFERENCES car (id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_drv_id FOREIGN KEY (driver_id)
+  REFERENCES driver (driver_id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION
+)

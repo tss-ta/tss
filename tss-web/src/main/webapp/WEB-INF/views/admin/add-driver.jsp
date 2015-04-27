@@ -4,6 +4,7 @@
   Time: 14:07
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html lang="en">
 <head>
@@ -75,7 +76,7 @@
           <%--Choose driver options--%>
           <div class="checkbox">
             <label class="checkbox"><input type="checkbox" name="available" >available</label>
-            <label class="checkbox"><input type="checkbox" name="isMale">is male</label>
+            <label class="checkbox"><input type="checkbox" name="ismale">is male</label>
             <label class="checkbox"><input type="checkbox" name="smokes">smokes</label>
           </div>
 

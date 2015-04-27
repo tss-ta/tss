@@ -64,14 +64,21 @@
                         <tbody>
 
                         <c:forEach items="${drivers_page}" var="driver">
+                            <c:set var="username" scope="session" value="${driver.getUsername()}"/>
+                            <c:set var="email" scope="session" value="${driver.getEmail()}"/>
+                            <c:set var="category" scope="session" value="${driver.getCategory().getCatStr()}"/>
+                            <c:set var="available" scope="session" value="${driver.isAvailable()}"/>
+                            <c:set var="isMale" scope="session" value="${driver.isMale()}"/>
+                            <c:set var="smokes" scope="session" value="${driver.isSmokes()}"/>
+                            <c:set var="carId" scope="session" value="${driver.getCar().getId()}"/>
                             <tr>
                                 <td>${driver.getUsername()}</td>
-                                <td>${driver.getCategory().getCatStr()}</td>
+                                <td>${driver.getCategory()}</td>
                                 <td>${driver.isAvailable()}</td>
                                 <td>${driver.isMale()}</td>
                                 <td>${driver.isSmokes()}</td>
-                                <td>${driver.getCar()}</td>
-                                <td><a href="admin">edit</a></td>
+                                <td>${driver.getCar().getId()}</td>
+                                <td><a href="admin/driver?action=editdriver&driverid=${driver.getId()}" >edit</a></td>
                             </tr>
                         </c:forEach>
 

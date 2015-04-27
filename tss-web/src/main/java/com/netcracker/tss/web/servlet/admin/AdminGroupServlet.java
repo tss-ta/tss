@@ -3,7 +3,7 @@ package com.netcracker.tss.web.servlet.admin;
 import com.netcracker.DTO.GroupDTO;
 import com.netcracker.ejb.GroupBeanLocal;
 import com.netcracker.ejb.GroupBeanLocalHome;
-import com.netcracker.entity.helpEntity.Roles;
+import com.netcracker.entity.driverUtil.Roles;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
