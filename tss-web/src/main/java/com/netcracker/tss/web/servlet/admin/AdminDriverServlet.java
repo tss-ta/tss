@@ -5,7 +5,7 @@ import com.netcracker.ejb.RegistrationBean;
 import com.netcracker.ejb.RegistrationBeanLocal;
 import com.netcracker.ejb.RegistrationBeanLocalHome;
 import com.netcracker.entity.Driver;
-import com.netcracker.entity.helpEntity.Category;
+import com.netcracker.entity.helper.Category;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

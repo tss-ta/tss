@@ -25,7 +25,7 @@ CREATE TABLE tss_user
 
 CREATE TABLE tss_group
 (
-  id serial,
+  id serial NOT NULL,
   name character(100),
   CONSTRAINT tss_grp_pk PRIMARY KEY (id)
 );

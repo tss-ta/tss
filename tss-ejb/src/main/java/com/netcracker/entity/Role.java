@@ -2,23 +2,19 @@ package com.netcracker.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author Stanislav Zabielin
  */
+
 @Entity
 @Table(name = "tss_role")
 @NamedQueries({
-    @NamedQuery(name = "Role.findAllOrderedByName", query = "SELECT s FROM Role s"),
-    @NamedQuery(name = "Role.findByRolename", query = "SELECT s FROM Role s WHERE s.rolename = :rolename")})
+    @NamedQuery(name = "Role.findAllOrderedByName", query = "SELECT r FROM Role r"),
+    @NamedQuery(name = "Role.findByRolename", query = "SELECT r FROM Role r WHERE r.rolename = :rolename")})
 public class Role implements Serializable {
 
     @Id
