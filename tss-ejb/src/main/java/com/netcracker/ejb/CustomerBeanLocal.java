@@ -17,13 +17,9 @@ import javax.ejb.EJBLocalObject;
  * @author Виктор
  */
 
-public interface GroupBeanLocal extends EJBLocalObject {
+public interface CustomerBeanLocal extends EJBLocalObject {
     
-    void addGroup(GroupDTO groupDTO);
+    void editCustomer(GroupDTO groupDTO);
     
-    void editGroup(GroupDTO groupDTO);
-    
-    List<GroupDTO> getGroup(int pageNumber, int paginationStep);
-    
-    void deleteGroup (int id);
+    List<GroupDTO> getCustomers(int pageNumber, int paginationStep);
 }

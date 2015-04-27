@@ -58,7 +58,7 @@ public class AdminGroupServlet extends HttpServlet {
                 groupBeanLocal.addGroup(new GroupDTO(groupName, getRoles(req)));
                 redirectToGroups(req, resp);
             } catch (RuntimeException e) {
-                        req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Group with name '" + groupName + "' is alredy exist");
+                req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Group with name '" + groupName + "' is alredy exist");
                 req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
                 req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
             }
@@ -69,9 +69,19 @@ public class AdminGroupServlet extends HttpServlet {
                 groupBeanLocal.editGroup(new GroupDTO(Integer.parseInt(req.getParameter("id")), groupName, getRoles(req)));
                 redirectToGroups(req, resp);
             } catch (RuntimeException e) {
-                        req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Can't edit this group");
+                req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Can't edit this group");
                 req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
                 req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+            }
+        } else if ("delete-group".equals(action)) {
+            try {
+                GroupBeanLocal groupBeanLocal = getGroupBean(req);
+                groupBeanLocal.deleteGroup(Integer.parseInt(req.getParameter("id")));
+                redirectToGroups(req, resp);
+            } catch (RuntimeException e) {
+                req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Sorry! Can't delete this group" + e.getMessage());
+                e.printStackTrace();
+                redirectToGroups(req, resp);
             }
         }
     }

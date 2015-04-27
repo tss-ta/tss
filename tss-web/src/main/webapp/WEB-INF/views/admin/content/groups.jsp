@@ -43,24 +43,36 @@
     <div class="col-md-1"></div>
     <div class="col-md-10">
 
-<!--        <p>
-            <a href="/admin/group?action=addgroup">Add group</a>
-        </p>-->
+        <!--        <p>
+                    <a href="/admin/group?action=addgroup">Add group</a>
+                </p>-->
 
         <table class="table table-striped table-bordered">
             <thead class="tablehead">
             <td>Group</td>
             <td>Roles</td>
             <td>Settings</td>
+            <td>Delete</td>
             </thead>
 
             <tbody>
                 <c:forEach var = "group" items = "${requestScope.groups}">
                     <tr>
                         <td>${group.name}</td>
-                        <td><c:forEach var = "role" items = "${group.roles}">${role};</c:forEach></td>
-                            <td><a href="/admin/group?action=edit-group&id=${group.id}&name=${group.name}">edit</a></td>
-                        </tr>
+                        <td>
+                            <c:forEach var = "role" items = "${group.roles}">${role}; </c:forEach>
+                        </td>
+                        <td class="col-md-2">
+                            <a href="/admin/group?action=edit-group&id=${group.id}&name=${group.name}">edit</a>
+                        </td>
+                        <td class="col-md-2">
+                            <form action="/admin/group" method="post">
+                                <input type="hidden" name="action" value="delete-group">
+                                <input type="hidden" name="id" value="${group.id}">
+                                <button type="submit" class="btn btn-default"> Remove <i class="fa fa-users"></i></button>
+                            </form>
+                        </td>
+                    </tr>
                 </c:forEach>
             </tbody>
         </table>
