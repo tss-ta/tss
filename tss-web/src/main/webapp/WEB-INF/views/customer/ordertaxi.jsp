@@ -88,8 +88,9 @@
 							class="fa fa-dashboard"></i> <span>Dashboard</span>
 					</a></li>
 
-					<li class="sub-menu"><a class="active" href="/ordertaxi">
-							<i class="fa fa-dashboard"></i> <span>Order Taxi</span>
+					<li class="sub-menu"><a class="active"
+						href="/customer/orderpage"> <i class="fa fa-dashboard"></i> <span>Order
+								Taxi</span>
 					</a></li>
 
 					<li class="sub-menu"><a href="index.html"> <i
@@ -133,20 +134,23 @@
 									<label class="col-sm-2 col-sm-2 control-label">Street
 										Name</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" id="fromstreet">
+										<input type="text" class="form-control" id="fromstreet"
+											name="fromstreet">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 col-sm-2 control-label">House
 										Name</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" id="fromhouse">
+										<input type="text" class="form-control" id="fromhouse"
+											name="fromhouse">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 col-sm-2 control-label">ZIP Code</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" id="fromzip">
+										<input type="text" class="form-control" id="fromzip"
+											name="fromzip">
 									</div>
 								</div>
 							</div>
@@ -165,33 +169,32 @@
 									<label class="col-sm-2 col-sm-2 control-label">Street
 										Name</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" id="tostreet">
+										<input type="text" class="form-control" id="tostreet"
+											name="tostreet">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 col-sm-2 control-label">House
 										Name</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" id="tohouse">
+										<input type="text" class="form-control" id="tohouse"
+											name="tohouse">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 col-sm-2 control-label">ZIP Code</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" id=tozip>
+										<input type="text" class="form-control" id="tozip"
+											name="tozip">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 col-sm-2 control-label">Order
-										Now?</label>
+										Time</label>
 									<div class="col-sm-6">
-										<input type="checkbox" checked="" data-toggle="switch"
-											id="ordernow" name="ordernow" />
+										<input type="text" id="ordertime" name="ordertime"
+											class="form-control" />
 									</div>
-									<input type="text" id="field1" size="50"
-										value="Sunday, July 30th in the Year 1967 CE" /><br />
-									<div class="calendar" style='display: none;'>This content
-										should appear when the checkbox is checked</div>
 								</div>
 							</div>
 							<!-- col-lg-12-->
@@ -321,22 +324,9 @@
 		</script>
 
 		<script>
-			AnyTime.picker("field1", {
-				format : "%W, %M %D in the Year %z %E",
+			AnyTime.picker("ordertime", {
+				format : "%H:%i, %M %D",
 				firstDOW : 1
-			});
-		</script>
-
-		<script>
-			$(document).ready(function() {
-				$('input[id=ordernow]').change(function() {
-					var checked = $(this).attr('checked');
-					if (checked) {
-						$('.calendar').toggle();
-					} else {
-						$('.calendar').toggle();
-					}
-				});
 			});
 		</script>
 </body>
