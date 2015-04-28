@@ -146,13 +146,6 @@
 											name="fromhouse">
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">ZIP Code</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" id="fromzip"
-											name="fromzip">
-									</div>
-								</div>
 							</div>
 						</div>
 						<!-- col-lg-12-->
@@ -179,13 +172,6 @@
 									<div class="col-sm-10">
 										<input type="text" class="form-control" id="tohouse"
 											name="tohouse">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">ZIP Code</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" id="tozip"
-											name="tozip">
 									</div>
 								</div>
 								<div class="form-group">
@@ -256,7 +242,6 @@
 							</div>
 							<!-- /col-lg-12 -->
 							<div class="text-center">
-
 								<button class="btn btn-success btn-lg btn-block" type="submit">Order
 									Now</button>
 
