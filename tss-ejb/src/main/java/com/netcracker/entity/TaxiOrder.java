@@ -5,6 +5,7 @@
  */
 package com.netcracker.entity;
 
+import com.netcracker.entity.helper.DriverCar;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
