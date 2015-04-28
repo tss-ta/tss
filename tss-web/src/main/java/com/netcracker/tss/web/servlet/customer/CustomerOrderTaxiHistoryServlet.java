@@ -1,11 +1,7 @@
 package com.netcracker.tss.web.servlet.customer;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,47 +20,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
-import com.netcracker.entity.Address;
-import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
-import com.netcracker.tss.web.util.DateParser;
 
-/**
- * Created by Stanislav Zabielin
- */
-@WebServlet(urlPatterns = "/customer/order")
-public class CustomerOrderTaxiServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/customer/history")
+public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
+
+	private static final int pageSize = 10;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		User user = findCurrentUser();
-		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
-		Route route = new Route("Guest Route");
-		float altitude = 0;// ToDo
-		float longtitude = 0;// ToDo
-		Address addFrom = new Address(altitude, longtitude);
-		Address addTo = new Address(altitude, longtitude);
-		TaxiOrder taxiOrder = new TaxiOrder();
-		taxiOrder.setBookingTime(new Date());
-		Date orderTime = DateParser.parseDate(req);
-		orderTime.setYear(new Date().getYear());
-		taxiOrder.setOrderTime(orderTime);
-		taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
-		req.setAttribute("added", "success");
-		req.getRequestDispatcher("/WEB-INF/views/customer/ordertaxi.jsp")
+		Integer pageNumber = updatePageNumber(req);
+		List<TaxiOrder> list = getHistory(pageNumber, req);
+		getServletContext().setAttribute("pageNumber", pageNumber);
+		req.setAttribute("history", list);
+		req.getRequestDispatcher("/WEB-INF/views/customer/home-customer.jsp")
 				.forward(req, resp);
 	}
 
-	
+	private List<TaxiOrder> getHistory(Integer pageNumber,
+			HttpServletRequest req) {
+		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
+		List<TaxiOrder> list = taxiOrderBeanLocal.getTaxiOrderHistory(
+				pageNumber, pageSize, findCurrentUser());
+		return list;
+	}
+
+	private Integer updatePageNumber(HttpServletRequest req) {
+		Integer pageNumber = (Integer) getServletContext().getAttribute(
+				"pageNumber");
+		if (pageNumber == null)
+			pageNumber = 1;
+		if (req.getParameter("previous") != null && pageNumber > 1)
+			pageNumber--;
+		else if (req.getParameter("next") != null) {
+			pageNumber++;
+		}
+		return pageNumber;
+	}
 
 	private User findCurrentUser() {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder
