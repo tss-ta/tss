@@ -1,10 +1,12 @@
 package com.netcracker.dao;
 
+import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
 import javax.persistence.NoResultException;
 
 import javax.persistence.Query;
 import java.util.List;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -16,21 +18,25 @@ public class UserDAO extends GenericDAO<User> {
     public UserDAO() {
         super();
     }
+
     /**
-     * 
+     *
      * @param email
-     * @return 
-     * @throws - if user with this email doesn't exist
+     * @return
+     * @throws NoResultException - if user with this email doesn't exist
      */
 
     public User getByEmail(String email) {
-        Query query = em.createQuery("Select u FROM User u WHERE u.email = :email");
+        TypedQuery <User> query = em.createNamedQuery("User.findByEmail", User.class);
         query.setParameter("email", email);
-        User user = null;
-            user = (User) query.getSingleResult();
-        return user;
+        return query.getSingleResult();
     }
-	public boolean isOpen() {
-		return em.isOpen();
-	}
+
+//    public User getByRole(Role role) {
+////        TypedQuery <User> = em.
+//    }
+
+    public boolean isOpen() {
+        return em.isOpen();
+    }
 }
