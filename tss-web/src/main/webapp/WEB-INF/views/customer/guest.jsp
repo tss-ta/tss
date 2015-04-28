@@ -183,6 +183,43 @@
 					</div>
 					<!-- /row -->
 
+                                        <div class="row mt">
+					<div class="col-lg-12">
+						<div class="form-panel">
+							<h4 class="mb">
+								<i class="fa fa-angle-right"></i> Choose on map
+                                                                 <input type="button" onclick="initialize()" value="Show map"/>
+							</h4>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">From :</label>
+								<div class="col-sm-10">
+                                                                        <input type="text"  class="form-control"  id="fromAddr" name="" value="Holosiivskyi Avenue, 122К3, Kyiv, Ukraine" />  
+                                                                         <p id="fromAddrMessage"> </p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">To :</label>
+								<div class="col-sm-10">
+                                                                         <input type="text" class="form-control" id="toAddr" name="" value="Vasylya Zhukovs'koho Lane, 6, Kyiv, Ukraine" />
+                                                                         <p id="toAddrMessage"> </p>
+								</div>
+							</div>
+                                                         <input type="hidden" id="fromc" name="" value="" />  
+                                                          <input type="hidden" id="toc" name="" value="" />
+							
+                                                         <div>
+                                                                     
+                                                          <input type="button" onclick="geoloc()" value="find me"/>
+                                                          <input type="button" onclick="showonmap()" value="show on map"/>
+        
+                                                             </div>
+							<div id="map_canvas"  style="width: 500px; height: 300px"></div>
+                                                  
+						</div>
+						<!-- col-lg-12-->
+					</div>
+                                    </div>
+                                        
 					<!-- INPUT MESSAGES -->
 					<div class="row mt">
 						<div class="col-lg-12">
@@ -293,7 +330,12 @@
 
 	<script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
 
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script type="text/javascript"
+        src="http://maps.googleapis.com/maps/api/js?sensor=false">
+        </script>
 
+        <script type="text/javascript" src="/resources/customer_assets/js/map.js"> </script>
 	<script>
 		//custom select box
 
