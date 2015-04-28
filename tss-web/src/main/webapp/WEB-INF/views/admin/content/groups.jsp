@@ -16,7 +16,7 @@
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
         <div class="text-center">
-            <h1>Car Panel</h1>
+            <h1>Groups Panel</h1>
         </div>
 
         <div class="panel panel-default">
@@ -42,10 +42,6 @@
 <div class="row row-fix">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-
-        <!--        <p>
-                    <a href="/admin/group?action=addgroup">Add group</a>
-                </p>-->
 
         <table class="table table-striped table-bordered">
             <thead class="tablehead">

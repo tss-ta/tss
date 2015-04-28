@@ -5,21 +5,21 @@
  */
 package com.netcracker.ejb;
 
-
+import com.netcracker.DTO.CustomerDTO;
 import com.netcracker.DTO.GroupDTO;
 
 import java.util.List;
 import javax.ejb.EJBLocalObject;
 
-
 /**
  *
  * @author Виктор
  */
-
 public interface CustomerBeanLocal extends EJBLocalObject {
-    
-//    void editCustomer(GroupDTO groupDTO);
-    
+
+    void editRoles(CustomerDTO customerDTO);
+
+    void editGroups(CustomerDTO customerDTO);
+
     List<GroupDTO> getCustomers(int pageNumber, int paginationStep);
 }

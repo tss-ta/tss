@@ -1,0 +1,8 @@
+
+<div class="form-group">
+    <div class="col-sm-offset-5 col-sm-8">
+        <label class="checkbox"><input type="checkbox" name="admin">admin</label>
+        <label class="checkbox"><input type="checkbox" name="driver">driver</label>
+        <label class="checkbox"><input type="checkbox" name="customer">customer</label>
+    </div>
+</div> 

@@ -5,6 +5,7 @@
  */
 package com.netcracker.ejb;
 
+import com.netcracker.DTO.CustomerDTO;
 import com.netcracker.DTO.GroupDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
@@ -29,33 +30,75 @@ import javax.persistence.NoResultException;
 public class CustomerBean implements SessionBean {
 
 //
-//    public void editGroup(GroupDTO groupDTO) {
-//        GroupDAO groupDAO = null;
-//        RoleDAO roleDAO = null;
-//        try {
-//            int groupId = groupDTO.getId();
-//            groupDAO = new GroupDAO();
-//            roleDAO = new RoleDAO();
-//            Group group = groupDAO.get(groupId);
-//
-////            if (group == null) { //isPersist
-////                throw new IllegalArgumentException("Group with id " + groupId
-////                        + " doesn't exist");
-////            }
-//            group.setName(groupDTO.getName());
-//
-//            groupDAO.update(group);
-//        } finally {
-//            if (roleDAO != null) {
-//                roleDAO.close();
+    public void editRoles(CustomerDTO customerDTO) {
+        UserDAO userDAO = null;
+        RoleDAO roleDAO = null;
+        try {
+            String email = customerDTO.getEmail();
+            userDAO = new UserDAO();
+            roleDAO = new RoleDAO();
+            User user = userDAO.getByEmail(email);
+
+            user.setRoles(toRoleList(customerDTO.getRoles(), roleDAO));
+            userDAO.update(user);
+        } finally {
+            if (roleDAO != null) {
+                roleDAO.close();
+            }
+            if (userDAO != null) {
+                userDAO.close();
+            }
+        }
+    }
+
+    public void editGroups(CustomerDTO customerDTO) {
+        GroupDAO groupDAO = null;
+        UserDAO userDAO = null;
+        try {
+            String email = customerDTO.getEmail();
+            groupDAO = new GroupDAO();
+            userDAO = new UserDAO();
+            User user = userDAO.getByEmail(email);
+
+//            if (group == null) { //isPersist
+//                throw new IllegalArgumentException("Group with id " + groupId
+//                        + " doesn't exist");
 //            }
-//            if (groupDAO != null) {
-//                groupDAO.close();
+            user.setGroups(toGroupList(customerDTO.getGroups(), groupDAO));
+            userDAO.update(user);
+        } finally {
+            if (userDAO != null) {
+                userDAO.close();
+            }
+            if (groupDAO != null) {
+                groupDAO.close();
+            }
+        }
+    }
+
+    private List<Group> toGroupList(List<String> groupNames, GroupDAO dao) {
+        List<Group> groups = new ArrayList<>();
+        Iterator<String> groupNamesIterator = groupNames.iterator();
+        while (groupNamesIterator.hasNext()) {
+            Group group = dao.findByName(groupNamesIterator.next());
+            groups.add(group);
+        }
+        return groups;
+    }
+
+    private List<Role> toRoleList(List<Roles> roles, RoleDAO roleDAO) {
+        List<Role> roleList = new ArrayList<>();
+        Iterator<Roles> rolesIterator = roles.iterator();
+        while (rolesIterator.hasNext()) {
+            String rolename = rolesIterator.next().toString();
+            Role role = roleDAO.findByRolename(rolename);
+//            if (role == null) {
+//                throw new IllegalArgumentException("Role with name " + rolename + " doesn't exist");
 //            }
-//        }
-//    }
-//
-//
+            roleList.add(role);
+        }
+        return roleList;
+    }
 //
 //    private boolean isGroupPersist(String groupName, GroupDAO dao) {
 //        try {
@@ -82,45 +125,44 @@ public class CustomerBean implements SessionBean {
 //            return false;
 //        }
 //    }
-//
-//    public List<GroupDTO> getGroup(int pageNumber, int paginationStep) {
-//        GroupDAO dao = null;
-//
-//        try {
-//            dao = new GroupDAO();
-//            List<GroupDTO> groupsDTOPage = new ArrayList<GroupDTO>();
-//            List<Group> groupsPage = dao.findPage(pageNumber, paginationStep);
-//            Iterator<Group> groupIterator = groupsPage.iterator();
-//            while (groupIterator.hasNext()) {
-//                Group group = groupIterator.next();
-//                String groupName = group.getName();
-//                List<Role> roleList = group.getRoles();
-//                List<Roles> rolesList = new ArrayList<Roles>(); //enum
-//                Iterator<Role> roleIterator = roleList.iterator();
-//                while (roleIterator.hasNext()) {
-//                    String roleName = roleIterator.next().getRolename();
-//                    rolesList.add(Roles.valueOf(roleName));
-//                }
-//                groupsDTOPage.add(new GroupDTO(group.getId(), groupName, rolesList));
-//            }
-//            return groupsDTOPage;
-//        } finally {
-//            if (dao != null) {
-//                dao.close();
-//            }
-//        }
-//
-//    }
-    public List<User> getCustomers(int pageNumber, int paginationStep) {
+
+    public List<CustomerDTO> getCustomers(int pageNumber, int paginationStep) {
         UserDAO dao = null;
         try {
             dao = new UserDAO();
-            return dao.getByRolename("customer", pageNumber, paginationStep);
+            List<CustomerDTO> customers = new ArrayList<>();
+            List<User> customerUsers = dao.getByRolename(Roles.CUSTOMER.toString(), pageNumber, paginationStep);
+            Iterator<User> customersIterator = customerUsers.iterator();
+            while (customersIterator.hasNext()) {
+                User customer = customersIterator.next();
+                customers.add(new CustomerDTO(customer.getUsername(), customer.getEmail(),
+                        toGroupNameList(customer.getGroups()), toEnumRolesList(customer.getRoles())));
+            }
+            return customers;
         } finally {
             if (dao != null) {
                 dao.close();
             }
         }
+    }
+
+    public List<String> toGroupNameList(List<Group> groups) {
+        List<String> names = new ArrayList<>();
+        Iterator<Group> groupIterator = groups.iterator();
+        while (groupIterator.hasNext()) {
+            names.add(groupIterator.next().getName());
+        }
+        return names;
+    }
+
+    public List<Roles> toEnumRolesList(List<Role> roleList) {
+        List<Roles> rolesList = new ArrayList<Roles>(); //enum
+        Iterator<Role> roleIterator = roleList.iterator();
+        while (roleIterator.hasNext()) {
+            String roleName = roleIterator.next().getRolename();
+            rolesList.add(Roles.valueOf(roleName));
+        }
+        return rolesList;
     }
 
     @Override
