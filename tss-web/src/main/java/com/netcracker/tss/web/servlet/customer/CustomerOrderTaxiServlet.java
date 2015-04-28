@@ -1,7 +1,11 @@
 package com.netcracker.tss.web.servlet.customer;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,14 +51,33 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 		Address addTo = new Address(altitude, longtitude);
 		TaxiOrder taxiOrder = new TaxiOrder();
 		taxiOrder.setBookingTime(new Date());
+		Date orderTime = parseDate(req);
+		orderTime.setYear(new Date().getYear());
+		taxiOrder.setOrderTime(orderTime);
 		taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
 		req.setAttribute("added", "success");
 		req.getRequestDispatcher("/WEB-INF/views/customer/ordertaxi.jsp")
 				.forward(req, resp);
 	}
 
+	private Date parseDate(HttpServletRequest req) {
+		String date = null;
+		DateFormat format = new SimpleDateFormat("HH:mm, MMMM dd",
+				Locale.ENGLISH);
+		try {
+			date = req.getParameter("ordertime");
+			if (date != null && date != "")
+				return format.parse(date.substring(0, date.length() - 2));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new Date();
+	}
+
 	private User findCurrentUser() {
-		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails) SecurityContextHolder
+				.getContext().getAuthentication().getPrincipal();
 		UserDAO userDao = new UserDAO();
 		User user = userDao.getByEmail(userDetails.getUsername());
 		userDao.close();
