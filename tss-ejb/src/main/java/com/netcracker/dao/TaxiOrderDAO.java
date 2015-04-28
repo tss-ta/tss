@@ -8,7 +8,6 @@ package com.netcracker.dao;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import java.util.List;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
