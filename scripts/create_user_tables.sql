@@ -61,13 +61,9 @@ CREATE TABLE driver
   available boolean,
   is_male boolean,
   smokes boolean,
-  car_id integer,
   CONSTRAINT pk_driv_id PRIMARY KEY (driver_id),
   CONSTRAINT fk_user FOREIGN KEY (driver_id)
   REFERENCES tss_user (id) MATCH SIMPLE
-    ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT fk_car FOREIGN KEY (car_id)
-  REFERENCES car (id) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
@@ -196,6 +192,19 @@ CREATE TABLE taxi_order
 
 
 
-
-
+CREATE TABLE driver_car
+(
+  id serial NOT NULL,
+  driver_id integer,
+  car_id integer,
+  assign_time timestamp with time zone,
+  unassign_time timestamp with time zone,
+  CONSTRAINT pk_dr_car_id PRIMARY KEY (id),
+  CONSTRAINT fk_car_id FOREIGN KEY (car_id)
+  REFERENCES car (id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_drv_id FOREIGN KEY (driver_id)
+  REFERENCES driver (driver_id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION
+);
 
