@@ -1,3 +1,6 @@
+<%--
+  by Stanislav Zabielin
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -239,7 +242,7 @@
 						</div>
 			</form>
 		</section>
-		<! --/wrapper --> <!--main content end--> <!--footer start--> <footer
+		<!--/wrapper --> <!--main content end--> <!--footer start--> <footer
 			class="site-footer">
 			<div class="text-center">2015 A-Team</div>
 		</footer> <!--footer end-->
