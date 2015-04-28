@@ -23,18 +23,20 @@
             </thead>
 
             <tbody>
-            <tr>
-                <td>usr0</td>
-                <td>1</td>
-                <td>m@i.ua</td>
-                <td><a href="admin">edit</a></td>
-            </tr>
-            <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
-                                        <tr>
-                                            <td>${array.frequency}</td>
-                                            <td>${array.voltage}</td>
-                                        </tr>
-            </c:forEach> --%>
+                <tr>
+                    <td>usr0</td>
+                    <td>1</td>
+                    <td>m@i.ua</td>
+                    <td><a href="admin">edit</a></td>
+                </tr>
+                <c:forEach var = "customer" items = "${requestScope.customers}">
+                    <tr>
+                        <td>${customer.username}</td>
+                        <td>!</td>
+                        <td>${customer.email}</td>
+                        <td><a href="/admin/customer?action=add-to-group">add to groups</a></td>
+                    </tr>
+                </c:forEach> 
             </tbody>
         </table>
         <%@ include file="../partials/pagination.jspf" %>
