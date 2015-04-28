@@ -59,6 +59,12 @@ public class DriverCar implements Serializable {
     public DriverCar() {
     }
 
+    public DriverCar(Car carId, Driver driverId, Date assignedTime) {
+        this.carId = carId;
+        this.driverId = driverId;
+        this.assignedTime = assignedTime;
+    }
+
     public DriverCar(Integer id) {
         this.id = id;
     }
