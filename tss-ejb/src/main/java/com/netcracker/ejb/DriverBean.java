@@ -57,46 +57,81 @@ public class DriverBean implements SessionBean {
         return driversPage;
     }
 
-    public void assignCar(Driver driver, Car car) {
-        DriverDAO drDAO = new DriverDAO();
-        Driver foundDriver = drDAO.get(driver.getId());
-        drDAO.close();
+    public void assignCar(Integer driverId, Integer carId) {
 
-        if(foundDriver != null) {
-            CarDao carDao = new CarDao();
-            Car foundCar = carDao.get(car.getId());
-            carDao.close();
+        DriverDAO drDAO = null;
+        CarDao carDao = null;
+        DriverCarDAO drCarDao = null;
 
-            if(foundCar != null) {
-                DriverCarDAO drCarDao = new DriverCarDAO();
-                drCarDao.persist(new DriverCar(driver.getId(), car.getId(), Calendar.getInstance()));
+        try {
+            drDAO = new DriverDAO();
+            Driver foundDriver = drDAO.get(driverId);
+
+
+            if(foundDriver != null) {
+                carDao = new CarDao();
+                Car foundCar = carDao.get(carId);
+
+                if(foundCar != null) {
+                    foundDriver.setCar(foundCar);
+                    drCarDao = new DriverCarDAO();
+                    drCarDao.persist(new DriverCar(driverId, carId, Calendar.getInstance()));
+                }
+            }
+        } finally {
+            if(drDAO != null) {
+                drDAO.close();
+            }
+
+            if(carDao != null) {
+                carDao.close();
+            }
+
+            if(drCarDao != null) {
                 drCarDao.close();
             }
         }
     }
 
-    public void unassignCar(Driver driver, Car car) {
-        DriverDAO drDAO = new DriverDAO();
-        Driver foundDriver = drDAO.get(driver.getId());
-        drDAO.close();
+    public void unassignCar(Integer driverId, Integer carId) {
 
-        if(foundDriver != null) {
-            CarDao carDao = new CarDao();
-            Car foundCar = carDao.get(car.getId());
-            carDao.close();
+        DriverDAO drDAO = null;
+        CarDao carDao = null;
+        DriverCarDAO drCarDao = null;
 
-            if(foundCar != null) {
-                DriverCarDAO drCarDao = new DriverCarDAO();
-                DriverCar drCar = drCarDao.getByDriverId(driver.getId());
-                if(drCar != null) {
-                    drCarDao.delete(drCar);
-                    drCar.setUnassignedTime(Calendar.getInstance());
-                    drCarDao.persist(drCar);
+        try {
+            drDAO = new DriverDAO();
+            Driver foundDriver = drDAO.get(driverId);
+
+            if(foundDriver != null) {
+                carDao = new CarDao();
+                Car foundCar = carDao.get(carId);
+
+                if(foundCar != null) {
+                    foundDriver.setCar(null);
+                    drCarDao = new DriverCarDAO();
+                    DriverCar drCar = drCarDao.getByDriverId(driverId);
+                    if(drCar != null) {
+//                        drCarDao.delete(drCar);
+                        drCar.setUnassignedTime(Calendar.getInstance());
+                        drCarDao.persist(drCar);
+                    }
+
                 }
+            }
+        } finally {
+            if(drDAO != null) {
+                drDAO.close();
+            }
 
+            if(carDao != null) {
+                carDao.close();
+
+            }if(drCarDao != null) {
                 drCarDao.close();
             }
         }
+
     }
 
 
