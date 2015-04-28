@@ -29,6 +29,7 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.DateParser;
 
 @WebServlet(urlPatterns = "/customer/order")
 public class CustomerOrderTaxiServlet extends HttpServlet {
@@ -51,7 +52,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 		Address addTo = new Address(altitude, longtitude);
 		TaxiOrder taxiOrder = new TaxiOrder();
 		taxiOrder.setBookingTime(new Date());
-		Date orderTime = parseDate(req);
+		Date orderTime = DateParser.parseDate(req);
 		orderTime.setYear(new Date().getYear());
 		taxiOrder.setOrderTime(orderTime);
 		taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
@@ -60,20 +61,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 				.forward(req, resp);
 	}
 
-	private Date parseDate(HttpServletRequest req) {
-		String date = null;
-		DateFormat format = new SimpleDateFormat("HH:mm, MMMM dd",
-				Locale.ENGLISH);
-		try {
-			date = req.getParameter("ordertime");
-			if (date != null && date != "")
-				return format.parse(date.substring(0, date.length() - 2));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new Date();
-	}
+	
 
 	private User findCurrentUser() {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder
