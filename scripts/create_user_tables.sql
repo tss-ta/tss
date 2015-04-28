@@ -1,3 +1,4 @@
+
 DROP TABLE IF EXISTS taxi_order;
 DROP TABLE IF EXISTS tss_user_group;
 DROP TABLE IF EXISTS tss_user_role;
@@ -11,7 +12,6 @@ DROP TABLE IF EXISTS route;
 DROP TABLE IF EXISTS car;
 DROP TABLE IF EXISTS tariff;
 DROP TABLE IF EXISTS address;
-
 
 
 
@@ -112,7 +112,6 @@ CREATE TABLE tss_group_role
       REFERENCES tss_role (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-
 
 CREATE TABLE driver_car
 (
