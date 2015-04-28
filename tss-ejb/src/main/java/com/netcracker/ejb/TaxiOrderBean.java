@@ -63,12 +63,12 @@ public class TaxiOrderBean implements SessionBean {
 
     }
 
-    public List<TaxiOrder> getTaxiOrderHistory(User user) {
+    public List<TaxiOrder> getTaxiOrderHistory(int pageNumber, int pageSize,User user) {
         TaxiOrderDAO dao = null;
         List<TaxiOrder> orders = null;
         try {
             dao = new TaxiOrderDAO();
-            orders = dao.getTaxiOrderHistory(user);
+            orders = dao.getTaxiOrderHistory(pageNumber,pageSize,user);
         } finally {
             if(dao != null) {
                 dao.close();
