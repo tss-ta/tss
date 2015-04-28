@@ -79,6 +79,24 @@
         </session>  
         
         <session>
+            <description>An EJB named MapBean</description>
+            <display-name>MapBean</display-name>
+            <ejb-name>MapBean</ejb-name>
+            <local-home>com.netcracker.ejb.MapBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.MapBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.MapBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/MapBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.MapBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.MapBeanLocal</local>
+            </ejb-local-ref>
+        </session> 
+        
+        <session>
             <display-name>GroupBean</display-name>
             <ejb-name>GroupBean</ejb-name>
             <local-home>com.netcracker.ejb.GroupBeanLocalHome</local-home>
