@@ -256,7 +256,6 @@
 							</div>
 							<!-- /col-lg-12 -->
 							<div class="text-center">
-
 								<button class="btn btn-success btn-lg btn-block" type="submit">Order
 									Now</button>
 

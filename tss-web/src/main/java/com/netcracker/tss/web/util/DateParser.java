@@ -8,6 +8,10 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+
+/**
+ * Created by Stanislav Zabielin
+ */
 public class DateParser {
 
 	public static Date parseDate(HttpServletRequest req) {
@@ -19,7 +23,6 @@ public class DateParser {
 			if (date != null && date != "")
 				return format.parse(date.substring(0, date.length() - 2));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new Date();
