@@ -79,8 +79,9 @@ public class AdminGroupServlet extends HttpServlet {
                 groupBeanLocal.deleteGroup(Integer.parseInt(req.getParameter("id")));
                 redirectToGroups(req, resp);
             } catch (RuntimeException e) {
-                req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Sorry! Can't delete this group" + e.getMessage());
-                e.printStackTrace();
+                Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+                    "Can't delete group", e);
+                req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Sorry! Can't delete this group");
                 redirectToGroups(req, resp);
             }
         }
