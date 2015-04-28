@@ -19,7 +19,7 @@ import javax.ejb.EJBLocalObject;
 
 public interface CustomerBeanLocal extends EJBLocalObject {
     
-    void editCustomer(GroupDTO groupDTO);
+//    void editCustomer(GroupDTO groupDTO);
     
     List<GroupDTO> getCustomers(int pageNumber, int paginationStep);
 }

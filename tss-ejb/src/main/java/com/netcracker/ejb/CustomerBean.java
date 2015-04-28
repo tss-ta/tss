@@ -8,8 +8,10 @@ package com.netcracker.ejb;
 import com.netcracker.DTO.GroupDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
+import com.netcracker.dao.UserDAO;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
+import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Roles;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -25,7 +27,6 @@ import javax.persistence.NoResultException;
  * @author Виктор
  */
 public class CustomerBean implements SessionBean {
-
 
 //
 //    public void editGroup(GroupDTO groupDTO) {
@@ -110,6 +111,17 @@ public class CustomerBean implements SessionBean {
 //        }
 //
 //    }
+    public List<User> getCustomers(int pageNumber, int paginationStep) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            return dao.getByRolename("customer", pageNumber, paginationStep);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
 
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {
