@@ -25,9 +25,11 @@ public class DriverCar implements Serializable {
     private Integer carId;
 
     @Column(name = "assign_time")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Calendar assignedTime;
 
     @Column(name = "unassign_time")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Calendar unassignedTime;
 
     public DriverCar() {}
