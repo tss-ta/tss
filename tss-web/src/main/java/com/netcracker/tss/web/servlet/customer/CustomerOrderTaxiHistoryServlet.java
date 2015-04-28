@@ -24,6 +24,10 @@ import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 
+/**
+ * Created by Stanislav Zabielin
+ */
+
 @WebServlet(urlPatterns = "/customer/history")
 public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
 
