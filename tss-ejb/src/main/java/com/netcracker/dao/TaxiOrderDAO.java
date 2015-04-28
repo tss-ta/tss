@@ -5,7 +5,10 @@
  */
 package com.netcracker.dao;
 
-
+import com.netcracker.entity.TaxiOrder;
+import com.netcracker.entity.User;
+import java.util.List;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -16,5 +19,13 @@ public class TaxiOrderDAO extends GenericDAO<Object> {
     public TaxiOrderDAO() {
         super();
     }
-   
+
+    public List<TaxiOrder> getTaxiOrderHistory(User user) {
+        TypedQuery<TaxiOrder> tq = em.createQuery(
+                "SELECT t FROM TaxiOrder t WHERE t.userId = :userId",TaxiOrder.class);
+        tq.setParameter("userId", user);
+        
+        List<TaxiOrder> taxiOrders = tq.getResultList();
+        return taxiOrders;
+    }
 }
