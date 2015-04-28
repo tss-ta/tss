@@ -10,6 +10,7 @@ public enum Page {
     ADMIN_CARS_CONTENT("cars", "admin/content/cars.jsp"),
     ADMIN_ADD_CAR_CONTENT("cars", "admin/content/add-car.jsp"),
     ADMIN_CUSTOMERS_CONTENT("customers", "admin/content/customers.jsp"),
+    ADMIN_ADD_ROLES_CONTENT("customers", "admin/content/add-roles.jsp"),
     ADMIN_DRIVERS_CONTENT("drivers", "admin/content/drivers.jsp"),
     ADMIN_ADD_DRIVER_CONTENT("drivers", "admin/content/add-driver.jsp"),
     ADMIN_GROUPS_CONTENT("groups", "admin/content/groups.jsp"),

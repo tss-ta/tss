@@ -42,8 +42,9 @@ public class AdminGroupServlet extends HttpServlet {
         } else if ("edit-group".equals(action)) {
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+        } else {
+            redirectToGroups(req, resp);
         }
-        redirectToGroups(req, resp);
 
     }
 

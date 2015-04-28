@@ -32,10 +32,15 @@ public class UserDAO extends GenericDAO<User> {
     }
 
     public List<User> getByRolename(String rolename, int pageNumber, int paginationStep) {
-//        TypedQuery<User> query = em.createNamedQuery("User.findByRole", User.class);
-        Query query = em.createNativeQuery("select * from tss_user u join tss_user_role on u.id=user_id join tss_role r on r.id=role_id where rolename = 'ADMIN'", User.class);
-//        query.setParameter("rolename", rolename);
-//        query.setParameter("rolename2", rolename);
+        Query query = em.createQuery("SELECT u FROM User u JOIN u.roles r WHERE r.rolename = :rolename", User.class);
+        query.setParameter("rolename", rolename);
+        query.setFirstResult((pageNumber - 1) * paginationStep);
+        query.setMaxResults(paginationStep);
+        return query.getResultList();
+    }
+    public List<User> getByGroup(String groupName, int pageNumber, int paginationStep) {
+        Query query = em.createQuery("SELECT u FROM User u JOIN u.groups g WHERE g.name = :name", User.class);
+        query.setParameter("name", groupName);
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
         return query.getResultList();

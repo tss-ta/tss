@@ -94,9 +94,9 @@ public class GroupBean implements SessionBean {
         while (rolesIterator.hasNext()) {
             String rolename = rolesIterator.next().toString();
             Role role = roleDAO.findByRolename(rolename);
-            if (role == null) {
-                throw new IllegalArgumentException("Role with name " + rolename + " doesn't exist");
-            }
+//            if (role == null) {
+//                throw new IllegalArgumentException("Role with name " + rolename + " doesn't exist");
+//            }
             roleList.add(role);
         }
         return roleList;
@@ -139,14 +139,8 @@ public class GroupBean implements SessionBean {
             while (groupIterator.hasNext()) {
                 Group group = groupIterator.next();
                 String groupName = group.getName();
-                List<Role> roleList = group.getRoles();
-                List<Roles> rolesList = new ArrayList<Roles>(); //enum
-                Iterator<Role> roleIterator = roleList.iterator();
-                while (roleIterator.hasNext()) {
-                    String roleName = roleIterator.next().getRolename();
-                    rolesList.add(Roles.valueOf(roleName));
-                }
-                groupsDTOPage.add(new GroupDTO(group.getId(), groupName, rolesList));
+                groupsDTOPage.add(new GroupDTO(group.getId(), groupName,
+                        toEnumRolesList(group.getRoles())));
             }
             return groupsDTOPage;
         } finally {
@@ -154,7 +148,16 @@ public class GroupBean implements SessionBean {
                 dao.close();
             }
         }
+    }
 
+    public List<Roles> toEnumRolesList(List<Role> roleList) {
+        List<Roles> rolesList = new ArrayList<Roles>(); //enum
+        Iterator<Role> roleIterator = roleList.iterator();
+        while (roleIterator.hasNext()) {
+            String roleName = roleIterator.next().getRolename();
+            rolesList.add(Roles.valueOf(roleName));
+        }
+        return rolesList;
     }
 
     @Override

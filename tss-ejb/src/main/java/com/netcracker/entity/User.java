@@ -16,10 +16,6 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
     @NamedQuery(name = "User.findAllOrderedByUsername", query = "SELECT u FROM User u ORDER BY u.username"),
-//    @NamedQuery(name = "User.findByRolename", query = 
-//            "SELECT u FROM User JOIN u.roles r WHERE r.rolename = :rolename"),
-//     @NamedQuery(name = "User.findByRole", query = 
-//            "SELECT u FROM User JOIN u.groups g WHERE u.id in (SELECT u.id FROM User u JOIN u.roles r WHERE r.rolename = :rolename1) or g.id in (SELECT g.id FROM Group g JOIN g.roles r WHERE r.rolename = :rolename2)"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
 public class User implements Serializable {
 
