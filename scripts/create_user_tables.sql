@@ -1,3 +1,4 @@
+
 DROP TABLE IF EXISTS taxi_order;
 DROP TABLE IF EXISTS tss_user_group;
 DROP TABLE IF EXISTS tss_user_role;
@@ -11,7 +12,6 @@ DROP TABLE IF EXISTS route;
 DROP TABLE IF EXISTS car;
 DROP TABLE IF EXISTS tariff;
 DROP TABLE IF EXISTS address;
-
 
 
 
@@ -61,10 +61,14 @@ CREATE TABLE driver
   available boolean,
   is_male boolean,
   smokes boolean,
-  CONSTRAINT pk_driv_id PRIMARY KEY (driver_id),
-  CONSTRAINT fk_user FOREIGN KEY (driver_id)
-  REFERENCES tss_user (id) MATCH SIMPLE
-    ON UPDATE NO ACTION ON DELETE NO ACTION
+  car_id integer,
+   CONSTRAINT pk_driv_id PRIMARY KEY (driver_id),
+   CONSTRAINT fk_user FOREIGN KEY (driver_id)
+   REFERENCES tss_user (id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION,
+   CONSTRAINT fk_car FOREIGN KEY (car_id)
+   REFERENCES car (id) MATCH SIMPLE
+     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 
@@ -108,21 +112,37 @@ CREATE TABLE tss_group_role
       REFERENCES tss_role (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
 CREATE TABLE driver_car
 (
-	id serial NOT NULL,
-	driver_id INT,
-	car_id INT,
-	assigned_time TIMESTAMP,
-	unassigned_time TIMESTAMP,
-  	CONSTRAINT driver_car_pk PRIMARY KEY (id),
-	CONSTRAINT driver_car_car_fk FOREIGN KEY (car_id)
-      	REFERENCES car (id) MATCH SIMPLE
-		 ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT driver_car_driver_fk FOREIGN KEY (driver_id)
-      	REFERENCES driver (driver_id)  MATCH SIMPLE
-		ON UPDATE NO ACTION ON DELETE NO ACTION
+  id serial NOT NULL,
+  driver_id integer,
+  car_id integer,
+  assign_time timestamp with time zone,
+  unassign_time timestamp with time zone,
+  CONSTRAINT pk_dr_car_id PRIMARY KEY (id),
+  CONSTRAINT fk_car_id FOREIGN KEY (car_id)
+  REFERENCES car (id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_drv_id FOREIGN KEY (driver_id)
+  REFERENCES driver (driver_id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+-- CREATE TABLE driver_car
+-- (
+-- 	id serial NOT NULL,
+-- 	driver_id INT,
+-- 	car_id INT,
+-- 	assigned_time TIMESTAMP,
+-- 	unassigned_time TIMESTAMP,
+--   	CONSTRAINT driver_car_pk PRIMARY KEY (id),
+-- 	CONSTRAINT driver_car_car_fk FOREIGN KEY (car_id)
+--       	REFERENCES car (id) MATCH SIMPLE
+-- 		 ON UPDATE NO ACTION ON DELETE NO ACTION,
+-- 	CONSTRAINT driver_car_driver_fk FOREIGN KEY (driver_id)
+--       	REFERENCES driver (driver_id)  MATCH SIMPLE
+-- 		ON UPDATE NO ACTION ON DELETE NO ACTION
+-- );
 CREATE TABLE tariff
 (
   id serial NOT NULL,
@@ -188,23 +208,5 @@ CREATE TABLE taxi_order
   CONSTRAINT tx_rdr_rt_id_fk FOREIGN KEY (route_id)
       REFERENCES route (route_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
-);
-
-
-
-CREATE TABLE driver_car
-(
-  id serial NOT NULL,
-  driver_id integer,
-  car_id integer,
-  assign_time timestamp with time zone,
-  unassign_time timestamp with time zone,
-  CONSTRAINT pk_dr_car_id PRIMARY KEY (id),
-  CONSTRAINT fk_car_id FOREIGN KEY (car_id)
-  REFERENCES car (id) MATCH SIMPLE
-    ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT fk_drv_id FOREIGN KEY (driver_id)
-  REFERENCES driver (driver_id) MATCH SIMPLE
-    ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
