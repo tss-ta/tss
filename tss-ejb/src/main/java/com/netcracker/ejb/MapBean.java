@@ -35,18 +35,31 @@ import java.io.Reader;
  */
 public class MapBean implements SessionBean {
 
+    private final String baseUrl = "http://maps.googleapis.com/maps/api/geocode/json";
+
+    public String geodecodeAddress(double lng, double lat) throws JSONException, IOException {
+        Map<String, String> params = Maps.newHashMap();
+        params.put("language", "ru");
+        params.put("sensor", "false");
+        params.put("latlng", Double.toString(lng) + "," + Double.toString(lat));
+        String url = baseUrl + '?' + encodeParams(params);
+        JSONObject response = read(url);
+        JSONObject location = response.getJSONArray("results").getJSONObject(0);
+        String formattedAddress = location.getString("formatted_address");
+        return formattedAddress;
+    }
+
     public double[] geocodeAddress(String address) throws JSONException, IOException {
-        String baseUrl = "http://maps.googleapis.com/maps/api/geocode/json";
         Map<String, String> params = Maps.newHashMap();
         params.put("sensor", "false");
         params.put("address", address);
-        final String url = baseUrl + '?' + encodeParams(params);
-        final JSONObject response = read(url);
+        String url = baseUrl + '?' + encodeParams(params);
+        JSONObject response = read(url);
         JSONObject location = response.getJSONArray("results").getJSONObject(0);
         location = location.getJSONObject("geometry");
         location = location.getJSONObject("location");
-        final double lng = location.getDouble("lng");// долгота
-        final double lat = location.getDouble("lat");// широта
+        double lng = location.getDouble("lng");// долгота
+        double lat = location.getDouble("lat");// широта
         double[] coordinates = new double[2];
         coordinates[0] = lng;
         coordinates[1] = lat;
@@ -85,7 +98,7 @@ public class MapBean implements SessionBean {
         }
     }
 
-    private  String readAll(final Reader rd) throws IOException {
+    private String readAll(final Reader rd) throws IOException {
         final StringBuilder sb = new StringBuilder();
         int cp;
         while ((cp = rd.read()) != -1) {
