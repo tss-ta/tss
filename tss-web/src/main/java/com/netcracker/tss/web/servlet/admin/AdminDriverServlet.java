@@ -1,7 +1,9 @@
 package com.netcracker.tss.web.servlet.admin;
 
+import com.netcracker.dao.CarDao;
 import com.netcracker.dao.DriverDAO;
 import com.netcracker.ejb.*;
+import com.netcracker.entity.Car;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.Category;
 import com.netcracker.tss.web.util.Page;
@@ -31,6 +33,8 @@ public class AdminDriverServlet extends HttpServlet {
 
 
     public static final String ACTION_ADD_DRIVER = "adddriver";
+    public static final String ACTION_ASSIGN_CAR = "assign";
+    public static final String ACTION_UNASSIGN_CAR = "unassign";
     public static final String ACTION_EDIT_DRIVER = "editdriver";
     public static final String ACTION_DELETE_DRIVER = "deletedriver";
 
@@ -70,6 +74,13 @@ public class AdminDriverServlet extends HttpServlet {
 
             redirectToDrivers(1, 10, req, resp);
             return;
+        } else if("assigncar".equals(action)) {
+            int driverId = Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID));
+            int carId = Integer.valueOf(req.getParameter(PARAMETER_CAR_ID));
+            getDriverBean().assignCar(driverId, carId);
+
+            redirectToEditDriver(req, resp);
+            return;
         }
 
         redirectToDrivers(1, 10, req, resp);
@@ -90,19 +101,27 @@ public class AdminDriverServlet extends HttpServlet {
                 resp.sendRedirect(PAGE_ADD_DRIVER);
             }
 
-        } if(ACTION_EDIT_DRIVER.equals(action)) {
+        } else if(ACTION_EDIT_DRIVER.equals(action)) {
             Driver driver = getDriverBean().getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
 
             if(driver != null) {
-
-                Driver editedDriver = updateDriverFromRequest(driver, req, resp);
-
-                if(editedDriver != null) {
-                    getDriverBean().editDriver(editedDriver);
-                }
+                getDriverBean().editDriver(updateDriverFromRequest(driver, req, resp));
             }
 
             redirectToDrivers(1, 10, req, resp);
+        } else if(ACTION_ASSIGN_CAR.equals(action)) {
+
+            req.setAttribute(ACTION_ASSIGN_CAR, true);
+            req.setAttribute(PARAMETER_DRIVER_ID, req.getParameter(PARAMETER_DRIVER_ID));
+
+            redirectToCars(1, 10, req, resp);
+        } else if(ACTION_UNASSIGN_CAR.equals(action)) {
+
+            int driverId = Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID));
+            int carId = Integer.valueOf(req.getParameter(PARAMETER_CAR_ID));
+
+            getDriverBean().unassignCar(driverId, carId);
+            redirectToEditDriver(req, resp);
         }
     }
 
@@ -128,34 +147,21 @@ public class AdminDriverServlet extends HttpServlet {
             return newDriver;
         } else {
             redirectToAddDriver(req, resp);
+            return null;
         }
-        return null;
     }
 
     private Driver updateDriverFromRequest(Driver driver, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String passStr = req.getParameter(PARAMETER_PASSWORD);
-        String confirmPassStr = req.getParameter(PARAMETER_CONFIRM_PASSWORD);
 
-        Driver updDriver;
         if(driver != null) {
-            updDriver = driver;
 
-            if(passStr.equals(confirmPassStr)) {
+            driver.setUsername(req.getParameter(PARAMETER_DRIVER_NAME));
+            driver.setCategory(Category.valueOf(req.getParameter(PARAMETER_CATEGORY)));
+            driver.setAvailable(isOn(req.getParameter(PARAMETER_AVAILABLE)));
+            driver.setMale(isOn(req.getParameter(PARAMETER_IS_MALE)));
+            driver.setSmokes(isOn(req.getParameter(PARAMETER_SMOKES)));
 
-                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-                String password = encoder.encode(passStr);
-
-
-                updDriver.setUsername(req.getParameter(PARAMETER_DRIVER_NAME));
-                updDriver.setPasswordHash(password);
-                updDriver.setCategory(Category.valueOf(req.getParameter(PARAMETER_CATEGORY)));
-                updDriver.setAvailable(isOn(req.getParameter(PARAMETER_AVAILABLE)));
-                updDriver.setMale(isOn(req.getParameter(PARAMETER_IS_MALE)));
-                updDriver.setSmokes(isOn(req.getParameter(PARAMETER_SMOKES)));
-
-
-                return updDriver;
-            }
+            return driver;
         } else {
             redirectToAddDriver(req, resp);
         }
@@ -167,10 +173,20 @@ public class AdminDriverServlet extends HttpServlet {
 
         List<Driver> drivers = getDriverBean().getDriverPage(pageNumber, pageSize);
 
-        req.setAttribute("driverList", drivers);
+        req.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
 
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
         req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
+        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+    }
+
+    private void redirectToCars(int pageNumber, int pageSize, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        CarDao carDao = new CarDao();
+        List<Car> cars = carDao.getPage(pageNumber, pageSize);
+        carDao.close();
+
+        req.setAttribute(RequestAttribute.CAR_LIST.getName(), cars);
+        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CARS_CONTENT.getAbsolutePath());
         req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
     }
 
