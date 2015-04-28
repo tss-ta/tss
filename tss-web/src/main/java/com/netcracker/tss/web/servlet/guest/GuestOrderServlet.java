@@ -26,6 +26,7 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.DateParser;
 
 @WebServlet(urlPatterns = "/guest/order")
 public class GuestOrderServlet extends HttpServlet {
@@ -59,8 +60,9 @@ public class GuestOrderServlet extends HttpServlet {
 		Address addTo = new Address(altitude, longtitude);
 		TaxiOrder taxiOrder = new TaxiOrder();
 		taxiOrder.setBookingTime(new Date());
-		// if (ordernow[0] != null)
-		// taxiOrder.setOrderTime(new Date());
+		Date orderTime = DateParser.parseDate(req);
+		orderTime.setYear(new Date().getYear());
+		taxiOrder.setOrderTime(orderTime);
 		taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
 		req.setAttribute("added", "success");
 		req.getRequestDispatcher("/WEB-INF/views/customer/guest.jsp").forward(

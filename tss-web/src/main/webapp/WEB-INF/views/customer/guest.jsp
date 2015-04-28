@@ -31,6 +31,8 @@
 <link href="/resources/customer_assets/css/style.css" rel="stylesheet">
 <link href="/resources/customer_assets/css/style-responsive.css"
 	rel="stylesheet">
+<link href="/resources/customer_assets/css/anytime.5.1.0.css"
+	rel="stylesheet">
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -170,10 +172,10 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">Order
-									Now?</label>
+									Time</label>
 								<div class="col-sm-6">
-									<input type="checkbox" checked="" data-toggle="switch"
-										id="ordernow" />
+									<input type="text" id="ordertime" name="ordertime"
+										class="form-control" />
 								</div>
 							</div>
 						</div>
@@ -242,10 +244,13 @@
 						</div>
 			</form>
 		</section>
-		<!--/wrapper --> <!--main content end--> <!--footer start--> <footer
-			class="site-footer">
+		<!--/wrapper -->
+		<!--main content end-->
+		<!--footer start-->
+		<footer class="site-footer">
 			<div class="text-center">2015 A-Team</div>
-		</footer> <!--footer end-->
+		</footer>
+		<!--footer end-->
 	</section>
 
 	<!-- js placed at the end of the document so the pages load faster -->
@@ -286,6 +291,8 @@
 
 	<script src="/resources/customer_assets/js/form-component.js"></script>
 
+	<script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
+
 
 	<script>
 		//custom select box
@@ -294,6 +301,13 @@
 			$('select.styled').customSelect();
 		});
 	</script>
+	
+	<script>
+			AnyTime.picker("ordertime", {
+				format : "%H:%i, %M %D",
+				firstDOW : 1
+			});
+		</script>
 
 </body>
 </html>
