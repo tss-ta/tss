@@ -11,23 +11,15 @@
         <h1>Tariffs Panel</h1>
         <table class="table table-striped table-bordered">
             <thead class="tablehead">
-            <td>service</td>
-            <td>tariff type</td>
-            <td>car type</td>
-            <td>day of week</td>
-            <td>from time</td>
-            <td>to time</td>
-            <td>price</td>
+            <td>name</td>
+            <td>additive price</td>
+            <td>multiplicative coefficient</td>
             <td>active from date</td>
             <td>active to date</td>
             </thead>
 
             <tbody>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
