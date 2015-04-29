@@ -37,7 +37,7 @@ public class AllCarsGetRoute implements Route {
         request.setAttribute(RequestAttribute.CAR_LIST.getName(), carList);
         request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CARS_CONTENT.getAbsolutePath());
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CARS_CONTENT.getType());
-        return new DefaultActionRequest(Page.ADMIN_TEMPLATE.getAbsolutePath(), false, true);
+        return new DefaultActionRequest(Page.ADMIN_TEMPLATE.getAbsolutePath(), false);
     }
 
     @Override

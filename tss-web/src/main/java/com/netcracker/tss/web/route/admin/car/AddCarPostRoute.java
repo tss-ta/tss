@@ -1,5 +1,7 @@
 package com.netcracker.tss.web.route.admin.car;
 
+import com.netcracker.ejb.CarBeanLocal;
+import com.netcracker.ejb.CarBeanLocalHome;
 import com.netcracker.entity.Car;
 import com.netcracker.tss.web.router.ActionRequest;
 import com.netcracker.tss.web.router.DefaultActionRequest;
@@ -8,11 +10,16 @@ import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.tss.web.util.RequestParameterParser;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Kyrylo Berehovyi on 28/04/2015.
@@ -34,14 +41,16 @@ public class AddCarPostRoute implements Route {
     @Override
     public ActionRequest action(HttpServletRequest request) {
         Car car = createCarFromRequestParameters(request);
-        if(isValid(car)) {
-            System.out.println("Start Add Car processing...");
-            request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CARS_CONTENT.getAbsolutePath());
-            return new DefaultActionRequest(Page.ADMIN_TEMPLATE.getAbsolutePath(), false, true);
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CARS_CONTENT.getType());
+        String errorMessage = validationErrors(car);
+        if(errorMessage == null) {
+            getCarBean().insertCar(car);
+            request.setAttribute(RequestAttribute.SUCCESS_MESSAGE.getName(), "New Car was successfully added.");
         } else {
-            request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_CAR_CONTENT.getAbsolutePath());
-            return new DefaultActionRequest(Page.ADMIN_TEMPLATE.getAbsolutePath(), false, true);
+            request.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), errorMessage);
         }
+        request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_CAR_CONTENT.getAbsolutePath());
+        return new DefaultActionRequest(Page.ADMIN_TEMPLATE.getAbsolutePath(), false);
     }
 
     @Override
@@ -51,38 +60,49 @@ public class AddCarPostRoute implements Route {
 
     private Car createCarFromRequestParameters(HttpServletRequest request) {
         Car car = new Car();
-        Boolean animalable = RequestParameterParser.parseBoolean(request, ANIMAILABLE_REQUEST_PARAMETER);
-        Boolean available = RequestParameterParser.parseBoolean(request, AVAILABLE_REQUEST_PARAMETER);
-        Boolean wifi = RequestParameterParser.parseBoolean(request, WIFI_REQUEST_PARAMETER);
-        Boolean conditioner = RequestParameterParser.parseBoolean(request, CONDITIONER_REQUEST_PARAMETER);
+        boolean animalable = RequestParameterParser.parseBoolean(request, ANIMAILABLE_REQUEST_PARAMETER);
+        boolean available = RequestParameterParser.parseBoolean(request, AVAILABLE_REQUEST_PARAMETER);
+        boolean wifi = RequestParameterParser.parseBoolean(request, WIFI_REQUEST_PARAMETER);
+        boolean conditioner = RequestParameterParser.parseBoolean(request, CONDITIONER_REQUEST_PARAMETER);
 
         car.setLicPlate(request.getParameter(LICENSE_REQUEST_PARAMETER));
         car.setCategory(RequestParameterParser.parseInteger(request, CATEGORY_REQUEST_PARAMETER));
 
-        if (animalable != null) {
-            car.setAnimalable(animalable);
-        }
-        if (available != null) {
-            car.setAvailable(available);
-        }
-        if (wifi != null) {
-            car.setWifi(wifi);
-        }
-        if (conditioner != null) {
-            car.setAvailable(conditioner);
-        }
+        car.setAnimalable(animalable);
+        car.setAvailable(available);
+        car.setWifi(wifi);
+        car.setConditioner(conditioner);
 
+        System.out.println("Parsed Car: " + car);
         return car;
     }
 
-    public boolean isValid(Car car) {
+    public String validationErrors(Car car) {
         Set<ConstraintViolation<Car>> constraintViolations = validator.validate(car);
         if(constraintViolations.isEmpty()) {
-            return true;
+            return null;
         }
-        for (ConstraintViolation<Car> carConstraintViolation : constraintViolations) {
-            System.out.println(carConstraintViolation.getMessage());
+        return generateErrorMessageFromConstraintViolations(constraintViolations);
+    }
+
+    private String generateErrorMessageFromConstraintViolations(Set<ConstraintViolation<Car>> constraintViolations) {
+        StringBuilder errorBuilder = new StringBuilder();
+        for (ConstraintViolation<Car> constraintViolation : constraintViolations) {
+            errorBuilder.append(constraintViolation.getMessage()).append("\n");
         }
-        return false;
+        return errorBuilder.toString();
+    }
+
+    private CarBeanLocal getCarBean() {
+        Context context;
+        try {
+            context = new InitialContext();
+            CarBeanLocalHome carBeanLocalHome = (CarBeanLocalHome) context.lookup("java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocalHome");
+            return carBeanLocalHome.create();
+        } catch (NamingException ex) {
+            Logger.getLogger(AllCarsGetRoute.class.getName()).log(Level.SEVERE,
+                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocal ", ex);
+            throw new RuntimeException("Internal server error!");
+        }
     }
 }

@@ -20,7 +20,7 @@ public class AddCarGetRoute implements Route {
     public ActionRequest action(HttpServletRequest request) {
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_CAR_CONTENT.getType());
         request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_CAR_CONTENT.getAbsolutePath());
-        return new DefaultActionRequest(Page.ADMIN_TEMPLATE.getAbsolutePath(), false, true);
+        return new DefaultActionRequest(Page.ADMIN_TEMPLATE.getAbsolutePath(), false);
     }
 
     @Override

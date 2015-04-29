@@ -15,7 +15,8 @@ public enum Page {
     ADMIN_GROUPS_CONTENT("groups", "admin/content/groups.jsp"),
     ADMIN_ADD_GROUP_CONTENT("groups", "admin/content/add-group.jsp"),
     ADMIN_TARIFFS_CONTENT("tariffs", "admin/content/tariffs.jsp"),
-    ADMIN_REPORTS_CONTENT("reports", "admin/content/reports.jsp");
+    ADMIN_REPORTS_CONTENT("reports", "admin/content/reports.jsp"),
+    ERROR_500_CONTENT("", "admin/content/500.jsp");
 
     public static final String ROOT_PATH_PREFIX = "/WEB-INF/views/";
 
