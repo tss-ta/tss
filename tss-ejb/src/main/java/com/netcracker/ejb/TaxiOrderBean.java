@@ -13,12 +13,19 @@ import com.netcracker.entity.Address;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.TaxiOrderHistory;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONException;
 
 /**
  *
@@ -62,6 +69,54 @@ public class TaxiOrderBean implements SessionBean {
 			}
 		}
 
+	}
+
+	public List<TaxiOrderHistory> getTaxiOrderHistory(int pageNumber,
+			int pageSize, User user) {
+		TaxiOrderDAO dao = null;
+		List<TaxiOrder> orders = null;
+		try {
+			dao = new TaxiOrderDAO();
+			orders = dao.getTaxiOrderHistory(pageNumber, pageSize, user);
+		} finally {
+			if (dao != null) {
+				dao.close();
+			}
+		}
+		List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
+		return taxiOrderHistory;
+	}
+
+	private List<TaxiOrderHistory> createTOHistory(List<TaxiOrder> orders) {
+		List<TaxiOrderHistory> listTOH = new ArrayList<>();
+		for (TaxiOrder to : orders) {
+			TaxiOrderHistory toh = new TaxiOrderHistory(to);
+			toh.setToAddr(getToAddr(toh));
+			toh.setFromAddr(getFromAddr(toh));
+			listTOH.add(toh);
+		}
+		return listTOH;
+	}
+
+	private String getFromAddr(TaxiOrderHistory toh) {
+		Address a = toh.getRouteId().getFromAddrId();
+		return toAddress(a.getAltitude(),a.getLongtitude());
+	}
+
+	private String getToAddr(TaxiOrderHistory toh) {
+		Address a = toh.getRouteId().getToAddrId();
+		return toAddress(a.getAltitude(),a.getLongtitude());
+	}
+
+	private String toAddress(float lng, float alt) {
+		MapBean mapBean = new MapBean();
+		String to = "";
+		try {
+			to = mapBean.geodecodeAddress(lng, alt);
+		} catch (JSONException | IOException e) {
+			e.printStackTrace();
+		}
+		return to;
 	}
 
 	@Override

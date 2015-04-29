@@ -93,9 +93,6 @@
 								Taxi</span>
 					</a></li>
 
-					<li class="sub-menu"><a href="index.html"> <i
-							class="fa fa-dashboard"></i> <span>Orders History</span>
-					</a></li>
 				</ul>
 				<!-- sidebar menu end-->
 			</div>
@@ -121,36 +118,18 @@
 							</div>
 						</c:if>
 					</c:if>
-
-					<!-- BASIC FORM ELELEMNTS -->
 					<div class="row mt">
 						<div class="col-lg-12">
 							<div class="form-panel">
 								<h4 class="mb">
-									<i class="fa fa-angle-right"></i> Where do you want to be
-									picked up from?
+									<i class="fa fa-angle-right"></i> Specify Time
 								</h4>
 								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">Street
-										Name</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" id="fromstreet"
-											name="fromstreet">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">House
-										Name</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" id="fromhouse"
-											name="fromhouse">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">ZIP Code</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" id="fromzip"
-											name="fromzip">
+									<label class="col-sm-2 col-sm-2 control-label">Order
+										Time</label>
+									<div class="col-sm-6">
+										<input type="text" id="ordertime" name="ordertime"
+											class="form-control" />
 									</div>
 								</div>
 							</div>
@@ -163,108 +142,112 @@
 						<div class="col-lg-12">
 							<div class="form-panel">
 								<h4 class="mb">
-									<i class="fa fa-angle-right"></i> Where are you going to?
+									<i class="fa fa-angle-right"></i> Book Your Taxi Now!
+									<div
+										style="display: block; margin-left: auto; margin-right: auto; text-align: center">
+										<input type="button" class="btn btn-default"
+											onclick="geoloc()" value="Find Me" /> <input type="button"
+											class="btn btn-default" onclick="initialize()"
+											value="Show Map" /> <input type="button"
+											class="btn btn-default" onclick="showonmap()"
+											value="Show on Map" />
+									</div>
 								</h4>
 								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">Street
-										Name</label>
+									<label class="col-sm-2 col-sm-2 control-label">From :</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" id="tostreet"
-											name="tostreet">
+										<input type="text" class="form-control" id="fromAddr"
+											name="fromAddr"
+											value="Holosiivskyi Avenue, 12, Kyiv, Ukraine" />
+										<p id="fromAddrMessage"></p>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">House
-										Name</label>
+									<label class="col-sm-2 col-sm-2 control-label">To :</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" id="tohouse"
-											name="tohouse">
+										<input type="text" class="form-control" id="toAddr"
+											name="toAddr"
+											value="Vasylya Zhukovs'koho Lane, 6, Kyiv, Ukraine" />
+										<p id="toAddrMessage"></p>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">ZIP Code</label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" id="tozip"
-											name="tozip">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 col-sm-2 control-label">Order
-										Time</label>
-									<div class="col-sm-6">
-										<input type="text" id="ordertime" name="ordertime"
-											class="form-control" />
+
+								<input type="hidden" id="fromc" name="" value="" /> <input
+									type="hidden" id="toc" name="" value="" />
+
+								<div class="form-group" style="text-align: center;">
+									<div id="map_canvas"
+										style="width: 45em; height: 25em; display: block; margin-left: auto; margin-right: auto;">
 									</div>
 								</div>
 							</div>
 							<!-- col-lg-12-->
 						</div>
-						<!-- /row -->
+					</div>
 
-						<!-- INPUT MESSAGES -->
-						<div class="row mt">
-							<div class="col-lg-12">
-								<div class="form-panel">
-									<h4 class="mb">
-										<i class="fa fa-angle-right"></i> Additional Options
-									</h4>
-									<div class="checkbox">
-										<label> <input type="checkbox" value="">
-											Option one is this and that&mdash;be sure to include why it's
-											great
-										</label>
-									</div>
-
-									<div class="radio">
-										<label> <input type="radio" name="optionsRadios"
-											id="optionsRadios1" value="option1" checked> Option
-											one is this and that&mdash;be sure to include why it's great
-										</label>
-									</div>
-									<div class="radio">
-										<label> <input type="radio" name="optionsRadios"
-											id="optionsRadios2" value="option2"> Option two can
-											be something else and selecting it will deselect option one
-										</label>
-									</div>
-
-									<hr>
-									<label class="checkbox-inline"> <input type="checkbox"
-										id="inlineCheckbox1" value="option1"> 1
-									</label> <label class="checkbox-inline"> <input type="checkbox"
-										id="inlineCheckbox2" value="option2"> 2
-									</label> <label class="checkbox-inline"> <input type="checkbox"
-										id="inlineCheckbox3" value="option3"> 3
+					<!-- INPUT MESSAGES -->
+					<div class="row mt">
+						<div class="col-lg-12">
+							<div class="form-panel">
+								<h4 class="mb">
+									<i class="fa fa-angle-right"></i> Additional Options
+								</h4>
+								<div class="checkbox">
+									<label> <input type="checkbox" value=""> Option
+										one is this and that&mdash;be sure to include why it's great
 									</label>
-
-									<hr>
-									<select class="form-control">
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-									</select> <br> <select multiple class="form-control">
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-									</select>
 								</div>
-								<!-- /form-panel -->
-							</div>
-							<!-- /col-lg-12 -->
-							<div class="text-center">
 
-								<button class="btn btn-success btn-lg btn-block" type="submit">Order
-									Now</button>
+								<div class="radio">
+									<label> <input type="radio" name="optionsRadios"
+										id="optionsRadios1" value="option1" checked> Option
+										one is this and that&mdash;be sure to include why it's great
+									</label>
+								</div>
+								<div class="radio">
+									<label> <input type="radio" name="optionsRadios"
+										id="optionsRadios2" value="option2"> Option two can be
+										something else and selecting it will deselect option one
+									</label>
+								</div>
 
+								<hr>
+								<label class="checkbox-inline"> <input type="checkbox"
+									id="inlineCheckbox1" value="option1"> 1
+								</label> <label class="checkbox-inline"> <input type="checkbox"
+									id="inlineCheckbox2" value="option2"> 2
+								</label> <label class="checkbox-inline"> <input type="checkbox"
+									id="inlineCheckbox3" value="option3"> 3
+								</label>
+
+								<hr>
+								<select class="form-control">
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+								</select> <br> <select multiple class="form-control">
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+								</select>
 							</div>
+							<!-- /form-panel -->
+						</div>
+						<!-- /col-lg-12 -->
+						<div class="text-center">
+
+							<button class="btn btn-success btn-lg btn-block" type="submit">Order
+								Now</button>
+
+						</div>
+					</div>
 				</form>
 			</section>
-			<!-- /MAIN CONTENT -->
-
+			<!--/wrapper -->
 			<!--main content end-->
 			<!--footer start-->
 			<footer class="site-footer">
@@ -272,8 +255,6 @@
 			</footer>
 			<!--footer end-->
 		</section>
-
-
 
 		<!-- js placed at the end of the document so the pages load faster -->
 		<script src="/resources/customer_assets/js/jquery.js"></script>
@@ -283,6 +264,7 @@
 		<script src="/resources/customer_assets/js/jquery.scrollTo.min.js"></script>
 		<script src="/resources/customer_assets/js/jquery.nicescroll.js"
 			type="text/javascript"></script>
+
 
 		<!--common script for all pages-->
 		<script src="/resources/customer_assets/js/common-scripts.js"></script>
@@ -312,9 +294,20 @@
 
 		<script src="/resources/customer_assets/js/form-component.js"></script>
 
+
+
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<script type="text/javascript"
+			src="http://maps.googleapis.com/maps/api/js?sensor=false">
+			
+		</script>
+
+		<script type="text/javascript"
+			src="/resources/customer_assets/js/map.js">
+			
+		</script>
+
 		<script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
-
-
 		<script>
 			//custom select box
 
