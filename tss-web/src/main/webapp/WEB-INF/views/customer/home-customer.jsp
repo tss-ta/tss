@@ -89,10 +89,6 @@
 							class="fa fa-dashboard"></i> <span>Order Taxi</span>
 					</a></li>
 
-					<li class="sub-menu"><a href="index.html"> <i
-							class="fa fa-dashboard"></i> <span>Orders History</span>
-					</a></li>
-
 				</ul>
 				<!-- sidebar menu end-->
 			</div>
@@ -125,6 +121,8 @@
 													<th>Status</th>
 													<th>Driver</th>
 													<th>Route</th>
+													<th>From Address</th>
+													<th>To Address</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -136,6 +134,8 @@
 														<td>${list.status}</td>
 														<td>${list.driverCarId}</td>
 														<td>${list.routeId.pathContent}</td>
+														<td>${list.fromAddr}</td>
+														<td>${list.toAddr}</td>
 													</tr>
 												</c:forEach>
 											</tbody>
