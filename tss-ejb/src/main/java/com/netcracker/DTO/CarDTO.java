@@ -1,4 +1,4 @@
-package com.netcracker.DTO;
+package com.netcracker.dto;
 
 /**
  * Created by Kyrylo Berehovyi on 29/04/2015.

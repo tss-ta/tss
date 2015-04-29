@@ -16,7 +16,6 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
     @NamedQuery(name = "User.findAllOrderedByUsername", query = "SELECT u FROM User u ORDER BY u.username"),
-    @NamedQuery(name = "User.findByRoles", query = "SELECT u FROM User u WHERE u.roles = :roles"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
 public class User implements Serializable {
 
