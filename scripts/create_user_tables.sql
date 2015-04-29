@@ -128,9 +128,7 @@ CREATE TABLE driver_car
   REFERENCES driver (driver_id) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-<<<<<<< HEAD
 
-=======
 -- CREATE TABLE driver_car
 -- (
 -- 	id serial NOT NULL,
@@ -146,7 +144,7 @@ CREATE TABLE driver_car
 --       	REFERENCES driver (driver_id)  MATCH SIMPLE
 -- 		ON UPDATE NO ACTION ON DELETE NO ACTION
 -- );
->>>>>>> feature/admin
+
 CREATE TABLE tariff
 (
   id serial NOT NULL,
@@ -216,8 +214,4 @@ CREATE TABLE taxi_order
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> feature/admin

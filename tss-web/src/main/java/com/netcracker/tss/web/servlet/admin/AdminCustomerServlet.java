@@ -1,8 +1,7 @@
 package com.netcracker.tss.web.servlet.admin;
 
-import com.netcracker.DTO.CustomerDTO;
-import com.netcracker.ejb.CustomerBeanLocal;
-import com.netcracker.ejb.CustomerBeanLocalHome;
+import com.netcracker.ejb.UserBeanLocal;
+import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.helper.Roles;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
@@ -35,7 +34,7 @@ public class AdminCustomerServlet extends HttpServlet {
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_ROLES_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } else {
-            redirectToGroups(req, resp);
+            redirectToCustomers(req, resp);
         }
 
     }
@@ -45,24 +44,21 @@ public class AdminCustomerServlet extends HttpServlet {
         String action = req.getParameter("action");
         if ("add-roles".equals(action)) {
             try {
-                CustomerBeanLocal customerBeanLocal = getCustomerBean(req);
-                CustomerDTO customerDTO = new CustomerDTO();
-                customerDTO.setRoles(getRoles(req));
-                customerBeanLocal.editRoles(customerDTO);
-                redirectToGroups(req, resp);
+                UserBeanLocal customerBeanLocal = getUserBean(req);
+                customerBeanLocal.editRoles(Integer.parseInt(req.getParameter("id")), getRoles(req));
+//                redirectToCustomers(req, resp);
             } catch (RuntimeException e) {
                 req.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Can't edit roles");
-                req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
-                req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+//                redirectToCustomers(req, resp);
             }
         }
-        redirectToGroups(req, resp);
+        redirectToCustomers(req, resp);
     }
 
-    private void redirectToGroups(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void redirectToCustomers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            CustomerBeanLocal groupBeanLocal = getCustomerBean(req);
-            req.setAttribute("customers", groupBeanLocal.getCustomers(1, 10));
+            UserBeanLocal userBeanLocal = getUserBean(req);
+            req.setAttribute("customers", userBeanLocal.getCustomers(1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
@@ -79,25 +75,27 @@ public class AdminCustomerServlet extends HttpServlet {
 
     private List<Roles> getRoles(HttpServletRequest req) {
         List<Roles> roles = new ArrayList<>();
+        if (isOn(req.getParameter("customer"))) {
+            roles.add(Roles.CUSTOMER);
+        } 
         if (isOn(req.getParameter("admin"))) {
             roles.add(Roles.ADMIN);
-        } else if (isOn(req.getParameter("customer"))) {
-            roles.add(Roles.CUSTOMER);
-        } else if (isOn(req.getParameter("driver"))) {
+        } 
+        if (isOn(req.getParameter("driver"))) {
             roles.add(Roles.DRIVER);
         }
         return roles;
     }
 
-    private CustomerBeanLocal getCustomerBean(HttpServletRequest req) {
+    private UserBeanLocal getUserBean(HttpServletRequest req) {
         Context context;
         try {
             context = new InitialContext();
-            CustomerBeanLocalHome customerBeanLocalHome = (CustomerBeanLocalHome) context.lookup("java:app/tss-ejb/CustomerBean!com.netcracker.ejb.CustomerBeanLocalHome");
+            UserBeanLocalHome customerBeanLocalHome = (UserBeanLocalHome) context.lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
             return customerBeanLocalHome.create();
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/GroupBean!com.netcracker.ejb.GroupBeanLocal ", ex);
+                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome", ex);
             throw new RuntimeException("Internal server error!");// maybe have to create custom exception?
         }
     }
