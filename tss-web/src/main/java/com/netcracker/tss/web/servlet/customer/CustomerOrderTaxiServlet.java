@@ -49,11 +49,12 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
 		User user = findCurrentUser();
 		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
 		Route route = new Route(findCurrentUser().getUsername() + " Route");
-		Address addFrom = formFromAddress(req);
-		Address addTo = formToAddress(req);
+		Address addFrom = toAddress(req.getParameter("fromAddr"), req);
+		Address addTo = toAddress(req.getParameter("toAddr"), req);
 		TaxiOrder taxiOrder = new TaxiOrder();
 		taxiOrder.setBookingTime(new Date());
 		Date orderTime = DateParser.parseDate(req);
@@ -65,36 +66,15 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 				.forward(req, resp);
 	}
 
-	private Address formToAddress(HttpServletRequest req) {
+	private Address toAddress(String addr, HttpServletRequest req) {
 		MapBeanLocal mapBeanLocal = getMapBean(req);
-		String country = "Ukraine";
-		String city = "Kyiv";
-		String street = req.getParameter("tostreet");
-		String house = req.getParameter("tohouse");
 		double[] to = { 0, 0 };
 		try {
-			to = mapBeanLocal.geocodeAddress(street + ", " + house + ", "
-					+ city + ", " + country);
+			to = mapBeanLocal.geocodeAddress(addr);
 		} catch (JSONException | IOException e) {
 			e.printStackTrace();
 		}
-		return new Address((float)to[1],(float)to[0]);
-	}
-
-	private Address formFromAddress(HttpServletRequest req) {
-		MapBeanLocal mapBeanLocal = getMapBean(req);
-		String country = "Ukraine";
-		String city = "Kyiv";
-		String street = req.getParameter("fromstreet");
-		String house = req.getParameter("fromhouse");
-		double[] from = { 0, 0 };
-		try {
-			from = mapBeanLocal.geocodeAddress(street + ", " + house + ", "
-					+ city + ", " + country);
-		} catch (JSONException | IOException e) {
-			e.printStackTrace();
-		}
-		return new Address((float)from[1],(float)from[0]);
+		return new Address((float) to[1], (float) to[0]);
 	}
 
 	private User findCurrentUser() {
