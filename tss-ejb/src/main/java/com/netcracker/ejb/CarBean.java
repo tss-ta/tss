@@ -7,6 +7,7 @@ import com.netcracker.entity.Car;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import javax.persistence.NoResultException;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,15 +32,22 @@ public class CarBean implements SessionBean {
         return carList;
     }
 
-    public void insertCar(Car car) {
+    public boolean insertCar(Car car) {
         CarDao carDao = new CarDao();
         try {
-            carDao.persist(car);
+            try {
+                carDao.findByLicPlate(car.getLicPlate());
+                return false;
+            }
+            catch (NoResultException e) {
+                carDao.persist(car);
+            }
         } finally {
             if (carDao != null) {
                 carDao.close();
             }
         }
+        return true;
     }
 
     private CarDTO convertEntityToTransferObject(Car car) {

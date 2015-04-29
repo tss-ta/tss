@@ -12,5 +12,5 @@ public interface CarBeanLocal extends EJBLocalObject {
 
     List<Car> getPageOfCars(int pageNumber);
 
-    public void insertCar(Car car);
+    public boolean insertCar(Car car);
 }
