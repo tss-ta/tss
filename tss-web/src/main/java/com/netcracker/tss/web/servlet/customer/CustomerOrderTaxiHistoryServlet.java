@@ -55,7 +55,7 @@ public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
 		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
 		List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderHistory(
 				pageNumber, pageSize, findCurrentUser());
-		if (list.size() == 0) {
+		if (list.size() == 0 && pageNumber>1) {
 			pageNumber--;
 			getServletContext().setAttribute("pageNumber", pageNumber);
 			list = taxiOrderBeanLocal
