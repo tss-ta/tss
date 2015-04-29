@@ -43,23 +43,27 @@ public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Integer pageNumber = updatePageNumber(req);
-		List<TaxiOrderHistory> list = getHistory(pageNumber, req);
 		getServletContext().setAttribute("pageNumber", pageNumber);
+		List<TaxiOrderHistory> list = getHistory(pageNumber, req);
 		req.setAttribute("history", list);
 		req.getRequestDispatcher("/WEB-INF/views/customer/home-customer.jsp")
 				.forward(req, resp);
 	}
-
 
 	private List<TaxiOrderHistory> getHistory(Integer pageNumber,
 			HttpServletRequest req) {
 		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
 		List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderHistory(
 				pageNumber, pageSize, findCurrentUser());
+		if (list.size() == 0) {
+			pageNumber--;
+			getServletContext().setAttribute("pageNumber", pageNumber);
+			list = taxiOrderBeanLocal
+					.getTaxiOrderHistory(pageNumber, pageSize,
+							findCurrentUser());
+		}
 		return list;
 	}
-
-	
 
 	private Integer updatePageNumber(HttpServletRequest req) {
 		Integer pageNumber = (Integer) getServletContext().getAttribute(
