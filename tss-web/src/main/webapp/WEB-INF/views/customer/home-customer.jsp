@@ -89,10 +89,6 @@
 							class="fa fa-dashboard"></i> <span>Order Taxi</span>
 					</a></li>
 
-					<li class="sub-menu"><a href="index.html"> <i
-							class="fa fa-dashboard"></i> <span>Orders History</span>
-					</a></li>
-
 				</ul>
 				<!-- sidebar menu end-->
 			</div>
