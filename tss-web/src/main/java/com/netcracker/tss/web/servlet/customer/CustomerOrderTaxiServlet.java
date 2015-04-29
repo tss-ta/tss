@@ -49,6 +49,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
 		User user = findCurrentUser();
 		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
 		Route route = new Route(findCurrentUser().getUsername() + " Route");
