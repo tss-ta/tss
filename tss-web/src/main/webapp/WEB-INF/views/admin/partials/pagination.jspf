@@ -1,10 +1,10 @@
 
 <nav>
     <ul class="pager">
-        <li><a href="/admin?page=1&menu=${param.menu}" > First </a></li>
-        <li><a href="/admin?page=${param.page - 1}&menu=${param.menu}" > Previous </a></li>
-        <li><a href="/admin?page=${param.page + 1}&menu=${param.menu}"> Next </a></li>
-        <li><a href="/admin?page=last&menu=${param.menu}"> Last </a></li>
+        <li><a href="/admin/cars?menu=cars&action=all&page=1" > First </a></li>
+        <li><a href="/admin/cars?menu=cars&action=all&page=4" > Previous </a></li>
+        <li><a href="/admin/cars?menu=cars&action=all&page=6"> Next </a></li>
+        <li><a href="/admin/cars?menu=cars&action=all&page=20"> Last </a></li>
     </ul>
 </nav>
 
