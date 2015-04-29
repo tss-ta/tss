@@ -85,6 +85,14 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        
+<!--        json-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20141113</version>
+        </dependency>
+
 
         <!-- Test dependencies -->
         <dependency>

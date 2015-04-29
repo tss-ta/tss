@@ -35,7 +35,11 @@ public class Group implements Serializable {
 
     public Group() {
     }
-
+    
+    public Group(int id) {
+        this.id = id;
+    }
+    
     public Group(String name) {
         this.name = name;
     }
