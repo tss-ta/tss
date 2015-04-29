@@ -121,6 +121,8 @@
 													<th>Status</th>
 													<th>Driver</th>
 													<th>Route</th>
+													<th>From Address</th>
+													<th>To Address</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -132,6 +134,8 @@
 														<td>${list.status}</td>
 														<td>${list.driverCarId}</td>
 														<td>${list.routeId.pathContent}</td>
+														<td>${list.fromAddr}</td>
+														<td>${list.toAddr}</td>
 													</tr>
 												</c:forEach>
 											</tbody>
