@@ -14,8 +14,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
+
 import com.netcracker.ejb.GroupBeanLocal;
 import com.netcracker.ejb.GroupBeanLocalHome;
+import com.netcracker.ejb.MapBeanLocal;
+import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.RegistrationBeanLocal;
 import com.netcracker.ejb.RegistrationBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBean;
@@ -46,18 +50,15 @@ public class GuestOrderServlet extends HttpServlet {
 		RegistrationBeanLocal rb = getRegistrationBean(req);
 		if (!rb.isUserExist(user)) {
 			rb.registrate(user);
-		}
-		else{
+		} else {
 			req.setAttribute("error", "email");
-			req.getRequestDispatcher("/WEB-INF/views/customer/guest.jsp").forward(
-					req, resp);
+			req.getRequestDispatcher("/WEB-INF/views/customer/guest.jsp")
+					.forward(req, resp);
 		}
 		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
 		Route route = new Route("Guest Route");
-		float altitude = 0;// ToDo
-		float longtitude = 0;// ToDo
-		Address addFrom = new Address(altitude, longtitude);
-		Address addTo = new Address(altitude, longtitude);
+		Address addFrom = toAddress(req.getParameter("fromAddr"), req);
+		Address addTo = toAddress(req.getParameter("toAddr"), req);
 		TaxiOrder taxiOrder = new TaxiOrder();
 		taxiOrder.setBookingTime(new Date());
 		Date orderTime = DateParser.parseDate(req);
@@ -67,6 +68,17 @@ public class GuestOrderServlet extends HttpServlet {
 		req.setAttribute("added", "success");
 		req.getRequestDispatcher("/WEB-INF/views/customer/guest.jsp").forward(
 				req, resp);
+	}
+
+	private Address toAddress(String addr, HttpServletRequest req) {
+		MapBeanLocal mapBeanLocal = getMapBean(req);
+		double[] to = { 0, 0 };
+		try {
+			to = mapBeanLocal.geocodeAddress(addr);
+		} catch (JSONException | IOException e) {
+			e.printStackTrace();
+		}
+		return new Address((float) to[1], (float) to[0]);
 	}
 
 	private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
@@ -116,6 +128,25 @@ public class GuestOrderServlet extends HttpServlet {
 			throw new RuntimeException(
 					"Internal server error!"
 							+ "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
+		}
+	}
+
+	private MapBeanLocal getMapBean(HttpServletRequest req) {
+		Context context;
+		try {
+			context = new InitialContext();
+			MapBeanLocalHome mapBeanLocalHome = (MapBeanLocalHome) context
+					.lookup("java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome");
+			return mapBeanLocalHome.create();
+		} catch (NamingException ex) {
+			Logger.getLogger(AdminGroupServlet.class.getName())
+					.log(Level.SEVERE,
+							"Can't find taxiOrderBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
+							ex);
+			throw new RuntimeException("Internal server error!");// maybe have
+																	// to create
+																	// custom
+																	// exception?
 		}
 	}
 }
