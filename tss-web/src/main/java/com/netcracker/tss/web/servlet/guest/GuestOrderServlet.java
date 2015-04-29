@@ -44,6 +44,7 @@ public class GuestOrderServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
 		String name = req.getParameter("name");
 		String email = req.getParameter("email");
 		User user = new User(name, email);
