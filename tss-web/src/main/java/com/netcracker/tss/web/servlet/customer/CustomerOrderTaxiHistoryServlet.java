@@ -1,11 +1,8 @@
 package com.netcracker.tss.web.servlet.customer;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,53 +25,57 @@ import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.entity.Address;
-import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
-import com.netcracker.tss.web.util.DateParser;
 
 /**
  * Created by Stanislav Zabielin
  */
-@WebServlet(urlPatterns = "/customer/order")
-public class CustomerOrderTaxiServlet extends HttpServlet {
+
+@WebServlet(urlPatterns = "/customer/history")
+public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
+
+	private static final int pageSize = 10;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		User user = findCurrentUser();
-		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
-		Route route = new Route(findCurrentUser().getUsername() + " Route");
-		Address addFrom = toAddress(req.getParameter("fromAddr"), req);
-		Address addTo = toAddress(req.getParameter("toAddr"), req);
-		TaxiOrder taxiOrder = new TaxiOrder();
-		taxiOrder.setBookingTime(new Date());
-		Date orderTime = DateParser.parseDate(req);
-		orderTime.setYear(new Date().getYear());
-		taxiOrder.setOrderTime(orderTime);
-		taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
-		req.setAttribute("added", "success");
-		req.getRequestDispatcher("/WEB-INF/views/customer/ordertaxi.jsp")
+		Integer pageNumber = updatePageNumber(req);
+		getServletContext().setAttribute("pageNumber", pageNumber);
+		List<TaxiOrderHistory> list = getHistory(pageNumber, req);
+		req.setAttribute("history", list);
+		req.getRequestDispatcher("/WEB-INF/views/customer/home-customer.jsp")
 				.forward(req, resp);
 	}
 
-	private Address toAddress(String addr, HttpServletRequest req) {
-		MapBeanLocal mapBeanLocal = getMapBean(req);
-		double[] to = { 0, 0 };
-		try {
-			to = mapBeanLocal.geocodeAddress(addr);
-		} catch (JSONException | IOException e) {
-			e.printStackTrace();
+	private List<TaxiOrderHistory> getHistory(Integer pageNumber,
+			HttpServletRequest req) {
+		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
+		List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderHistory(
+				pageNumber, pageSize, findCurrentUser());
+		if (list.size() == 0 && pageNumber>1) {
+			pageNumber--;
+			getServletContext().setAttribute("pageNumber", pageNumber);
+			list = taxiOrderBeanLocal
+					.getTaxiOrderHistory(pageNumber, pageSize,
+							findCurrentUser());
 		}
-		return new Address((float) to[1], (float) to[0]);
+		return list;
+	}
+
+	private Integer updatePageNumber(HttpServletRequest req) {
+		Integer pageNumber = (Integer) getServletContext().getAttribute(
+				"pageNumber");
+		if (pageNumber == null)
+			pageNumber = 1;
+		if (req.getParameter("previous") != null && pageNumber > 1)
+			pageNumber--;
+		else if (req.getParameter("next") != null) {
+			pageNumber++;
+		}
+		return pageNumber;
 	}
 
 	private User findCurrentUser() {
@@ -97,25 +98,6 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 			Logger.getLogger(AdminGroupServlet.class.getName())
 					.log(Level.SEVERE,
 							"Can't find taxiOrderBean with name java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome ",
-							ex);
-			throw new RuntimeException("Internal server error!");// maybe have
-																	// to create
-																	// custom
-																	// exception?
-		}
-	}
-
-	private MapBeanLocal getMapBean(HttpServletRequest req) {
-		Context context;
-		try {
-			context = new InitialContext();
-			MapBeanLocalHome mapBeanLocalHome = (MapBeanLocalHome) context
-					.lookup("java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome");
-			return mapBeanLocalHome.create();
-		} catch (NamingException ex) {
-			Logger.getLogger(AdminGroupServlet.class.getName())
-					.log(Level.SEVERE,
-							"Can't find taxiOrderBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
 							ex);
 			throw new RuntimeException("Internal server error!");// maybe have
 																	// to create
