@@ -27,9 +27,6 @@ import java.util.List;
 @WebServlet(urlPatterns = "/admin/cars")
 public class AdminCarServlet extends HttpServlet {
 
-
-
-
     public static final Page template = Page.ADMIN_TEMPLATE;
     public static final Page defaultPageContent = Page.ADMIN_CARS_CONTENT;
     public static final Page addCarPageContent = Page.ADMIN_ADD_CAR_CONTENT;
@@ -110,25 +107,23 @@ public class AdminCarServlet extends HttpServlet {
 
     private void sendRequest(HttpServletRequest request, HttpServletResponse response, ActionRequest actionRequest)
             throws ServletException, IOException {
-        if (actionRequest == null) {
+        if (actionRequest == null || actionRequest.getDestinationResource() == null) {
             forwardToErrorPage(request, response, actionRequest, null);
             return;
         }
 
         setMessagesIfExists(request, actionRequest);
-        if (actionRequest.isForward()) {
-            request.getRequestDispatcher(actionRequest.getDestinationResource()).forward(request, response);
-        } else if (actionRequest.isRedirect()) {
+        if (actionRequest.isRedirect()) {
             response.sendRedirect(actionRequest.getDestinationResource());
-        } else {
-            forwardToErrorPage(request, response, actionRequest, null);
+            return;
         }
-
+        request.getRequestDispatcher(actionRequest.getDestinationResource()).forward(request, response);
     }
 
     private void forwardToErrorPage(HttpServletRequest request, HttpServletResponse response,
             ActionRequest actionRequest, String errorMessage) throws ServletException, IOException {
         setMessagesIfExists(request, actionRequest, errorMessage);
+        request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ERROR_500_CONTENT.getAbsolutePath());
         request.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(request, response);
     }
 

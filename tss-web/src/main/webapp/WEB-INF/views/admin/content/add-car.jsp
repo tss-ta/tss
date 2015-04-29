@@ -33,12 +33,12 @@
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="animalable"> Animal transport
+                                    <input type="checkbox" name="animailable"> Animal transport
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="wi-fi"> WI-FI
+                                    <input type="checkbox" name="wifi"> WI-FI
                                 </label>
                             </div>
                             <div class="checkbox">

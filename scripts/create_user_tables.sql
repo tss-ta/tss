@@ -44,7 +44,7 @@ CREATE TABLE tss_role
 CREATE TABLE car
 (
   id serial NOT NULL,
-  lic_plate CHARACTER VARYING(10) NOT NULL,
+  lic_plate CHARACTER VARYING(11) NOT NULL,
   category INTEGER NOT NULL,
   available BOOLEAN,
   animalable BOOLEAN,

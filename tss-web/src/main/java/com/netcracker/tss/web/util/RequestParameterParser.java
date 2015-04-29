@@ -1,5 +1,7 @@
 package com.netcracker.tss.web.util;
 
+import org.hibernate.annotations.SourceType;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -21,16 +23,13 @@ public class RequestParameterParser {
         return parsedParameter;
     }
 
-    public static Boolean parseBoolean(HttpServletRequest request, String parameterName) {
+    public static boolean parseBoolean(HttpServletRequest request, String parameterName) {
         ArgumentValidator.validateArgumentOnNull("request", request);
         ArgumentValidator.validateArgumentOnNull("parameterName", parameterName);
 
-        Boolean parsedParameter;
-        try {
-            parsedParameter = Boolean.parseBoolean(request.getParameter(parameterName));
-        } catch (NumberFormatException e) {
-            parsedParameter = null;
+        if(request.getParameter(parameterName) != null) {
+            return true;
         }
-        return parsedParameter;
+        return false;
     }
 }
