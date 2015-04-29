@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.ejb;
 
 import com.netcracker.DTO.GroupDTO;
@@ -20,25 +15,19 @@ import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
 
-/**
- *
- * @author Виктор
- */
 public class GroupBean implements SessionBean {
 
-    public void addGroup(GroupDTO groupDTO) {
+    public void addGroup(String groupName, List<Roles> roles) {
         GroupDAO groupDAO = null;
         RoleDAO roleDAO = null;
         try {
-            String groupName = groupDTO.getName();
             groupDAO = new GroupDAO();
             roleDAO = new RoleDAO();
 
             if (isGroupPersist(groupName, groupDAO)) {
                 throw new IllegalArgumentException("Group with name " + groupName + " is already exist");
             }
-            List<Role> roleList = toRoleList(groupDTO.getRoles(), roleDAO);
-
+            List<Role> roleList = toRoleList(roles, roleDAO);
             groupDAO.persist(new Group(groupName, roleList));
         } finally {
             if (roleDAO != null) {
@@ -50,11 +39,14 @@ public class GroupBean implements SessionBean {
         }
     }
 
-    public void editGroup(GroupDTO groupDTO) {
+    public void editGroup(int groupId, String groupName, List<Roles> roles) {
+        if (groupId < 0) {
+            throw new IllegalArgumentException("Id can't be less than zero");
+        }
         GroupDAO groupDAO = null;
         RoleDAO roleDAO = null;
         try {
-            int groupId = groupDTO.getId();
+
             groupDAO = new GroupDAO();
             roleDAO = new RoleDAO();
             Group group = groupDAO.get(groupId);
@@ -63,8 +55,8 @@ public class GroupBean implements SessionBean {
 //                throw new IllegalArgumentException("Group with id " + groupId
 //                        + " doesn't exist");
 //            }
-            group.setName(groupDTO.getName());
-            group.setRoles(toRoleList(groupDTO.getRoles(), roleDAO));
+            group.setName(groupName);
+            group.setRoles(toRoleList(roles, roleDAO));
             groupDAO.update(group);
         } finally {
             if (roleDAO != null) {
@@ -128,7 +120,7 @@ public class GroupBean implements SessionBean {
         }
     }
 
-    public List<GroupDTO> getGroup(int pageNumber, int paginationStep) {
+    public List<GroupDTO> getGroupPage(int pageNumber, int paginationStep) {
         GroupDAO dao = null;
 
         try {

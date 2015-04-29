@@ -12,7 +12,9 @@ import java.util.List;
  *
  * @author maks
  */
-public class CustomerDTO {
+public class UserDTO {
+
+    private int id;
 
     private String username;
 
@@ -22,14 +24,23 @@ public class CustomerDTO {
 
     private List<Roles> roles;
 
-    public CustomerDTO() {
+    public UserDTO() {
     }
 
-    public CustomerDTO(String username, String email, List<String> groups, List<Roles> userRoles) {
+    public UserDTO(int id, String username, String email, List<String> groups, List<Roles> userRoles) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.groups = groups;
         roles = userRoles;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {

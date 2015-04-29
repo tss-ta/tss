@@ -18,6 +18,7 @@
             <div class="panel-body">
                 <form action="/admin/customer?action=add-roles" method="post" class="form-horizontal">
                     <%@ include file="../partials/rolescheckboxes.jspf" %>
+                    <input type="hidden" name="id" value="${param.id}">
                     <div class="form-group">
                         <div class="col-sm-offset-5 col-sm-3">
                             <button type="submit" class="btn btn-default"> Ok </button>

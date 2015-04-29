@@ -21,7 +21,6 @@
                 <td>Roles</td>
                 <td>Groups</td>
                 <td></td>
-                <td></td>
                 </thead>
 
                 <tbody>
@@ -40,10 +39,7 @@
                                 </c:forEach> 
                             </td>
                             <td class="col-md-1">
-                                <a href="/admin/customer?action=add-to-group&email=${customer.email}" class="btn btn-default">Add to group<i class="fa fa-users"></i></a>
-                            </td>
-                            <td class="col-md-1">
-                                <a href="/admin/customer?action=add-role&email=${customer.email}" class="btn btn-default">Add role</a>
+                                <a href="/admin/customer?action=add-role&email=${customer.email}&id=${customer.id}" class="btn btn-default">Add role</a>
                             </td>
                         </tr>
                     </c:forEach> 

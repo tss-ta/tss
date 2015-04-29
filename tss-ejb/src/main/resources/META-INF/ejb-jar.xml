@@ -96,19 +96,19 @@
         </session>
                 
         <session>
-            <display-name>CustomerBean</display-name>
-            <ejb-name>CustomerBean</ejb-name>
-            <local-home>com.netcracker.ejb.CustomerBeanLocalHome</local-home>
-            <local>com.netcracker.ejb.CustomerBeanLocal</local>
-            <ejb-class>com.netcracker.ejb.CustomerBean</ejb-class>
+            <display-name>UserBean</display-name>
+            <ejb-name>UserBean</ejb-name>
+            <local-home>com.netcracker.ejb.UserBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.UserBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.UserBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
             
             <ejb-local-ref>
-                <ejb-ref-name>ejb/CustomerBean</ejb-ref-name>
+                <ejb-ref-name>ejb/UserBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
-                <local-home>com.netcracker.ejb.CustomerBeanLocalHome</local-home>
-                <local>com.netcracker.ejb.CustomerBeanLocal</local>
+                <local-home>com.netcracker.ejb.UserBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.UserBeanLocal</local>
             </ejb-local-ref>
         </session>
         
