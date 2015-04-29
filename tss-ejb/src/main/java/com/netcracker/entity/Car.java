@@ -8,6 +8,7 @@ package com.netcracker.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -41,24 +42,23 @@ public class Car implements Serializable {
     private boolean available;
 
     @Column(name = "category")
-//    @NotNull again..
     private int category;
 
     @Column(name = "animalable")
-//    @NotNull
     private boolean animalable;
 
     @Column(name = "wifi")
-//    @NotNull
     private boolean wifi;
 
     @Column(name = "conditioner")
 //    @NotNull  seriously?.. boolean?
     private boolean conditioner;
 
-    @Size(max = 10)
     @Column(name = "lic_plate")
-    @NotNull
+    @Size(max = 11, min = 11, message = "License plate size should be equal to 11 characters.")
+    @NotNull(message = "License plate should not be empty.")
+    @Pattern(regexp = "[a-zA-z]{3}-[0-9]{3}-[a-zA-z]{3}", message = "Invalid license plate. " +
+            "Valid license plate should be like YYY-XXX-YYY.")
     private String licPlate;
 
     public Car() {}
@@ -125,6 +125,20 @@ public class Car implements Serializable {
     }
 
     @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Car{");
+        sb.append("id=").append(id);
+        sb.append(", available=").append(available);
+        sb.append(", category=").append(category);
+        sb.append(", animalable=").append(animalable);
+        sb.append(", wifi=").append(wifi);
+        sb.append(", conditioner=").append(conditioner);
+        sb.append(", licPlate='").append(licPlate).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -152,19 +166,5 @@ public class Car implements Serializable {
         result = 31 * result + (conditioner ? 1 : 0);
         result = 31 * result + (licPlate != null ? licPlate.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Car{");
-        sb.append("id=").append(id);
-        sb.append(", available=").append(available);
-        sb.append(", category=").append(category);
-        sb.append(", animalable=").append(animalable);
-        sb.append(", wifi=").append(wifi);
-        sb.append(", conditioner=").append(conditioner);
-        sb.append(", licPlate='").append(licPlate).append('\'');
-        sb.append('}');
-        return sb.toString();
     }
 }

@@ -17,11 +17,11 @@
     <div class="col-md-offset-3 col-md-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                <form action="/admin/car?action=add-car" method="post" class="form-horizontal">
+                <form action="/admin/cars?menu=cars&action=add-car" method="post" class="form-horizontal">
                     <div class="form-group">
                         <label for="plate" class="col-md-4 control-label">License plate</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="plate" placeholder="License">
+                            <input type="text" class="form-control" id="plate" placeholder="License" name="license">
                         </div>
                     </div>
                     <div class="form-group">
