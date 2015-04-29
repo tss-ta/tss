@@ -91,6 +91,15 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        
+<!--        json-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+            <type>jar</type>
+        </dependency>
+
 
         <!-- Test dependencies -->
         <dependency>

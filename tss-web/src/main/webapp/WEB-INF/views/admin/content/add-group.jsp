@@ -30,14 +30,7 @@
                             <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="${param.name}">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-5 col-sm-8">
-                            <label class="checkbox"><input type="checkbox" name="admin">admin</label>
-                            <label class="checkbox"><input type="checkbox" name="driver">driver</label>
-                            <label class="checkbox"><input type="checkbox" name="customer">customer</label>
-                            <label class="checkbox"><input type="checkbox" name="banned">banned</label>
-                        </div>
-                    </div>
+                    <%@ include file="../partials/rolescheckboxes.jspf" %>
                     <c:choose>
                         <c:when test="${param.action eq 'edit-group'}">
                             <input type="hidden" name="action" value="edit-group">
