@@ -7,6 +7,7 @@ package com.netcracker.dto;
 
 import com.netcracker.entity.helper.Roles;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,15 +22,33 @@ public class GroupDTO implements Serializable {
 
     private List<Roles> roles;
 
+    public GroupDTO() {
+        roles = new ArrayList<>();
+    }
+
+    public GroupDTO(String name) {
+        this.name = name;
+        roles = new ArrayList<>();
+
+    }
+
     public GroupDTO(String name, List<Roles> roles) {
         this.name = name;
-        this.roles = roles; //have to encapsulate?
+        if (roles == null) {
+            this.roles = new ArrayList<>();
+        } else {
+            this.roles = roles; //have to encapsulate?
+        }
     }
 
     public GroupDTO(int id, String name, List<Roles> roles) {
         this.id = id;
         this.name = name;
-        this.roles = roles; //have to encapsulate?
+        if (roles == null) {
+            this.roles = new ArrayList<>();
+        } else {
+            this.roles = roles; //have to encapsulate?
+        }
     }
 
     public void setId(int id) {
@@ -37,6 +56,9 @@ public class GroupDTO implements Serializable {
     }
 
     public void setName(String name) {
+        if (name == null || "".equals(name)){
+            throw new IllegalArgumentException("Illigal group name");
+        }
         this.name = name;
     }
 
@@ -47,7 +69,7 @@ public class GroupDTO implements Serializable {
     public int getId() {
         return id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -55,7 +77,8 @@ public class GroupDTO implements Serializable {
     public List<Roles> getRoles() {
         return roles;
     }
-
-
+    public void add(Roles role){
+        roles.add(role);
+    }
 
 }

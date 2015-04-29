@@ -13,7 +13,7 @@
     <c:when test="${pageType == 'customers'}">
         <c:set var="activeCustomers" scope="request" value="${'class=\"active\"'}"/>
     </c:when>
-    <c:when test="${pageType == 'derivers'}">
+    <c:when test="${pageType == 'drivers'}">
         <c:set var="activeDrivers" scope="request" value="${'class=\"active\"'}"/>
     </c:when>
     <c:when test="${pageType == 'groups'}">

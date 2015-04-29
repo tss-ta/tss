@@ -4,7 +4,7 @@ package com.netcracker.entity.helper;
  * Created by Illya on 25.04.2015.
  */
 public enum Roles {
-    ADMIN("admin"), DRIVER("driver"), CUSTOMER("customer");
+    ADMIN("ADMIN"), DRIVER("DRIVER"), CUSTOMER("CUSTOMER");
 
     private final String catStr;
 
