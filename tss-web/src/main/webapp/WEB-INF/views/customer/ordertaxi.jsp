@@ -204,7 +204,7 @@ MAIN CONTENT
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Way of payment :</label>
-                                        <select class="selectpicker" title ="Way of payment" name = "paymentType">
+                                        <select class="selectpicker" title ="Choose way of payment" name = "paymentType">
                                             <option></option>
                                             <option value="1">Cash</option>
                                             <option value="2">Mastercard</option>
@@ -212,8 +212,8 @@ MAIN CONTENT
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Sex of the driver :</label>
-                                        <select class="selectpicker" title ="Driver's gender" name = "driverGender">
+                                        <label class="col-sm-2 col-sm-2 control-label">Driver's gender :</label>
+                                        <select class="selectpicker" title ="Choose driver's gender" name = "driverGender">
                                             <option></option>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
@@ -221,7 +221,7 @@ MAIN CONTENT
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Music type :</label>
-                                        <select class="selectpicker" title ="Music type" name = "musicType">
+                                        <select class="selectpicker" title ="Choose music type" name = "musicType">
                                             <option></option>
                                             <option value="1">Rock</option>
                                             <option value="2">Classic</option>
@@ -229,7 +229,7 @@ MAIN CONTENT
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Choose other options :</label>
+                                        <label class="col-sm-2 col-sm-2 control-label">Other options :</label>
                                         <select class="selectpicker"multiple title ="Choose other options" name = "addOptions">
                                             <option value="wifi">WI-FI</option>
                                             <option value="animal">Animal transportation</option>
