@@ -1,6 +1,6 @@
 package com.netcracker.ejb;
 
-import com.netcracker.DTO.UserDTO;
+import com.netcracker.dto.UserDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;

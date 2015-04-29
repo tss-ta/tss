@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.netcracker.DTO;
+package com.netcracker.dto;
 
 import com.netcracker.entity.helper.Roles;
 import java.io.Serializable;
