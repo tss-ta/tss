@@ -14,6 +14,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tss_user")
 @Inheritance(strategy = InheritanceType.JOINED)
+@NamedQueries({
+    @NamedQuery(name = "User.findAllOrderedByUsername", query = "SELECT u FROM User u ORDER BY u.username"),
+    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
 public class User implements Serializable {
 
     @Id
@@ -54,7 +57,12 @@ public class User implements Serializable {
         this.passwordHash = passwordHash;
     }
 
-    public Integer getId() {
+    public User(String username, String email) {
+    	 this.username = username;
+         this.email = email;
+	}
+
+	public Integer getId() {
         return id;
     }
 

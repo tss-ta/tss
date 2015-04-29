@@ -1,24 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.netcracker.ejb;
 
 
 import com.netcracker.dto.GroupDTO;
+import com.netcracker.entity.helper.Roles;
 
 import java.util.List;
 import javax.ejb.EJBLocalObject;
 
 
-/**
- *
- * @author Виктор
- */
-
 public interface GroupBeanLocal extends EJBLocalObject {
-    void addGroup(GroupDTO groupDTO);
-    void editGroup(GroupDTO groupDTO);
-    List<GroupDTO> getGroup(int pageNumber, int paginationStep);
+    
+    void addGroup(String groupName, List<Roles> roles);
+    
+    void editGroup(int groupId, String groupName, List<Roles> roles);
+    
+    List<GroupDTO> getGroupPage(int pageNumber, int paginationStep);
+    
+    void deleteGroup (int id);
 }

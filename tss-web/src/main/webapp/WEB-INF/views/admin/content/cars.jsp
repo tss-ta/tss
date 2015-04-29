@@ -91,7 +91,12 @@
                             <i class="fa fa-check"></i>
                         </c:if>
                     </td>
-                    <td><a href="/admin?action=edit">Edit</a></td>
+                    <c:if test="${not assign}">
+                        <td><a href="/admin?action=edit">Edit</a></td>
+                    </c:if>
+                    <c:if test="${assign}">
+                        <td><a href="/admin/driver?action=assigncar&carid=${car.getId()}&driverid=${driverid}">Assign Car</a></td>
+                    </c:if>
                 </tr>
             </c:forEach>
             </tbody>
