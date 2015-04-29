@@ -1,7 +1,7 @@
 package com.netcracker.tss.web.servlet.admin;
 
 import com.netcracker.tss.web.util.Page;
-import com.netcracker.DTO.GroupDTO;
+import com.netcracker.dto.GroupDTO;
 import com.netcracker.ejb.GroupBeanLocal;
 import com.netcracker.ejb.GroupBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;

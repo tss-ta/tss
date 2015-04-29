@@ -2,7 +2,7 @@
 package com.netcracker.ejb;
 
 
-import com.netcracker.DTO.GroupDTO;
+import com.netcracker.dto.GroupDTO;
 import com.netcracker.entity.helper.Roles;
 
 import java.util.List;

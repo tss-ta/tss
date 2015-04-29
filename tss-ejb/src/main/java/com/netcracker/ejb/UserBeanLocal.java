@@ -1,6 +1,6 @@
 package com.netcracker.ejb;
 
-import com.netcracker.DTO.UserDTO;
+import com.netcracker.dto.UserDTO;
 import com.netcracker.entity.helper.Roles;
 
 import java.util.List;
