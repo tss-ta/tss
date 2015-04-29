@@ -105,6 +105,17 @@ public class TaxiOrder implements Serializable {
 		this.id = id;
 	}
 
+    public TaxiOrder(Integer payment, Integer musicStyle, Boolean male, Boolean smoke, Integer carCategory, Boolean animalTransport, Boolean wifi, Boolean conditioner) {
+        this.payment = payment;
+        this.musicStyle = musicStyle;
+        this.male = male;
+        this.smoke = smoke;
+        this.carCategory = carCategory;
+        this.animalTransport = animalTransport;
+        this.wifi = wifi;
+        this.conditioner = conditioner;
+    }
+
 	public TaxiOrder(TaxiOrder to) {
 		setAnimalTransport(to.animalTransport);
 		setBookingTime(to.bookingTime);
