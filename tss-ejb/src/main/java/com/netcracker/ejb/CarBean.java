@@ -1,6 +1,7 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dao.CarDao;
+import com.netcracker.dto.CarDTO;
 import com.netcracker.entity.Car;
 
 import javax.ejb.EJBException;
@@ -8,6 +9,7 @@ import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
 import java.rmi.RemoteException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -30,6 +32,19 @@ public class CarBean implements SessionBean {
         return carList;
     }
 
+    public List<Car> searchByLicPlate(String licPlate) {
+        CarDao carDao = new CarDao();
+        List<Car> carList = null;
+        try {
+            carList = carDao.searchByLicPlate(licPlate);
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            carDao.close();
+        }
+        return carList;
+    }
+
     public boolean insertCar(Car car) {
         CarDao carDao = new CarDao();
         try {
@@ -48,25 +63,25 @@ public class CarBean implements SessionBean {
         return true;
     }
 
-//    private CarDTO convertEntityToTransferObject(Car car) {
-//        CarDTO carDTO = new CarDTO();
-//        carDTO.setId(car.getId());
-//        carDTO.setAnimalable(car.getAnimalable());
-//        carDTO.setAvailable(car.getAvailable());
-//        carDTO.setCategory(car.getCategory());
-//        carDTO.setConfitioner(car.getConditioner());
-//        carDTO.setWifi(car.getWifi());
-//        carDTO.setLicPlate(car.getLicPlate());
-//        return carDTO;
-//    }
-//
-//    private List<CarDTO> convertListOfEntitiesToListOfTransferObjects(List<Car> carList) {
-//        List<CarDTO> carDTOs = new LinkedList<CarDTO>();
-//        for (Car car : carList) {
-//            carDTOs.add(convertEntityToTransferObject(car));
-//        }
-//        return carDTOs;
-//    }
+    private CarDTO convertEntityToTransferObject(Car car) {
+        CarDTO carDTO = new CarDTO();
+        carDTO.setId(car.getId());
+        carDTO.setAnimalable(car.getAnimalable());
+        carDTO.setAvailable(car.getAvailable());
+        carDTO.setCategory(car.getCategory());
+        carDTO.setConfitioner(car.getConditioner());
+        carDTO.setWifi(car.getWifi());
+        carDTO.setLicPlate(car.getLicPlate());
+        return carDTO;
+    }
+
+    private List<CarDTO> convertListOfEntitiesToListOfTransferObjects(List<Car> carList) {
+        List<CarDTO> carDTOs = new LinkedList<CarDTO>();
+        for (Car car : carList) {
+            carDTOs.add(convertEntityToTransferObject(car));
+        }
+        return carDTOs;
+    }
 
     @Override
     public void setSessionContext(SessionContext sessionContext) throws EJBException, RemoteException {}

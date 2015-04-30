@@ -21,11 +21,11 @@
                     <a href="/admin/cars?menu=cars&action=add-car" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
                 </div>
                 <div class="col-md-offset-7 col-md-4">
-                    <form>
+                    <form action="/admin/cars?menu=cars&action=search" method="post" >
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="AAA-000-AAA">
+                            <input type="text" class="form-control" name="search" placeholder="AAA-000-AAA">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
                     </form>
