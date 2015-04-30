@@ -33,6 +33,18 @@ public class AdminCustomerServlet extends HttpServlet {
         if ("add-role".equals(action)) {
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_ROLES_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+        } else if ("search-users".equals(action)) {
+            try {
+                UserBeanLocal userBeanLocal = getUserBean(req);
+                req.setAttribute("customers", userBeanLocal.searchCustomersByEmail(req.getParameter("email"), 1, 10));
+                req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
+                req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
+                req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+            } catch (RuntimeException e) {
+                Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+                        "Can't show customers", e);
+                req.getRequestDispatcher("/500.jsp").forward(req, resp);
+            }
         } else {
             redirectToCustomers(req, resp);
         }
@@ -77,10 +89,10 @@ public class AdminCustomerServlet extends HttpServlet {
         List<Roles> roles = new ArrayList<>();
         if (isOn(req.getParameter("customer"))) {
             roles.add(Roles.CUSTOMER);
-        } 
+        }
         if (isOn(req.getParameter("admin"))) {
             roles.add(Roles.ADMIN);
-        } 
+        }
         if (isOn(req.getParameter("driver"))) {
             roles.add(Roles.DRIVER);
         }
