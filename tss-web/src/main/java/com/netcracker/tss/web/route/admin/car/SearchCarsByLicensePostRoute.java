@@ -33,7 +33,7 @@ public class SearchCarsByLicensePostRoute implements Route {
     public ActionRequest action(HttpServletRequest request) {
         String searchWord = request.getParameter(SEARCH_WORD_REQUEST_PARAMETER);
         System.out.println("search: " + searchWord);
-        List<Car> carList = getCarBean().searchByLicPlate(searchWord);
+        List<Car> carList = getCarBean().searchByLicPlate(searchWord.toUpperCase());
         System.out.println("Car list size: " + carList.size());
         request.setAttribute(RequestAttribute.CAR_LIST.getName(), carList);
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CARS_CONTENT.getType());
