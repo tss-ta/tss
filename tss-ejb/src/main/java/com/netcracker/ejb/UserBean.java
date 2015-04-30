@@ -217,6 +217,38 @@ public class UserBean implements SessionBean {
             }
         }
     }
+      
+    /**
+     * 
+     * @param emailPart  - part of email
+     * @param pageNumber - number of page 
+     * @param paginationStep - rows on one page
+     * @return List of UserDTO where email have emailPart 
+     */
+    public List<UserDTO> searchUsersByEmail(String emailPart, int pageNumber, int paginationStep) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            return toUserDTOList(dao.searchByEmail(emailPart, pageNumber, paginationStep));
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+    
+
+    public List<UserDTO> searchUsersByEmailAndRolename(String emailPart, String rolename, int pageNumber, int paginationStep) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            return toUserDTOList(dao.searchByEmailAndRolename(emailPart, rolename, pageNumber, paginationStep));
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
 
     private List<UserDTO> toUserDTOList(List<User> users) {
         List<UserDTO> customers = new ArrayList<>();

@@ -23,7 +23,7 @@
                 <div class="col-md-offset-7 col-md-4">
                     <form action="/admin/cars?menu=cars&action=search" method="post" >
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="AAA-000-AAA">
+                            <input type="text" class="form-control" name="search" placeholder="AAA-000-AAA" value="${param.search}">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>

@@ -45,8 +45,16 @@ public class AdminGroupServlet extends HttpServlet {
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } else if ("manage-users".equals(action)) {
             redirectToUsers(req, resp);
-//            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_TO_GROUP_CONTENT.getAbsolutePath());
-//            req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+        } else if ("search".equals(action)) {
+            try {
+                GroupBeanLocal groupBeanLocal = getGroupBean(req);
+                req.setAttribute("groups", groupBeanLocal.searchGroupByName(req.getParameter("groupname"),1, 10));
+             
+                req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_GROUPS_CONTENT.getAbsolutePath());
+                req.getRequestDispatcher(template.getAbsolutePath()).forward(req, resp);
+            } catch (RuntimeException e) {
+                req.getRequestDispatcher("/500.jsp").forward(req, resp);
+            }
         } else {
             redirectToGroups(req, resp);
         }
