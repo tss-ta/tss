@@ -11,8 +11,8 @@ import javax.ejb.EJBLocalHome;
  *
  * @author Виктор
  */
-public interface CustomerBeanLocalHome extends EJBLocalHome {
+public interface MapBeanLocalHome extends EJBLocalHome {
 
-    GroupBeanLocal create();
+    MapBeanLocal create();
 
 }

@@ -59,7 +59,7 @@
                             <li><a href="/signout">Home</a></li>
                             <li><a href="/signin.jsp">Sign In</a></li>
                             <li class="active"><a href="/signup.jsp">Sign Up</a></li>
-                            <li><a href="#">Guest</a></li>
+                            <li><a href="/guest">Guest</a></li>
                             <li><a href="/signout">Sign Out</a></li>
                             <div class="clear"></div>
                         </ul>

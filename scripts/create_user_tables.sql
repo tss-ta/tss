@@ -44,7 +44,7 @@ CREATE TABLE tss_role
 CREATE TABLE car
 (
   id serial NOT NULL,
-  lic_plate CHARACTER VARYING(10) NOT NULL,
+  lic_plate CHARACTER VARYING(11) NOT NULL,
   category INTEGER NOT NULL,
   available BOOLEAN,
   animalable BOOLEAN,
@@ -79,7 +79,7 @@ CREATE TABLE tss_user_group
   CONSTRAINT tss_usr_grp_pk PRIMARY KEY (user_id, group_id),
   CONSTRAINT tss_usr_grp_grp_id_fk FOREIGN KEY (group_id)
       REFERENCES tss_group (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
+      ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT tss_usr_grp_usr_id_fk FOREIGN KEY (user_id)
       REFERENCES tss_user (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
@@ -107,7 +107,7 @@ CREATE TABLE tss_group_role
   CONSTRAINT tss_grp_rl_pk PRIMARY KEY (role_id, group_id),
   CONSTRAINT tss_grp_rl_grp_id_fk FOREIGN KEY (group_id)
       REFERENCES tss_group (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
+      ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT tss_grp_rl_rl_id_fk FOREIGN KEY (role_id)
       REFERENCES tss_role (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
@@ -130,12 +130,31 @@ CREATE TABLE driver_car
 );
 
 
+-- CREATE TABLE driver_car
+-- (
+-- 	id serial NOT NULL,
+-- 	driver_id INT,
+-- 	car_id INT,
+-- 	assigned_time TIMESTAMP,
+-- 	unassigned_time TIMESTAMP,
+--   	CONSTRAINT driver_car_pk PRIMARY KEY (id),
+-- 	CONSTRAINT driver_car_car_fk FOREIGN KEY (car_id)
+--       	REFERENCES car (id) MATCH SIMPLE
+-- 		 ON UPDATE NO ACTION ON DELETE NO ACTION,
+-- 	CONSTRAINT driver_car_driver_fk FOREIGN KEY (driver_id)
+--       	REFERENCES driver (driver_id)  MATCH SIMPLE
+-- 		ON UPDATE NO ACTION ON DELETE NO ACTION
+-- );
+
+
 CREATE TABLE tariff
 (
   id serial NOT NULL,
   tariff_name character varying(40),
   plus_coef float(8),
   multiple_coef float(8),
+  active_from TIMESTAMP with time zone,
+  active_to TIMESTAMP with time zone,
   CONSTRAINT tariff_pk PRIMARY KEY (id)
 );
 
@@ -200,7 +219,4 @@ CREATE TABLE taxi_order
       REFERENCES route (route_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-
-
-
 
