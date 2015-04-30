@@ -1,14 +1,14 @@
 package com.netcracker.ejb;
 
-import com.netcracker.entity.Car;
 import com.netcracker.entity.Driver;
 
 import javax.ejb.EJBLocalObject;
 import java.util.List;
 
 /**
- * Created by Illya on 26.04.2015.
+ * @author Illia Rudenko
  */
+
 public interface DriverLocal extends EJBLocalObject {
 
     public Driver getDriver(Integer id);
