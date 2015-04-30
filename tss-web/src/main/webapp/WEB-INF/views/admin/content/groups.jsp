@@ -18,11 +18,12 @@
                     <a href="/admin/group?action=addgroup" class="btn btn-default">Add <i class="fa fa-users"></i></a>
                 </div>
                 <div class="col-md-offset-7 col-md-4">
-                    <form>
+                    <form action="/admin/group" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search by name">
+                            <input type="text" class="form-control" name="groupname" placeholder="Search by group name" value="${param.groupname}">
+                            <input type="hidden" name="action" value="search">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
                     </form>

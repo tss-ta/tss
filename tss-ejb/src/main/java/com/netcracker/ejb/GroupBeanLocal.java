@@ -18,4 +18,6 @@ public interface GroupBeanLocal extends EJBLocalObject {
     List<GroupDTO> getGroupPage(int pageNumber, int paginationStep);
     
     void deleteGroup (int id);
+    
+    List<GroupDTO> searchGroupByName(String namePart, int pageNumber, int paginationStep);
 }

@@ -84,7 +84,7 @@ public class GroupBean implements SessionBean {
         List<Role> roleList = new ArrayList<>();
         Iterator<Roles> rolesIterator = roles.iterator();
         while (rolesIterator.hasNext()) {
-            String rolename = rolesIterator.next().toString();
+            String rolename = rolesIterator.next().getDBRolename();
             Role role = roleDAO.findByRolename(rolename);
 //            if (role == null) {
 //                throw new IllegalArgumentException("Role with name " + rolename + " doesn't exist");
@@ -135,6 +135,29 @@ public class GroupBean implements SessionBean {
                         toEnumRolesList(group.getRoles())));
             }
             return groupsDTOPage;
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
+    public List<GroupDTO> searchGroupByName(String namePart, int pageNumber, int paginationStep) {
+        GroupDAO dao = null;
+        try {
+            dao = new GroupDAO();
+            List<GroupDTO> groupsDTOPage = new ArrayList<GroupDTO>();
+            List<Group> groupsPage = dao.searchByName(namePart, pageNumber, paginationStep);
+            Iterator<Group> groupIterator = groupsPage.iterator();
+            while (groupIterator.hasNext()) {
+                Group group = groupIterator.next();
+                String groupName = group.getName();
+                groupsDTOPage.add(new GroupDTO(group.getId(), groupName,
+                        toEnumRolesList(group.getRoles())));
+            }
+            return groupsDTOPage;
+        } catch (NoResultException nre) {
+            return new ArrayList<>();
         } finally {
             if (dao != null) {
                 dao.close();

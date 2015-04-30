@@ -6,13 +6,13 @@ package com.netcracker.entity.helper;
 public enum Roles {
     ADMIN("ADMIN"), DRIVER("DRIVER"), CUSTOMER("CUSTOMER");
 
-    private final String catStr;
+    private final String dbRolename;
 
-    Roles(String catStr) {
-        this.catStr = catStr;
+    Roles(String dbRolename) {
+        this.dbRolename = dbRolename;
     }
 
-    public String getCatStr() {
-        return catStr;
+    public String getDBRolename() {
+        return dbRolename;
     }
 }
