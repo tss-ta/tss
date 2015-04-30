@@ -84,4 +84,21 @@ public class DriverCar implements Serializable {
     public void setUnassignedTime(Calendar unassignedTime) {
         this.unassignedTime = unassignedTime;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DriverCar driverCar = (DriverCar) o;
+
+        if (!drvCarId.equals(driverCar.drvCarId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return drvCarId.hashCode();
+    }
 }
