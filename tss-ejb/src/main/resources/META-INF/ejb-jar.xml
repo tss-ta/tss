@@ -147,5 +147,22 @@
             </ejb-local-ref>
         </session>
 
+        <session>
+            <display-name>CarBean</display-name>
+            <ejb-name>CarBean</ejb-name>
+            <local-home>com.netcracker.ejb.CarBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.CarBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.CarBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/CarBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.CarBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.CarBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+
     </enterprise-beans>
 </ejb-jar>
