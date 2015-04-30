@@ -34,4 +34,23 @@ public interface UserBeanLocal extends EJBLocalObject {
      */
     public boolean deleteFromGroup(int userId, int groupId);
 
+    /**
+     *
+     * @param emailPart - part of email
+     * @param pageNumber - number of page
+     * @param paginationStep - rows on one page
+     * @return List of UserDTO where email have emailPart
+     */
+    List<UserDTO> searchUsersByEmail(String emailPart, int pageNumber, int paginationStep);
+
+    /**
+     *
+     * @param emailPart - part of email
+     * @param rolename -name of role
+     * @param pageNumber - number of page
+     * @param paginationStep - rows on one page
+     * @return List of UserDTO where email have emailPart and role with rolename
+     */
+    List<UserDTO> searchUsersByEmailAndRolename(String emailPart, String rolename, int pageNumber, int paginationStep);
+
 }
