@@ -52,5 +52,7 @@ public interface UserBeanLocal extends EJBLocalObject {
      * @return List of UserDTO where email have emailPart and role with rolename
      */
     List<UserDTO> searchUsersByEmailAndRolename(String emailPart, String rolename, int pageNumber, int paginationStep);
+    
+    List<UserDTO> searchCustomersByEmail(String emailPart, int pageNumber, int paginationStep);
 
 }
