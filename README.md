@@ -1,4 +1,4 @@
-# Taxi Service System
+# Taxi Service System [![Build Status](https://travis-ci.org/tss-ta/tss.svg?branch=develop)](https://travis-ci.org/tss-ta/tss)
 
 ## What does it look like?
 You can try _deployed application here: http://tss-tssa.rhcloud.com
