@@ -38,9 +38,27 @@ public class UserDAO extends GenericDAO<User> {
         query.setMaxResults(paginationStep);
         return query.getResultList();
     }
+
     public List<User> getByGroup(String groupName, int pageNumber, int paginationStep) {
         Query query = em.createQuery("SELECT u FROM User u JOIN u.groups g WHERE g.name = :name", User.class);
         query.setParameter("name", groupName);
+        query.setFirstResult((pageNumber - 1) * paginationStep);
+        query.setMaxResults(paginationStep);
+        return query.getResultList();
+    }
+
+    public List<User> searchByEmail(String email, int pageNumber, int paginationStep) {
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.email like :email", User.class);
+        query.setParameter("email", "%" + email + "%");
+        query.setFirstResult((pageNumber - 1) * paginationStep);
+        query.setMaxResults(paginationStep);
+        return query.getResultList();
+    }
+
+    public List<User> searchByEmailAndRolename(String email, String rolename, int pageNumber, int paginationStep) {
+        Query query = em.createQuery("SELECT u FROM User u JOIN u.roles r WHERE (r.rolename = :rolename) and (u.email like :email)", User.class);
+        query.setParameter("rolename", rolename);
+        query.setParameter("email", "%" + email + "%");
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
         return query.getResultList();
