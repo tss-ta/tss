@@ -70,6 +70,12 @@
             <version>${spring.security.version}</version>
         </dependency>
 
+        <!-- Hibernate Validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.1.3.Final</version>
+        </dependency>
 
         <!-- Servlet API -->
         <dependency>

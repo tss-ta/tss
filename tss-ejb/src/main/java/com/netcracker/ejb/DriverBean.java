@@ -15,8 +15,9 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Illya on 26.04.2015.
+ * @author Illia Rudenko
  */
+
 public class DriverBean implements SessionBean {
 
     public DriverBean() {
