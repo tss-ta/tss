@@ -13,4 +13,6 @@ public interface CarBeanLocal extends EJBLocalObject {
     List<Car> getPageOfCars(int pageNumber);
 
     public boolean insertCar(Car car);
+
+    public List<Car> searchByLicPlate(String licPlate);
 }

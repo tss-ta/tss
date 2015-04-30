@@ -3,6 +3,7 @@ package com.netcracker.tss.web.router.config;
 import com.netcracker.tss.web.route.admin.car.AddCarGetRoute;
 import com.netcracker.tss.web.route.admin.car.AddCarPostRoute;
 import com.netcracker.tss.web.route.admin.car.AllCarsGetRoute;
+import com.netcracker.tss.web.route.admin.car.SearchCarsByLicensePostRoute;
 import com.netcracker.tss.web.router.ActionRouter;
 import com.netcracker.tss.web.router.DefaultActionRouter;
 
@@ -38,6 +39,7 @@ public class ActionRouterLoader implements ServletContextListener {
         actionRouter.addRoute(new AddCarPostRoute());
         actionRouter.addRoute(new AddCarGetRoute());
         actionRouter.addRoute(new AllCarsGetRoute());
+        actionRouter.addRoute(new SearchCarsByLicensePostRoute());
 
         return actionRouter;
     }
