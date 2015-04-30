@@ -37,7 +37,7 @@
 
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
-        <table class="table table-striped table-bordered">
+        <table class="table table-hover table-bordered">
             <thead class="tablehead text-center">
             <td class="col-md-3">№</td>
             <td class="col-md-2">Type</td>
@@ -76,7 +76,7 @@
                             <i class="fa fa-wifi"></i>
                         </c:if>
                         <c:if test="${!car.wifi}">
-                            <i class="fa fa-times"></i>
+                            <i class="fa fa-minus"></i>
                         </c:if>
                     </td>
                     <td>
@@ -84,7 +84,7 @@
                             <i class="fa fa-check"></i>
                         </c:if>
                         <c:if test="${!car.conditioner}">
-                            <i class="fa fa-times"></i>
+                            <i class="fa fa-minus"></i>
                         </c:if>
                     </td>
                     <td>
@@ -92,19 +92,18 @@
                             <i class="fa fa-check"></i>
                         </c:if>
                         <c:if test="${!car.animalable}">
-                            <i class="fa fa-times"></i>
+                            <i class="fa fa-minus"></i>
                         </c:if>
                     </td>
-                    <c:if test="${car.available}">
-                        <td class="bg-success">
+
+                    <td>
+                        <c:if test="${car.available}">
                             <i class="fa fa-check"></i>
-                        </td>
-                    </c:if>
-                    <c:if test="${!car.available}">
-                        <td class="bg-danger">
-                            <i class="fa fa-times"></i>
-                        </td>
-                    </c:if>
+                        </c:if>
+                        <c:if test="${!car.available}">
+                            <i class="fa fa-minus"></i>
+                        </c:if>
+                    </td>
 
 
                     <c:if test="${not assign}">
