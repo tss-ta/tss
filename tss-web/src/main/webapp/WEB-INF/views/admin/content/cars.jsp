@@ -75,22 +75,38 @@
                         <c:if test="${car.wifi}">
                             <i class="fa fa-wifi"></i>
                         </c:if>
+                        <c:if test="${!car.wifi}">
+                            <i class="fa fa-times"></i>
+                        </c:if>
                     </td>
                     <td>
                         <c:if test="${car.conditioner}">
                             <i class="fa fa-check"></i>
+                        </c:if>
+                        <c:if test="${!car.conditioner}">
+                            <i class="fa fa-times"></i>
                         </c:if>
                     </td>
                     <td>
                         <c:if test="${car.animalable}">
                             <i class="fa fa-check"></i>
                         </c:if>
-                    </td>
-                    <td>
-                        <c:if test="${car.available}">
-                            <i class="fa fa-check"></i>
+                        <c:if test="${!car.animalable}">
+                            <i class="fa fa-times"></i>
                         </c:if>
                     </td>
+                    <c:if test="${car.available}">
+                        <td class="bg-success">
+                            <i class="fa fa-check"></i>
+                        </td>
+                    </c:if>
+                    <c:if test="${!car.available}">
+                        <td class="bg-danger">
+                            <i class="fa fa-times"></i>
+                        </td>
+                    </c:if>
+
+
                     <c:if test="${not assign}">
                         <td><a href="/admin?action=edit">Edit</a></td>
                     </c:if>
