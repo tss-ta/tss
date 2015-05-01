@@ -1,7 +1,9 @@
 package com.netcracker.tss.web.servlet.admin;
 
+import com.netcracker.ejb.TariffBeanLocal;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.util.BeansLocator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,8 +21,23 @@ public class AdminTariffServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_TARIFFS_CONTENT.getType());
-        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath());
-        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+        
+        redirectToTariffs(req, resp);
+//        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_TARIFFS_CONTENT.getType());
+//        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath());
+//        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+    }
+    
+        
+    private void redirectToTariffs(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            TariffBeanLocal groupBeanLocal = BeansLocator.getInstance().getTariffBean();
+            req.setAttribute("tariffs", groupBeanLocal.getTariffPage(1, 10));
+            req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_TARIFFS_CONTENT.getType());
+            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath());
+            req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+        } catch (RuntimeException e) {
+            req.getRequestDispatcher("/500.jsp").forward(req, resp);
+        }
     }
 }

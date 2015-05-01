@@ -6,7 +6,6 @@
 package com.netcracker.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,12 +27,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tariff.findAll", query = "SELECT t FROM Tariff t"),
+    @NamedQuery(name = "Tariff.findAllOrderedByName", query = "SELECT t FROM Tariff t ORDER BY t.tariffName"),
+    @NamedQuery(name = "Tariff.searchByName", query = "SELECT t FROM Tariff t WHERE t.tariffName like :tariffName"),
     @NamedQuery(name = "Tariff.findById", query = "SELECT t FROM Tariff t WHERE t.id = :id"),
     @NamedQuery(name = "Tariff.findByTariffName", query = "SELECT t FROM Tariff t WHERE t.tariffName = :tariffName"),
     @NamedQuery(name = "Tariff.findByPlusCoef", query = "SELECT t FROM Tariff t WHERE t.plusCoef = :plusCoef"),
-    @NamedQuery(name = "Tariff.findByMultipleCoef", query = "SELECT t FROM Tariff t WHERE t.multipleCoef = :multipleCoef"),
-    @NamedQuery(name = "Tariff.findByActiveFrom", query = "SELECT t FROM Tariff t WHERE t.activeFrom = :activeFrom"),
-    @NamedQuery(name = "Tariff.findByActiveTo", query = "SELECT t FROM Tariff t WHERE t.activeTo = :activeTo")})
+    @NamedQuery(name = "Tariff.findByMultipleCoef", query = "SELECT t FROM Tariff t WHERE t.multipleCoef = :multipleCoef")})
 public class Tariff implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,13 +47,8 @@ public class Tariff implements Serializable {
     private Float plusCoef;
     @Column(name = "multiple_coef")
     @Min(value=0)
+    @Max(value = 100000)
     private Float multipleCoef;
-    @Column(name = "active_from")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date activeFrom;
-    @Column(name = "active_to")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date activeTo;
 
     public Tariff() {
     }
@@ -95,23 +88,7 @@ public class Tariff implements Serializable {
     public void setMultipleCoef(Float multipleCoef) {
         this.multipleCoef = multipleCoef;
     }
-
-    public Date getActiveFrom() {
-        return activeFrom;
-    }
-
-    public void setActiveFrom(Date activeFrom) {
-        this.activeFrom = activeFrom;
-    }
-
-    public Date getActiveTo() {
-        return activeTo;
-    }
-
-    public void setActiveTo(Date activeTo) {
-        this.activeTo = activeTo;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
