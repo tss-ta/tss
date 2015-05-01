@@ -17,7 +17,10 @@ public class CustomerOrderTaxiPageServlet extends HttpServlet {
 	
 	 @Override
 	    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	        req.getRequestDispatcher("/WEB-INF/views/customer/ordertaxi.jsp").forward(req, resp);
+		 req.setAttribute("pageContent", "content/customer-order.jsp");
+		 req.setAttribute("pageType", "orderpage");
+			req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
+					.forward(req, resp);
 	    }
 
 }

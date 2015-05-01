@@ -63,8 +63,9 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
         taxiOrder.setOrderTime(orderTime);
         taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
         req.setAttribute("added", "success");
-        req.getRequestDispatcher("/WEB-INF/views/customer/ordertaxi.jsp")
-                .forward(req, resp);
+        req.setAttribute("pageContent", "content/customer-order.jsp");
+		req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
+				.forward(req, resp);
     }
     private TaxiOrder taxiOrderAddParameters (HttpServletRequest req) {
         Integer carType = checkString(req.getParameter("carType"));

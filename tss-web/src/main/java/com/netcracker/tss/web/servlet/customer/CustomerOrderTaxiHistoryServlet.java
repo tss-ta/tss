@@ -46,7 +46,9 @@ public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
 		getServletContext().setAttribute("pageNumber", pageNumber);
 		List<TaxiOrderHistory> list = getHistory(pageNumber, req);
 		req.setAttribute("history", list);
-		req.getRequestDispatcher("/WEB-INF/views/customer/home-customer.jsp")
+		req.setAttribute("pageType", "dashboard");
+		req.setAttribute("pageContent", "content/dashboard.jsp");
+		req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
 				.forward(req, resp);
 	}
 

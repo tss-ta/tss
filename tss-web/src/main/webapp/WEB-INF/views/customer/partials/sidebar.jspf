@@ -1,0 +1,31 @@
+<%--
+  User: Kyrylo Berehovyi
+  Date: 26/04/2015
+  Time: 16:24
+--%>
+<c:choose>
+	<c:when test="${pageType == 'dashboard'}">
+		<c:set var="activeDashboard" scope="request"
+			value="${'class=\"active\"'}" />
+	</c:when>
+	<c:when test="${pageType == 'orderpage'}">
+		<c:set var="activeCars" scope="request" value="${'class=\"active\"'}" />
+	</c:when>
+</c:choose>
+
+<!--sidebar start-->
+<ul class="sidebar-nav">
+	<li class="sidebar-brand"><a href="/">Taxi Service</a></li>
+
+	<div style="" display: block; margin-left: auto; margin-right:auto; text-align:center">
+		
+	</div>
+	<li><a href="/customer" ${activeDashboard}> <span
+			class="icon-container"><i class="fa fa-tachometer"></i></span> <span
+			class="icon-label">Dashboard</span>
+	</a></li>
+	<li><a href="/customer/orderpage" ${activeCustomers}> <span
+			class="icon-container"><i class="fa fa-user"></i></span> <span
+			class="icon-label">Order Taxi</span>
+	</a></li>
+</ul>
