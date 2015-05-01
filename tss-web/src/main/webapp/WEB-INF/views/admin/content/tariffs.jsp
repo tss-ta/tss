@@ -45,7 +45,7 @@
                         <td>${tariff.multipleCoef}</td>
                         <td class="col-md-1"><a href="/admin/tariff" class="btn btn-default" >edit</a></td>
                     </tr>
-                </c:forEach> 
+                </c:forEach>
             </tbody>
         </table>
         <%@ include file="../partials/pagination.jspf" %>
