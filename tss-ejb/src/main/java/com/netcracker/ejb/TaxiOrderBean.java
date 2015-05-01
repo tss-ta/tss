@@ -6,10 +6,12 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dao.AddressDAO;
+import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.RouteDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.entity.Address;
+import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
@@ -23,6 +25,7 @@ import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
@@ -38,7 +41,6 @@ public class TaxiOrderBean implements SessionBean {
 		AddressDAO addressDAO = null;
 		RouteDAO routeDAO = null;
 		TaxiOrderDAO taxiOrderDAO = null;
-		UserDAO userDAO = null;
 		try {
 			addressDAO = new AddressDAO();
 			addressDAO.persist(addFrom);
@@ -48,9 +50,7 @@ public class TaxiOrderBean implements SessionBean {
 			route.setToAddrId(addTo);
 			routeDAO.persist(route);
 			taxiOrder.setRouteId(route);
-			userDAO = new UserDAO();
-			User userFromDB = userDAO.getByEmail(user.getEmail());
-			taxiOrder.setUserId(userFromDB);
+			taxiOrder.setContactsId(createContacts(user));
 			taxiOrder.setRouteId(route);
 			taxiOrderDAO = new TaxiOrderDAO();
 			taxiOrderDAO.persist(taxiOrder);
@@ -61,14 +61,41 @@ public class TaxiOrderBean implements SessionBean {
 			if (routeDAO != null) {
 				routeDAO.close();
 			}
-			if (userDAO != null) {
-				userDAO.close();
-			}
 			if (taxiOrderDAO != null) {
 				taxiOrderDAO.close();
 			}
 		}
 
+	}
+
+	private Contacts createContacts(User user) {
+		ContactsDAO contactsDAO = null;
+		UserDAO userDAO = null;
+		Contacts contacts = null;
+		try {
+			userDAO = new UserDAO();
+			User userFromDB = null;
+			try {
+				userFromDB = userDAO.getByEmail(user.getEmail());
+			} catch (NoResultException nre) {
+			}
+			contactsDAO = new ContactsDAO();
+			if (userFromDB != null) {
+				contactsDAO.persist(new Contacts(userFromDB));
+			} else {
+				contactsDAO.persist(new Contacts(user.getUsername(), user
+						.getEmail()));
+			}
+			contacts = contactsDAO.getByEmail(user.getEmail());
+		} finally {
+			if (userDAO != null) {
+				userDAO.close();
+			}
+			if (contactsDAO != null) {
+				contactsDAO.close();
+			}
+		}
+		return contacts;
 	}
 
 	public List<TaxiOrderHistory> getTaxiOrderHistory(int pageNumber,
@@ -77,7 +104,7 @@ public class TaxiOrderBean implements SessionBean {
 		List<TaxiOrder> orders = null;
 		try {
 			dao = new TaxiOrderDAO();
-			orders = dao.getTaxiOrderHistory(pageNumber, pageSize, user);
+			orders = dao.getTaxiOrderHistory(pageNumber, pageSize, createContacts(user));
 		} finally {
 			if (dao != null) {
 				dao.close();
@@ -100,12 +127,12 @@ public class TaxiOrderBean implements SessionBean {
 
 	private String getFromAddr(TaxiOrderHistory toh) {
 		Address a = toh.getRouteId().getFromAddrId();
-		return toAddress(a.getAltitude(),a.getLongtitude());
+		return toAddress(a.getAltitude(), a.getLongtitude());
 	}
 
 	private String getToAddr(TaxiOrderHistory toh) {
 		Address a = toh.getRouteId().getToAddrId();
-		return toAddress(a.getAltitude(),a.getLongtitude());
+		return toAddress(a.getAltitude(), a.getLongtitude());
 	}
 
 	private String toAddress(float lng, float alt) {

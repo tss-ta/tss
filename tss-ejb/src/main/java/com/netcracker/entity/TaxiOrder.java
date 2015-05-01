@@ -94,9 +94,9 @@ public class TaxiOrder implements Serializable {
 	@JoinColumn(name = "tariff_id", referencedColumnName = "id")
 	@ManyToOne
 	private Tariff tariffId;
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@JoinColumn(name = "contacts_id", referencedColumnName = "id")
 	@ManyToOne
-	private User userId;
+	private Contacts contactsId;
 
 	public TaxiOrder() {
 	}
@@ -134,7 +134,7 @@ public class TaxiOrder implements Serializable {
 		setSmoke(to.smoke);
 		setStatus(to.status);
 		setTariffId(to.tariffId);
-		setUserId(to.userId);
+		setContactsId(to.contactsId);
 		setWifi(to.wifi);
 	}
 
@@ -282,12 +282,12 @@ public class TaxiOrder implements Serializable {
 		this.tariffId = tariffId;
 	}
 
-	public User getUserId() {
-		return userId;
+	public Contacts getContactsId() {
+		return contactsId;
 	}
 
-	public void setUserId(User userId) {
-		this.userId = userId;
+	public void setContactsId(Contacts contactsId) {
+		this.contactsId = contactsId;
 	}
 
 	@Override
