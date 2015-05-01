@@ -8,7 +8,7 @@
 <div class="row row-fix">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <h1>Tariffs Panel</h1>
+        <h1>Tariff Edit Panel</h1>
         <table class="table table-striped table-bordered">
             <thead class="tablehead">
             <td>name</td>
@@ -20,7 +20,7 @@
             <tbody>
                 <c:forEach var = "tariff" items = "${requestScope.tariffs}">
                     <tr>
-                        <form action="admin/tariff" method="post">
+                        <form action="/admin/tariff" method="post">
                             <td>${tariff.tariffName}</td>
                             <td>
                                 <input type="number" name="add" value="${tariff.plusCoef}">
@@ -29,6 +29,8 @@
                                 <input type="number" name="mult" value="${tariff.multipleCoef}">
                             </td>
                             <td class="col-md-1"><input type="submit" class="btn btn-default" value="save"></td>
+                            <input type="hidden" name="id" value="${tariff.id}">
+                            <input type="hidden" name="action" value="edit">
                         </form>
                     </tr>
             </c:forEach> 
