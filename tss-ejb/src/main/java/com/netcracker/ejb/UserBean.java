@@ -238,7 +238,7 @@ public class UserBean implements SessionBean {
     }
     
     public List<UserDTO> searchCustomersByEmail(String emailPart, int pageNumber, int paginationStep) {
-        String rolename = Roles.CUSTOMER.getDBRolename();
+        String rolename = Roles.CUSTOMER.toString();
         return searchUsersByEmailAndRolename(emailPart, rolename, pageNumber, paginationStep);
     }
 

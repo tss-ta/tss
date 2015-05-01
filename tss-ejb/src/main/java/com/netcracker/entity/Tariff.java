@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -47,6 +48,7 @@ public class Tariff implements Serializable {
     @Column(name = "plus_coef")
     private Float plusCoef;
     @Column(name = "multiple_coef")
+    @Min(value=0)
     private Float multipleCoef;
     @Column(name = "active_from")
     @Temporal(TemporalType.TIMESTAMP)

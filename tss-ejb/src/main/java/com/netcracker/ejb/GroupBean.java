@@ -84,7 +84,7 @@ public class GroupBean implements SessionBean {
         List<Role> roleList = new ArrayList<>();
         Iterator<Roles> rolesIterator = roles.iterator();
         while (rolesIterator.hasNext()) {
-            String rolename = rolesIterator.next().getDBRolename();
+            String rolename = rolesIterator.next().toString();
             Role role = roleDAO.findByRolename(rolename);
 //            if (role == null) {
 //                throw new IllegalArgumentException("Role with name " + rolename + " doesn't exist");

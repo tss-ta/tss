@@ -1,13 +1,11 @@
 package com.netcracker.tss.web.servlet.admin;
 
 import com.netcracker.tss.web.util.Page;
-import com.netcracker.dto.GroupDTO;
 import com.netcracker.ejb.GroupBeanLocal;
-import com.netcracker.ejb.GroupBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
-import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.helper.Roles;
 import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.util.BeansLocator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,9 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 /**
  * Created by Kyrylo Berehovyi on 25/04/2015.
@@ -47,7 +42,7 @@ public class AdminGroupServlet extends HttpServlet {
             redirectToUsers(req, resp);
         } else if ("search".equals(action)) {
             try {
-                GroupBeanLocal groupBeanLocal = getGroupBean(req);
+                GroupBeanLocal groupBeanLocal = BeansLocator.getInstance().getGroupBean();
                 req.setAttribute("groups", groupBeanLocal.searchGroupByName(req.getParameter("groupname"), 1, 10));
 
                 req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_GROUPS_CONTENT.getAbsolutePath());
@@ -57,7 +52,7 @@ public class AdminGroupServlet extends HttpServlet {
             }
         } else if ("search-users".equals(action)) {
             try {
-                UserBeanLocal userBeanLocal = getUserBean(req);
+                UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();
                 req.setAttribute("customers", userBeanLocal.searchUsersByEmail(req.getParameter("email"), 1, 10));
                 req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_GROUPS_CONTENT.getType());
                 req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_TO_GROUP_CONTENT.getAbsolutePath());
@@ -80,7 +75,7 @@ public class AdminGroupServlet extends HttpServlet {
         String action = req.getParameter("action");
         if ("newgroup".equals(action)) {
             try {
-                GroupBeanLocal groupBeanLocal = getGroupBean(req);
+                GroupBeanLocal groupBeanLocal = BeansLocator.getInstance().getGroupBean();
                 groupBeanLocal.addGroup(groupName, getRoles(req));
                 redirectToGroups(req, resp);
             } catch (RuntimeException e) {
@@ -91,7 +86,7 @@ public class AdminGroupServlet extends HttpServlet {
 
         } else if ("edit-group".equals(action)) {
             try {
-                GroupBeanLocal groupBeanLocal = getGroupBean(req);
+                GroupBeanLocal groupBeanLocal = BeansLocator.getInstance().getGroupBean();
                 groupBeanLocal.editGroup(Integer.parseInt(req.getParameter("id")), groupName, getRoles(req));
                 redirectToGroups(req, resp);
             } catch (RuntimeException e) {
@@ -101,7 +96,7 @@ public class AdminGroupServlet extends HttpServlet {
             }
         } else if ("delete-group".equals(action)) {
             try {
-                GroupBeanLocal groupBeanLocal = getGroupBean(req);
+                GroupBeanLocal groupBeanLocal = BeansLocator.getInstance().getGroupBean();
                 groupBeanLocal.deleteGroup(Integer.parseInt(req.getParameter("id")));
                 redirectToGroups(req, resp);
             } catch (RuntimeException e) {
@@ -111,7 +106,7 @@ public class AdminGroupServlet extends HttpServlet {
                 redirectToGroups(req, resp);
             }
         } else if ("add-to-group".equals(action)) {
-            UserBeanLocal userBeanLocal = getUserBean(req);
+            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();//getUserBean(req);
             boolean isAdded = userBeanLocal.addToGroup(Integer.parseInt(req.getParameter("userid")),
                     Integer.parseInt(req.getParameter("groupid")));
             if (isAdded) {
@@ -121,7 +116,7 @@ public class AdminGroupServlet extends HttpServlet {
             }
             redirectToUsers(req, resp);
         } else if ("remove-from-group".equals(action)) {
-            UserBeanLocal userBeanLocal = getUserBean(req);
+            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();//getUserBean(req);
             userBeanLocal.deleteFromGroup(Integer.parseInt(req.getParameter("userid")),
                     Integer.parseInt(req.getParameter("groupid")));
             req.setAttribute(RequestAttribute.SUCCESS_MESSAGE.getName(), "User was removed from group " + req.getParameter("groupname"));
@@ -133,7 +128,7 @@ public class AdminGroupServlet extends HttpServlet {
 
     private void redirectToUsers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            UserBeanLocal userBeanLocal = getUserBean(req);
+            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();
             req.setAttribute("customers", userBeanLocal.getUsers(1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_GROUPS_CONTENT.getType());
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_TO_GROUP_CONTENT.getAbsolutePath());
@@ -147,7 +142,7 @@ public class AdminGroupServlet extends HttpServlet {
 
     private void redirectToGroups(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            GroupBeanLocal groupBeanLocal = getGroupBean(req);
+            GroupBeanLocal groupBeanLocal = BeansLocator.getInstance().getGroupBean();//getGroupBean();
             req.setAttribute("groups", groupBeanLocal.getGroupPage(1, 10));
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_GROUPS_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(template.getAbsolutePath()).forward(req, resp);
@@ -172,31 +167,5 @@ public class AdminGroupServlet extends HttpServlet {
             roles.add(Roles.DRIVER);
         }
         return roles;
-    }
-
-    private GroupBeanLocal getGroupBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            GroupBeanLocalHome groupBeanLocalHome = (GroupBeanLocalHome) context.lookup("java:app/tss-ejb/GroupBean!com.netcracker.ejb.GroupBeanLocalHome");
-            return groupBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/GroupBean!com.netcracker.ejb.GroupBeanLocal ", ex);
-            throw new RuntimeException("Internal server error!");// maybe have to create custom exception?
-        }
-    }
-
-    private UserBeanLocal getUserBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            UserBeanLocalHome customerBeanLocalHome = (UserBeanLocalHome) context.lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
-            return customerBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome", ex);
-            throw new RuntimeException("Internal server error!");// maybe have to create custom exception?
-        }
     }
 }
