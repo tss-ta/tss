@@ -5,6 +5,7 @@ import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.helper.Roles;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.util.BeansLocator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,7 +36,7 @@ public class AdminCustomerServlet extends HttpServlet {
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } else if ("search-users".equals(action)) {
             try {
-                UserBeanLocal userBeanLocal = getUserBean(req);
+                UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();
                 req.setAttribute("customers", userBeanLocal.searchCustomersByEmail(req.getParameter("email"), 1, 10));
                 req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
                 req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
@@ -56,7 +57,7 @@ public class AdminCustomerServlet extends HttpServlet {
         String action = req.getParameter("action");
         if ("add-roles".equals(action)) {
             try {
-                UserBeanLocal customerBeanLocal = getUserBean(req);
+                UserBeanLocal customerBeanLocal = BeansLocator.getInstance().getUserBean();
                 customerBeanLocal.editRoles(Integer.parseInt(req.getParameter("id")), getRoles(req));
 //                redirectToCustomers(req, resp);
             } catch (RuntimeException e) {
@@ -69,7 +70,7 @@ public class AdminCustomerServlet extends HttpServlet {
 
     private void redirectToCustomers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            UserBeanLocal userBeanLocal = getUserBean(req);
+            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();
             req.setAttribute("customers", userBeanLocal.getCustomers(1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
@@ -97,18 +98,5 @@ public class AdminCustomerServlet extends HttpServlet {
             roles.add(Roles.DRIVER);
         }
         return roles;
-    }
-
-    private UserBeanLocal getUserBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            UserBeanLocalHome customerBeanLocalHome = (UserBeanLocalHome) context.lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
-            return customerBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome", ex);
-            throw new RuntimeException("Internal server error!");// maybe have to create custom exception?
-        }
     }
 }

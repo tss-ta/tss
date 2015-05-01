@@ -9,6 +9,7 @@ import com.netcracker.tss.web.router.Route;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.tss.web.util.RequestParameterParser;
+import com.netcracker.util.BeansLocator;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -76,7 +77,7 @@ public class AddCarPostRoute implements Route {
     }
 
     private void doBusinessOperations(HttpServletRequest request, Car car) {
-        if (getCarBean().insertCar(car)) {
+        if (BeansLocator.getInstance().getCarBean().insertCar(car)) {
             request.setAttribute(RequestAttribute.SUCCESS_MESSAGE.getName(), "New Car was successfully added.");
             return;
         }
@@ -100,16 +101,16 @@ public class AddCarPostRoute implements Route {
         return errorBuilder.toString();
     }
 
-    private CarBeanLocal getCarBean() {
-        Context context;
-        try {
-            context = new InitialContext();
-            CarBeanLocalHome carBeanLocalHome = (CarBeanLocalHome) context.lookup("java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocalHome");
-            return carBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AllCarsGetRoute.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocal ", ex);
-            throw new RuntimeException("Internal server error!");
-        }
-    }
+//    private CarBeanLocal getCarBean() {
+//        Context context;
+//        try {
+//            context = new InitialContext();
+//            CarBeanLocalHome carBeanLocalHome = (CarBeanLocalHome) context.lookup("java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocalHome");
+//            return carBeanLocalHome.create();
+//        } catch (NamingException ex) {
+//            Logger.getLogger(AllCarsGetRoute.class.getName()).log(Level.SEVERE,
+//                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocal ", ex);
+//            throw new RuntimeException("Internal server error!");
+//        }
+//    }
 }
