@@ -31,7 +31,7 @@
                             <td class="col-md-1"><input type="submit" class="btn btn-default" value="save"></td>
                         </form>
                     </tr>
-            </c:forEach> 
+                </c:forEach>
             </tbody>
         </table>
         <%@ include file="../partials/pagination.jspf" %>
