@@ -8,31 +8,44 @@
 <div class="row row-fix">
     <div class="col-md-1"></div>
     <div class="col-md-10">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-1">
+                    <a href="/admin/group?action=addgroup" class="btn btn-default">Edit tariffs <i class="fa fa-money"></i></a>
+                </div>
+                <div class="col-md-offset-7 col-md-4">
+                    <form action="/admin/group" method="get">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="groupname" placeholder="Search by group name" value="${param.groupname}">
+                            <input type="hidden" name="action" value="search">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <h1>Tariffs Panel</h1>
         <table class="table table-striped table-bordered">
             <thead class="tablehead">
             <td>name</td>
             <td>additive price</td>
-            <td>multiplicative coefficient</td>
-            <td>active from date</td>
-            <td>active to date</td>
+            <td>multiplicative price coefficient</td>
+            <td></td>
             </thead>
 
             <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><a href="admin">edit</a></td>
-            </tr>
-            <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">
-                                        <tr>
-                                            <td>${array.frequency}</td>
-                                            <td>${array.voltage}</td>
-                                        </tr>
-            </c:forEach> --%>
+                <c:forEach var = "tariff" items = "${requestScope.tariffs}">
+                    <tr>
+                        <td>${tariff.tariffName}</td>
+                        <td>${tariff.plusCoef}</td>
+                        <td>${tariff.multipleCoef}</td>
+                        <td class="col-md-1"><a href="/admin/tariff" class="btn btn-default" >edit</a></td>
+                    </tr>
+                </c:forEach> 
             </tbody>
         </table>
         <%@ include file="../partials/pagination.jspf" %>

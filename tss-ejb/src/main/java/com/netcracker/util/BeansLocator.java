@@ -9,6 +9,8 @@ import com.netcracker.ejb.CarBeanLocal;
 import com.netcracker.ejb.CarBeanLocalHome;
 import com.netcracker.ejb.GroupBeanLocal;
 import com.netcracker.ejb.GroupBeanLocalHome;
+import com.netcracker.ejb.TariffBeanLocal;
+import com.netcracker.ejb.TariffBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
 import com.netcracker.ejb.UserBeanLocalHome;
 import java.util.logging.Level;
@@ -58,6 +60,10 @@ public class BeansLocator {
             CarBeanLocalHome carBeanLocalHome = (CarBeanLocalHome) lookup("java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocalHome");
             return carBeanLocalHome.create();
     }
-
+    
+    public TariffBeanLocal getTariffBean() {
+            TariffBeanLocalHome tariffBeanLocalHome = (TariffBeanLocalHome) lookup("java:app/tss-ejb/TariffBean!com.netcracker.ejb.TariffBeanLocalHome");
+            return tariffBeanLocalHome.create();
+    }
 
 }
