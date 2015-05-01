@@ -48,14 +48,6 @@ public class GuestOrderServlet extends HttpServlet {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         User user = new User(name, email);
-        RegistrationBeanLocal rb = getRegistrationBean(req);
-        if (!rb.isUserExist(user)) {
-            rb.registrate(user);
-        } else {
-            req.setAttribute("error", "email");
-            req.getRequestDispatcher("/WEB-INF/views/customer/guest.jsp")
-                    .forward(req, resp);
-        }
         TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
         Route route = new Route("Guest Route");
         Address addFrom = toAddress(req.getParameter("fromAddr"), req);
@@ -145,37 +137,6 @@ public class GuestOrderServlet extends HttpServlet {
             // to create
             // custom
             // exception?
-        }
-    }
-
-    private RegistrationBeanLocal getRegistrationBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            RegistrationBeanLocalHome regBeanLocalHome = (RegistrationBeanLocalHome) context
-                    .lookup("java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
-            return regBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName())
-                    .log(Level.SEVERE,
-                            "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome",
-                            ex);
-            throw new RuntimeException(
-                    "Internal server error!"
-                    + "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");// maybe
-            // have
-            // to
-            // create
-            // custom
-            // exception?
-        } catch (ClassCastException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName())
-                    .log(Level.SEVERE,
-                            "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome",
-                            ex);
-            throw new RuntimeException(
-                    "Internal server error!"
-                    + "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
         }
     }
 

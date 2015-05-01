@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS route;
 DROP TABLE IF EXISTS car;
 DROP TABLE IF EXISTS tariff;
 DROP TABLE IF EXISTS address;
+DROP TABLE IF EXISTS contacts;
 
 
 
@@ -23,6 +24,18 @@ CREATE TABLE tss_user
   email character varying(40),
   pass_hash character varying(60),
   CONSTRAINT tss_usr_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE contacts
+(
+  id serial NOT NULL,
+  username character varying(40),
+  email character varying(40),
+  user_id integer,
+  CONSTRAINT contacts_pk_id PRIMARY KEY (id),
+  CONSTRAINT contacts_usr_fk FOREIGN KEY (user_id)
+  REFERENCES tss_user (id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 
@@ -201,7 +214,7 @@ CREATE TABLE taxi_order
   animal_transport boolean,
   wifi boolean,
   conditioner boolean,
-  user_id integer,
+  contacts_id integer,
   route_id integer,
   tariff_id integer,
   service_option_id integer,
@@ -209,8 +222,8 @@ CREATE TABLE taxi_order
   CONSTRAINT tx_rdr_drvr_cr_id_fk FOREIGN KEY (driver_car_id)
       REFERENCES driver_car (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT tx_rdr_usr_id_fk FOREIGN KEY (user_id)
-      REFERENCES tss_user (id) MATCH SIMPLE
+  CONSTRAINT tx_rdr_cont_id_fk FOREIGN KEY (contacts_id)
+      REFERENCES contacts (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
 	    CONSTRAINT tx_rdr_trff_id_fk FOREIGN KEY (tariff_id)
       REFERENCES tariff (id) MATCH SIMPLE

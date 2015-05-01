@@ -5,9 +5,12 @@
  */
 package com.netcracker.dao;
 
+import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+
 import java.util.List;
+
 import javax.persistence.TypedQuery;
 
 /**
@@ -20,7 +23,7 @@ public class TaxiOrderDAO extends GenericDAO<Object> {
         super();
     }
 
-    public List<TaxiOrder> getTaxiOrderHistory(int pageNumber, int pageSize, User user) {
+    public List<TaxiOrder> getTaxiOrderHistory(int pageNumber, int pageSize, Contacts contacts) {
         if (pageNumber <= 0) {
             throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
         }
@@ -28,8 +31,8 @@ public class TaxiOrderDAO extends GenericDAO<Object> {
             throw new IllegalArgumentException("Argument 'pageSize' <= 0");
         }
         TypedQuery<TaxiOrder> tq = em.createQuery(
-                "SELECT t FROM TaxiOrder t WHERE t.userId = :userId", TaxiOrder.class);
-        tq.setParameter("userId", user);
+                "SELECT t FROM TaxiOrder t WHERE t.contactsId = :contactsId", TaxiOrder.class);
+        tq.setParameter("contactsId", contacts);
         tq.setFirstResult((pageNumber - 1) * pageSize);
         tq.setMaxResults(pageSize);
         List<TaxiOrder> taxiOrders = tq.getResultList();
