@@ -10,6 +10,7 @@ import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.tss.web.util.RequestParameterParser;
 import com.netcracker.util.BeansLocator;
+import com.netcracker.util.JndiNameBuilder;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -33,7 +34,7 @@ public class AllCarsGetRoute implements Route {
     @Override
     public ActionRequest action(HttpServletRequest request) {
         Integer page = parsePageNumberFromRequest(request);
-        CarBeanLocal carBeanLocal = BeansLocator.getInstance().getCarBean();
+        CarBeanLocal carBeanLocal = BeansLocator.getInstance().getBean(CarBeanLocal.class);
         List<Car> carList = carBeanLocal.getPageOfCars(page);
         request.setAttribute(RequestAttribute.CAR_LIST.getName(), carList);
         request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CARS_CONTENT.getAbsolutePath());
