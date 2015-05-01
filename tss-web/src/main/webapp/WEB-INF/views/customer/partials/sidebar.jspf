@@ -17,8 +17,10 @@
 <ul class="sidebar-nav">
 	<li class="sidebar-brand"><a href="/">Taxi Service</a></li>
 
-	<div style="" display: block; margin-left: auto; margin-right:auto; text-align:center">
-		
+	<div class="text-center">
+		<a href="/customer"><img
+			src="/resources/customer_assets/img/ui-sam.jpg" class="img-circle"
+			width="60"></a> <BR>&nbsp;<BR> 
 	</div>
 	<li><a href="/customer" ${activeDashboard}> <span
 			class="icon-container"><i class="fa fa-tachometer"></i></span> <span
