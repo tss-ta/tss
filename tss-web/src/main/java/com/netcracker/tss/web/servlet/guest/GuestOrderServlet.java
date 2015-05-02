@@ -58,9 +58,10 @@ public class GuestOrderServlet extends HttpServlet {
         orderTime.setYear(new Date().getYear());
         taxiOrder.setOrderTime(orderTime);
         taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
-        req.setAttribute("added", "success");
-        req.getRequestDispatcher("/WEB-INF/views/customer/guest.jsp").forward(
-                req, resp);
+        int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user).get(0).getId();
+		req.setAttribute("taxiOrderId", latestTOId);
+		req.getRequestDispatcher("/WEB-INF/views/customer/guest-confirmation.jsp")
+				.forward(req, resp);
     }
 
     private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
