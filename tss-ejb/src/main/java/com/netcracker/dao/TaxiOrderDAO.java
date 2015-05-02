@@ -31,7 +31,7 @@ public class TaxiOrderDAO extends GenericDAO<Object> {
             throw new IllegalArgumentException("Argument 'pageSize' <= 0");
         }
         TypedQuery<TaxiOrder> tq = em.createQuery(
-                "SELECT t FROM TaxiOrder t WHERE t.contactsId = :contactsId", TaxiOrder.class);
+                "SELECT t FROM TaxiOrder t WHERE t.contactsId = :contactsId ORDER BY t.bookingTime DESC", TaxiOrder.class);
         tq.setParameter("contactsId", contacts);
         tq.setFirstResult((pageNumber - 1) * pageSize);
         tq.setMaxResults(pageSize);
