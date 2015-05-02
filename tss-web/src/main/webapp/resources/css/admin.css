@@ -137,12 +137,12 @@ body {
     height: 50px;
     font-size: 18px;
     line-height: 50px;
-    background-color: crimson;
+    background-color: #FFD91C;
     margin-bottom: 30px;
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: #fff;
+    color: #111;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
