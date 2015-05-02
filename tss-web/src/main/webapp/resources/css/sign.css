@@ -2,27 +2,27 @@ body {
     background-color: #282828;
 }
 
-.form-signin {
+.form-sign {
     max-width: 330px;
     padding-top: 9em;
     padding-bottom: 9em;
     margin: 0 auto;
 }
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
+.form-sign .form-sign-heading,
+.form-sign .checkbox {
     margin-bottom: 10px;
-    color: #777;
+    color: #989898;
 }
-.form-signin .form-signin-error-msg {
+.form-sign .form-sign-error-msg {
     margin-bottom: 5px;
     margin-top: 10px;
     color: #D13030;
     visibility: hidden;
 }
-.form-signin .checkbox {
+.form-sign .checkbox {
     font-weight: normal;
 }
-.form-signin .form-control {
+.form-sign .form-control {
     position: relative;
     height: auto;
     -webkit-box-sizing: border-box;
@@ -31,43 +31,46 @@ body {
     padding: 10px;
     font-size: 16px;
 }
-.form-signin .form-control:focus {
+.form-sign .form-control:focus {
     z-index: 2;
 }
-.form-signin input[type="text"].error,
-.form-signin input[type="password"].error {
+.form-sign input.error,
+.form-sign input.error {
     border-color: #D13030;
 }
-.form-signin input[type="email"].error:focus,
-.form-signin input[type="password"].error:focus {
+.form-sign input.error:focus,
+.form-sign input.error:focus {
     outline: none;
 }
-.form-signin input[type="text"],
-.form-signin input[type="password"] {
+.form-sign input {
     background-color: #282828;
-    border-color: #555;
-    color: #888;
+    border-color: #989898;
+    color: #989898;
 }
-.form-signin input[type="text"] {
+/*.form-sign input[type="text"] {*/
+.form-sign input:first-child {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
-.form-signin input[type="password"] {
+/*.form-sign input[type="password"] {*/
+.form-sign input:last-child {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
-.form-signin button[type="submit"] {
-    background-color: #555;
+.form-sign button[type="submit"] {
+    background-color: #181818;
     border-radius: 22px;
     color: #fff;
     border: none;
     outline: none;
 }
-.form-signin button[type="submit"]:hover {
-    background-color: #00B83A;
+.form-sign button[type="submit"]:hover {
+    background-color: #F5C34C;
+    color: #181818;
+    font-weight: bold;
 }
-.form-signin button[type="submit"]:focus {
+.form-sign button[type="submit"]:focus {
     outline: none;
 }
