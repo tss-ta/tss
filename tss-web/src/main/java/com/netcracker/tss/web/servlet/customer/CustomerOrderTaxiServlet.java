@@ -62,8 +62,9 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
         orderTime.setYear(new Date().getYear());
         taxiOrder.setOrderTime(orderTime);
         taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
-        req.setAttribute("added", "success");
-        req.setAttribute("pageContent", "content/customer-order.jsp");
+        int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user).get(0).getId();
+		req.setAttribute("taxiOrderId", latestTOId);
+        req.setAttribute("pageContent", "content/confirmation.jsp");
 		req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
 				.forward(req, resp);
     }
