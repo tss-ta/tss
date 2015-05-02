@@ -1,8 +1,4 @@
-<%--
-  User: Kyrylo Berehovyi
-  Date: 26/04/2015
-  Time: 16:24
---%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:choose>
 	<c:when test="${pageType == 'dashboard'}">
 		<c:set var="activeDashboard" scope="request"
