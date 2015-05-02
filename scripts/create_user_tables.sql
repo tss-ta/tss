@@ -166,8 +166,6 @@ CREATE TABLE tariff
   tariff_name character varying(40),
   plus_coef float(8),
   multiple_coef float(8),
-  active_from TIMESTAMP with time zone,
-  active_to TIMESTAMP with time zone,
   CONSTRAINT tariff_pk PRIMARY KEY (id)
 );
 
