@@ -1,9 +1,13 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dto.UserDTO;
+import com.netcracker.entity.Address;
+import com.netcracker.entity.User;
+import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
 
 import java.util.List;
+
 import javax.ejb.EJBLocalObject;
 
 public interface UserBeanLocal extends EJBLocalObject {
@@ -54,5 +58,11 @@ public interface UserBeanLocal extends EJBLocalObject {
     List<UserDTO> searchUsersByEmailAndRolename(String emailPart, String rolename, int pageNumber, int paginationStep);
     
     List<UserDTO> searchCustomersByEmail(String emailPart, int pageNumber, int paginationStep);
+    
+    List<PersonalAddress> toPersonalAddress(User user);
+    
+    void addToPersonalList(User user, String pa);
+    
+    void removeFromPersonalList(User user, String pa);
 
 }

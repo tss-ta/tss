@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,6 +30,7 @@ import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.UserUtils;
 
 /**
  * Created by Stanislav Zabielin
@@ -56,13 +58,13 @@ public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
 			HttpServletRequest req) {
 		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
 		List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderHistory(
-				pageNumber, pageSize, findCurrentUser());
+				pageNumber, pageSize, UserUtils.findCurrentUser());
 		if (list.size() == 0 && pageNumber>1) {
 			pageNumber--;
 			getServletContext().setAttribute("pageNumber", pageNumber);
 			list = taxiOrderBeanLocal
 					.getTaxiOrderHistory(pageNumber, pageSize,
-							findCurrentUser());
+							UserUtils.findCurrentUser());
 		}
 		return list;
 	}
@@ -78,15 +80,6 @@ public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
 			pageNumber++;
 		}
 		return pageNumber;
-	}
-
-	private User findCurrentUser() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder
-				.getContext().getAuthentication().getPrincipal();
-		UserDAO userDao = new UserDAO();
-		User user = userDao.getByEmail(userDetails.getUsername());
-		userDao.close();
-		return user;
 	}
 
 	private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {

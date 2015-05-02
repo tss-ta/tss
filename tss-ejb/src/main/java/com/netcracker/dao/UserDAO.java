@@ -46,6 +46,7 @@ public class UserDAO extends GenericDAO<User> {
         query.setMaxResults(paginationStep);
         return query.getResultList();
     }
+    
 
     public List<User> searchByEmail(String email, int pageNumber, int paginationStep) {
         Query query = em.createQuery("SELECT u FROM User u WHERE u.email like :email", User.class);
