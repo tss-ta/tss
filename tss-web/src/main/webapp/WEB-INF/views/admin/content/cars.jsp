@@ -17,13 +17,13 @@
     <div class="col-md-offset-1 col-md-10">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="col-md-1">
+                <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-4 col-xs-4">
                     <a href="/admin/cars?menu=cars&action=add-car" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
                 </div>
-                <div class="col-md-offset-7 col-md-4">
+                <div class="col-md-offset-7 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12">
                     <form action="/admin/cars?menu=cars&action=search" method="post" >
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="AAA-000-AAA" value="${param.search}">
+                            <input type="text" class="form-control" name="search" placeholder="Search by License Plate" value="${param.search}">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>
@@ -39,20 +39,20 @@
     <div class="col-md-offset-1 col-md-10">
         <table class="table table-hover table-bordered">
             <thead class="tablehead text-center">
-            <td class="col-md-3">№</td>
-            <td class="col-md-2">Type</td>
-            <td class="col-md-1">WI-FI</td>
-            <td class="col-md-2">Conditioner</td>
-            <td class="col-md-1">Animal</td>
-            <td class="col-md-1">Active</td>
-            <td class="col-md-2">Settings</td>
+            <td class="col-md-3 col-sm-5 col-xs-6">License Plate</td>
+            <td class="col-md-2 hidden-sm hidden-xs">Type</td>
+            <td class="col-md-1 hidden-sm hidden-xs">WI-FI</td>
+            <td class="col-md-2 hidden-sm hidden-xs">Conditioner</td>
+            <td class="col-md-1 hidden-sm hidden-xs">Animal</td>
+            <td class="col-md-1 col-sm-2 hidden-xs">Active</td>
+            <td class="col-md-2 col-sm-5 col-xs-6">Settings</td>
             </thead>
 
             <tbody>
             <c:forEach items="${carList}" var="car">
                 <tr class="text-center">
                     <td>${car.getLicPlate()}</td>
-                    <td>
+                    <td class="hidden-sm hidden-xs">
                         <c:choose>
                             <c:when test="${car.category == 1}">
                                 Business
@@ -71,7 +71,7 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td>
+                    <td class="hidden-sm hidden-xs">
                         <c:if test="${car.wifi}">
                             <i class="fa fa-wifi"></i>
                         </c:if>
@@ -79,7 +79,7 @@
                             <i class="fa fa-minus"></i>
                         </c:if>
                     </td>
-                    <td>
+                    <td class="hidden-sm hidden-xs">
                         <c:if test="${car.conditioner}">
                             <i class="fa fa-check"></i>
                         </c:if>
@@ -87,7 +87,7 @@
                             <i class="fa fa-minus"></i>
                         </c:if>
                     </td>
-                    <td>
+                    <td class="hidden-sm hidden-xs">
                         <c:if test="${car.animalable}">
                             <i class="fa fa-check"></i>
                         </c:if>
@@ -96,7 +96,7 @@
                         </c:if>
                     </td>
 
-                    <td>
+                    <td class="hidden-xs">
                         <c:if test="${car.available}">
                             <i class="fa fa-check"></i>
                         </c:if>
