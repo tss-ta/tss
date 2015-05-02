@@ -24,46 +24,49 @@ public class AdminTariffServlet extends HttpServlet {
 
         String action = req.getParameter("action");
         if ("edit".equals(action)) {
-            redirectToEditTariffs(req, resp);
+            redirectToTariffs(Page.ADMIN_EDIT_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
+        } else if ("search".equals(action)) {
+            searchTariffs(Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
+        } else if ("search-for-edit".equals(action)) {
+            searchTariffs(Page.ADMIN_EDIT_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
         } else {
-            redirectToTariffs(req, resp);
+            redirectToTariffs(Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
+
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                String action = req.getParameter("action");
+        String action = req.getParameter("action");
         if ("edit".equals(action)) {
             TariffBeanLocal tariffBean = BeansLocator.getInstance().getTariffBean();
-            tariffBean.editTariff(Integer.parseInt(req.getParameter("id")), new Float(req.getParameter("add")), 
+            tariffBean.editTariff(Integer.parseInt(req.getParameter("id")), new Float(req.getParameter("add")),
                     new Float(req.getParameter("mult")));
             req.setAttribute(RequestAttribute.SUCCESS_MESSAGE.getName(), "Saved");
-            redirectToEditTariffs(req, resp);
+            redirectToTariffs(Page.ADMIN_EDIT_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
         } else {
-            redirectToTariffs(req, resp);
+            redirectToTariffs(Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
         }
     }
-    
-    
 
-    private void redirectToTariffs(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void searchTariffs(String pagePath, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             TariffBeanLocal groupBeanLocal = BeansLocator.getInstance().getTariffBean();
-            req.setAttribute("tariffs", groupBeanLocal.getTariffPage(1, 10));
+            req.setAttribute("tariffs", groupBeanLocal.searchTariffByName(req.getParameter("name"), 1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_TARIFFS_CONTENT.getType());
-            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath());
+            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), pagePath);
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } catch (RuntimeException e) {
             req.getRequestDispatcher("/500.jsp").forward(req, resp);
         }
     }
-    
-    private void redirectToEditTariffs(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    private void redirectToTariffs(String pagePath, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             TariffBeanLocal groupBeanLocal = BeansLocator.getInstance().getTariffBean();
             req.setAttribute("tariffs", groupBeanLocal.getTariffPage(1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_TARIFFS_CONTENT.getType());
-            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_EDIT_TARIFFS_CONTENT.getAbsolutePath());
+            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), pagePath);
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } catch (RuntimeException e) {
             req.getRequestDispatcher("/500.jsp").forward(req, resp);
