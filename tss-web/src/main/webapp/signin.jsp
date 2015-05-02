@@ -27,7 +27,7 @@
     <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/resources/css/sign-in.css" rel="stylesheet">
+    <link href="/resources/css/sign.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -71,24 +71,16 @@
 
 <div class="container">
 
-    <form class="form-signin" action="/auth" method="post" autocomplete="off">
+    <form class="form-sign" action="/auth" method="post" autocomplete="off">
 
         <%-- Delete Chrome autocomplete --%>
         <input style="display:none" type="text" name="fakeusernameremembered"/>
         <input style="display:none" type="password" name="fakepasswordremembered"/>
 
-        <h2 class="form-signin-heading">Please Sign In</h2>
-        <h5 class="form-signin-error-msg">Incorrect Email and/or Password!</h5>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
-        <%--<div class="checkbox">--%>
-        <%--<label>--%>
-        <%--<input type="checkbox" value="remember-me"> Remember me--%>
-        <%--</label>--%>
-        <%--</div>--%>
-
+        <h2 class="form-sign-heading">Please Sign In</h2>
+        <h5 class="form-sign-error-msg">Incorrect Email and/or Password!</h5>
+        <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus><br/>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required><br/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
 
