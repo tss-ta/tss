@@ -12,13 +12,6 @@
 
 <form action="/customer/order" class="form-horizontal style-form"
 	method="post">
-	<c:if test="${not empty added }">
-		<c:if test="${added == 'success'}">
-			<div class="alert alert-success">
-				<b>Taxi Ordered!</b> Taxi was successfully ordered!
-			</div>
-		</c:if>
-	</c:if>
 	<div class="row mt bottom_line">
 		<div class="col-lg-12">
 			<div class="form-panel">
