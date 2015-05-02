@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Tariff.findAll", query = "SELECT t FROM Tariff t"),
     @NamedQuery(name = "Tariff.findAllOrderedByName", query = "SELECT t FROM Tariff t ORDER BY t.tariffName"),
-    @NamedQuery(name = "Tariff.searchByName", query = "SELECT t FROM Tariff t WHERE t.tariffName like :tariffName"),
+    @NamedQuery(name = "Tariff.searchByNameOrdered", query = "SELECT t FROM Tariff t WHERE t.tariffName like :tariffName ORDER BY t.tariffName "),
     @NamedQuery(name = "Tariff.findById", query = "SELECT t FROM Tariff t WHERE t.id = :id"),
     @NamedQuery(name = "Tariff.findByTariffName", query = "SELECT t FROM Tariff t WHERE t.tariffName = :tariffName"),
     @NamedQuery(name = "Tariff.findByPlusCoef", query = "SELECT t FROM Tariff t WHERE t.plusCoef = :plusCoef"),

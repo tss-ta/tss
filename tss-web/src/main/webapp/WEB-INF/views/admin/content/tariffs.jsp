@@ -8,16 +8,19 @@
 <div class="row row-fix">
     <div class="col-md-1"></div>
     <div class="col-md-10">
+        <div class="text-center">
+            <h1>Tariffs Panel</h1>
+        </div>
 
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-1">
-                    <a href="/admin/group?action=addgroup" class="btn btn-default">Edit tariffs <i class="fa fa-money"></i></a>
+                    <a href="/admin/tariff?action=edit" class="btn btn-default">Edit tariffs <i class="fa fa-money"></i></a>
                 </div>
                 <div class="col-md-offset-7 col-md-4">
-                    <form action="/admin/group" method="get">
+                    <form action="/admin/tariff" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="groupname" placeholder="Search by group name" value="${param.groupname}">
+                            <input type="text" class="form-control" name="name" placeholder="Search " value="${param.name}">
                             <input type="hidden" name="action" value="search">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
@@ -28,13 +31,12 @@
             </div>
         </div>
 
-        <h1>Tariffs Panel</h1>
         <table class="table table-striped table-bordered">
             <thead class="tablehead">
-            <td>name</td>
-            <td>additive price</td>
-            <td>multiplicative price coefficient</td>
-            <td></td>
+            <td>Name</td>
+            <td>Price summand <i class="fa fa-plus"></i></td>
+            <td>Price multiplier <i class="fa fa-times"></i></td>
+<!--            <td></td>-->
             </thead>
 
             <tbody>
@@ -43,7 +45,7 @@
                         <td>${tariff.tariffName}</td>
                         <td>${tariff.plusCoef}</td>
                         <td>${tariff.multipleCoef}</td>
-                        <td class="col-md-1"><a href="/admin/tariff" class="btn btn-default" >edit</a></td>
+<!--                        <td class="col-md-1"><a href="/admin/tariff" class="btn btn-default" >edit</a></td>-->
                     </tr>
                 </c:forEach>
             </tbody>
