@@ -25,12 +25,9 @@ public class TariffBean implements SessionBean {
         TariffDAO tariffDAO = null;
         try {
             tariffDAO = new TariffDAO();
-            
-            Tariff tariff = tariffDAO.get(tariffId);
-            
+            Tariff tariff = tariffDAO.get(tariffId);           
             tariff.setPlusCoef(additiveCoef);
-            tariff.setPlusCoef(multCoef);
-
+            tariff.setMultipleCoef(multCoef);
             tariffDAO.update(tariff);
         } finally {
             if (tariffDAO != null) {
@@ -43,8 +40,7 @@ public class TariffBean implements SessionBean {
         TariffDAO dao = null;
         try {
             dao = new TariffDAO();
- //           List<Tariff> groupsPage = dao.getPage(pageNumber, paginationStep);
-            return dao.getPage(pageNumber, paginationStep); //maybe should cloneot convert to DTO?
+            return dao.findPageOrderedByName(pageNumber, paginationStep); //maybe should cloneot convert to DTO?
         } finally {
             if (dao != null) {
                 dao.close();
