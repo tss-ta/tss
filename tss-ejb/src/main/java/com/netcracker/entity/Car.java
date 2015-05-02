@@ -58,8 +58,7 @@ public class Car implements Serializable {
     @Column(name = "lic_plate")
     @Size(max = 11, min = 11, message = "License plate size should be equal to 11 characters.")
     @NotNull(message = "License plate should not be empty.")
-    @Pattern(regexp = "[a-zA-z]{3}-[0-9]{3}-[a-zA-z]{3}", message = "Invalid license plate. " +
-            "Valid license plate should be like YYY-XXX-YYY.")
+    @Pattern(regexp = "[a-zA-z]{3}-[0-9]{3}-[a-zA-z]{3}", message = "Valid license plate should be like YYY-XXX-YYY.")
     private String licPlate;
 
     public Car() {}
