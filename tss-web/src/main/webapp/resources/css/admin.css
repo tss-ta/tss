@@ -230,3 +230,33 @@ body {
     margin-right: 0;
     margin-left: 0;
 }
+
+a.custom-link {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #484848;
+    text-decoration: none;
+}
+a.custom-link:hover {
+    color: #222;
+}
+a.trash:hover {
+    color: #FF3030;
+}
+
+
+/*                */
+/*  Custom Pager  */
+/*                */
+
+ul.custom-pager li a {
+    border: none;
+    background-color: #282828;
+    color: #fff;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+ul.custom-pager li a:hover {
+    background-color: #F5C34C;
+    color: #282828;
+}

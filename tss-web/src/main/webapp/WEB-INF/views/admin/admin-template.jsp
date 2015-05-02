@@ -63,5 +63,6 @@
 
 <script src="/resources/js/jquery-1.11.2.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
+<script src="/resources/js/validator.js"></script>
 </body>
 </html>

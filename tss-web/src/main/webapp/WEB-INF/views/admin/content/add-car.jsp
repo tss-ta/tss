@@ -17,12 +17,13 @@
     <div class="col-md-offset-3 col-md-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                <form action="/admin/cars?menu=cars&action=add-car" method="post" class="form-horizontal">
+                <form action="/admin/cars?menu=cars&action=add-car" method="post" class="form-horizontal" data-toggle="validator">
                     <div class="form-group">
-                        <label for="plate" class="col-md-4 control-label">License plate</label>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" id="plate" placeholder="License" name="license">
+                        <label for="license" class="col-md-4 control-label">License plate</label>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" pattern="[a-zA-Z]{3}-[0-9]{3}-[a-zA-Z]{3}" minlength="11" maxlength="11" id="license" placeholder="License" name="license">
                         </div>
+                        <div class="col-md-offset-4 col-md-8 help-block">Format: XXX-YYY-XXX. Length: 11</div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-8">
@@ -49,8 +50,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="plate" class="col-md-4 control-label">Type</label>
-                        <div class="col-sm-5">
+                        <label class="col-md-4 control-label">Type</label>
+                        <div class="col-md-5">
                             <select name="category" class="form-control">
                                 <option value="1">Business</option>
                                 <option value="2">Economy</option>
