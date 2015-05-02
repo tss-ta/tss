@@ -40,8 +40,7 @@ public class TariffBean implements SessionBean {
         TariffDAO dao = null;
         try {
             dao = new TariffDAO();
- //           List<Tariff> groupsPage = dao.getPage(pageNumber, paginationStep);
-            return dao.getPage(pageNumber, paginationStep); //maybe should cloneot convert to DTO?
+            return dao.findPageOrderedByName(pageNumber, paginationStep); //maybe should cloneot convert to DTO?
         } finally {
             if (dao != null) {
                 dao.close();

@@ -33,9 +33,9 @@
 
         <table class="table table-striped table-bordered">
             <thead class="tablehead">
-            <td>name</td>
-            <td>additive price</td>
-            <td>multiplicative price coefficient</td>
+            <td>Name</td>
+            <td>Price summand <i class="fa fa-plus"></i></td>
+            <td>Price multiplier <i class="fa fa-times"></i></td>
 <!--            <td></td>-->
             </thead>
 
