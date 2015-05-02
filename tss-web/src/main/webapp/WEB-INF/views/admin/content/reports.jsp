@@ -13,13 +13,18 @@
         <table class="table table-striped table-bordered">
             <thead class="tablehead">
             <td>name</td>
-            <td>time</td>
+<!--            <td>time</td>-->
             </thead>
 
             <tbody>
             <tr>
-                <td><a href="admin">customers report</a></td>
-                <td>20-04-2015 13:14</td>
+                <td><a href="/admin/reports">Most profitable taxi service</a></td>
+                <td><a href="/admin/reports">Most popular car and driver category</a></td>
+                <td><a href="/admin/reports">Most popular additional car options for each customer user</a></td>
+                <td><a href="/admin/reports">Most popular additional car options overall</a></td>
+                <td><a href="/admin/reports">New orders per period</a></td>
+                <td><a href="/admin/reports">Service profitability by month</a></td>
+<!--                <td>20-04-2015 13:14</td>-->
 
             </tr>
             <%--                        <c:forEach var = "array" items = "${requestScope.spectrum.recordsList}">

@@ -10,6 +10,7 @@ import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 
 import java.util.List;
+import javax.persistence.Query;
 
 import javax.persistence.TypedQuery;
 
@@ -37,5 +38,13 @@ public class TaxiOrderDAO extends GenericDAO<Object> {
         tq.setMaxResults(pageSize);
         List<TaxiOrder> taxiOrders = tq.getResultList();
         return taxiOrders;
+    }
+    
+//    public int countOrdersWithCarCategory () {};
+    
+    public int countOrdersWithWifi (boolean haveWifi){
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.wifi = :wifi");
+        query.setParameter("wifi", haveWifi);
+        return (int) query.getSingleResult();
     }
 }
