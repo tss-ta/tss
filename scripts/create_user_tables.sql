@@ -1,5 +1,6 @@
 
 DROP TABLE IF EXISTS taxi_order;
+DROP TABLE IF EXISTS personal_address;
 DROP TABLE IF EXISTS tss_user_group;
 DROP TABLE IF EXISTS tss_user_role;
 DROP TABLE IF EXISTS tss_group_role;
