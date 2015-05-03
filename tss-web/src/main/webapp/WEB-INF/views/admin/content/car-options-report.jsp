@@ -30,7 +30,7 @@
             </tbody>
         </table>
         <br>
-        <h3 class="text-right">All analized taxi orders in database is ${requestScope.allTO}</h3>
+        <h3 class="text-right">All analized taxi orders are ${requestScope.allTO}</h3>
 
         <%--       <%@ include file="../partials/pagination.jspf" %>  --%>
 

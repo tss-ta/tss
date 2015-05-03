@@ -110,6 +110,42 @@ INSERT INTO tss_group_role VALUES
 INSERT INTO tss_group_role VALUES
   (3, 3);
 
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Pass', 'pass', 1);
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Adam', 'adam.sandler@gmail.com', 2);
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Mike', 'mike.cole@gmail.com', 3);
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Sara', 'sara.smith@gmail.com', 4);
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Vade', 'vade.gordon@gmail.com', 5);
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Adam', 'adam1.sandler@gmail.com', 6);
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Joey', 'joey.vdome@net.com', 7);
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Samantha', 's.smith@gmail.com', 8);
+INSERT INTO contacts 
+	(username, email, user_id)
+	VALUES
+	('Trevor', 'trevor.rovert@gmail.com', 9);
 
 
 INSERT INTO tariff 

@@ -7,7 +7,6 @@ package com.netcracker.dao;
 
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
-import com.netcracker.entity.User;
 
 import java.util.List;
 import javax.persistence.Query;
@@ -59,21 +58,31 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
         Long count = (Long) query.getSingleResult();
         return count.intValue();
     }
-        
-    public int countOrdersWithWifi(User user) {
-        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.wifi = true)");
+ 
+    public int countUserOrders(Contacts userContacts) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts)");
+        query.setParameter("contacts", userContacts);
         Long count = (Long) query.getSingleResult();
         return count.intValue();
     }
 
-    public int countOrdersWithConditioner(User user) {
-        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.conditioner = true");
+    public int countOrdersWithWifi(Contacts userContacts) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts) and (t.wifi = true)");
+        query.setParameter("contacts", userContacts);
         Long count = (Long) query.getSingleResult();
         return count.intValue();
     }
 
-    public int countOrdersWithAnimalable(User user) {
-        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.animalTransport = true");
+    public int countOrdersWithConditioner(Contacts userContacts) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts) and (t.conditioner = true)");
+        query.setParameter("contacts", userContacts);
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithAnimalable(Contacts userContacts) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts) and (t.animalTransport = true)");
+        query.setParameter("contacts", userContacts);
         Long count = (Long) query.getSingleResult();
         return count.intValue();
     }

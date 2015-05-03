@@ -2,7 +2,6 @@ package com.netcracker.ejb;
 
 import com.netcracker.util.reports.ReportsRow;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.EJBLocalObject;
 
 /**
@@ -12,6 +11,11 @@ import javax.ejb.EJBLocalObject;
 public interface ReportsBeanLocal extends EJBLocalObject {
 
     int countAllOrders();
+    
+    int countAllOrders(int userId);
 
     List<ReportsRow> getCarOptionsReport();
+    
+    List<ReportsRow> getCustomerCarOptionsReport(int userId);
+    
 }

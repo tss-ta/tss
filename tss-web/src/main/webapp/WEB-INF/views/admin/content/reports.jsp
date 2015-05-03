@@ -13,7 +13,7 @@
         <ul>
             <li><a href="/admin/report?action=profitable-service">Most profitable taxi service</a></li>
             <li><a href="/admin/report?action=">Most popular car and driver category</a></li>
-            <li><a href="/admin/report?action=">Most popular additional car options for each customer user</a></li>
+            <li><a href="/admin/report?action=customer-popular-car-options">Most popular additional car options for each customer user</a></li>
             <li><a href="/admin/report?action=overall-popular-car-options">Most popular additional car options overall</a></li>
             <li><a href="/admin/report?action=">New orders per period</a></li>
             <li><a href="/admin/report?action=">Service profitability by month</a></li>

@@ -61,5 +61,5 @@ public interface UserBeanLocal extends EJBLocalObject {
     
     List<UserDTO> searchCustomersByEmail(String emailPart, int pageNumber, int paginationStep);
     
-    Contacts createContacts(User user);
+    Contacts getContacts(int userId);
 }

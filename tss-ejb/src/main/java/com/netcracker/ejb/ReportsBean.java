@@ -1,7 +1,10 @@
 package com.netcracker.ejb;
 
+import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.TaxiOrderDAO;
+import com.netcracker.entity.Contacts;
 import com.netcracker.entity.User;
+import com.netcracker.util.BeansLocator;
 import com.netcracker.util.reports.ReportsRow;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -22,6 +25,20 @@ public class ReportsBean implements SessionBean {
         try {
             dao = new TaxiOrderDAO();
             return dao.count();
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+        
+    public int countAllOrders(int userId) {
+        TaxiOrderDAO dao = null;
+        try {
+            UserBeanLocal userBean = BeansLocator.getInstance().getBean(UserBeanLocal.class);
+            Contacts userContacts = userBean.getContacts(userId);
+            dao = new TaxiOrderDAO();
+            return dao.countUserOrders(userContacts);
         } finally {
             if (dao != null) {
                 dao.close();
@@ -55,9 +72,6 @@ public class ReportsBean implements SessionBean {
 //            }
 //        }
 //    }
-    
-  
-    
     public List<ReportsRow> getCarOptionsReport() {
         List<ReportsRow> report = new ArrayList<>();
         TaxiOrderDAO dao = null;
@@ -74,15 +88,20 @@ public class ReportsBean implements SessionBean {
             }
         }
     }
-        
-    public List<ReportsRow> getCustomerCarOptionsReport(User user) {
-        List<ReportsRow> report = new ArrayList<>();
+
+    public List<ReportsRow> getCustomerCarOptionsReport(int userId) {
+
         TaxiOrderDAO dao = null;
+        ContactsDAO contactsDAO = null;
         try {
+
+            UserBeanLocal userBean = BeansLocator.getInstance().getBean(UserBeanLocal.class);
+            Contacts userContacts = userBean.getContacts(userId);
             dao = new TaxiOrderDAO();
-            report.add(new ReportsRow("Wi-Fi", dao.countOrdersWithWifi()));
-            report.add(new ReportsRow("Conditioner", dao.countOrdersWithConditioner()));
-            report.add(new ReportsRow("Animalable", dao.countOrdersWithAnimalable()));
+            List<ReportsRow> report = new ArrayList<>();
+            report.add(new ReportsRow("Wi-Fi", dao.countOrdersWithWifi(userContacts)));
+            report.add(new ReportsRow("Conditioner", dao.countOrdersWithConditioner(userContacts)));
+            report.add(new ReportsRow("Animalable", dao.countOrdersWithAnimalable(userContacts)));
             Collections.sort(report);
             return report;
         } finally {
