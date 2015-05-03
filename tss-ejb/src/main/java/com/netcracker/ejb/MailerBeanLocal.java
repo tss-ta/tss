@@ -22,6 +22,8 @@ import com.netcracker.entity.User;
 public interface MailerBeanLocal extends EJBLocalObject {
 
 	public void sendEmail(User user, String title, String msg);
+        
+        public void sendEmail(String emailAddress, String title, String msg);
 	
 	public void changeToUpdated(User user, TaxiOrder to);
 	
