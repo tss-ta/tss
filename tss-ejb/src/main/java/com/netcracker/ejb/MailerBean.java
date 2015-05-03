@@ -19,6 +19,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.netcracker.entity.Driver;
+import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.util.PasswordsKeeper;
 
@@ -29,9 +31,10 @@ import com.netcracker.util.PasswordsKeeper;
 public class MailerBean implements SessionBean {
 
 	private final String username = "team.a.taxi@gmail.com";
-	private final String password = String.valueOf(PasswordsKeeper.getEmailPassword());
+	private final String password = String.valueOf(PasswordsKeeper
+			.getEmailPassword());
 
-	public void sendEmail(User user, String title,String msg ) {
+	public void sendEmail(User user, String title, String msg) {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -57,6 +60,40 @@ public class MailerBean implements SessionBean {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void changeToUpdated(User user, TaxiOrder to) {
+		sendEmail(
+				user,
+				"Yours Taxi Order was Updated",
+				"Dear, " + user.getUsername() + ". Your Taxi Order (id = "
+						+ to.getId()
+						+ ") status was changed from “Queued” to “Updated”.");
+	}
+
+	public void changeToRefused(User user, TaxiOrder to) {
+		sendEmail(
+				user,
+				"Yours Taxi Order was Refused",
+				"Dear, "
+						+ user.getUsername()
+						+ ". Your Taxi Order (id = "
+						+ to.getId()
+						+ ") status was Refused. We apologise for any inconveniences.");
+	}
+
+	public void changeToAssigned(User user, TaxiOrder to, Driver driver) {
+		sendEmail(user, "Driver was assigned to your Taxi Order", "Dear, "
+				+ user.getUsername() + ". Driver was assigned to your Taxi Order (id = " + to.getId()
+				+ "). Information about driver: "+ driver.toString());
+	}
+
+	public void changeToCompleted(User user, TaxiOrder to) {
+		sendEmail(
+				user,
+				"Yours Taxi Order was Completed",
+				"Dear, " + user.getUsername() + ". Your Taxi Order (id = "
+						+ to.getId() + ") status was Completed.");
 	}
 
 	@Override
