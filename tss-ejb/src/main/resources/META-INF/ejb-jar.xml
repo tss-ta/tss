@@ -148,6 +148,23 @@
         </session>
         
         <session>
+            <display-name>ReportsBean</display-name>
+            <ejb-name>ReportsBean</ejb-name>
+            <local-home>com.netcracker.ejb.ReportsBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.ReportsBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.ReportsBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/ReportsBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.ReportsBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.ReportsBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+        
+        <session>
             <display-name>DriverBean</display-name>
             <ejb-name>DriverBean</ejb-name>
             <local-home>com.netcracker.ejb.DriverLocalHome</local-home>

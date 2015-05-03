@@ -2,6 +2,7 @@ package com.netcracker.tss.web.util;
 
 /**
  * Created by Kyrylo Berehovyi on 26/04/2015.
+ * @author maks
  */
 public enum Page {
 
@@ -19,6 +20,7 @@ public enum Page {
     ADMIN_TARIFFS_CONTENT("tariffs", "admin/content/tariffs.jsp"),
     ADMIN_EDIT_TARIFFS_CONTENT("tariffs", "admin/content/edit-tariffs.jsp"),
     ADMIN_REPORTS_CONTENT("reports", "admin/content/reports.jsp"),
+    ADMIN_CAR_OPTIONS_REPORTS_CONTENT("reports", "admin/content/car-options-report.jsp"),
     ERROR_500_CONTENT("", "admin/content/500.jsp");
 
     public static final String ROOT_PATH_PREFIX = "/WEB-INF/views/";

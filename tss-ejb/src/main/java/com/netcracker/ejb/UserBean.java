@@ -1,9 +1,11 @@
 package com.netcracker.ejb;
 
+import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dto.UserDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
@@ -17,6 +19,10 @@ import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
 
+/**
+ *
+ * @author maks
+ */
 public class UserBean implements SessionBean {
 
     public void editRoles(int userId, List<Roles> roles) {
@@ -44,7 +50,7 @@ public class UserBean implements SessionBean {
     }
 
     /**
-     * 
+     *
      * @param userId
      * @param groupId
      * @return false if this list was alrady contained the specified element
@@ -79,13 +85,14 @@ public class UserBean implements SessionBean {
             }
         }
     }
+
     /**
-     * 
+     *
      * @param userId
      * @param groupId
      * @return true if this user contained the group
      */
-    public boolean deleteFromGroup (int userId, int groupId) {
+    public boolean deleteFromGroup(int userId, int groupId) {
         if (groupId < 0 || userId < 0) {
             throw new IllegalArgumentException("Id can't be less than zero");
         }
@@ -97,15 +104,13 @@ public class UserBean implements SessionBean {
             userDAO = new UserDAO();
             User user = userDAO.get(userId);
             Group group = groupDAO.get(groupId);
-            List <Group> userGroups = user.getGroups();
-            if (userGroups.remove(group)){
+            List<Group> userGroups = user.getGroups();
+            if (userGroups.remove(group)) {
                 userDAO.update(user);
                 return true;
             } else {
                 return false;
             }
-
-
         } finally {
             if (userDAO != null) {
                 userDAO.close();
@@ -116,36 +121,36 @@ public class UserBean implements SessionBean {
         }
     }
 
-//    public void editGroups(int userId, List<String> groupNames) {
-//        GroupDAO groupDAO = null;
-//        UserDAO userDAO = null;
-//        try {
-//
-//            groupDAO = new GroupDAO();
-//            userDAO = new UserDAO();
-//            User user = userDAO.get(userId);
-//
-//            user.setGroups(toGroupList(groupNames, groupDAO));
-//            userDAO.update(user);
-//        } finally {
-//            if (userDAO != null) {
-//                userDAO.close();
-//            }
-//            if (groupDAO != null) {
-//                groupDAO.close();
-//            }
-//        }
-//    }
-//
-//    private List<Group> toGroupList(List<String> groupNames, GroupDAO dao) {
-//        List<Group> groups = new ArrayList<>();
-//        Iterator<String> groupNamesIterator = groupNames.iterator();
-//        while (groupNamesIterator.hasNext()) {
-//            Group group = dao.findByName(groupNamesIterator.next());
-//            groups.add(group);
-//        }
-//        return groups;
-//    }
+    public Contacts createContacts(User user) {
+        ContactsDAO contactsDAO = null;
+        UserDAO userDAO = null;
+        Contacts contacts = null;
+        try {
+            userDAO = new UserDAO();
+            User userFromDB = null;
+            try {
+                userFromDB = userDAO.getByEmail(user.getEmail());
+            } catch (NoResultException nre) {
+            }
+            contactsDAO = new ContactsDAO();
+            if (userFromDB != null) {
+                contactsDAO.persist(new Contacts(userFromDB));
+            } else {
+                contactsDAO.persist(new Contacts(user.getUsername(), user
+                        .getEmail()));
+            }
+            contacts = contactsDAO.getByEmail(user.getEmail());
+        } finally {
+            if (userDAO != null) {
+                userDAO.close();
+            }
+            if (contactsDAO != null) {
+                contactsDAO.close();
+            }
+        }
+        return contacts;
+    }
+
     private List<Role> toRoleList(List<Roles> roles, RoleDAO roleDAO) {
         List<Role> roleList = new ArrayList<>();
         Iterator<Roles> rolesIterator = roles.iterator();
@@ -217,13 +222,13 @@ public class UserBean implements SessionBean {
             }
         }
     }
-      
+
     /**
-     * 
-     * @param emailPart  - part of email
-     * @param pageNumber - number of page 
+     *
+     * @param emailPart - part of email
+     * @param pageNumber - number of page
      * @param paginationStep - rows on one page
-     * @return List of UserDTO where email have emailPart 
+     * @return List of UserDTO where email have emailPart
      */
     public List<UserDTO> searchUsersByEmail(String emailPart, int pageNumber, int paginationStep) {
         UserDAO dao = null;
@@ -236,13 +241,12 @@ public class UserBean implements SessionBean {
             }
         }
     }
-    
+
     public List<UserDTO> searchCustomersByEmail(String emailPart, int pageNumber, int paginationStep) {
         String rolename = Roles.CUSTOMER.toString();
         return searchUsersByEmailAndRolename(emailPart, rolename, pageNumber, paginationStep);
     }
 
-    
     public List<UserDTO> searchUsersByEmailAndRolename(String emailPart, String rolename, int pageNumber, int paginationStep) {
         UserDAO dao = null;
         try {

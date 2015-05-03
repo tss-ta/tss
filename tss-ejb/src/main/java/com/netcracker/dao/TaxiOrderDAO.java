@@ -17,8 +17,9 @@ import javax.persistence.TypedQuery;
 /**
  *
  * @author Виктор
+ * @author maks
  */
-public class TaxiOrderDAO extends GenericDAO<Object> {
+public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
 
     public TaxiOrderDAO() {
         super();
@@ -39,12 +40,41 @@ public class TaxiOrderDAO extends GenericDAO<Object> {
         List<TaxiOrder> taxiOrders = tq.getResultList();
         return taxiOrders;
     }
-    
+
 //    public int countOrdersWithCarCategory () {};
-    
-    public int countOrdersWithWifi (boolean haveWifi){
-        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.wifi = :wifi");
-        query.setParameter("wifi", haveWifi);
-        return (int) query.getSingleResult();
+    public int countOrdersWithWifi() {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.wifi = true");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithConditioner() {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.conditioner = true");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithAnimalable() {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.animalTransport = true");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+        
+    public int countOrdersWithWifi(User user) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.wifi = true)");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithConditioner(User user) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.conditioner = true");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithAnimalable(User user) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.animalTransport = true");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
     }
 }
