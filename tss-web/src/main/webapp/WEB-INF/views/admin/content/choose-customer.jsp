@@ -1,7 +1,5 @@
 <%--
-  User: Kyrylo Berehovyi
-  Date: 27/04/2015
-  Time: 01:48
+  author: maks
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -18,10 +16,10 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-1">
-                        <a href="/admin/group" class="btn btn-default"> Back <i class="fa fa-users"></i></a>
+                        <a href="/admin/report" class="btn btn-default"> Back </a>
                     </div>
                     <div class="col-md-offset-7 col-md-4">
-                        <form action="/admin/group" method="get">
+                        <form action="/admin/report" method="get">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}">
                                 <input type="hidden" name="action" value="search-users">

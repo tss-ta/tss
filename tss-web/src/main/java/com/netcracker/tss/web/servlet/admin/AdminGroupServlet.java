@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 /**
  * Created by Kyrylo Berehovyi on 25/04/2015.
+ *
  * @author maks
  */
 @WebServlet(urlPatterns = "/admin/group")
@@ -52,17 +53,18 @@ public class AdminGroupServlet extends HttpServlet {
                 req.getRequestDispatcher("/500.jsp").forward(req, resp);
             }
         } else if ("search-users".equals(action)) {
-            try {
-                UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-                req.setAttribute("customers", userBeanLocal.searchUsersByEmail(req.getParameter("email"), 1, 10));
-                req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_GROUPS_CONTENT.getType());
-                req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_TO_GROUP_CONTENT.getAbsolutePath());
-                req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
-            } catch (RuntimeException e) {
-                Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                        "Can't show users", e);
-                req.getRequestDispatcher("/500.jsp").forward(req, resp);
-            }
+            searchUsers(req, resp);
+//            try {
+//                UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
+//                req.setAttribute("customers", userBeanLocal.searchUsersByEmail(req.getParameter("email"), 1, 10));
+//                req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_GROUPS_CONTENT.getType());
+//                req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_TO_GROUP_CONTENT.getAbsolutePath());
+//                req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+//            } catch (RuntimeException e) {
+//                Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+//                        "Can't show users", e);
+//                req.getRequestDispatcher("/500.jsp").forward(req, resp);
+//            }
         } else {
             redirectToGroups(req, resp);
         }
@@ -131,6 +133,20 @@ public class AdminGroupServlet extends HttpServlet {
         try {
             UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
             req.setAttribute("customers", userBeanLocal.getUsers(1, 10));
+            req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_GROUPS_CONTENT.getType());
+            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_TO_GROUP_CONTENT.getAbsolutePath());
+            req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+        } catch (RuntimeException e) {
+            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+                    "Can't show users", e);
+            req.getRequestDispatcher("/500.jsp").forward(req, resp);
+        }
+    }
+
+    private void searchUsers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
+            req.setAttribute("customers", userBeanLocal.searchUsersByEmail(req.getParameter("email"), 1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_GROUPS_CONTENT.getType());
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_TO_GROUP_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
