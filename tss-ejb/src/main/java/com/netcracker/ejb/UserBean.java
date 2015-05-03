@@ -6,14 +6,19 @@ import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Address;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
+
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.json.JSONException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -294,6 +299,68 @@ public class UserBean implements SessionBean {
         return rolesList;
     }
 
+    public List<PersonalAddress> toPersonalAddress(User user) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            List<PersonalAddress> personal_addresses = new ArrayList<>();
+            List<Address> addresses = dao.getByEmail(user.getEmail())
+                    .getAddresses();
+            for (Address addr : addresses) {
+                personal_addresses.add(new PersonalAddress(addr));
+            }
+            return personal_addresses;
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
+    public void addToPersonalList(User user, String pa) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            User userDB = dao.getByEmail(user.getEmail());
+            if (pa != "") {
+                Address addr = new Address(new MapBean().geocodeAddress(pa));
+                if (!userDB.getAddresses().contains(addr)) {
+                    userDB.getAddresses().add(addr);
+                }
+            }
+            dao.update(userDB);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
+    public void removeFromPersonalList(User user, String pa) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            User userDB = dao.getByEmail(user.getEmail());
+            if (pa != "") {
+                Address addr = new Address(new MapBean().geocodeAddress(pa));
+                userDB.getAddresses().remove(addr);
+            }
+            dao.update(userDB);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {
 
@@ -313,5 +380,4 @@ public class UserBean implements SessionBean {
     public void ejbPassivate() throws EJBException, RemoteException {
 
     }
-
 }
