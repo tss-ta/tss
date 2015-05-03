@@ -121,7 +121,7 @@ public class UserBean implements SessionBean {
         }
     }
 
-    public Contacts createContacts(User user) {
+    public Contacts getContacts(int userId) {
         ContactsDAO contactsDAO = null;
         UserDAO userDAO = null;
         Contacts contacts = null;
@@ -129,17 +129,23 @@ public class UserBean implements SessionBean {
             userDAO = new UserDAO();
             User userFromDB = null;
             try {
-                userFromDB = userDAO.getByEmail(user.getEmail());
+                userFromDB = userDAO.get(userId);
+
             } catch (NoResultException nre) {
+                throw new IllegalArgumentException("User with id = " + userId + " is not exist", nre);
             }
-            contactsDAO = new ContactsDAO();
-            if (userFromDB != null) {
-                contactsDAO.persist(new Contacts(userFromDB));
-            } else {
-                contactsDAO.persist(new Contacts(user.getUsername(), user
-                        .getEmail()));
+            try {
+                contactsDAO = new ContactsDAO();
+                //           contacts = contactsDAO.getByUser(userFromDB);
+                contacts = contactsDAO.getByEmail(userFromDB.getEmail());
+
+            } catch (NoResultException nre) {
+                throw new IllegalArgumentException("Contacts for user with id = " + userId + " are not exist", nre);
             }
-            contacts = contactsDAO.getByEmail(user.getEmail());
+//            contactsDAO = new ContactsDAO();
+//            //           contacts = contactsDAO.getByUser(userFromDB);
+//            contacts = contactsDAO.getByEmail(userFromDB.getEmail());
+            return contacts;
         } finally {
             if (userDAO != null) {
                 userDAO.close();
@@ -148,7 +154,6 @@ public class UserBean implements SessionBean {
                 contactsDAO.close();
             }
         }
-        return contacts;
     }
 
     private List<Role> toRoleList(List<Roles> roles, RoleDAO roleDAO) {
