@@ -8,7 +8,16 @@
     <div class="col-md-10">
         <h1 class="text-center">Most Popular Car Options For ${requestScope.user}</h1>
 
-
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-1">
+                    <a href="/admin/report" class="btn btn-default"> Back </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="/admin/report" class="btn btn-default"> Export to excel file <i class="fa fa-download"></i></a>
+                </div>
+            </div>
+        </div>
 
         <table class="table table-striped table-bordered">
             <thead class="tablehead">
