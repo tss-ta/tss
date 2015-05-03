@@ -111,6 +111,9 @@ public class TaxiOrderBean implements SessionBean {
 			if (dao != null) {
 				dao.close();
 			}
+			if (daoC != null) {
+				daoC.close();
+			}
 		}
 		List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
 		return taxiOrderHistory;
