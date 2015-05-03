@@ -25,6 +25,7 @@
         <module>tss-ejb</module>
         <module>tss-web</module>
         <module>tss-ear</module>
+        <module>tss-router</module>
     </modules>
     
     <!-- For child modules -->
