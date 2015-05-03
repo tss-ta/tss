@@ -27,6 +27,7 @@ import com.netcracker.util.PasswordsKeeper;
 /**
  *
  * @author Stanislav Zabielin
+ * @author maks
  */
 public class MailerBean implements SessionBean {
 
@@ -34,7 +35,7 @@ public class MailerBean implements SessionBean {
 	private final String password = String.valueOf(PasswordsKeeper
 			.getEmailPassword());
 
-	public void sendEmail(User user, String title, String msg) {
+	public void sendEmail(String emailAddress, String title, String msg) {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -52,7 +53,7 @@ public class MailerBean implements SessionBean {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(user.getEmail()));
+					InternetAddress.parse(emailAddress));
 			message.setSubject(title);
 			message.setText(msg);
 
@@ -61,6 +62,10 @@ public class MailerBean implements SessionBean {
 			throw new RuntimeException(e);
 		}
 	}
+        
+        public void sendEmail(User user, String title, String msg){
+            sendEmail(user.getEmail(), title, msg);
+        }
 
 	public void changeToUpdated(User user, TaxiOrder to) {
 		sendEmail(

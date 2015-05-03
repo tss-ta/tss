@@ -1,7 +1,6 @@
 package com.netcracker.tss.web.servlet.admin;
 
 import com.netcracker.ejb.UserBeanLocal;
-import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.helper.Roles;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
@@ -17,12 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 /**
  * Created by Kyrylo Berehovyi on 25/04/2015.
+ *
+ * @author maks
  */
 @WebServlet(urlPatterns = "/admin/customer")
 public class AdminCustomerServlet extends HttpServlet {
@@ -36,7 +34,7 @@ public class AdminCustomerServlet extends HttpServlet {
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } else if ("search-users".equals(action)) {
             try {
-                UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();
+                UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
                 req.setAttribute("customers", userBeanLocal.searchCustomersByEmail(req.getParameter("email"), 1, 10));
                 req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
                 req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
@@ -57,7 +55,7 @@ public class AdminCustomerServlet extends HttpServlet {
         String action = req.getParameter("action");
         if ("add-roles".equals(action)) {
             try {
-                UserBeanLocal customerBeanLocal = BeansLocator.getInstance().getUserBean();
+                UserBeanLocal customerBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
                 customerBeanLocal.editRoles(Integer.parseInt(req.getParameter("id")), getRoles(req));
 //                redirectToCustomers(req, resp);
             } catch (RuntimeException e) {
@@ -70,7 +68,7 @@ public class AdminCustomerServlet extends HttpServlet {
 
     private void redirectToCustomers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();
+            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
             req.setAttribute("customers", userBeanLocal.getCustomers(1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
@@ -96,6 +94,9 @@ public class AdminCustomerServlet extends HttpServlet {
         }
         if (isOn(req.getParameter("driver"))) {
             roles.add(Roles.DRIVER);
+        }
+        if (isOn(req.getParameter("banned"))) {
+            roles.add(Roles.BANNED);
         }
         return roles;
     }
