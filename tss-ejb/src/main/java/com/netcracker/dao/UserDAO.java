@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 /**
  *
  * @author Stanislav Zabielin
+ * @author maks
  * 
 */
 public class UserDAO extends GenericDAO<User> {
