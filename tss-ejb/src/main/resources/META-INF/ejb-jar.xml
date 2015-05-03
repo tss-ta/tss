@@ -97,6 +97,24 @@
         </session> 
         
         <session>
+            <description>An EJB named MailerBean</description>
+            <display-name>MailerBean</display-name>
+            <ejb-name>MailerBean</ejb-name>
+            <local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.MailerBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.MailerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/MailerBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.MailerBeanLocal</local>
+            </ejb-local-ref>
+        </session> 
+        
+        <session>
             <display-name>GroupBean</display-name>
             <ejb-name>GroupBean</ejb-name>
             <local-home>com.netcracker.ejb.GroupBeanLocalHome</local-home>
