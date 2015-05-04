@@ -14,6 +14,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tss_user")
 @Inheritance(strategy = InheritanceType.JOINED)
+@NamedQueries({
+    @NamedQuery(name = "User.findAllOrderedByUsername", query = "SELECT u FROM User u ORDER BY u.username"),
+    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
 public class User implements Serializable {
 
     @Id
@@ -43,8 +46,17 @@ public class User implements Serializable {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
     private List<Group> groups = new ArrayList<Group>();
+    
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "personal_address",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "addr_id", referencedColumnName = "addr_id"))
+    private List<Address> addresses = new ArrayList<>();
 
-    public User() {
+    
+
+	public User() {
     }
 
     public User(String username, String email, String passwordHash) {
@@ -66,6 +78,14 @@ public class User implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+    
+    public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
 
     public List<Role> getRoles() {
         return roles;
@@ -161,6 +181,6 @@ public class User implements Serializable {
         sb.append(", roles=").append(roles);
         sb.append(", groups=").append(groups);
         sb.append('}');
-        return sb.toString();
-    }
+		return sb.toString();
+	}
 }

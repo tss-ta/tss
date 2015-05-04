@@ -28,7 +28,7 @@
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
-        <link href="/resources/css/sign-in.css" rel="stylesheet">
+        <link href="/resources/css/sign.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -59,7 +59,7 @@
                             <li><a href="/signout">Home</a></li>
                             <li><a href="/signin.jsp">Sign In</a></li>
                             <li class="active"><a href="/signup.jsp">Sign Up</a></li>
-                            <li><a href="#">Guest</a></li>
+                            <li><a href="/guest">Guest</a></li>
                             <li><a href="/signout">Sign Out</a></li>
                             <div class="clear"></div>
                         </ul>
@@ -71,30 +71,13 @@
         </div>
         <div class="container">
 
-            <form class="form-signin" action="RegistrationServlet" method="post" autocomplete="off">
-
-
-                <h2>Registrate please</h2>
-
-
-            
-
+            <form class="form-sign" action="RegistrationServlet" method="post" autocomplete="off">
+                <h2 class="form-sign-heading">Registrate please</h2>
                 <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name" required autofocus><br/>
-
-            
-
-                <input type="text" id="inputUserName" name="email" class="form-control" placeholder="Email" required autofocus><br/>
-
-            
-
+                <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email" required autofocus><br/>
                 <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required><br/>
-
-                
-
                 <input type="password" id="confirmInputPassword" name="confirPassword" class="form-control" placeholder="Confirm Password" required><br/>
-
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Registrate</button>
-
             </form>
         </div> <!-- /container -->
         <%@ include file="WEB-INF/views/partials/footer.jspf" %>

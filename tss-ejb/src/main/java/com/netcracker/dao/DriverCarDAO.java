@@ -1,6 +1,6 @@
 package com.netcracker.dao;
 
-import com.netcracker.entity.DriverCar;
+import com.netcracker.entity.helper.DriverCar;
 
 import javax.persistence.TypedQuery;
 
