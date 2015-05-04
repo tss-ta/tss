@@ -14,12 +14,14 @@ import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
+import com.netcracker.entity.TaxiOrder.Status;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJBException;
@@ -51,6 +53,7 @@ public class TaxiOrderBean implements SessionBean {
 			routeDAO.persist(route);
 			taxiOrder.setRouteId(route);
 			taxiOrder.setContactsId(createContacts(user));
+			taxiOrder.setStatus(Status.QUEUED);
 			taxiOrder.setRouteId(route);
 			taxiOrderDAO = new TaxiOrderDAO();
 			taxiOrderDAO.persist(taxiOrder);
@@ -98,15 +101,31 @@ public class TaxiOrderBean implements SessionBean {
 		return contacts;
 	}
 
-	public List<TaxiOrderHistory> getTaxiOrderHistory(int pageNumber,
-			int pageSize, User user) {
+	public TaxiOrder getOrderById(int id) {
+		TaxiOrderDAO dao = null;
+		TaxiOrder taxiOrder = null;
+		try {
+			dao = new TaxiOrderDAO();
+			taxiOrder = dao.get(id);
+		} finally {
+			if (dao != null) {
+				dao.close();
+			}
+		}
+
+		return taxiOrder;
+	}
+
+	public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
+			int pageSize, User user, Status status) {
 		TaxiOrderDAO dao = null;
 		ContactsDAO daoC = null;
 		List<TaxiOrder> orders = null;
 		try {
 			dao = new TaxiOrderDAO();
 			daoC = new ContactsDAO();
-			orders = dao.getTaxiOrderHistory(pageNumber, pageSize, daoC.getByEmail(user.getEmail()));
+			orders = dao.getTaxiOrderHistory(pageNumber, pageSize,
+					daoC.getByEmail(user.getEmail()),status);
 		} finally {
 			if (dao != null) {
 				dao.close();
@@ -117,6 +136,48 @@ public class TaxiOrderBean implements SessionBean {
 		}
 		List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
 		return taxiOrderHistory;
+	}
+	
+	public List<TaxiOrderHistory> getTaxiOrderHistory(int pageNumber,
+			int pageSize, User user) {
+		return getTaxiOrderHistory(pageNumber, pageSize, user, null);
+	}
+
+	public void editTaxiOrderCustomer(int orderId, Address addFrom,
+			Address addTo, Date orderTime) {
+		TaxiOrderDAO taxiOrderDAO = null;
+		TaxiOrder taxiOrder = null;
+		AddressDAO addressDAO = null;
+		try {
+			taxiOrderDAO = new TaxiOrderDAO();
+			taxiOrder = taxiOrderDAO.get(orderId);
+			addressDAO = new AddressDAO();
+			Address addressFrom = taxiOrder.getRouteId().getFromAddrId();
+			Address addressTo = taxiOrder.getRouteId().getToAddrId();
+			addressFrom.setAltitude(addFrom.getAltitude());
+			addressFrom.setLongtitude(addFrom.getLongtitude());
+			addressTo.setAltitude(addTo.getAltitude());
+			addressTo.setLongtitude(addTo.getLongtitude());
+			addressDAO.update(addressFrom);
+			addressDAO.update(addressTo);
+			taxiOrder.setOrderTime(orderTime);
+			taxiOrderDAO.update(taxiOrder);
+		} finally {
+			if (taxiOrderDAO != null) {
+				taxiOrderDAO.close();
+			}
+			if (addressDAO != null) {
+				addressDAO.close();
+			}
+		}
+
+	}
+
+	public TaxiOrderHistory getOrderForEdit(TaxiOrder order) {
+		TaxiOrderHistory toh = new TaxiOrderHistory(order);
+		toh.setToAddr(getToAddr(toh));
+		toh.setFromAddr(getFromAddr(toh));
+		return toh;
 	}
 
 	private List<TaxiOrderHistory> createTOHistory(List<TaxiOrder> orders) {
