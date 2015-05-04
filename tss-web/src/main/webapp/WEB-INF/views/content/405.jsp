@@ -5,6 +5,8 @@
 --%>
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
-        <h1>405 - Method not allowed</h1>
+        <div class="text-center">
+            <h1><i class="fa fa-thumbs-down fa-lg"></i> 405 - Method not allowed</h1>
+        </div>
     </div>
 </div>
