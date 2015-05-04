@@ -19,8 +19,7 @@ public class GroupDAO extends GenericDAO<Group> {
         TypedQuery<Group> query = em.createNamedQuery("Group.findAllOrderedByName", Group.class);
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
-        List<Group> groupPage = query.getResultList();
-        return groupPage;
+        return query.getResultList();
     }
 
     /**
@@ -30,8 +29,24 @@ public class GroupDAO extends GenericDAO<Group> {
      * @throws NoResultException - if group with this name doesn't exist
      */
     public Group findByName(String name) {
-            TypedQuery<Group> query = em.createNamedQuery("Group.findByName", Group.class);
-            query.setParameter("name", name);
-            return query.getSingleResult();
+        TypedQuery<Group> query = em.createNamedQuery("Group.findByName", Group.class);
+        query.setParameter("name", name);
+        return query.getSingleResult();
+    }
+
+    /**
+     *
+     * @param partOfName - part of group name or all name
+     * @param pageNumber
+     * @param paginationStep
+     * @return List of Group which name contains partOfName string
+     * @throws NoResultException - if group with this name doesn't exist
+     */
+    public List<Group> searchByName(String partOfName, int pageNumber, int paginationStep) {
+        TypedQuery<Group> query = em.createNamedQuery("Group.searchByName", Group.class);
+        query.setParameter("name", "%" + partOfName + "%");
+        query.setFirstResult((pageNumber - 1) * paginationStep);
+        query.setMaxResults(paginationStep);
+        return query.getResultList();
     }
 }

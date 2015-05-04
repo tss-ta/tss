@@ -1,9 +1,12 @@
+
 DROP TABLE IF EXISTS taxi_order;
+DROP TABLE IF EXISTS personal_address;
 DROP TABLE IF EXISTS tss_user_group;
 DROP TABLE IF EXISTS tss_user_role;
 DROP TABLE IF EXISTS tss_group_role;
 DROP TABLE IF EXISTS driver_car;
 DROP TABLE IF EXISTS driver;
+DROP TABLE IF EXISTS contacts;
 DROP TABLE IF EXISTS tss_user;
 DROP TABLE IF EXISTS tss_group;
 DROP TABLE IF EXISTS tss_role;
@@ -15,7 +18,6 @@ DROP TABLE IF EXISTS address;
 
 
 
-
 CREATE TABLE tss_user
 (
   id serial NOT NULL,
@@ -23,6 +25,18 @@ CREATE TABLE tss_user
   email character varying(40),
   pass_hash character varying(60),
   CONSTRAINT tss_usr_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE contacts
+(
+  id serial NOT NULL,
+  username character varying(40),
+  email character varying(40),
+  user_id integer,
+  CONSTRAINT contacts_pk_id PRIMARY KEY (id),
+  CONSTRAINT contacts_usr_fk FOREIGN KEY (user_id)
+  REFERENCES tss_user (id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 
@@ -44,7 +58,7 @@ CREATE TABLE tss_role
 CREATE TABLE car
 (
   id serial NOT NULL,
-  lic_plate CHARACTER VARYING(10) NOT NULL,
+  lic_plate CHARACTER VARYING(11) NOT NULL,
   category INTEGER NOT NULL,
   available BOOLEAN,
   animalable BOOLEAN,
@@ -67,8 +81,8 @@ CREATE TABLE driver
   REFERENCES tss_user (id) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT fk_car FOREIGN KEY (car_id)
-  REFERENCES car (id) MATCH SIMPLE
-    ON UPDATE NO ACTION ON DELETE NO ACTION
+    REFERENCES car (id) MATCH SIMPLE
+  ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 
@@ -79,7 +93,7 @@ CREATE TABLE tss_user_group
   CONSTRAINT tss_usr_grp_pk PRIMARY KEY (user_id, group_id),
   CONSTRAINT tss_usr_grp_grp_id_fk FOREIGN KEY (group_id)
       REFERENCES tss_group (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
+      ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT tss_usr_grp_usr_id_fk FOREIGN KEY (user_id)
       REFERENCES tss_user (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
@@ -107,26 +121,46 @@ CREATE TABLE tss_group_role
   CONSTRAINT tss_grp_rl_pk PRIMARY KEY (role_id, group_id),
   CONSTRAINT tss_grp_rl_grp_id_fk FOREIGN KEY (group_id)
       REFERENCES tss_group (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
+      ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT tss_grp_rl_rl_id_fk FOREIGN KEY (role_id)
       REFERENCES tss_role (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
 CREATE TABLE driver_car
 (
-	id serial NOT NULL,
-	driver_id INT,
-	car_id INT,
-	assigned_time TIMESTAMP,
-	unassigned_time TIMESTAMP,
-  	CONSTRAINT driver_car_pk PRIMARY KEY (id),
-	CONSTRAINT driver_car_car_fk FOREIGN KEY (car_id)
-      	REFERENCES car (id) MATCH SIMPLE
-		 ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT driver_car_driver_fk FOREIGN KEY (driver_id)
-      	REFERENCES driver (driver_id)  MATCH SIMPLE
-		ON UPDATE NO ACTION ON DELETE NO ACTION
+  id serial NOT NULL,
+  driver_id integer,
+  car_id integer,
+  assign_time timestamp with time zone,
+  unassign_time timestamp with time zone,
+  CONSTRAINT pk_driv_car PRIMARY KEY (id),
+  CONSTRAINT fk_car_id FOREIGN KEY (car_id)
+  REFERENCES car (id) MATCH SIMPLE
+  ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fk_drv_id FOREIGN KEY (driver_id)
+  REFERENCES driver (driver_id) MATCH SIMPLE
+  ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+
+-- CREATE TABLE driver_car
+-- (
+-- 	id serial NOT NULL,
+-- 	driver_id INT,
+-- 	car_id INT,
+-- 	assigned_time TIMESTAMP,
+-- 	unassigned_time TIMESTAMP,
+--   	CONSTRAINT driver_car_pk PRIMARY KEY (id),
+-- 	CONSTRAINT driver_car_car_fk FOREIGN KEY (car_id)
+--       	REFERENCES car (id) MATCH SIMPLE
+-- 		 ON UPDATE NO ACTION ON DELETE NO ACTION,
+-- 	CONSTRAINT driver_car_driver_fk FOREIGN KEY (driver_id)
+--       	REFERENCES driver (driver_id)  MATCH SIMPLE
+-- 		ON UPDATE NO ACTION ON DELETE NO ACTION
+-- );
+
+
 CREATE TABLE tariff
 (
   id serial NOT NULL,
@@ -136,6 +170,7 @@ CREATE TABLE tariff
   CONSTRAINT tariff_pk PRIMARY KEY (id)
 );
 
+
 CREATE TABLE address
 (
 	addr_id serial NOT NULL,
@@ -143,6 +178,20 @@ CREATE TABLE address
 	longtitude real NOT NULL,
 	CONSTRAINT addr_id_pk PRIMARY KEY (addr_id)
 );
+
+CREATE TABLE personal_address
+(
+	user_id integer NOT NULL,
+	addr_id integer NOT NULL,
+	CONSTRAINT pa_usr_adr_pk PRIMARY KEY (user_id, addr_id),
+	CONSTRAINT personal_addr_addr_id_fk FOREIGN KEY (addr_id)
+    	 REFERENCES address (addr_id) MATCH SIMPLE
+     	 ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT tss_usr_rl_usr_id_fk FOREIGN KEY (user_id)
+         REFERENCES tss_user (id) MATCH SIMPLE
+         ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
 
 CREATE TABLE route
 (
@@ -158,6 +207,8 @@ CREATE TABLE route
      	 REFERENCES address (addr_id) MATCH SIMPLE
     	  ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+
 CREATE TABLE taxi_order
 (
   id serial NOT NULL,
@@ -175,7 +226,7 @@ CREATE TABLE taxi_order
   animal_transport boolean,
   wifi boolean,
   conditioner boolean,
-  user_id integer,
+  contacts_id integer,
   route_id integer,
   tariff_id integer,
   service_option_id integer,
@@ -183,8 +234,8 @@ CREATE TABLE taxi_order
   CONSTRAINT tx_rdr_drvr_cr_id_fk FOREIGN KEY (driver_car_id)
       REFERENCES driver_car (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT tx_rdr_usr_id_fk FOREIGN KEY (user_id)
-      REFERENCES tss_user (id) MATCH SIMPLE
+  CONSTRAINT tx_rdr_cont_id_fk FOREIGN KEY (contacts_id)
+      REFERENCES contacts (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
 	    CONSTRAINT tx_rdr_trff_id_fk FOREIGN KEY (tariff_id)
       REFERENCES tariff (id) MATCH SIMPLE
@@ -193,9 +244,4 @@ CREATE TABLE taxi_order
       REFERENCES route (route_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-
-
-
-
-
 

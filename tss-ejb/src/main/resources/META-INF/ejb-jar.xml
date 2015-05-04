@@ -79,6 +79,42 @@
         </session>  
         
         <session>
+            <description>An EJB named MapBean</description>
+            <display-name>MapBean</display-name>
+            <ejb-name>MapBean</ejb-name>
+            <local-home>com.netcracker.ejb.MapBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.MapBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.MapBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/MapBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.MapBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.MapBeanLocal</local>
+            </ejb-local-ref>
+        </session> 
+        
+        <session>
+            <description>An EJB named MailerBean</description>
+            <display-name>MailerBean</display-name>
+            <ejb-name>MailerBean</ejb-name>
+            <local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.MailerBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.MailerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/MailerBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.MailerBeanLocal</local>
+            </ejb-local-ref>
+        </session> 
+        
+        <session>
             <display-name>GroupBean</display-name>
             <ejb-name>GroupBean</ejb-name>
             <local-home>com.netcracker.ejb.GroupBeanLocalHome</local-home>
@@ -94,6 +130,91 @@
                 <local>com.netcracker.ejb.GroupBeanLocal</local>
             </ejb-local-ref>
         </session>
+                
+        <session>
+            <display-name>UserBean</display-name>
+            <ejb-name>UserBean</ejb-name>
+            <local-home>com.netcracker.ejb.UserBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.UserBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.UserBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/UserBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.UserBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.UserBeanLocal</local>
+            </ejb-local-ref>
+        </session>
         
+        <session>
+            <display-name>TariffBean</display-name>
+            <ejb-name>TariffBean</ejb-name>
+            <local-home>com.netcracker.ejb.TariffBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.TariffBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.TariffBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/TariffBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.TariffBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.TariffBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+        
+        <session>
+            <display-name>ReportsBean</display-name>
+            <ejb-name>ReportsBean</ejb-name>
+            <local-home>com.netcracker.ejb.ReportsBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.ReportsBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.ReportsBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/ReportsBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.ReportsBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.ReportsBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+        
+        <session>
+            <display-name>DriverBean</display-name>
+            <ejb-name>DriverBean</ejb-name>
+            <local-home>com.netcracker.ejb.DriverLocalHome</local-home>
+            <local>com.netcracker.ejb.DriverLocal</local>
+            <ejb-class>com.netcracker.ejb.DriverBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/DriverBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.DriverLocalHome</local-home>
+                <local>com.netcracker.ejb.DriverLocal</local>
+            </ejb-local-ref>
+        </session>
+
+        <session>
+            <display-name>CarBean</display-name>
+            <ejb-name>CarBean</ejb-name>
+            <local-home>com.netcracker.ejb.CarBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.CarBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.CarBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/CarBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.CarBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.CarBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+
     </enterprise-beans>
 </ejb-jar>

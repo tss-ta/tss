@@ -1,18 +1,15 @@
 package com.netcracker.entity.helper;
 
-/**
- * Created by Illya on 25.04.2015.
- */
 public enum Roles {
-    ADMIN("admin"), DRIVER("driver"), CUSTOMER("customer");
+    ADMIN("ADMIN"), DRIVER("DRIVER"), CUSTOMER("CUSTOMER");
 
-    private final String catStr;
+    private final String rolename;
 
-    Roles(String catStr) {
-        this.catStr = catStr;
+    Roles(String rolename) {
+        this.rolename = rolename;
     }
 
-    public String getCatStr() {
-        return catStr;
+    public String getRolename() {
+        return rolename;
     }
 }

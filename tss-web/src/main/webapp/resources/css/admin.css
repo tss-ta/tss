@@ -13,7 +13,7 @@ body {
 /*  NAVBAR  */
 /*          */
 .navbar-custom {
-    background-color: #252D3A;
+    background-color: #282828;
     color:#fff;
     border-radius:0;
     border: none;
@@ -25,7 +25,7 @@ body {
 
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-nav > li > a {
-    color: #7992BF;
+    color: #989898;
 }
 .navbar-custom .navbar-brand:hover,
 .navbar-custom .navbar-brand:focus,
@@ -61,7 +61,8 @@ body {
     height: 100%;
     margin-left: -180px;
     overflow-y: auto;
-    background: #252D3A;
+    overflow-x: hidden;
+    background: #282828;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -105,7 +106,7 @@ body {
     display: block;
     padding-left: 20px;
     text-decoration: none;
-    color: #7992BF;
+    color: #989898;
 }
 .sidebar-nav li a .icon-container{
     display: inline-block;
@@ -119,13 +120,13 @@ body {
 .sidebar-nav li a:hover {
     text-decoration: none;
     color: #fff;
-    background-color: #1A202A;
-    border-left: 3px solid crimson;
+    background-color: #181818;
+    /*border-left: 3px solid #F5C34C;*/
 }
 .sidebar-nav li a.active {
     text-decoration: none;
-    background-color: #1A202A;
-    border-left: 3px solid #fff;
+    background-color: #181818;
+    /*border-left: 3px solid #fff;*/
 }
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
@@ -136,17 +137,17 @@ body {
     height: 50px;
     font-size: 18px;
     line-height: 50px;
-    background-color: crimson;
-    padding-left: 15px;
+    background-color: #F5C34C;
+    color: #181818;
     margin-bottom: 30px;
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: #fff;
+    color: #181818;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
+    color: #181818;
     background: none;
     border: none;
 }
@@ -176,6 +177,52 @@ body {
     #wrapper.toggled #page-content-wrapper {
         position: relative;
         margin-right: 0;
+    }
+    .sidebar-nav > .sidebar-brand-high {
+        padding-left: 15px;
+    }
+    .sidebar-nav > .sidebar-brand-mini {
+        display: none;
+    }
+}
+
+@media(max-width:767px) {
+    #wrapper {
+        padding-left: 50px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 50px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 0;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+    .sidebar-nav li a .icon-label{
+        display: none;
+    }
+    .sidebar-nav li a {
+        padding-left: 10px;
+    }
+    .sidebar-nav > .sidebar-brand-high {
+        display: none;
+    }
+    .sidebar-nav > .sidebar-brand-mini {
+        padding-left: 5px;
     }
 }
 

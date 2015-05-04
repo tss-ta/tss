@@ -6,7 +6,6 @@
 package com.netcracker.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,18 +14,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Виктор
+ * @author maks
  */
 @Entity
-@Table(name = "tariff")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tariff.findAll", query = "SELECT t FROM Tariff t"),
+    @NamedQuery(name = "Tariff.findAllOrderedByName", query = "SELECT t FROM Tariff t ORDER BY t.tariffName"),
+    @NamedQuery(name = "Tariff.searchByNameOrdered", query = "SELECT t FROM Tariff t WHERE t.tariffName like :tariffName ORDER BY t.tariffName "),
     @NamedQuery(name = "Tariff.findById", query = "SELECT t FROM Tariff t WHERE t.id = :id"),
     @NamedQuery(name = "Tariff.findByTariffName", query = "SELECT t FROM Tariff t WHERE t.tariffName = :tariffName"),
     @NamedQuery(name = "Tariff.findByPlusCoef", query = "SELECT t FROM Tariff t WHERE t.plusCoef = :plusCoef"),
@@ -36,7 +38,6 @@ public class Tariff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
     private Integer id;
     @Size(max = 40)
     @Column(name = "tariff_name")
@@ -45,9 +46,9 @@ public class Tariff implements Serializable {
     @Column(name = "plus_coef")
     private Float plusCoef;
     @Column(name = "multiple_coef")
+    @Min(value=0)
+    @Max(value = 100000)
     private Float multipleCoef;
-    @OneToMany(mappedBy = "tariffId")
-    private Collection<TaxiOrder> taxiOrderCollection;
 
     public Tariff() {
     }
@@ -87,15 +88,7 @@ public class Tariff implements Serializable {
     public void setMultipleCoef(Float multipleCoef) {
         this.multipleCoef = multipleCoef;
     }
-
-    public Collection<TaxiOrder> getTaxiOrderCollection() {
-        return taxiOrderCollection;
-    }
-
-    public void setTaxiOrderCollection(Collection<TaxiOrder> taxiOrderCollection) {
-        this.taxiOrderCollection = taxiOrderCollection;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

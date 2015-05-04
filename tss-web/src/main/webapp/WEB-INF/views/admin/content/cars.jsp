@@ -18,14 +18,14 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-1">
-                    <a href="/admin/car?action=add-car" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
+                    <a href="/admin/cars?menu=cars&action=add-car" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
                 </div>
                 <div class="col-md-offset-7 col-md-4">
-                    <form>
+                    <form action="/admin/cars?menu=cars&action=search" method="post" >
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search by №...">
+                            <input type="text" class="form-control" name="search" placeholder="AAA-000-AAA" value="${param.search}">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>
                         </div>
                     </form>
@@ -37,7 +37,7 @@
 
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
-        <table class="table table-striped table-bordered">
+        <table class="table table-hover table-bordered">
             <thead class="tablehead text-center">
             <td class="col-md-3">№</td>
             <td class="col-md-2">Type</td>
@@ -75,23 +75,43 @@
                         <c:if test="${car.wifi}">
                             <i class="fa fa-wifi"></i>
                         </c:if>
+                        <c:if test="${!car.wifi}">
+                            <i class="fa fa-minus"></i>
+                        </c:if>
                     </td>
                     <td>
                         <c:if test="${car.conditioner}">
                             <i class="fa fa-check"></i>
+                        </c:if>
+                        <c:if test="${!car.conditioner}">
+                            <i class="fa fa-minus"></i>
                         </c:if>
                     </td>
                     <td>
                         <c:if test="${car.animalable}">
                             <i class="fa fa-check"></i>
                         </c:if>
+                        <c:if test="${!car.animalable}">
+                            <i class="fa fa-minus"></i>
+                        </c:if>
                     </td>
+
                     <td>
                         <c:if test="${car.available}">
                             <i class="fa fa-check"></i>
                         </c:if>
+                        <c:if test="${!car.available}">
+                            <i class="fa fa-minus"></i>
+                        </c:if>
                     </td>
-                    <td><a href="/admin?action=edit">Edit</a></td>
+
+
+                    <c:if test="${not assign}">
+                        <td><a href="/admin?action=edit">Edit</a></td>
+                    </c:if>
+                    <c:if test="${assign}">
+                        <td><a href="/admin/driver?action=assigncar&carid=${car.getId()}&driverid=${driverid}">Assign Car</a></td>
+                    </c:if>
                 </tr>
             </c:forEach>
             </tbody>

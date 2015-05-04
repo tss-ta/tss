@@ -13,7 +13,7 @@
     <c:when test="${pageType == 'customers'}">
         <c:set var="activeCustomers" scope="request" value="${'class=\"active\"'}"/>
     </c:when>
-    <c:when test="${pageType == 'derivers'}">
+    <c:when test="${pageType == 'drivers'}">
         <c:set var="activeDrivers" scope="request" value="${'class=\"active\"'}"/>
     </c:when>
     <c:when test="${pageType == 'groups'}">
@@ -28,7 +28,8 @@
 </c:choose>
 
 <ul class="sidebar-nav">
-    <li class="sidebar-brand"><a href="/">Taxi Service</a></li>
+    <li class="sidebar-brand sidebar-brand-high"><a href="/">Taxi Service</a></li>
+    <li class="sidebar-brand sidebar-brand-mini"><a href="/">TS</a></li>
     <li>
         <a href="/admin" ${activeDashboard}>
             <span class="icon-container"><i class="fa fa-tachometer"></i></span>
@@ -54,7 +55,7 @@
         </a>
     </li>
     <li>
-        <a href="/admin/car" ${activeCars}>
+        <a href="/admin/cars?menu=cars&action=all" ${activeCars}>
             <span class="icon-container"><i class="fa fa-taxi"></i></span>
             <span class="icon-label">Cars</span>
         </a>

@@ -13,6 +13,7 @@ import javax.persistence.Query;
 /**
  *
  * @author Stanislav Zabielin
+ * @author maks
  *
  */
 public abstract class GenericDAO<T> {
@@ -22,9 +23,14 @@ public abstract class GenericDAO<T> {
     protected EntityManager em;
 
     public GenericDAO() {
-        em = createEntityManager();
+        em = createEntityManager();       
         entityClass = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+        
+    public GenericDAO(Class<T> entityClass) {
+        em = createEntityManager();
+        this.entityClass = entityClass;
     }
 
     public T get(int id) {
@@ -36,6 +42,19 @@ public abstract class GenericDAO<T> {
         Query q = em.createQuery("select u from entityClass u");
         List<T> list = q.getResultList();
         return list;
+    }
+
+//    public Long countAll() {
+//        Query query = em.createQuery("SELECT COUNT(u) FROM " + entityClass.getSimpleName() + " u");
+//        return (Long) query.getSingleResult();
+//    }
+        
+    public int count() {
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        javax.persistence.Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
     }
 
     public List<T> getPage(int pageNumber, int pageSize) {

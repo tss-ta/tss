@@ -4,6 +4,8 @@
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,9 +54,20 @@
 				<div class="top-nav">
 					<ul>
 						<li class="active"><a href="#">Home</a></li>
-						<li><a href="/signin.jsp">Sign In</a></li>
-						<li><a href="/signup.jsp">Sign Up</a></li>
-						<li><a href="/guest">Guest</a></li>
+						<sec:authorize access="hasRole('ADMIN')">
+							<li><a href="/admin">Dashboard</a></li>
+						</sec:authorize>
+						<sec:authorize access="hasRole('CUSTOMER')">
+							<li><a href="/customer">Dashboard</a></li>
+						</sec:authorize>
+						<sec:authorize access="hasRole('DRIVER')">
+							<li><a href="/driver">Dashboard</a></li>
+						</sec:authorize>
+						<sec:authorize access="isAnonymous()">
+							<li><a href="/signin.jsp">Sign In</a></li>
+							<li><a href="/signup.jsp">Sign Up</a></li>
+							<li><a href="/guest">Order NOW!</a></li>
+						</sec:authorize>
 						<div class="clear"></div>
 					</ul>
 				</div>
