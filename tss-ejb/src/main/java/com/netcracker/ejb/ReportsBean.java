@@ -5,6 +5,7 @@ import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.CarCategory;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.reports.ReportsRow;
 import java.rmi.RemoteException;
@@ -129,6 +130,24 @@ public class ReportsBean implements SessionBean {
         try {
             dao = new TaxiOrderDAO();
             return dao.findBookedOrdersByPeriod(begin, end, pageNumber, paginationStep);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+    
+        
+    public List<ReportsRow> getCarCategoryReport() {
+        List<ReportsRow> report = new ArrayList<>();
+        TaxiOrderDAO dao = null;
+        try {
+            dao = new TaxiOrderDAO();
+            for (CarCategory category : CarCategory.values()){
+                report.add(new ReportsRow(category.toString(), dao.countOrdersWithCarCategory(category)));
+            }
+            Collections.sort(report);
+            return report;
         } finally {
             if (dao != null) {
                 dao.close();

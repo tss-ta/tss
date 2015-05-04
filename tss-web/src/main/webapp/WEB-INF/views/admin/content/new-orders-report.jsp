@@ -31,14 +31,14 @@
         <div class="panel panel-default">
             <form class="panel-body" action="/admin/report" >
                 <div class="form-group">
-                    <label class="col-md-1 control-label">Begin Time: </label>
+                    <label class="col-md-2 control-label">Begin Time: </label>
                     <div class="col-md-3">
                         <input type="text" id="begin" name="begin"
                                class="form-control" />
                     </div>
 
 
-                    <label class="col-md-1 control-label">End Time: </label>
+                    <label class="col-md-2 control-label">End Time: </label>
                     <div class="col-md-3">
                         <input type="text" id="end" name="end"
                                class="form-control" />
@@ -58,6 +58,7 @@
                     <th>Status</th>
                     <th>Driver</th>
                     <th>Route</th>
+                    <th>Car Category</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,6 +70,7 @@
                         <td>${list.enumStatus}</td>
                         <td></td>
                         <td>${list.routeId.pathContent}</td>
+                        <td>${list.enumCarCategory}</td>
                     </tr>
                 </c:forEach>
             </tbody>

@@ -6,6 +6,7 @@
 package com.netcracker.entity;
 
 import com.netcracker.entity.TaxiOrder.Status;
+import com.netcracker.entity.helper.CarCategory;
 import com.netcracker.entity.helper.DriverCar;
 
 import java.io.Serializable;
@@ -299,6 +300,14 @@ public class TaxiOrder implements Serializable {
 	public void setCarCategory(Integer carCategory) {
 		this.carCategory = carCategory;
 	}
+        
+        public CarCategory getEnumCarCategory(){
+            return CarCategory.valueOf(carCategory);
+        }
+                
+        public void setEnumCarCategory(CarCategory category){
+            carCategory = category.getId();
+        }
 
 	public Boolean getAnimalTransport() {
 		return animalTransport;
