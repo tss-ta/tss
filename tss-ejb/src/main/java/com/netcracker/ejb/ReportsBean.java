@@ -3,12 +3,14 @@ package com.netcracker.ejb;
 import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.reports.ReportsRow;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
@@ -39,6 +41,18 @@ public class ReportsBean implements SessionBean {
             Contacts userContacts = userBean.getContacts(userId);
             dao = new TaxiOrderDAO();
             return dao.countUserOrders(userContacts);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+      
+    public int countAllOrders(Date begin, Date end) {
+        TaxiOrderDAO dao = null;
+        try {
+            dao = new TaxiOrderDAO();
+            return dao.countBookedOrdersByPeriod(begin, end);
         } finally {
             if (dao != null) {
                 dao.close();
@@ -92,7 +106,6 @@ public class ReportsBean implements SessionBean {
     public List<ReportsRow> getCustomerCarOptionsReport(int userId) {
 
         TaxiOrderDAO dao = null;
-        ContactsDAO contactsDAO = null;
         try {
 
             UserBeanLocal userBean = BeansLocator.getInstance().getBean(UserBeanLocal.class);
@@ -104,6 +117,18 @@ public class ReportsBean implements SessionBean {
             report.add(new ReportsRow("Animalable", dao.countOrdersWithAnimalable(userContacts)));
             Collections.sort(report);
             return report;
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+    
+    public List<TaxiOrder> getBookedOrders (Date begin, Date end, int pageNumber, int paginationStep){
+         TaxiOrderDAO dao = null;
+        try {
+            dao = new TaxiOrderDAO();
+            return dao.findBookedOrdersByPeriod(begin, end, pageNumber, pageNumber);
         } finally {
             if (dao != null) {
                 dao.close();
