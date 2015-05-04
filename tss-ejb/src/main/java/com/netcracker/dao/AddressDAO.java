@@ -17,5 +17,5 @@ public class AddressDAO extends GenericDAO<Address> {
     public AddressDAO() {
         super();
     }
-
+    
 }

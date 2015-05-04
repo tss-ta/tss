@@ -20,6 +20,7 @@ import com.netcracker.entity.helper.TaxiOrderHistory;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJBException;
@@ -133,12 +134,43 @@ public class TaxiOrderBean implements SessionBean {
         List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
         return taxiOrderHistory;
     }
-    public TaxiOrderHistory getOrderForEdit(TaxiOrder order) {
-            TaxiOrderHistory toh = new TaxiOrderHistory(order);
-            toh.setToAddr(getToAddr(toh));
-            toh.setFromAddr(getFromAddr(toh));
-            return toh;
+
+    public void editTaxiOrderCustomer(int orderId, Address addFrom, Address addTo, Date orderTime) {
+        TaxiOrderDAO taxiOrderDAO = null;
+        TaxiOrder taxiOrder = null;
+        AddressDAO addressDAO = null;
+        try {
+            taxiOrderDAO = new TaxiOrderDAO();
+            taxiOrder = taxiOrderDAO.get(orderId);
+            addressDAO = new AddressDAO();
+            Address addressFrom = taxiOrder.getRouteId().getFromAddrId();
+            Address addressTo = taxiOrder.getRouteId().getToAddrId();
+            addressFrom.setAltitude(addFrom.getAltitude());
+            addressFrom.setLongtitude(addFrom.getLongtitude());
+            addressTo.setAltitude(addTo.getAltitude());
+            addressTo.setLongtitude(addTo.getLongtitude());
+            addressDAO.update(addressFrom);
+            addressDAO.update(addressTo);
+            taxiOrder.setOrderTime(orderTime);
+            taxiOrderDAO.update(taxiOrder);
+        } finally {
+            if (taxiOrderDAO != null) {
+                taxiOrderDAO.close();
+            }
+            if (addressDAO != null) {
+                addressDAO.close();
+            }
+        }
+
     }
+
+    public TaxiOrderHistory getOrderForEdit(TaxiOrder order) {
+        TaxiOrderHistory toh = new TaxiOrderHistory(order);
+        toh.setToAddr(getToAddr(toh));
+        toh.setFromAddr(getFromAddr(toh));
+        return toh;
+    }
+
     private List<TaxiOrderHistory> createTOHistory(List<TaxiOrder> orders) {
         List<TaxiOrderHistory> listTOH = new ArrayList<>();
         for (TaxiOrder to : orders) {
