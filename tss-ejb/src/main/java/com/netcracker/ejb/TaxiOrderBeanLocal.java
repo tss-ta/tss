@@ -8,10 +8,11 @@ package com.netcracker.ejb;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
+import com.netcracker.entity.TaxiOrder.Status;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.TaxiOrderHistory;
-import java.util.Date;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJBLocalObject;
@@ -31,5 +32,8 @@ public interface TaxiOrderBeanLocal extends EJBLocalObject {
     public TaxiOrderHistory getOrderForEdit(TaxiOrder order);
 
     public void editTaxiOrderCustomer(int orderId, Address addFrom, Address addTo, Date orderTime);
+
+	public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
+			int pageSize, User user, Status status);
 
 }
