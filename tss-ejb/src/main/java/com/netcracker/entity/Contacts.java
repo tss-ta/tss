@@ -25,7 +25,8 @@ import javax.persistence.Table;
 @Table(name = "contacts")
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
-    @NamedQuery(name = "Contacts.findByEmail", query = "SELECT u FROM Contacts u WHERE u.email = :email")})
+    @NamedQuery(name = "Contacts.findByEmail", query = "SELECT u FROM Contacts u WHERE u.email = :email"),
+    @NamedQuery(name = "Contacts.findByUser", query = "SELECT u FROM Contacts u WHERE u.userId = :user")})
 public class Contacts implements Serializable {
 
 	@Id

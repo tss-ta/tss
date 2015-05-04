@@ -48,16 +48,46 @@
 					<label class="col-sm-2 col-sm-2 control-label">From :</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="fromAddr"
-							name="fromAddr" value="Holosiivskyi Avenue, 12, Kyiv, Ukraine" />
+							name="fromAddr" value="Ukraine, Kiev" />
 						<p id="fromAddrMessage"></p>
+						<div class="text-center">
+							<c:if test="${not empty personal_addr}">
+								<select class="selectpicker" title="Choose from personal list"
+									name="pers_addr" id="pers_addr">
+									<option></option>
+									<c:forEach items="${personal_addr}" var="list" varStatus="loop">
+										<option value="${list.addr}">${list.addr}</option>
+									</c:forEach>
+								</select>
+							</c:if>
+							<button type="submit" class="btn btn-default" id="addFrom"
+								name="addFrom">Add Current</button>
+							<button type="submit" class="btn btn-default" id="deleteFrom"
+								name="deleteFrom">Delete Current</button>
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 col-sm-2 control-label">To :</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="toAddr" name="toAddr"
-							value="Vasylya Zhukovs'koho Lane, 6, Kyiv, Ukraine" />
+							value="Ukraine, Kiev" />
 						<p id="toAddrMessage"></p>
+						<div class="text-center">
+							<c:if test="${not empty personal_addr}">
+								<select class="selectpicker" title="Choose from personal list"
+									name="pers_addr_to" id="pers_addr_to">
+									<option></option>
+									<c:forEach items="${personal_addr}" var="list" varStatus="loop">
+										<option value="${list.addr}">${list.addr}</option>
+									</c:forEach>
+								</select>
+							</c:if>
+							<button type="submit" class="btn btn-default" id="addTo"
+								name="addTo">Add Current</button>
+							<button type="submit" class="btn btn-default" id="deleteTo"
+								name="deleteTo">Delete Current</button>
+						</div>
 					</div>
 				</div>
 
@@ -139,7 +169,6 @@
 		<button class="btn btn-success btn-lg btn-block" type="submit">Order
 			Now</button>
 
-	</div>
 	</div>
 </form>
 
