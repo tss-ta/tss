@@ -77,11 +77,11 @@ CREATE TABLE driver
   car_id integer,
   CONSTRAINT pk_driv_id PRIMARY KEY (driver_id),
   CONSTRAINT fk_user FOREIGN KEY (driver_id)
-    REFERENCES tss_user (id) MATCH SIMPLE
+  REFERENCES tss_user (id) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT fk_car FOREIGN KEY (car_id)
     REFERENCES car (id) MATCH SIMPLE
-    ON UPDATE NO ACTION ON DELETE SET NULL
+  ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 
@@ -178,6 +178,19 @@ CREATE TABLE address
 	CONSTRAINT addr_id_pk PRIMARY KEY (addr_id)
 );
 
+CREATE TABLE personal_address
+(
+	user_id integer NOT NULL,
+	addr_id integer NOT NULL,
+	CONSTRAINT pa_usr_adr_pk PRIMARY KEY (user_id, addr_id),
+	CONSTRAINT personal_addr_addr_id_fk FOREIGN KEY (addr_id)
+    	 REFERENCES address (addr_id) MATCH SIMPLE
+     	 ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT tss_usr_rl_usr_id_fk FOREIGN KEY (user_id)
+         REFERENCES tss_user (id) MATCH SIMPLE
+         ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
 
 CREATE TABLE route
 (
@@ -230,4 +243,3 @@ CREATE TABLE taxi_order
       REFERENCES route (route_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-

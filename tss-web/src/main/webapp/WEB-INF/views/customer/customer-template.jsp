@@ -118,6 +118,15 @@
 	
 	</script>
 
-
+<script>
+	$('#pers_addr').on('change', function() {
+		var txt = $("#pers_addr option:selected").text();
+		$('#fromAddr').val(txt);
+	})
+	$('#pers_addr_to').on('change', function() {
+		var txt = $("#pers_addr_to option:selected").text();
+		$('#toAddr').val(txt);
+	})
+</script>
 </body>
 </html>
