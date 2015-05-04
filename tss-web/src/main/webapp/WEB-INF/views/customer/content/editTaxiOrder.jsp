@@ -70,7 +70,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 col-sm-2 control-label">To :</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="toAddr" name="toAddr" size="50"
+						<input type="text" class="form-control" id="toAddr" name="toAddr" 
 							value="${toh.getToAddr()}" />
 						<p id="toAddrMessage"></p>
 						<div class="text-center">
@@ -105,7 +105,7 @@
 	</div>
 
 		<!-- /form-panel -->
-	</div>
+
 	<!-- /col-lg-12 -->
 	<div class="text-center">
 
