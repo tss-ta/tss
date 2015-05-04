@@ -14,7 +14,7 @@ public class ActionContainer {
     private Map<String, HttpMethodContainer> container = new HashMap<>();
 
     public HttpMethodContainer findOrCreateHttpMethodContainer(String action) {
-        ArgumentValidator.validateOnNull(action, "action");
+//        ArgumentValidator.validateOnNull(action, "action");
 
         HttpMethodContainer searchedContainer = container.get(action);
         if (searchedContainer == null) {
@@ -25,7 +25,7 @@ public class ActionContainer {
     }
 
     public HttpMethodContainer findHttpMethodContainer(String action) {
-        ArgumentValidator.validateOnNull(action, "action");
+//        ArgumentValidator.validateOnNull(action, "action");
         
         HttpMethodContainer searchedContainer = container.get(action);
         if (searchedContainer == null) {

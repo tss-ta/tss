@@ -27,8 +27,6 @@ public class AnnotationRouter implements Router {
 
     @Override
     public InstanceAndMethod findActionMethod(String menu, String action, HttpMethod httpMethod) {
-        ArgumentValidator.validateOnNull(menu, "menu");
-        ArgumentValidator.validateOnNull(action, "action");
         ArgumentValidator.validateOnNull(httpMethod, "httpMethod");
 
         return coreContainer.findActionContainer(menu)
@@ -38,8 +36,6 @@ public class AnnotationRouter implements Router {
 
     @Override
     public void addActionMethod(String menu, String action, HttpMethod httpMethod, InstanceAndMethod instanceAndMethod) {
-        ArgumentValidator.validateOnNull(menu, "menu");
-        ArgumentValidator.validateOnNull(action, "action");
         ArgumentValidator.validateOnNull(httpMethod, "httpMethod");
         ArgumentValidator.validateOnNull(instanceAndMethod, "instanceAndMethod");
 
