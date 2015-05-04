@@ -8,10 +8,10 @@ package com.netcracker.dao;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import java.util.Date;
-
+import com.netcracker.entity.TaxiOrder.Status;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
-
 import javax.persistence.TypedQuery;
 
 /**
@@ -22,7 +22,6 @@ import javax.persistence.TypedQuery;
 public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
 
     public TaxiOrderDAO() {
-        super();
     }
 
     public List<TaxiOrder> getTaxiOrderHistory(int pageNumber, int pageSize, Contacts contacts) {
@@ -39,6 +38,26 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
         tq.setMaxResults(pageSize);
         List<TaxiOrder> taxiOrders = tq.getResultList();
         return taxiOrders;
+    }
+
+    public List<TaxiOrder> getTaxiOrderHistory(Integer pageNumber,
+            int pageSize, Contacts contacts, Status status) {
+        if (status != null) {
+            return filterByStatus(
+                    getTaxiOrderHistory(pageNumber, pageSize, contacts), status);
+        } else {
+            return getTaxiOrderHistory(pageNumber, pageSize, contacts);
+        }
+    }
+
+    private List<TaxiOrder> filterByStatus(List<TaxiOrder> list, Status status) {
+        List<TaxiOrder> tmp = new ArrayList<>();
+        for (TaxiOrder to : list) {
+            if (to.convertStatusToEnum().equals(status)) {
+                tmp.add(to);
+            }
+        }
+        return tmp;
     }
 
     public List<TaxiOrder> findBookedOrdersByPeriod(Date begin, Date end, int pageNumber, int pageSize) {

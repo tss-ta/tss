@@ -10,7 +10,7 @@
 		<div class="row mt bottom_line">
 			<div class="col-lg-12">
 				<h4>
-					<i class="fa"></i> Your Orders History
+					<i class="fa"></i> Your Taxi Orders
 				</h4>
 				<section id="unseen">
 					<table class="table table-bordered table-striped table-condensed">
@@ -32,19 +32,27 @@
 									<td class="numeric">${list.price}</td>
 									<td>${list.bookingTime}</td>
 									<td>${list.orderTime}</td>
-									<td>${list.status}</td>
+									<td>${list.strStatus}</td>
 									<td>${list.driverCarId}</td>
 									<td>${list.routeId.pathContent}</td>
 									<td>${list.fromAddr}</td>
 									<td>${list.toAddr}</td>
+									<td><c:if test="${list.status!=5}">
+											<a
+												href="/customer/edit?action=editTaxiOrder&taxiOrderId=${list.getId()}">edit</a>
+										</c:if></td>
+									<td><c:if test="${list.status!=5}">
+											<a
+												href="/customer/edit?action=deleteTaxiOrder&taxiOrderId=${list.getId()}">X</a>
+										</c:if></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
 				</section>
-					<div class="text-center">
-					<form action="/customer/history" class="form-horizontal style-form"
-						method="get">
+				<div class="text-center">
+					<form action="/customer/dashboard"
+						class="form-horizontal style-form" method="get">
 						<div class="btn-group">
 							<button type="submit" class="btn btn-default" id="previous "
 								name="previous">Previous</button>

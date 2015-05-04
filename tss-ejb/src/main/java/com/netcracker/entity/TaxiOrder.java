@@ -5,9 +5,12 @@
  */
 package com.netcracker.entity;
 
+import com.netcracker.entity.TaxiOrder.Status;
 import com.netcracker.entity.helper.DriverCar;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,7 +50,7 @@ import javax.validation.constraints.Size;
 		@NamedQuery(name = "TaxiOrder.findByConditioner", query = "SELECT t FROM TaxiOrder t WHERE t.conditioner = :conditioner"),
 		@NamedQuery(name = "TaxiOrder.findByServiceOptionId", query = "SELECT t FROM TaxiOrder t WHERE t.serviceOptionId = :serviceOptionId") })
 public class TaxiOrder implements Serializable {
-    
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,6 +102,21 @@ public class TaxiOrder implements Serializable {
 	@ManyToOne
 	private Contacts contactsId;
 
+	public enum Status {
+		QUEUED(0), UPDATED(1), ASSIGNED(2), REFUSED(3), IN_PROGRESS(4), COMPLETED(
+				5);
+
+		private Integer status;
+
+		Status(Integer status) {
+			this.status = status;
+		}
+
+		public Integer convertToInteger() {
+			return status;
+		}
+	};
+
 	public TaxiOrder() {
 	}
 
@@ -106,60 +124,63 @@ public class TaxiOrder implements Serializable {
 		this.id = id;
 	}
 
-    public TaxiOrder(Integer payment, Integer musicStyle, Boolean male, Boolean smoke, Integer carCategory, Boolean animalTransport, Boolean wifi, Boolean conditioner) {
-        this.payment = payment;
-        this.musicStyle = musicStyle;
-        this.male = male;
-        this.smoke = smoke;
-        this.carCategory = carCategory;
-        this.animalTransport = animalTransport;
-        this.wifi = wifi;
-        this.conditioner = conditioner;
-    }
+	public TaxiOrder(Integer payment, Integer musicStyle, Boolean male,
+			Boolean smoke, Integer carCategory, Boolean animalTransport,
+			Boolean wifi, Boolean conditioner) {
+		this.payment = payment;
+		this.musicStyle = musicStyle;
+		this.male = male;
+		this.smoke = smoke;
+		this.carCategory = carCategory;
+		this.animalTransport = animalTransport;
+		this.wifi = wifi;
+		this.conditioner = conditioner;
+	}
 
-    public TaxiOrder(TaxiOrder order) {
-        this.id = order.id;
-        this.price = order.price;
-        this.payment = order.payment;
-        this.bookingTime = order.bookingTime;
-        this.orderTime = order.orderTime;
-        this.musicStyle = order.musicStyle;
-        this.status = order.status;
-        this.comment = order.comment;
-        this.male = order.male;
-        this.smoke = order.smoke;
-        this.carCategory = order.carCategory;
-        this.animalTransport = order.animalTransport;
-        this.wifi = order.wifi;
-        this.conditioner = order.conditioner;
-        this.serviceOptionId = order.serviceOptionId;
-        this.driverCarId = order.driverCarId;
-        this.routeId = order.routeId;
-        this.tariffId = order.tariffId;
-        this.contactsId = order.contactsId;
-    }
-    
-//	public TaxiOrder(TaxiOrder to) { //it's not correct to use virtual methods in constructor (maks)
-//		setAnimalTransport(to.animalTransport);
-//		setBookingTime(to.bookingTime);
-//		setCarCategory(to.carCategory);
-//		setComment(to.comment);
-//		setConditioner(to.conditioner);
-//		setDriverCarId(to.driverCarId);
-//		setId(to.id);
-//		setMale(to.male);
-//		setMusicStyle(to.musicStyle);
-//		setOrderTime(to.orderTime);
-//		setPayment(to.payment);
-//		setPrice(to.price);
-//		setRouteId(to.routeId);
-//		setServiceOptionId(to.serviceOptionId);
-//		setSmoke(to.smoke);
-//		setStatus(to.status);
-//		setTariffId(to.tariffId);
-//		setContactsId(to.contactsId);
-//		setWifi(to.wifi);
-//	}
+	public TaxiOrder(TaxiOrder order) {
+		this.id = order.id;
+		this.price = order.price;
+		this.payment = order.payment;
+		this.bookingTime = order.bookingTime;
+		this.orderTime = order.orderTime;
+		this.musicStyle = order.musicStyle;
+		this.status = order.status;
+		this.comment = order.comment;
+		this.male = order.male;
+		this.smoke = order.smoke;
+		this.carCategory = order.carCategory;
+		this.animalTransport = order.animalTransport;
+		this.wifi = order.wifi;
+		this.conditioner = order.conditioner;
+		this.serviceOptionId = order.serviceOptionId;
+		this.driverCarId = order.driverCarId;
+		this.routeId = order.routeId;
+		this.tariffId = order.tariffId;
+		this.contactsId = order.contactsId;
+	}
+
+	// public TaxiOrder(TaxiOrder to) { //it's not correct to use virtual
+	// methods in constructor (maks)
+	// setAnimalTransport(to.animalTransport);
+	// setBookingTime(to.bookingTime);
+	// setCarCategory(to.carCategory);
+	// setComment(to.comment);
+	// setConditioner(to.conditioner);
+	// setDriverCarId(to.driverCarId);
+	// setId(to.id);
+	// setMale(to.male);
+	// setMusicStyle(to.musicStyle);
+	// setOrderTime(to.orderTime);
+	// setPayment(to.payment);
+	// setPrice(to.price);
+	// setRouteId(to.routeId);
+	// setServiceOptionId(to.serviceOptionId);
+	// setSmoke(to.smoke);
+	// setStatus(to.status);
+	// setTariffId(to.tariffId);
+	// setContactsId(to.contactsId);
+	// setWifi(to.wifi);
+	// }
 
 	public Integer getId() {
 		return id;
@@ -215,6 +236,27 @@ public class TaxiOrder implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status.convertToInteger();
+	}
+
+	public Status convertStatusToEnum() {
+		switch (status) {
+		case 0:
+			return Status.QUEUED;
+		case 1:
+			return Status.UPDATED;
+		case 2:
+			return Status.ASSIGNED;
+		case 3:
+			return Status.REFUSED;
+		case 4:
+			return Status.IN_PROGRESS;
+		default:
+			return Status.COMPLETED;
+		}
 	}
 
 	public String getComment() {
@@ -339,5 +381,7 @@ public class TaxiOrder implements Serializable {
 	public String toString() {
 		return "com.netcracker.entity.TaxiOrder[ id=" + id + " ]";
 	}
+
+	
 
 }
