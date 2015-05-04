@@ -49,28 +49,31 @@
             </form>
         </div>
 
-        <%--
-        <table class="table table-striped table-bordered">
-            <thead class="tablehead">
-            <td class="col-md-1">#</td>
-            <td>Option</td>
-            <td class="text-center"><i class="fa fa-plus"></i></td>
-            <td class="text-center"><i class="fa fa-minus"></i></td>
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Booking Time</th>
+                    <th>Order Time</th>
+                    <th>Status</th>
+                    <th>Driver</th>
+                    <th>Route</th>
+                </tr>
             </thead>
-
             <tbody>
-                <c:forEach var = "row" items = "${requestScope.report}" varStatus = "counter">
+                <c:forEach items="${requestScope.orders}" var="list">
                     <tr>
-                        <td>${counter.count}</td>
-                        <td>${row.name}</td>
-                        <td class="text-center">${row.value}</td>
-                        <td class="text-center">${requestScope.allTO - row.value}</td>
+                        <td class="numeric">${list.price}</td>
+                        <td>${list.bookingTime}</td>
+                        <td>${list.orderTime}</td>
+                        <td>${list.enumStatus}</td>
+                        <td></td>
+                        <td>${list.routeId.pathContent}</td>
                     </tr>
-                </c:forEach> 
+                </c:forEach>
             </tbody>
         </table>
         <br>
-        --%>
         <h3 class="text-right">All new taxi orders booked by this period: ${requestScope.allTO}</h3>
 
         <%--       <%@ include file="../partials/pagination.jspf" %>  --%>

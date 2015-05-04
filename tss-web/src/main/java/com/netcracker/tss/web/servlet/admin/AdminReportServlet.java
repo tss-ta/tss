@@ -70,7 +70,10 @@ public class AdminReportServlet extends HttpServlet {
 
     private void redirectToNewOrdersReport(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-        req.setAttribute("allTO", reportsBean.countAllOrders(dateParser(req.getParameter("begin")), dateParser(req.getParameter("end"))));
+        Date begin = dateParser(req.getParameter("begin"));
+        Date end = dateParser(req.getParameter("end"));
+        req.setAttribute("orders", reportsBean.getBookedOrders(begin, end, 1, 10));//!!!!!!!
+        req.setAttribute("allTO", reportsBean.countAllOrders(begin, end));
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
         req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_NEW_ORDERS_REPORTS_CONTENT.getAbsolutePath());
         req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
