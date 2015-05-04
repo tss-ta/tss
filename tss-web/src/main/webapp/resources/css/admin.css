@@ -252,11 +252,15 @@ a.trash:hover {
 ul.custom-pager li a {
     border: none;
     background-color: #282828;
+    border-radius: 15px;
+    padding-left: 28px;
+    padding-right: 28px;
     color: #fff;
     margin-left: 3px;
     margin-right: 3px;
 }
-ul.custom-pager li a:hover {
+ul.custom-pager li a:hover,
+ul.custom-pager li a:active {
     background-color: #F5C34C;
     color: #282828;
 }

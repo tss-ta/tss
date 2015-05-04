@@ -1,5 +1,6 @@
 package com.netcracker.router.container;
 
+import com.netcracker.router.exception.ActionNotFoundException;
 import com.netcracker.router.util.ArgumentValidator;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class ActionContainer {
         
         HttpMethodContainer searchedContainer = container.get(action);
         if (searchedContainer == null) {
-            throw new IllegalArgumentException("Action route for action '" + action + "' not found.");
+            throw new ActionNotFoundException("Action for '" + action + "' not found.");
         }
         return searchedContainer;
     }

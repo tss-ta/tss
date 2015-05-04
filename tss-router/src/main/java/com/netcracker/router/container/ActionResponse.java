@@ -5,18 +5,18 @@ package com.netcracker.router.container;
  */
 
 public class ActionResponse {
-    private String view;
+    private String pageContent;
     private String errorMessage;
     private String successMessage;
     private Object model;
     private boolean redirect;
 
-    public String getView() {
-        return view;
+    public String getPageContent() {
+        return pageContent;
     }
 
-    public void setView(String view) {
-        this.view = view;
+    public void setPageContent(String pageContent) {
+        this.pageContent = pageContent;
     }
 
     public String getErrorMessage() {
@@ -54,7 +54,7 @@ public class ActionResponse {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ActionResponse{");
-        sb.append("view='").append(view).append('\'');
+        sb.append("partial='").append(pageContent).append('\'');
         sb.append(", errorMessage='").append(errorMessage).append('\'');
         sb.append(", successMessage='").append(successMessage).append('\'');
         sb.append(", model=").append(model);
