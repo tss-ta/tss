@@ -52,7 +52,7 @@
                 <tbody>
                 <c:forEach items="${carList}" var="car">
                     <tr class="text-center">
-                        <td><a class="custom-link" href="/admin/cars?menu=cars&action=view&id=${car.id}">${car.getLicPlate()}</a></td>
+                        <td><a class="custom-link" href="/admin/cars?menu=cars&action=partial&id=${car.id}">${car.getLicPlate()}</a></td>
                         <td class="hidden-sm hidden-xs">
                             <c:choose>
                                 <c:when test="${car.category == 1}">

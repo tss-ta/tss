@@ -1,5 +1,6 @@
 package com.netcracker.router.container;
 
+import com.netcracker.router.exception.ActionNotFoundException;
 import com.netcracker.router.util.ArgumentValidator;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class MenuContainer {
         ArgumentValidator.validateOnNull(menu, "menu");
         ActionContainer searchedActionContainer = container.get(menu);
         if (searchedActionContainer == null) {
-            throw new IllegalArgumentException("Menu '" + menu + "' not found.");
+            throw new ActionNotFoundException("No actions found for '" + menu + "' menu.");
         }
         return searchedActionContainer;
     }

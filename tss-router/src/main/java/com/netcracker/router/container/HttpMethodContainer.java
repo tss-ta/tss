@@ -1,6 +1,7 @@
 package com.netcracker.router.container;
 
 import com.netcracker.router.HttpMethod;
+import com.netcracker.router.exception.HttpMethodNotAllowedException;
 import com.netcracker.router.util.ArgumentValidator;
 
 import java.util.HashMap;
@@ -32,7 +33,8 @@ public class HttpMethodContainer {
 
         InstanceAndMethod searchedInstanceAndMethod = container.get(httpMethod);
         if (searchedInstanceAndMethod == null) {
-            throw new UnsupportedOperationException("Http method '" + httpMethod + "' not supported.");
+            throw new HttpMethodNotAllowedException("Http method '" +
+                    httpMethod.getName() + "' not allowed for this operation.");
         }
 
         return searchedInstanceAndMethod;

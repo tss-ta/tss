@@ -4,7 +4,8 @@ import com.netcracker.router.HttpMethod;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
-import com.netcracker.tss.web.router.DefaultActionRequest;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by Kyrylo Berehovyi on 03/05/2015.
@@ -14,9 +15,10 @@ import com.netcracker.tss.web.router.DefaultActionRequest;
 public class TestRoute {
 
     @Action(action = "test", httpMethod = HttpMethod.GET)
-    public ActionResponse test() {
+    public ActionResponse testGet(HttpServletRequest req) {
+        System.out.println("--------URI: " + req.getRequestURI());
         ActionResponse actionResponse = new ActionResponse();
-        actionResponse.setView("/WEB-INF/views/admin/content/405.jsp");
+        actionResponse.setPageContent("/WEB-INF/views/admin/content/testPage.jsp");
         return actionResponse;
     }
 }

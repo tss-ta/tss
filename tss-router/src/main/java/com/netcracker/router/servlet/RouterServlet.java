@@ -1,7 +1,12 @@
-package com.netcracker.router;
+package com.netcracker.router.servlet;
 
+import com.netcracker.router.AnnotationRouter;
+import com.netcracker.router.HttpMethod;
+import com.netcracker.router.Router;
 import com.netcracker.router.container.ActionResponse;
 import com.netcracker.router.container.InstanceAndMethod;
+import com.netcracker.router.exception.ActionNotFoundException;
+import com.netcracker.router.exception.HttpMethodNotAllowedException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -83,28 +88,19 @@ public class RouterServlet extends HttpServlet {
 
         try {
             instanceAndMethod = router.findActionMethod(menu, action, httpMethod);
-            if (instanceAndMethod == null) {
-                forwardTo(req, resp, content404);
-                return;
-            }
-        } catch (Exception e) {
+            actionResponse = (ActionResponse) instanceAndMethod.getMethod().invoke(instanceAndMethod.getInstance(), req);
+        } catch (ActionNotFoundException e) {
             forwardTo(req, resp, content404);
-//            e.printStackTrace();
             return;
-        }
-
-        try {
-            actionResponse = (ActionResponse) instanceAndMethod.getMethod().invoke(instanceAndMethod.getInstance());
-            if (actionResponse == null) {
-                throw new NullPointerException();
-            }
+        } catch (HttpMethodNotAllowedException e) {
+            forwardTo(req, resp, content405);
+            return;
         } catch (Exception e) {
             forwardTo(req, resp, content500);
-//            e.printStackTrace();
             return;
         }
 
-        forwardTo(req, resp, content405);
+        forwardTo(req, resp, actionResponse.getPageContent());
     }
 
     private void forwardTo(HttpServletRequest req, HttpServletResponse resp, String content)
