@@ -176,7 +176,7 @@
 
 	<script>
 		AnyTime.picker("ordertime", {
-			format : "%H:%i, %M %D",
+			format : "%H:%i, %d %m %Y",
 			firstDOW : 1
 		});
 	</script>
