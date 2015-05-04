@@ -20,7 +20,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     private static final String DRIVER_ROLE = "DRIVER";
     private static final String CUSTOMER_ROLE = "CUSTOMER";
 
-    private static final String ADMIN_PAGE = "/admin";
+    private static final String ADMIN_PAGE = "/admin?menu=dashboard&action=view";
     private static final String DRIVER_PAGE = "/driver";
     private static final String CUSTOMER_PAGE = "/customer";
 

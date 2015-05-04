@@ -34,7 +34,7 @@
 
     <servlet-mapping>
         <servlet-name>AdminRouterServlet</servlet-name>
-        <url-pattern>/admin/test</url-pattern>
+        <url-pattern>/admin</url-pattern>
     </servlet-mapping>
 
     <session-config>

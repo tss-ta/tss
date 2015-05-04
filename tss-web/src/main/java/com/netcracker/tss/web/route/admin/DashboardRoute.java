@@ -5,6 +5,7 @@ import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
 import com.netcracker.tss.web.util.Page;
+import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.util.BeansLocator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class DashboardRoute {
         request.setAttribute(TARIFFS_AMOUNT_ATTRIBUTE, local.countAllTariffs());
         request.setAttribute(GROUPS_AMOUNT_ATTRIBUTE, local.countAllGroups());
         request.setAttribute(ORDERS_AMOUNT_ATTRIBUTE, local.countAllOrders());
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DASHBOARD_CONTENT.getType());
         return new ActionResponse(Page.ADMIN_DASHBOARD_CONTENT.getAbsolutePath());
     }
 }
