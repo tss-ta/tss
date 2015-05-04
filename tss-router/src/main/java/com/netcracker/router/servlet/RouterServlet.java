@@ -7,19 +7,26 @@ import com.netcracker.router.container.ActionResponse;
 import com.netcracker.router.container.InstanceAndMethod;
 import com.netcracker.router.exception.ActionNotFoundException;
 import com.netcracker.router.exception.HttpMethodNotAllowedException;
+import com.netcracker.router.util.LoggerUtil;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.CharArrayWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author Kyrylo Berehovyi
  */
 
 public class RouterServlet extends HttpServlet {
+
+    private final static Logger LOGGER = Logger.getLogger(RouterServlet.class.getName());
 
     private static final String DEFAULT_MENU_ALIAS = "menu";
     private static final String DEFAULT_ACTION_ALIAS = "action";
@@ -91,12 +98,15 @@ public class RouterServlet extends HttpServlet {
             actionResponse = (ActionResponse) instanceAndMethod.getMethod().invoke(instanceAndMethod.getInstance(), req);
         } catch (ActionNotFoundException e) {
             forwardTo(req, resp, content404);
+            LOGGER.log(Level.INFO, e.getMessage());
             return;
         } catch (HttpMethodNotAllowedException e) {
+            LOGGER.log(Level.INFO, e.getMessage());
             forwardTo(req, resp, content405);
             return;
         } catch (Exception e) {
             forwardTo(req, resp, content500);
+            LOGGER.log(Level.ERROR, LoggerUtil.getStackTrace(e));
             return;
         }
 

@@ -27,7 +27,7 @@ public class MenuContainer {
         ArgumentValidator.validateOnNull(menu, "menu");
         ActionContainer searchedActionContainer = container.get(menu);
         if (searchedActionContainer == null) {
-            throw new ActionNotFoundException("No actions found for '" + menu + "' menu.");
+            throw new ActionNotFoundException("No actions found for menu='" + menu + "'.");
         }
         return searchedActionContainer;
     }
@@ -37,6 +37,14 @@ public class MenuContainer {
         final StringBuilder sb = new StringBuilder("MenuContainer{");
         sb.append("container=").append(container);
         sb.append('}');
+        return sb.toString();
+    }
+
+    public String info() {
+        final StringBuilder sb = new StringBuilder("\n");
+        for (String menu : container.keySet()) {
+            sb.append(container.get(menu).info("Route{menu=" + menu));
+        }
         return sb.toString();
     }
 }

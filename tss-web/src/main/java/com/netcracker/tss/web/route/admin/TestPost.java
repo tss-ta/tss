@@ -19,4 +19,13 @@ public class TestPost {
         ActionResponse actionResponse = new ActionResponse();
         return actionResponse;
     }
+
+    @Action(action = "throw", httpMethod = HttpMethod.GET)
+    public ActionResponse testThrowException(HttpServletRequest request) {
+        if (1 == 1) {
+            System.out.println("before throw.");
+            throw new RuntimeException("Test RT exception ;)");
+        }
+        return new ActionResponse();
+    }
 }
