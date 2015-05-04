@@ -14,7 +14,6 @@ public class MenuContainer {
     private Map<String, ActionContainer> container = new HashMap<>();
 
     public ActionContainer findOrCreateActionContainer(String menu) {
-        ArgumentValidator.validateOnNull(menu, "menu");
         ActionContainer searchedActionContainer = container.get(menu);
         if (searchedActionContainer == null) {
             searchedActionContainer = new ActionContainer();
@@ -24,7 +23,6 @@ public class MenuContainer {
     }
 
     public ActionContainer findActionContainer(String menu) {
-        ArgumentValidator.validateOnNull(menu, "menu");
         ActionContainer searchedActionContainer = container.get(menu);
         if (searchedActionContainer == null) {
             throw new ActionNotFoundException("No actions found for menu='" + menu + "'.");

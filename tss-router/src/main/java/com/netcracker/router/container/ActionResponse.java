@@ -8,8 +8,7 @@ public class ActionResponse {
     private String pageContent;
     private String errorMessage;
     private String successMessage;
-    private Object model;
-    private boolean redirect;
+    private String redirectURI;
 
     public String getPageContent() {
         return pageContent;
@@ -35,30 +34,21 @@ public class ActionResponse {
         this.successMessage = successMessage;
     }
 
-    public Object getModel() {
-        return model;
+    public String getRedirectURI() {
+        return redirectURI;
     }
 
-    public void setModel(Object model) {
-        this.model = model;
-    }
-
-    public boolean isRedirect() {
-        return redirect;
-    }
-
-    public void setRedirect(boolean redirect) {
-        this.redirect = redirect;
+    public void setRedirectURI(String redirectURI) {
+        this.redirectURI = redirectURI;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ActionResponse{");
-        sb.append("partial='").append(pageContent).append('\'');
+        sb.append("pageContent='").append(pageContent).append('\'');
         sb.append(", errorMessage='").append(errorMessage).append('\'');
         sb.append(", successMessage='").append(successMessage).append('\'');
-        sb.append(", model=").append(model);
-        sb.append(", redirect=").append(redirect);
+        sb.append(", redirectURI='").append(redirectURI).append('\'');
         sb.append('}');
         return sb.toString();
     }
