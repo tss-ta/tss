@@ -10,6 +10,18 @@ public class ActionResponse {
     private String successMessage;
     private String redirectURI;
 
+    public ActionResponse() {}
+
+    public ActionResponse(String pageContent) {
+        this.pageContent = pageContent;
+    }
+
+    public ActionResponse(String pageContent, String errorMessage, String successMessage) {
+        this.pageContent = pageContent;
+        this.errorMessage = errorMessage;
+        this.successMessage = successMessage;
+    }
+
     public String getPageContent() {
         return pageContent;
     }

@@ -5,6 +5,8 @@
 --%>
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
-        <h1>404 - Page not found</h1>
+        <div class="text-center">
+            <h1><i class="fa fa-rocket fa-lg"></i> 404 - Page not found</h1>
+        </div>
     </div>
 </div>
