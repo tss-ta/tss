@@ -53,7 +53,7 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     private List<TaxiOrder> filterByStatus(List<TaxiOrder> list, Status status) {
         List<TaxiOrder> tmp = new ArrayList<>();
         for (TaxiOrder to : list) {
-            if (to.convertStatusToEnum().equals(status)) {
+            if (to.getEnumStatus().equals(status)) { //!!!!!!!!!
                 tmp.add(to);
             }
         }
@@ -61,7 +61,7 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     }
 
     public List<TaxiOrder> findBookedOrdersByPeriod(Date begin, Date end, int pageNumber, int pageSize) {
-        TypedQuery<TaxiOrder> query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end ", TaxiOrder.class);
+        TypedQuery<TaxiOrder> query = em.createQuery("SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end ", TaxiOrder.class);
         query.setParameter("begin", begin);
         query.setParameter("end", end);
         query.setFirstResult((pageNumber - 1) * pageSize);

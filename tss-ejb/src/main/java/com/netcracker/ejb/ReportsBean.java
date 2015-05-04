@@ -128,7 +128,7 @@ public class ReportsBean implements SessionBean {
          TaxiOrderDAO dao = null;
         try {
             dao = new TaxiOrderDAO();
-            return dao.findBookedOrdersByPeriod(begin, end, pageNumber, pageNumber);
+            return dao.findBookedOrdersByPeriod(begin, end, pageNumber, paginationStep);
         } finally {
             if (dao != null) {
                 dao.close();

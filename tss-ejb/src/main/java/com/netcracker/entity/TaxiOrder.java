@@ -233,6 +233,15 @@ public class TaxiOrder implements Serializable {
 	public Integer getStatus() {
 		return status;
 	}
+        
+//        public String getStrStatus() {
+//            return convertStatusToEnum().toString();
+//        }
+        
+                
+        public Status getEnumStatus() {
+            return convertStatusToEnum();
+        }
 
 	public void setStatus(Integer status) {
 		this.status = status;
@@ -242,7 +251,7 @@ public class TaxiOrder implements Serializable {
 		this.status = status.convertToInteger();
 	}
 
-	public Status convertStatusToEnum() {
+	private Status convertStatusToEnum() {
 		switch (status) {
 		case 0:
 			return Status.QUEUED;
