@@ -1,8 +1,9 @@
-
 package com.netcracker.ejb;
 
+import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
 import java.rmi.RemoteException;
@@ -14,32 +15,30 @@ import javax.persistence.NoResultException;
 /**
  *
  * @author Виктор
+ * @author maks
  */
 public class RegistrationBean implements SessionBean {
 
     public void registrate(User user) {
-        UserDAO userDao = null;
+        UserDAO userDAO = null;
+        ContactsDAO contactsDAO = null;
         try {
-            Role role = new RoleDAO().get(3);//maybe by name?
+            Role role = new RoleDAO().findByRolename("CUSTOMER");//by name or ID?
             user.addRole(role);
-            userDao = new UserDAO();
-            userDao.persist(user);
+            userDAO = new UserDAO();
+            userDAO.persist(user);
+            contactsDAO = new ContactsDAO();
+            contactsDAO.persist(new Contacts(userDAO.getByEmail(user.getEmail())));
         } finally {
-            if (userDao != null) {
-                userDao.close();
+            if (userDAO != null) {
+                userDAO.close();
+            }
+            if (contactsDAO != null) {
+                contactsDAO.close();
             }
         }
     }
 
-//    public boolean checkUser(User user) {
-//	UserDAO dao = new UserDAO();
-//        User userFromDB = dao.getByEmail(user.getEmail());
-//        dao.close();
-//        if (userFromDB == null) {
-//            return true;
-//        }
-//        return false;
-//    }
     public boolean isUserExist(User user) {
         UserDAO dao = null;
         try {

@@ -37,7 +37,7 @@ public class AddCarPostRoute implements Route {
     public static final String CONDITIONER_REQUEST_PARAMETER = "conditioner";
     public static final String CATEGORY_REQUEST_PARAMETER = "category";
 
-    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();;
+    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Override
     public ActionRequest action(HttpServletRequest request) {
@@ -100,17 +100,4 @@ public class AddCarPostRoute implements Route {
         }
         return errorBuilder.toString();
     }
-
-//    private CarBeanLocal getCarBean() {
-//        Context context;
-//        try {
-//            context = new InitialContext();
-//            CarBeanLocalHome carBeanLocalHome = (CarBeanLocalHome) context.lookup("java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocalHome");
-//            return carBeanLocalHome.create();
-//        } catch (NamingException ex) {
-//            Logger.getLogger(AllCarsGetRoute.class.getName()).log(Level.SEVERE,
-//                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocal ", ex);
-//            throw new RuntimeException("Internal server error!");
-//        }
-//    }
 }

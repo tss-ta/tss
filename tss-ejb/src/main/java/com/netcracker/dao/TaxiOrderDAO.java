@@ -7,17 +7,18 @@ package com.netcracker.dao;
 
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
-import com.netcracker.entity.User;
 
 import java.util.List;
+import javax.persistence.Query;
 
 import javax.persistence.TypedQuery;
 
 /**
  *
  * @author Виктор
+ * @author maks
  */
-public class TaxiOrderDAO extends GenericDAO<Object> {
+public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
 
     public TaxiOrderDAO() {
         super();
@@ -37,5 +38,52 @@ public class TaxiOrderDAO extends GenericDAO<Object> {
         tq.setMaxResults(pageSize);
         List<TaxiOrder> taxiOrders = tq.getResultList();
         return taxiOrders;
+    }
+
+//    public int countOrdersWithCarCategory () {};
+    public int countOrdersWithWifi() {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.wifi = true");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithConditioner() {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.conditioner = true");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithAnimalable() {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.animalTransport = true");
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+ 
+    public int countUserOrders(Contacts userContacts) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts)");
+        query.setParameter("contacts", userContacts);
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithWifi(Contacts userContacts) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts) and (t.wifi = true)");
+        query.setParameter("contacts", userContacts);
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithConditioner(Contacts userContacts) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts) and (t.conditioner = true)");
+        query.setParameter("contacts", userContacts);
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
+
+    public int countOrdersWithAnimalable(Contacts userContacts) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts) and (t.animalTransport = true)");
+        query.setParameter("contacts", userContacts);
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
     }
 }
