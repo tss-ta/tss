@@ -6,13 +6,18 @@
 package com.netcracker.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -60,7 +65,11 @@ public class Address implements Serializable {
         this.longtitude = longtitude;
     }
 
-    public Integer getAddrId() {
+    public Address(double[] mass) {
+		this((float)mass[1],(float)mass[0]);
+	}
+
+	public Integer getAddrId() {
         return addrId;
     }
 
@@ -101,26 +110,35 @@ public class Address implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (addrId != null ? addrId.hashCode() : 0);
-        return hash;
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(altitude);
+		result = prime * result + Float.floatToIntBits(longtitude);
+		return result;
+	}
+
+    
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Address)) {
-            return false;
-        }
-        Address other = (Address) object;
-        if ((this.addrId == null && other.addrId != null) || (this.addrId != null && !this.addrId.equals(other.addrId))) {
-            return false;
-        }
-        return true;
-    }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Address other = (Address) obj;
+		if (Float.floatToIntBits(altitude) != Float
+				.floatToIntBits(other.altitude))
+			return false;
+		if (Float.floatToIntBits(longtitude) != Float
+				.floatToIntBits(other.longtitude))
+			return false;
+		return true;
+	}
 
-    @Override
+	@Override
     public String toString() {
         return "com.netcracker.entity.Address[ addrId=" + addrId + " ]";
     }

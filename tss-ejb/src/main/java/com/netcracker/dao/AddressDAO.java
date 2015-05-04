@@ -5,11 +5,14 @@
  */
 package com.netcracker.dao;
 
+import com.netcracker.entity.Address;
+
 /**
  *
  * @author Виктор
+ * @author maks
  */
-public class AddressDAO extends GenericDAO<Object> {
+public class AddressDAO extends GenericDAO<Address> {
 
     public AddressDAO() {
         super();

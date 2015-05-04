@@ -5,11 +5,14 @@
  */
 package com.netcracker.dao;
 
+import com.netcracker.entity.Route;
+
 /**
  *
  * @author Виктор
+ * @author maks
  */
-public class RouteDAO extends GenericDAO<Object>{
+public class RouteDAO extends GenericDAO<Route>{
     
     public RouteDAO() {
         super();

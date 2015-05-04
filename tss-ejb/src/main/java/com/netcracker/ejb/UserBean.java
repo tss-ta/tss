@@ -1,22 +1,33 @@
 package com.netcracker.ejb;
 
+import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dto.UserDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Address;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
+
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.json.JSONException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
 
+/**
+ *
+ * @author maks
+ */
 public class UserBean implements SessionBean {
 
     public void editRoles(int userId, List<Roles> roles) {
@@ -44,7 +55,7 @@ public class UserBean implements SessionBean {
     }
 
     /**
-     * 
+     *
      * @param userId
      * @param groupId
      * @return false if this list was alrady contained the specified element
@@ -79,13 +90,14 @@ public class UserBean implements SessionBean {
             }
         }
     }
+
     /**
-     * 
+     *
      * @param userId
      * @param groupId
      * @return true if this user contained the group
      */
-    public boolean deleteFromGroup (int userId, int groupId) {
+    public boolean deleteFromGroup(int userId, int groupId) {
         if (groupId < 0 || userId < 0) {
             throw new IllegalArgumentException("Id can't be less than zero");
         }
@@ -97,15 +109,13 @@ public class UserBean implements SessionBean {
             userDAO = new UserDAO();
             User user = userDAO.get(userId);
             Group group = groupDAO.get(groupId);
-            List <Group> userGroups = user.getGroups();
-            if (userGroups.remove(group)){
+            List<Group> userGroups = user.getGroups();
+            if (userGroups.remove(group)) {
                 userDAO.update(user);
                 return true;
             } else {
                 return false;
             }
-
-
         } finally {
             if (userDAO != null) {
                 userDAO.close();
@@ -116,36 +126,41 @@ public class UserBean implements SessionBean {
         }
     }
 
-//    public void editGroups(int userId, List<String> groupNames) {
-//        GroupDAO groupDAO = null;
-//        UserDAO userDAO = null;
-//        try {
-//
-//            groupDAO = new GroupDAO();
-//            userDAO = new UserDAO();
-//            User user = userDAO.get(userId);
-//
-//            user.setGroups(toGroupList(groupNames, groupDAO));
-//            userDAO.update(user);
-//        } finally {
-//            if (userDAO != null) {
-//                userDAO.close();
-//            }
-//            if (groupDAO != null) {
-//                groupDAO.close();
-//            }
-//        }
-//    }
-//
-//    private List<Group> toGroupList(List<String> groupNames, GroupDAO dao) {
-//        List<Group> groups = new ArrayList<>();
-//        Iterator<String> groupNamesIterator = groupNames.iterator();
-//        while (groupNamesIterator.hasNext()) {
-//            Group group = dao.findByName(groupNamesIterator.next());
-//            groups.add(group);
-//        }
-//        return groups;
-//    }
+    public Contacts getContacts(int userId) {
+        ContactsDAO contactsDAO = null;
+        UserDAO userDAO = null;
+        Contacts contacts = null;
+        try {
+            userDAO = new UserDAO();
+            User userFromDB = null;
+            try {
+                userFromDB = userDAO.get(userId);
+
+            } catch (NoResultException nre) {
+                throw new IllegalArgumentException("User with id = " + userId + " is not exist", nre);
+            }
+            try {
+                contactsDAO = new ContactsDAO();
+                //           contacts = contactsDAO.getByUser(userFromDB);
+                contacts = contactsDAO.getByEmail(userFromDB.getEmail());
+
+            } catch (NoResultException nre) {
+                throw new IllegalArgumentException("Contacts for user with id = " + userId + " are not exist", nre);
+            }
+//            contactsDAO = new ContactsDAO();
+//            //           contacts = contactsDAO.getByUser(userFromDB);
+//            contacts = contactsDAO.getByEmail(userFromDB.getEmail());
+            return contacts;
+        } finally {
+            if (userDAO != null) {
+                userDAO.close();
+            }
+            if (contactsDAO != null) {
+                contactsDAO.close();
+            }
+        }
+    }
+
     private List<Role> toRoleList(List<Roles> roles, RoleDAO roleDAO) {
         List<Role> roleList = new ArrayList<>();
         Iterator<Roles> rolesIterator = roles.iterator();
@@ -217,13 +232,13 @@ public class UserBean implements SessionBean {
             }
         }
     }
-      
+
     /**
-     * 
-     * @param emailPart  - part of email
-     * @param pageNumber - number of page 
+     *
+     * @param emailPart - part of email
+     * @param pageNumber - number of page
      * @param paginationStep - rows on one page
-     * @return List of UserDTO where email have emailPart 
+     * @return List of UserDTO where email have emailPart
      */
     public List<UserDTO> searchUsersByEmail(String emailPart, int pageNumber, int paginationStep) {
         UserDAO dao = null;
@@ -236,13 +251,12 @@ public class UserBean implements SessionBean {
             }
         }
     }
-    
+
     public List<UserDTO> searchCustomersByEmail(String emailPart, int pageNumber, int paginationStep) {
         String rolename = Roles.CUSTOMER.toString();
         return searchUsersByEmailAndRolename(emailPart, rolename, pageNumber, paginationStep);
     }
 
-    
     public List<UserDTO> searchUsersByEmailAndRolename(String emailPart, String rolename, int pageNumber, int paginationStep) {
         UserDAO dao = null;
         try {
@@ -285,6 +299,68 @@ public class UserBean implements SessionBean {
         return rolesList;
     }
 
+    public List<PersonalAddress> toPersonalAddress(User user) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            List<PersonalAddress> personal_addresses = new ArrayList<>();
+            List<Address> addresses = dao.getByEmail(user.getEmail())
+                    .getAddresses();
+            for (Address addr : addresses) {
+                personal_addresses.add(new PersonalAddress(addr));
+            }
+            return personal_addresses;
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
+    public void addToPersonalList(User user, String pa) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            User userDB = dao.getByEmail(user.getEmail());
+            if (pa != "") {
+                Address addr = new Address(new MapBean().geocodeAddress(pa));
+                if (!userDB.getAddresses().contains(addr)) {
+                    userDB.getAddresses().add(addr);
+                }
+            }
+            dao.update(userDB);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
+    public void removeFromPersonalList(User user, String pa) {
+        UserDAO dao = null;
+        try {
+            dao = new UserDAO();
+            User userDB = dao.getByEmail(user.getEmail());
+            if (pa != "") {
+                Address addr = new Address(new MapBean().geocodeAddress(pa));
+                userDB.getAddresses().remove(addr);
+            }
+            dao.update(userDB);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {
 
@@ -304,5 +380,4 @@ public class UserBean implements SessionBean {
     public void ejbPassivate() throws EJBException, RemoteException {
 
     }
-
 }

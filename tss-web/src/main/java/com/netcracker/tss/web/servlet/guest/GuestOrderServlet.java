@@ -25,12 +25,15 @@ import com.netcracker.ejb.RegistrationBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBean;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
+import com.netcracker.ejb.UserBeanLocal;
+import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.DateParser;
+import com.netcracker.tss.web.util.UserUtils;
 
 @WebServlet(urlPatterns = "/guest/order")
 public class GuestOrderServlet extends HttpServlet {
@@ -45,6 +48,11 @@ public class GuestOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        if (req.getParameter("addTo") != null
+				|| req.getParameter("addFrom") != null) {
+			addAddress(req);
+			resp.sendRedirect("/guest");
+		} else {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         User user = new User(name, email);
@@ -62,9 +70,22 @@ public class GuestOrderServlet extends HttpServlet {
 		req.setAttribute("taxiOrderId", latestTOId);
 		req.getRequestDispatcher("/WEB-INF/views/customer/guest-confirmation.jsp")
 				.forward(req, resp);
+		}
     }
 
-    private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
+    private void addAddress(HttpServletRequest req) {
+    	String addr = null;
+		if (req.getParameter("fromAddr") != null)
+			addr = req.getParameter("fromAddr");
+		else if (req.getParameter("toAddr") != null)
+			addr = req.getParameter("toAddr");
+		if (addr != null) {
+			UserBeanLocal userBeanLocal = getUserBean(req);
+			userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
+		}
+	}
+
+	private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
         Integer carType = checkString(req.getParameter("carType"));
         Integer wayOfPayment = checkString(req.getParameter("paymentType"));
         Boolean driversGender = checkDriversGender(req.getParameter("driverGender"));
@@ -159,4 +180,23 @@ public class GuestOrderServlet extends HttpServlet {
             // exception?
         }
     }
+    
+    private UserBeanLocal getUserBean(HttpServletRequest req) {
+		Context context;
+		try {
+			context = new InitialContext();
+			UserBeanLocalHome userBeanLocalHome = (UserBeanLocalHome) context
+					.lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
+			return userBeanLocalHome.create();
+		} catch (NamingException ex) {
+			Logger.getLogger(AdminGroupServlet.class.getName())
+					.log(Level.SEVERE,
+							"Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
+							ex);
+			throw new RuntimeException("Internal server error!");// maybe have
+																	// to create
+																	// custom
+																	// exception?
+		}
+	}
 }
