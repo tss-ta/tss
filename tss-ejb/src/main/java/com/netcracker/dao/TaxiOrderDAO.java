@@ -9,6 +9,7 @@ import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import java.util.Date;
 import com.netcracker.entity.TaxiOrder.Status;
+import com.netcracker.entity.helper.CarCategory;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
@@ -68,7 +69,13 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
         query.setMaxResults(pageSize);
         return query.getResultList();
     }
-//    public int countOrdersWithCarCategory () {};
+
+    public int countOrdersWithCarCategory(CarCategory category) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.carCategory = :category)");
+        query.setParameter("category", category.getId());
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
+    }
 
     public int countOrdersWithWifi() {
         Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE t.wifi = true");

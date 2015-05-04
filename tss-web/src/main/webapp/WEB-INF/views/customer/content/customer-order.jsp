@@ -114,7 +114,7 @@
 					<label class="col-sm-2 col-sm-2 control-label">Choose car
 						type :</label> <select class="selectpicker" title="Choose car type"
 						name="carType">
-						<option></option>
+<!--						<option></option>-->
 						<option value="1">Economy class</option>
 						<option value="2">Business class</option>
 						<option value="3">Van</option>
@@ -124,7 +124,7 @@
 					<label class="col-sm-2 col-sm-2 control-label">Way of
 						payment :</label> <select class="selectpicker"
 						title="Choose way of payment" name="paymentType">
-						<option></option>
+<!--						<option></option>-->
 						<option value="1">Cash</option>
 						<option value="2">Mastercard</option>
 						<option value="3">Visa</option>
