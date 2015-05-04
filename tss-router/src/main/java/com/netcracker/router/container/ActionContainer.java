@@ -29,7 +29,7 @@ public class ActionContainer {
         
         HttpMethodContainer searchedContainer = container.get(action);
         if (searchedContainer == null) {
-            throw new ActionNotFoundException("Action for '" + action + "' not found.");
+            throw new ActionNotFoundException("No actions found for action='" + action + "'.");
         }
         return searchedContainer;
     }
@@ -39,6 +39,14 @@ public class ActionContainer {
         final StringBuilder sb = new StringBuilder("ActionContainer{");
         sb.append("container=").append(container);
         sb.append('}');
+        return sb.toString();
+    }
+
+    public String info(String message) {
+        final StringBuilder sb = new StringBuilder();
+        for (String action : container.keySet()) {
+            sb.append(container.get(action).info(message + " action=" + action));
+        }
         return sb.toString();
     }
 }

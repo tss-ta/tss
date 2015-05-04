@@ -34,7 +34,7 @@ public class HttpMethodContainer {
         InstanceAndMethod searchedInstanceAndMethod = container.get(httpMethod);
         if (searchedInstanceAndMethod == null) {
             throw new HttpMethodNotAllowedException("Http method '" +
-                    httpMethod.getName() + "' not allowed for this operation.");
+                    httpMethod.getName() + "' not allowed for this action.");
         }
 
         return searchedInstanceAndMethod;
@@ -45,6 +45,20 @@ public class HttpMethodContainer {
         final StringBuilder sb = new StringBuilder("HttpMethodContainer{");
         sb.append("container=").append(container);
         sb.append('}');
+        return sb.toString();
+    }
+
+    public String info(String message) {
+        final StringBuilder sb = new StringBuilder();
+        InstanceAndMethod instanceAndMethod = null;
+        for (HttpMethod httpMethod : container.keySet()) {
+            instanceAndMethod = container.get(httpMethod);
+            sb.append(message)
+              .append(" httpMethod=").append(httpMethod.getName())
+              .append(" classMethod=").append(instanceAndMethod.getMethod().getName())
+              .append(" class=").append(instanceAndMethod.getInstance().getClass().getSimpleName())
+              .append("}\n");
+        }
         return sb.toString();
     }
 }

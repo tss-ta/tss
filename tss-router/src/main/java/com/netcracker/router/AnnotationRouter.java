@@ -4,6 +4,8 @@ import com.netcracker.router.container.InstanceAndMethod;
 import com.netcracker.router.container.MenuContainer;
 import com.netcracker.router.container.MetaAction;
 import com.netcracker.router.util.ArgumentValidator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * @author Kyrylo Berehovyi
@@ -11,13 +13,16 @@ import com.netcracker.router.util.ArgumentValidator;
 
 public class AnnotationRouter implements Router {
 
+    private final static Logger LOGGER = Logger.getLogger(AnnotationRouter.class.getName());
+
     private MenuContainer coreContainer = new MenuContainer();
     private AnnotationRouterInitializer initializer;
 
     public AnnotationRouter(String packageToScan) {
         initializer = new AnnotationRouterInitializer(packageToScan);
         initializer.initialize(this);
-        System.out.println(coreContainer);
+
+        LOGGER.log(Level.INFO, coreContainer.info());
     }
 
     @Override
@@ -50,5 +55,4 @@ public class AnnotationRouter implements Router {
         addActionMethod(metaAction.getMenu(), metaAction.getAction(), metaAction.getMethod(),
                 metaAction.getInstanceAndMethod());
     }
-
 }
