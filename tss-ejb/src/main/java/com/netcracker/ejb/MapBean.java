@@ -72,7 +72,7 @@ public class MapBean implements SessionBean {
         Map<String, String> params = Maps.newHashMap();
         params.put("sensor", "false");
         params.put("language", "ru");
-        params.put("mode", "walking");
+        params.put("mode", "driving");
         params.put("origin", addrFrom);
         params.put("destination", addrTo);
         final String url = sourceUrl + '?' + encodeParams(params);
