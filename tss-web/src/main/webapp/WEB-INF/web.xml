@@ -5,7 +5,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          metadata-complete="false">
 
-
     <servlet>
         <servlet-name>AdminRouterServlet</servlet-name>
         <servlet-class>com.netcracker.router.servlet.RouterServlet</servlet-class>
@@ -70,3 +69,4 @@
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
 </web-app>
+

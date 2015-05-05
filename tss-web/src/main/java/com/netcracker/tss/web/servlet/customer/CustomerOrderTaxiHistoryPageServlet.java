@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,6 +29,7 @@ import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.TaxiOrder.Status;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.UserUtils;
@@ -37,7 +39,7 @@ import com.netcracker.tss.web.util.UserUtils;
  */
 
 @WebServlet(urlPatterns = "/customer/history")
-public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
+public class CustomerOrderTaxiHistoryPageServlet extends HttpServlet {
 
 	private static final int pageSize = 10;
 
@@ -48,8 +50,8 @@ public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
 		getServletContext().setAttribute("pageNumber", pageNumber);
 		List<TaxiOrderHistory> list = getHistory(pageNumber, req);
 		req.setAttribute("history", list);
-		req.setAttribute("pageType", "dashboard");
-		req.setAttribute("pageContent", "content/dashboard.jsp");
+		req.setAttribute("pageType", "history");
+		req.setAttribute("pageContent", "content/history.jsp");
 		req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
 				.forward(req, resp);
 	}
@@ -58,7 +60,7 @@ public class CustomerOrderTaxiHistoryServlet extends HttpServlet {
 			HttpServletRequest req) {
 		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
 		List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderHistory(
-				pageNumber, pageSize, UserUtils.findCurrentUser());
+				pageNumber, pageSize, UserUtils.findCurrentUser(), Status.COMPLETED);
 		if (list.size() == 0 && pageNumber>1) {
 			pageNumber--;
 			getServletContext().setAttribute("pageNumber", pageNumber);

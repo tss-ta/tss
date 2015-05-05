@@ -19,7 +19,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     private static final String ADMIN_ROLE = "ADMIN";
     private static final String DRIVER_ROLE = "DRIVER";
     private static final String CUSTOMER_ROLE = "CUSTOMER";
-    private static final String BAD_CUSTOMER_ROLE = "BAD_USER";
+    private static final String BANNED_ROLE = "BANNED";
 
     private static final String ADMIN_PAGE = "/admin?menu=dashboard&action=view";
     private static final String DRIVER_PAGE = "/driver";
@@ -30,7 +30,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        if (roles.contains(BAD_CUSTOMER_ROLE)){
+        if (roles.contains(BANNED_ROLE)){
             response.sendRedirect(BAD_CUSTOMER_PAGE);
             return;
         } else if (roles.contains(ADMIN_ROLE)){
