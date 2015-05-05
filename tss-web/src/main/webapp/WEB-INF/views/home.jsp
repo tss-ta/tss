@@ -55,7 +55,7 @@
 					<ul>
 						<li class="active"><a href="#">Home</a></li>
 						<sec:authorize access="hasRole('ADMIN')">
-							<li><a href="/admin">Dashboard</a></li>
+							<li><a href="/admin?menu=dashboard&action=view">Dashboard</a></li>
 						</sec:authorize>
 						<sec:authorize access="hasRole('CUSTOMER')">
 							<li><a href="/customer">Dashboard</a></li>

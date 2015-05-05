@@ -26,9 +26,9 @@
     <!-- enable use-expressions -->
     <http auto-config="true" use-expressions="true">
 
-        <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
-        <intercept-url pattern="/driver**" access="hasRole('DRIVER')" />
-        <intercept-url pattern="/customer**" access="hasRole('CUSTOMER')" />
+        <intercept-url pattern="/admin/**" access="hasAnyRole('ADMIN', 'BAD_CUSTOMER')" />
+        <intercept-url pattern="/driver**" access="hasAnyRole('DRIVER', 'BAD_CUSTOMER')" />
+        <intercept-url pattern="/customer**" access="hasAnyRole('CUSTOMER', 'BAD_CUSTOMER')" />
 
         <!-- access denied page -->
         <access-denied-handler error-page="/403.jsp" />
