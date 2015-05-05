@@ -4,5 +4,6 @@
         <label class="checkbox"><input type="checkbox" name="admin">admin</label>
         <label class="checkbox"><input type="checkbox" name="driver">driver</label>
         <label class="checkbox"><input type="checkbox" name="customer">customer</label>
+        <label class="checkbox"><input type="checkbox" name="banned">banned</label>
     </div>
 </div> 
