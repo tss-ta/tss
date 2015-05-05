@@ -67,6 +67,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 			User user = findCurrentUser();
 			TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
 			Route route = new Route(findCurrentUser().getUsername() + " Route");
+			route.setDistance(parseDistance(req.getParameter("route_distance")));
 			Address addFrom = toAddress(req.getParameter("fromAddr"), req);
 			Address addTo = toAddress(req.getParameter("toAddr"), req);
 			TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
@@ -159,6 +160,13 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 			return Integer.parseInt(s);
 		}
 		return null;
+	}
+
+	private Float parseDistance(String distStr) {
+		if (distStr.length() > 0) {
+			distStr = distStr.substring(0, distStr.length()-3).replaceAll(",", ".");
+		}
+		return Float.valueOf(distStr);
 	}
 
 	private Address toAddress(String addr, HttpServletRequest req) {
