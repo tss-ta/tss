@@ -23,11 +23,13 @@ import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.tss.web.util.UserUtils;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -36,6 +38,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -113,10 +116,11 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
             Address addFrom = toAddress(request.getParameter("fromAddr"), request);
             Address addTo = toAddress(request.getParameter("toAddr"), request);
+            float distance = parseDistance(request.getParameter("route_distance"));
             Date orderTime = DateParser.parseDate(request);
             orderTime.setYear(new Date().getYear());
             taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
-                    addFrom, addTo, orderTime);
+                    addFrom, addTo, orderTime, distance);
             request.setAttribute("taxiOrderId", taxiOrderId);
             request.setAttribute("pageContent", "content/confirmation.jsp");
             request.getRequestDispatcher(
@@ -178,6 +182,15 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             UserBeanLocal userBeanLocal = getUserBean(req);
             userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
         }
+    }
+
+    private Float parseDistance(String distStr) {
+        if (distStr.length() > 0) {
+            distStr = distStr.substring(0, distStr.length() - 3).replaceAll(",", ".");
+        }
+        else
+			return Float.valueOf(0);
+        return Float.valueOf(distStr);
     }
 
     private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {

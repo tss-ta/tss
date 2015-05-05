@@ -138,10 +138,10 @@ CREATE TABLE driver_car
   CONSTRAINT pk_driv_car PRIMARY KEY (id),
   CONSTRAINT fk_car_id FOREIGN KEY (car_id)
   REFERENCES car (id) MATCH SIMPLE
-  ON UPDATE NO ACTION ON DELETE NO ACTION,
+  ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT fk_drv_id FOREIGN KEY (driver_id)
   REFERENCES driver (driver_id) MATCH SIMPLE
-  ON UPDATE NO ACTION ON DELETE NO ACTION
+  ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
 
@@ -199,6 +199,7 @@ CREATE TABLE route
 	route_id serial NOT NULL,
 	from_addr_id integer NOT NULL,
 	to_addr_id integer NOT NULL,
+  distance FLOAT,
 	path_content CHARACTER VARYING(40) NOT NULL,
 	CONSTRAINT route_id_pk PRIMARY KEY (route_id),
 	CONSTRAINT route_addr_from_id_fk FOREIGN KEY (from_addr_id)

@@ -16,6 +16,9 @@ import org.json.JSONException;
 public interface MapBeanLocal extends EJBLocalObject {
 
     public double[] geocodeAddress(String address) throws JSONException, IOException;
-    
+
     public String geodecodeAddress(double lng, double lat) throws JSONException, IOException;
+
+    public float calculateDistance(String addrFrom, String addrTo) throws IOException, JSONException;
+
 }

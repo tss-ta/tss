@@ -10,7 +10,7 @@
 
 
 
-<form action="/customer/order" class="form-horizontal style-form"
+<form id="submit_id" action="/customer/order" class="form-horizontal style-form"
 	method="post">
 	<div class="row mt bottom_line">
 		<div class="col-lg-12">
@@ -165,8 +165,8 @@
 	</div>
 	<!-- /col-lg-12 -->
 	<div class="text-center">
-
-		<button class="btn btn-success btn-lg btn-block" type="submit">Order
+		<input type="hidden" id="id_rout_dist" name="route_distance" value=""/>
+		<button class="btn btn-success btn-lg btn-block" type="submit" >Order
 			Now</button>
 
 	</div>
@@ -191,7 +191,27 @@
 
 <script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
 <script>
-	//custom select box
+//	$(function() {
+//		$('#submit_id').submit(function(event) {
+//			event.preventDefault();
+//			initialize();
+//			showonmap();
+//			var distance = $('#id_route_dist').val();
+//
+//			if(distance != null && distance != "") {
+//				$('#submit_id').submit();
+//				distance.val("");
+//			}
+//			return true;
+//		});
+//	});
+
+	$(function() {
+		$('#toAddr').focusout(function() {
+			initialize();
+			showonmap();
+		})
+	});
 
 	$(function() {
 		$('select.styled').customSelect();
