@@ -46,8 +46,14 @@ public class DriverBean implements SessionBean {
 
     public void deleteDriver(Integer driverId) {
         DriverDAO drDao = new DriverDAO();
-        drDao.delete(drDao.get(driverId));
-        drDao.close();
+        try {
+            Driver driver = drDao.get(driverId);
+            drDao.delete(driver);
+        } finally {
+            drDao.close();
+        }
+
+
     }
 
     public List<Driver> getDriverPage(int pageNumber, int pageSize) {

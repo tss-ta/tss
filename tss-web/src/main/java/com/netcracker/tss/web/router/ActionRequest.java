@@ -5,8 +5,12 @@ package com.netcracker.tss.web.router;
  */
 
 public interface ActionRequest {
+
     public String getDestinationResource();
+
     public boolean isRedirect();
+
     public String getErrorMessage();
+
     public String getSuccessMessage();
 }
