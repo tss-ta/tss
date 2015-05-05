@@ -18,6 +18,8 @@ INSERT INTO tss_user VALUES
   (DEFAULT, 'Samantha', 's.smith@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
   (DEFAULT, 'Trevor', 'trevor.rovert@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Monica', 'monica.harmonica@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 
 
 INSERT INTO tss_group VALUES
@@ -83,7 +85,8 @@ INSERT INTO tss_user_group VALUES
   (4, 3);
 INSERT INTO tss_user_group VALUES
   (2, 3);
-
+INSERT INTO tss_user_group VALUES
+  (10, 3);
 
 INSERT INTO tss_user_role VALUES
   (2, 1);
@@ -103,7 +106,10 @@ INSERT INTO tss_user_role VALUES
   (7, 3);
 INSERT INTO tss_user_role VALUES
   (8, 2);
-
+INSERT INTO tss_user_role VALUES
+  (10, 4);
+INSERT INTO tss_user_role VALUES
+  (10, 1);
 
 INSERT INTO tss_group_role VALUES
   (1, 2);
@@ -111,6 +117,9 @@ INSERT INTO tss_group_role VALUES
   (2, 1);
 INSERT INTO tss_group_role VALUES
   (3, 3);
+INSERT INTO tss_group_role VALUES
+  (3, 4);
+
 
 INSERT INTO contacts 
 	(username, email, user_id)
@@ -148,7 +157,10 @@ INSERT INTO contacts
 	(username, email, user_id)
 	VALUES
 	('Trevor', 'trevor.rovert@gmail.com', 9);
-
+INSERT INTO contacts
+	(username, email, user_id)
+	VALUES
+	('Monica', 'monica.harmonica@gmail.com', 10);
 
 INSERT INTO tariff 
 (tariff_name, plus_coef, multiple_coef) 

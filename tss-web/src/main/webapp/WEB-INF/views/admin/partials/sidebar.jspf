@@ -31,20 +31,20 @@
     <li class="sidebar-brand sidebar-brand-high"><a href="/">Taxi Service</a></li>
     <li class="sidebar-brand sidebar-brand-mini"><a href="/">TS</a></li>
     <li>
-        <a href="/admin" ${activeDashboard}>
+        <a href="/admin?menu=dashboard&action=view" ${activeDashboard}>
             <span class="icon-container"><i class="fa fa-tachometer"></i></span>
             <span class="icon-label">Dashboard</span>
         </a>
     </li>
     <li>
         <a href="/admin/customer" ${activeCustomers}>
-            <span class="icon-container"><i class="fa fa-user"></i></span>
+            <span class="icon-container"><i class="fa fa-child"></i></span>
             <span class="icon-label">Customers</span>
         </a>
     </li>
     <li>
         <a href="/admin/driver" ${activeDrivers}>
-            <span class="icon-container"><i class="fa fa-child"></i></span>
+            <span class="icon-container"><i class="fa fa-user"></i></span>
             <span class="icon-label">Drivers</span>
         </a>
     </li>

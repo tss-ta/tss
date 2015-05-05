@@ -230,3 +230,60 @@ body {
     margin-right: 0;
     margin-left: 0;
 }
+
+a.custom-link {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #484848;
+    text-decoration: none;
+}
+a.custom-link:hover {
+    color: #222;
+}
+a.trash:hover {
+    color: #FF3030;
+}
+
+
+/*                */
+/*  Custom Pager  */
+/*                */
+
+ul.custom-pager li a {
+    border: none;
+    background-color: #282828;
+    border-radius: 15px;
+    padding-left: 28px;
+    padding-right: 28px;
+    color: #fff;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+ul.custom-pager li a:hover,
+ul.custom-pager li a:active {
+    background-color: #F5C34C;
+    color: #282828;
+}
+
+.page-title {
+    padding-bottom: 25px;
+}
+
+.custom-panel {
+    background-color: #F5C34C;
+    border-radius: 0;
+    color: #282828;
+    border: none;
+}
+.custom-panel .panel-footer {
+    background-color: #282828;
+    border: none;
+    color: #989898;
+    font-weight: bold;
+}
+.custom-panel a {
+    color: #555;
+}
+.custom-panel a:hover {
+    color: #282828;
+}
