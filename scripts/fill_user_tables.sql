@@ -1,4 +1,5 @@
 
+
 -- password is 'pass'
 INSERT INTO tss_user VALUES
   (DEFAULT, 'Pass', 'pass', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
