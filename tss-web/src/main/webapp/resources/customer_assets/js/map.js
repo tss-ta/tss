@@ -210,6 +210,7 @@ directionsService.route(request, function(result, status) {
   var routes = result.routes;
   var leg = routes[0].legs;
   var lenght = leg[0].distance.text;
+  $('#id_rout_dist').val(lenght);
   var duration = leg[0].duration.text;
  }
 });
