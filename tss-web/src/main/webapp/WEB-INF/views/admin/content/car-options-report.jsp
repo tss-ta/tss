@@ -6,7 +6,7 @@
 <div class="row row-fix">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <h1 class="text-center">Most Popular Car Options For ${requestScope.user}</h1>
+        <h1 class="text-center">${requestScope.header}</h1>
 
         <div class="panel panel-default">
             <div class="panel-body">
