@@ -9,7 +9,8 @@ public enum RequestAttribute {
     CAR_LIST("carList"),
     DRIVER_LIST("driverList"),
     ERROR_MESSAGE("errorMessage"),
-    SUCCESS_MESSAGE("successMessage");
+    SUCCESS_MESSAGE("successMessage"),
+    PAGER("pager");
 
     private String name;
 
