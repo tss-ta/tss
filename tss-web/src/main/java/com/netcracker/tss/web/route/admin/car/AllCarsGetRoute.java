@@ -2,7 +2,9 @@ package com.netcracker.tss.web.route.admin.car;
 
 import com.netcracker.ejb.CarBeanLocal;
 import com.netcracker.ejb.CarBeanLocalHome;
+import com.netcracker.ejb.PageCalculatorBeanLocal;
 import com.netcracker.entity.Car;
+import com.netcracker.entity.helper.Pager;
 import com.netcracker.tss.web.router.ActionRequest;
 import com.netcracker.tss.web.router.DefaultActionRequest;
 import com.netcracker.tss.web.router.Route;
@@ -35,10 +37,17 @@ public class AllCarsGetRoute implements Route {
     public ActionRequest action(HttpServletRequest request) {
         Integer page = parsePageNumberFromRequest(request);
         CarBeanLocal carBeanLocal = BeansLocator.getInstance().getBean(CarBeanLocal.class);
+        PageCalculatorBeanLocal pageCalculatorBeanLocal =
+                BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         List<Car> carList = carBeanLocal.getPageOfCars(page);
+        Pager pager = pageCalculatorBeanLocal.createCarPager(page, 15);
+        System.out.println("page=" + page);
+        System.out.println(pager);
+        request.setAttribute(RequestAttribute.PAGER.getName(), pageCalculatorBeanLocal.createCarPager(page, 15));
         request.setAttribute(RequestAttribute.CAR_LIST.getName(), carList);
         request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CARS_CONTENT.getAbsolutePath());
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CARS_CONTENT.getType());
+
         return new DefaultActionRequest(Page.ADMIN_TEMPLATE.getAbsolutePath(), false);
     }
 
