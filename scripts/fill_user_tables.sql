@@ -34,6 +34,8 @@ INSERT INTO tss_role VALUES
   (2, 'DRIVER');
 INSERT INTO tss_role VALUES
   (3, 'CUSTOMER');
+INSERT INTO tss_role VALUES
+  (4, 'BANNED');
 
 
 INSERT INTO car VALUES
@@ -208,4 +210,12 @@ INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef) 
 VALUES
 ('convey', 0, 0.9);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('animal', 20, 1.1);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('per_km', 5, 1);
 

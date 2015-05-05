@@ -12,6 +12,7 @@ import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.util.BeansLocator;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -44,6 +45,9 @@ public class UserBean implements SessionBean {
 
             user.setRoles(toRoleList(roles, roleDAO));
             userDAO.update(user);
+            if (roles.contains(Roles.BANNED)) {
+                notifyAboutBan(user.getEmail());
+            }
         } finally {
             if (roleDAO != null) {
                 roleDAO.close();
@@ -52,6 +56,12 @@ public class UserBean implements SessionBean {
                 userDAO.close();
             }
         }
+    }
+
+    private void notifyAboutBan(String email) {
+        MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
+        mailerBean.sendEmail(email, "Taxi Service System notify", "Sorry, but yours account in Taxi Service System was banned!");
+//        System.out.println("==========ban==== notify==========sended===========================");
     }
 
     /**
@@ -78,6 +88,9 @@ public class UserBean implements SessionBean {
             } else {
                 user.addGroup(group);
                 userDAO.update(user);
+                if (isGroupContainsRole(group, Roles.BANNED)) {
+                    notifyAboutBan(user.getEmail());
+                }
                 return true;
             }
 
@@ -87,6 +100,19 @@ public class UserBean implements SessionBean {
             }
             if (groupDAO != null) {
                 groupDAO.close();
+            }
+        }
+    }
+
+    private boolean isGroupContainsRole(Group group, Roles role) {
+        RoleDAO roleDAO = null;
+        try {
+            roleDAO = new RoleDAO();
+            Role roleEntity = roleDAO.findByRolename(role.toString());
+            return group.getRoles().contains(roleEntity);
+        } finally {
+            if (roleDAO != null) {
+                roleDAO.close();
             }
         }
     }
@@ -322,7 +348,7 @@ public class UserBean implements SessionBean {
         try {
             dao = new UserDAO();
             User userDB = dao.getByEmail(user.getEmail());
-            if (pa != "") {
+            if (!("".equals(pa))) {
                 Address addr = new Address(new MapBean().geocodeAddress(pa));
                 if (!userDB.getAddresses().contains(addr)) {
                     userDB.getAddresses().add(addr);
@@ -345,7 +371,7 @@ public class UserBean implements SessionBean {
         try {
             dao = new UserDAO();
             User userDB = dao.getByEmail(user.getEmail());
-            if (pa != "") {
+            if (!("".equals(pa))) {
                 Address addr = new Address(new MapBean().geocodeAddress(pa));
                 userDB.getAddresses().remove(addr);
             }
