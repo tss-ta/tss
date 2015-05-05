@@ -40,7 +40,7 @@ public class MapBean implements SessionBean {
 
     public String geodecodeAddress(double lng, double lat) throws JSONException, IOException {
         Map<String, String> params = Maps.newHashMap();
-        params.put("language", "ru");
+        params.put("language", "en");
         params.put("sensor", "false");
         params.put("latlng", Double.toString(lng) + "," + Double.toString(lat));
         String url = baseUrl + '?' + encodeParams(params);
