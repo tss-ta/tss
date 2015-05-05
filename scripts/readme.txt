@@ -11,3 +11,4 @@ command example:
     set PGPASSWORD=pass
     "C:\Program Files\PostgreSQL\9.2\bin\psql.exe" -h localhost -U postgres -d postgres -f %~dp0\create_user_tables.sql
     "C:\Program Files\PostgreSQL\9.2\bin\psql.exe" -h localhost -U postgres -d postgres -f %~dp0\fill_user_tables.sql
+    "C:\Program Files\PostgreSQL\9.2\bin\psql.exe" -h localhost -U postgres -d postgres -f %~dp0\calculate_price_on_insert.sql
