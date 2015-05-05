@@ -62,8 +62,8 @@ public class GuestOrderServlet extends HttpServlet {
         Address addTo = toAddress(req.getParameter("toAddr"), req);
         TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
         taxiOrder.setBookingTime(new Date());
-        Date orderTime = DateParser.parseDate(req);
-        orderTime.setYear(new Date().getYear());
+        Date orderTime = DateParser.parseDate(req); //!!!!!!!!!
+//        orderTime.setYear(new Date().getYear());
         taxiOrder.setOrderTime(orderTime);
         taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
         int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user).get(0).getId();
