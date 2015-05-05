@@ -1,7 +1,7 @@
 package com.netcracker.entity.helper;
 
 public enum Roles {
-    ADMIN("ADMIN"), DRIVER("DRIVER"), CUSTOMER("CUSTOMER");
+    ADMIN("ADMIN"), DRIVER("DRIVER"), CUSTOMER("CUSTOMER"), BANNED("BANNED");
 
     private final String rolename;
 
