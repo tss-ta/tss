@@ -72,7 +72,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 			TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
 			taxiOrder.setBookingTime(new Date());
 			Date orderTime = DateParser.parseDate(req);
-			orderTime.setYear(new Date().getYear());
+			//orderTime.setYear(new Date().getYear());
 			taxiOrder.setOrderTime(orderTime);
 			taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo,
 					taxiOrder);

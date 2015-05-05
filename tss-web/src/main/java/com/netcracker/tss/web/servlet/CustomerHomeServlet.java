@@ -17,6 +17,6 @@ public class CustomerHomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("title", "Customer Page");
-        resp.sendRedirect("/customer/history");
+        resp.sendRedirect("/customer/dashboard");
     }
 }
