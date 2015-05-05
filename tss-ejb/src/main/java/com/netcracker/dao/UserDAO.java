@@ -66,6 +66,16 @@ public class UserDAO extends GenericDAO<User> {
         return query.getResultList();
     }
 
+    public Long countByRolename(String rolename) {
+        Query query = em.createQuery("SELECT COUNT(u.id) FROM User u JOIN u.roles ur JOIN u.groups g JOIN g.roles gr WHERE (ur.rolename = :userRolename) OR (gr.rolename = :groupRolename)");
+//        Query query = em.createQuery("SELECT COUNT(u.id) FROM User u");
+        query.setParameter("userRolename", rolename);
+        query.setParameter("groupRolename", rolename);
+//        query.setParameter("rolename", rolename);
+        return (Long) query.getSingleResult();
+
+    }
+
     public boolean isOpen() {
         return em.isOpen();
     }

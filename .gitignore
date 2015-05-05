@@ -1,5 +1,7 @@
+
 /target/
 /deployments/
+tss-router/target/
 
 # Java
 *.class

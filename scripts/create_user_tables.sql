@@ -18,7 +18,6 @@ DROP TABLE IF EXISTS address CASCADE;
 
 
 
-
 CREATE TABLE tss_user
 (
   id serial NOT NULL,
@@ -246,4 +245,3 @@ CREATE TABLE taxi_order
       REFERENCES route (route_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-

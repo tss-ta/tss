@@ -1,10 +1,10 @@
 <%--
   User: Kyrylo Berehovyi
-  Date: 29/04/2015
-  Time: 20:35
+  Date: 03/05/2015
+  Time: 21:50
 --%>
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
-        <h1>Error: 500</h1>
+        <h1>Success TEST !!!</h1>
     </div>
 </div>
