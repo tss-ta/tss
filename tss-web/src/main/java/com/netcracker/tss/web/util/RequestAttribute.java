@@ -10,7 +10,8 @@ public enum RequestAttribute {
     DRIVER_LIST("driverList"),
     ERROR_MESSAGE("errorMessage"),
     SUCCESS_MESSAGE("successMessage"),
-    PAGER("pager");
+    PAGER("pager"),
+    PAGER_LINK("pagerLink");
 
     private String name;
 

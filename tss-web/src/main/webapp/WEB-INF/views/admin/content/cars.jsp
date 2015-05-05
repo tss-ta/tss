@@ -7,7 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
-        <div class="text-center">
+        <div class="text-center page-title">
             <h1>Car Panel</h1>
         </div>
     </div>
