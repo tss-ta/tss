@@ -113,10 +113,11 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
             Address addFrom = toAddress(request.getParameter("fromAddr"), request);
             Address addTo = toAddress(request.getParameter("toAddr"), request);
+            float distance = parseDistance(request.getParameter("route_distance"));
             Date orderTime = DateParser.parseDate(request);
             orderTime.setYear(new Date().getYear());
             taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
-                    addFrom, addTo, orderTime);
+                    addFrom, addTo, orderTime, distance);
             request.setAttribute("taxiOrderId", taxiOrderId);
             request.setAttribute("pageContent", "content/confirmation.jsp");
             request.getRequestDispatcher(
@@ -178,6 +179,13 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             UserBeanLocal userBeanLocal = getUserBean(req);
             userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
         }
+    }
+
+    private Float parseDistance(String distStr) {
+        if (distStr.length() > 0) {
+            distStr = distStr.substring(0, distStr.length() - 3).replaceAll(",", ".");
+        }
+        return Float.valueOf(distStr);
     }
 
     private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
