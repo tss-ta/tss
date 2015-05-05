@@ -71,7 +71,7 @@ public class MapBean implements SessionBean {
         String sourceUrl = proxy + "http://maps.googleapis.com/maps/api/directions/json";
         Map<String, String> params = Maps.newHashMap();
         params.put("sensor", "false");
-        params.put("language", "ru");
+        params.put("language", "en");
         params.put("mode", "driving");
         params.put("origin", addrFrom);
         params.put("destination", addrTo);
