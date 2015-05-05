@@ -34,6 +34,8 @@ INSERT INTO tss_role VALUES
   (2, 'DRIVER');
 INSERT INTO tss_role VALUES
   (3, 'CUSTOMER');
+INSERT INTO tss_role VALUES
+  (4, 'BANNED');
 
 
 INSERT INTO car VALUES
