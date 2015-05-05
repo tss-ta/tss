@@ -6,11 +6,11 @@ public class TaxiOrderHistory extends TaxiOrder {
 
 	private String toAddr;
 	private String fromAddr;
-	private String strStatus;
+//	private String strStatus;
 
 	public TaxiOrderHistory(TaxiOrder to) {
 		super(to);
-		strStatus = to.convertStatusToEnum().toString();
+//		strStatus = to.convertStatusToEnum().toString();
 	}
 
 	public String getToAddr() {
@@ -30,11 +30,8 @@ public class TaxiOrderHistory extends TaxiOrder {
 	}
 
 	public String getStrStatus() {
-		return strStatus;
+		return getEnumStatus().toString();
 	}
 
-	public void setStrStatus(String strStatus) {
-		this.strStatus = strStatus;
-	}
 
 }

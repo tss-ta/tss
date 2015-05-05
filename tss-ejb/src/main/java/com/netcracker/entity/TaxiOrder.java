@@ -6,6 +6,7 @@
 package com.netcracker.entity;
 
 import com.netcracker.entity.TaxiOrder.Status;
+import com.netcracker.entity.helper.CarCategory;
 import com.netcracker.entity.helper.DriverCar;
 
 import java.io.Serializable;
@@ -233,6 +234,15 @@ public class TaxiOrder implements Serializable {
 	public Integer getStatus() {
 		return status;
 	}
+        
+//        public String getStrStatus() {
+//            return convertStatusToEnum().toString();
+//        }
+        
+                
+        public Status getEnumStatus() {
+            return convertStatusToEnum();
+        }
 
 	public void setStatus(Integer status) {
 		this.status = status;
@@ -242,7 +252,7 @@ public class TaxiOrder implements Serializable {
 		this.status = status.convertToInteger();
 	}
 
-	public Status convertStatusToEnum() {
+	private Status convertStatusToEnum() {
 		switch (status) {
 		case 0:
 			return Status.QUEUED;
@@ -290,6 +300,14 @@ public class TaxiOrder implements Serializable {
 	public void setCarCategory(Integer carCategory) {
 		this.carCategory = carCategory;
 	}
+        
+        public CarCategory getEnumCarCategory(){
+            return CarCategory.valueOf(carCategory);
+        }
+                
+        public void setEnumCarCategory(CarCategory category){
+            carCategory = category.getId();
+        }
 
 	public Boolean getAnimalTransport() {
 		return animalTransport;

@@ -48,6 +48,8 @@ public class Route implements Serializable {
     @JoinColumn(name = "to_addr_id", referencedColumnName = "addr_id")
     @ManyToOne(optional = false)
     private Address toAddrId;
+    @Column(name = "distance")
+    private Float distance;
     @OneToMany(mappedBy = "routeId")
     private Collection<TaxiOrder> taxiOrderCollection;
 
@@ -92,6 +94,14 @@ public class Route implements Serializable {
 
     public void setToAddrId(Address toAddrId) {
         this.toAddrId = toAddrId;
+    }
+
+    public Float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Float distance) {
+        this.distance = distance;
     }
 
     public Collection<TaxiOrder> getTaxiOrderCollection() {
