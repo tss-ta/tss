@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS tss_group_role;
 DROP TABLE IF EXISTS driver_car;
 DROP TABLE IF EXISTS driver;
 DROP TABLE IF EXISTS contacts;
+DROP TABLE IF EXISTS personal_address;
 DROP TABLE IF EXISTS tss_user;
 DROP TABLE IF EXISTS tss_group;
 DROP TABLE IF EXISTS tss_role;
