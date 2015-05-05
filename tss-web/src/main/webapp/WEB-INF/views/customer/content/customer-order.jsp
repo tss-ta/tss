@@ -95,7 +95,7 @@
 							name="deleteTo">Delete Current</button>
 						<br>&nbsp;<br>
 						<div class="col-sm-6">
-							<input id="price_field" class="form-control" type="text"
+							<input id="price_field" class="form-control" name ="price" type="text"
 								placeholder="Price will be shown here" readonly>
 							<div class="text-center">
 								<br>

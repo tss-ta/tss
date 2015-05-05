@@ -144,7 +144,7 @@ public class TaxiOrderBean implements SessionBean {
     }
 
     public void editTaxiOrderCustomer(int orderId, Address addFrom,
-            Address addTo, Date orderTime, float distance) {
+            Address addTo, Date orderTime, float distance, double price) {
         TaxiOrderDAO taxiOrderDAO = null;
         TaxiOrder taxiOrder = null;
         AddressDAO addressDAO = null;
@@ -167,6 +167,7 @@ public class TaxiOrderBean implements SessionBean {
             addressDAO.update(addressFrom);
             addressDAO.update(addressTo);
             taxiOrder.setOrderTime(orderTime);
+            taxiOrder.setPrice(price);
             taxiOrderDAO.update(taxiOrder);
         } finally {
             if (routeDAO != null) {

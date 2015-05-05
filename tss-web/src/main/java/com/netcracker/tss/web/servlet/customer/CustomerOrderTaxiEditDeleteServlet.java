@@ -8,6 +8,8 @@ package com.netcracker.tss.web.servlet.customer;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
+import com.netcracker.ejb.PriceBeanLocal;
+import com.netcracker.ejb.PriceBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
@@ -116,11 +118,27 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
             Address addFrom = toAddress(request.getParameter("fromAddr"), request);
             Address addTo = toAddress(request.getParameter("toAddr"), request);
-            float distance = parseDistance(request.getParameter("route_distance"));
+            PriceBeanLocal priceBean = getPriceBean(request);
+            float distance = 0;
+            double price = 0;
+            try {
+                MapBeanLocal mapBean = getMapBean(request);
+                distance = mapBean.calculateDistance(request.getParameter("fromAddr"),
+                        request.getParameter("toAddr"));
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+            }
+            if ("".equals(request.getParameter("price"))) {
+                price = priceBean.calculatePrice(distance,
+                        DateParser.parseDate(request));
+            } else {
+                price = Double.parseDouble(request.getParameter("price"));
+            }
+
             Date orderTime = DateParser.parseDate(request);
             orderTime.setYear(new Date().getYear());
             taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
-                    addFrom, addTo, orderTime, distance);
+                    addFrom, addTo, orderTime, distance, price);
             request.setAttribute("taxiOrderId", taxiOrderId);
             request.setAttribute("pageContent", "content/confirmation.jsp");
             request.getRequestDispatcher(
@@ -187,9 +205,9 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
     private Float parseDistance(String distStr) {
         if (distStr.length() > 0) {
             distStr = distStr.substring(0, distStr.length() - 3).replaceAll(",", ".");
+        } else {
+            return Float.valueOf(0);
         }
-        else
-			return Float.valueOf(0);
         return Float.valueOf(distStr);
     }
 
@@ -269,4 +287,18 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private PriceBeanLocal getPriceBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            PriceBeanLocalHome priceBeanLocalHome = (PriceBeanLocalHome) context
+                    .lookup("java:app/tss-ejb/PriceBean!com.netcracker.ejb.PriceBeanLocalHome");
+            return priceBeanLocalHome.create();
+        } catch (NamingException ex) {
+            throw new RuntimeException("Internal server error!");// maybe have
+            // to create
+            // custom
+            // exception?
+        }
+    }
 }
