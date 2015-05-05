@@ -55,9 +55,11 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
-		if (req.getParameter("addTo") != null
-				|| req.getParameter("addFrom") != null) {
-			addAddress(req);
+		if (req.getParameter("addFrom") != null) {
+			addAddressFrom(req);
+			resp.sendRedirect("/customer/orderpage");
+		} else if (req.getParameter("addTo") != null) {
+			addAddressTo(req);
 			resp.sendRedirect("/customer/orderpage");
 		} else if (req.getParameter("deleteTo") != null
 				|| req.getParameter("deleteFrom") != null) {
@@ -73,7 +75,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 			TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
 			taxiOrder.setBookingTime(new Date());
 			Date orderTime = DateParser.parseDate(req);
-			//orderTime.setYear(new Date().getYear());
+			// orderTime.setYear(new Date().getYear());
 			taxiOrder.setOrderTime(orderTime);
 			taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo,
 					taxiOrder);
@@ -89,24 +91,28 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 
 	private void deleteAddress(HttpServletRequest req) {
 		String addr = null;
-		if (req.getParameter("deleteFrom") != null)
-		{
+		if (req.getParameter("deleteFrom") != null) {
 			addr = req.getParameter("pers_addr");
-		}
-		else if (req.getParameter("deleteTo") != null)
+		} else if (req.getParameter("deleteTo") != null) {
 			addr = req.getParameter("pers_addr_to");
+		}
 		if (addr != null) {
 			UserBeanLocal userBeanLocal = getUserBean(req);
-			userBeanLocal.removeFromPersonalList(UserUtils.findCurrentUser(), addr);
+			userBeanLocal.removeFromPersonalList(UserUtils.findCurrentUser(),
+					addr);
 		}
 	}
 
-	private void addAddress(HttpServletRequest req) {
-		String addr = null;
-		if (req.getParameter("fromAddr") != null)
-			addr = req.getParameter("fromAddr");
-		else if (req.getParameter("toAddr") != null)
-			addr = req.getParameter("toAddr");
+	private void addAddressFrom(HttpServletRequest req) {
+		String addr = req.getParameter("fromAddr");
+		if (addr != null) {
+			UserBeanLocal userBeanLocal = getUserBean(req);
+			userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
+		}
+	}
+
+	private void addAddressTo(HttpServletRequest req) {
+		String addr = req.getParameter("toAddr");
 		if (addr != null) {
 			UserBeanLocal userBeanLocal = getUserBean(req);
 			userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
@@ -164,8 +170,11 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 
 	private Float parseDistance(String distStr) {
 		if (distStr.length() > 0) {
-			distStr = distStr.substring(0, distStr.length()-3).replaceAll(",", ".");
+			distStr = distStr.substring(0, distStr.length() - 3).replaceAll(
+					",", ".");
 		}
+		else
+			return Float.valueOf(0);
 		return Float.valueOf(distStr);
 	}
 
@@ -240,9 +249,9 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
 							"Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
 							ex);
 			throw new RuntimeException("Internal server error!");// maybe have
-																	// to create
-																	// custom
-																	// exception?
+			// to create
+			// custom
+			// exception?
 		}
 	}
 
