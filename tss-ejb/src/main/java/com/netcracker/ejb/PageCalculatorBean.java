@@ -31,6 +31,21 @@ public class PageCalculatorBean implements SessionBean {
         return pager;
     }
 
+    public Pager createSearchCarPager(Integer pageNumber, Integer pageSize, String searchWord) {
+        CarDao carDao = null;
+        Pager pager = null;
+        try {
+            carDao = new CarDao();
+            Long amount = carDao.countSearchedByLicPlateResults(searchWord);
+            pager = calculatePages(pageNumber, pageSize, amount.intValue());
+        } finally {
+            if (carDao != null) {
+                carDao.close();
+            }
+        }
+        return pager;
+    }
+
     private Pager calculatePages(Integer pageNumber, Integer pageSize, Integer amount) {
         if (pageNumber == null) {
             throw new IllegalArgumentException("Integer 'pageNumber' must not be a null.");

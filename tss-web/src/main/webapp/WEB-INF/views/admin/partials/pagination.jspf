@@ -1,8 +1,8 @@
-<c:if test="${not empty pager}">
+<c:if test="${not empty pager && not empty pagerLink}">
 
-    <c:if test="${not empty pagerLink}">
+    <%--<c:if test="${not empty }">--%>
         <c:set var="link" value="${pagerLink.buildParametersLink()}&"/>
-    </c:if>
+    <%--</c:if>--%>
 
 <nav>
     <ul class="pager custom-pager">
