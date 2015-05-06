@@ -17,4 +17,11 @@ public interface CarBeanLocal extends EJBLocalObject {
     public List<Car> searchByLicPlate(String licPlate);
 
     List<Car> getPageOfCarsSearchedByLicPlate(int pageNumber, int pageSize, String licPlate);
+
+    @Deprecated
+    void deleteById(Integer id);
+
+    Car getById(Integer id);
+
+    void updateCar(Car car);
 }

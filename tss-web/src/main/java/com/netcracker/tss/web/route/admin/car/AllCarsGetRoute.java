@@ -26,6 +26,7 @@ import java.util.logging.Logger;
  * Created by Kyrylo Berehovyi on 29/04/2015.
  */
 
+@Deprecated
 public class AllCarsGetRoute implements Route {
 
     private static final String ROUTE_NAME = "get&menu=cars&action=all";

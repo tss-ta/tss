@@ -38,7 +38,7 @@
         <div class="col-md-offset-1 col-md-4 text-center">
             <div class="panel panel-default custom-panel">
                 <div class="panel-body">
-                    <a href="#"><i class="fa fa-taxi fa-5x"></i></a>
+                    <a href="/admin?menu=car&action=all"><i class="fa fa-taxi fa-5x"></i></a>
                 </div>
                 <div class="panel-footer">
                     CARS: ${cars}

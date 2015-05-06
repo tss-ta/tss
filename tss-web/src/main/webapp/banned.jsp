@@ -50,7 +50,13 @@
 
     <div class="row">
         <div class="col-md-offset-1 col-md-10 text-center banned-title">
-            <h1><i class="fa fa-ban fa-lg"></i> You are banned!</h1>
+            <h1>
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-user fa-stack-1x"></i>
+                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                </span>
+                You are banned!
+            </h1>
         </div>
     </div>
 

@@ -72,6 +72,10 @@ public class Car implements Serializable {
         this.licPlate = licPlace;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
