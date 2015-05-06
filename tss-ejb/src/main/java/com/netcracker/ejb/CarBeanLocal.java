@@ -10,9 +10,11 @@ import java.util.List;
  */
 public interface CarBeanLocal extends EJBLocalObject {
 
-    List<Car> getPageOfCars(int pageNumber);
+    List<Car> getPageOfCars(int pageNumber, int pageSize);
 
     public boolean insertCar(Car car);
 
     public List<Car> searchByLicPlate(String licPlate);
+
+    List<Car> getPageOfCarsSearchedByLicPlate(int pageNumber, int pageSize, String licPlate);
 }
