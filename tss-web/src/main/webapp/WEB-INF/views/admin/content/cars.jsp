@@ -23,7 +23,7 @@
                 <div class="col-md-offset-7 col-md-4">
                     <form action="/admin/cars?menu=cars&action=search" method="post" >
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="AAA-000-AAA" value="${param.search}">
+                            <input type="text" class="form-control" name="search" placeholder="AAA-000-AAA" value="${param.search}" maxlength="11">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>
@@ -49,71 +49,71 @@
             </thead>
 
             <tbody>
-            <c:forEach items="${carList}" var="car">
-                <tr class="text-center">
-                    <td>${car.getLicPlate()}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${car.category == 1}">
-                                Business
-                            </c:when>
-                            <c:when test="${car.category == 2}">
-                                Economy
-                            </c:when>
-                            <c:when test="${car.category == 3}">
-                                Van
-                            </c:when>
-                            <c:when test="${car.category == 4}">
-                                Cargo
-                            </c:when>
-                            <c:otherwise>
-                                Other
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td>
-                        <c:if test="${car.wifi}">
-                            <i class="fa fa-wifi"></i>
-                        </c:if>
-                        <c:if test="${!car.wifi}">
-                            <i class="fa fa-minus"></i>
-                        </c:if>
-                    </td>
-                    <td>
-                        <c:if test="${car.conditioner}">
-                            <i class="fa fa-check"></i>
-                        </c:if>
-                        <c:if test="${!car.conditioner}">
-                            <i class="fa fa-minus"></i>
-                        </c:if>
-                    </td>
-                    <td>
-                        <c:if test="${car.animalable}">
-                            <i class="fa fa-check"></i>
-                        </c:if>
-                        <c:if test="${!car.animalable}">
-                            <i class="fa fa-minus"></i>
-                        </c:if>
-                    </td>
+                <c:forEach items="${carList}" var="car">
+                    <tr class="text-center">
+                        <td>${car.getLicPlate()}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${car.category == 1}">
+                                    Business
+                                </c:when>
+                                <c:when test="${car.category == 2}">
+                                    Economy
+                                </c:when>
+                                <c:when test="${car.category == 3}">
+                                    Van
+                                </c:when>
+                                <c:when test="${car.category == 4}">
+                                    Cargo
+                                </c:when>
+                                <c:otherwise>
+                                    Other
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:if test="${car.wifi}">
+                                <i class="fa fa-wifi"></i>
+                            </c:if>
+                            <c:if test="${!car.wifi}">
+                                <i class="fa fa-minus"></i>
+                            </c:if>
+                        </td>
+                        <td>
+                            <c:if test="${car.conditioner}">
+                                <i class="fa fa-check"></i>
+                            </c:if>
+                            <c:if test="${!car.conditioner}">
+                                <i class="fa fa-minus"></i>
+                            </c:if>
+                        </td>
+                        <td>
+                            <c:if test="${car.animalable}">
+                                <i class="fa fa-check"></i>
+                            </c:if>
+                            <c:if test="${!car.animalable}">
+                                <i class="fa fa-minus"></i>
+                            </c:if>
+                        </td>
 
-                    <td>
-                        <c:if test="${car.available}">
-                            <i class="fa fa-check"></i>
-                        </c:if>
-                        <c:if test="${!car.available}">
-                            <i class="fa fa-minus"></i>
-                        </c:if>
-                    </td>
+                        <td>
+                            <c:if test="${car.available}">
+                                <i class="fa fa-check"></i>
+                            </c:if>
+                            <c:if test="${!car.available}">
+                                <i class="fa fa-minus"></i>
+                            </c:if>
+                        </td>
 
 
-                    <c:if test="${not assign}">
-                        <td><a href="/admin?action=edit">Edit</a></td>
-                    </c:if>
-                    <c:if test="${assign}">
-                        <td><a href="/admin/driver?action=assigncar&carid=${car.getId()}&driverid=${driverid}">Assign Car</a></td>
-                    </c:if>
-                </tr>
-            </c:forEach>
+                        <c:if test="${not assign}">
+                            <td><a href="/admin?action=edit">Edit</a></td>
+                        </c:if>
+                        <c:if test="${assign}">
+                            <td><a href="/admin/driver?action=assigncar&carid=${car.getId()}&driverid=${driverid}">Assign Car</a></td>
+                        </c:if>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
 

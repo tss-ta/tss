@@ -20,7 +20,7 @@
                 <div class="col-md-offset-7 col-md-4">
                     <form action="/admin/tariff" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="name" placeholder="Search " value="${param.name}">
+                            <input type="text" class="form-control" name="name" placeholder="Search " value="${param.name}" maxlength="40">
                             <input type="hidden" name="action" value="search">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
@@ -36,7 +36,7 @@
             <td>Name</td>
             <td>Price summand <i class="fa fa-plus"></i></td>
             <td>Price multiplier <i class="fa fa-times"></i></td>
-<!--            <td></td>-->
+            <!--            <td></td>-->
             </thead>
 
             <tbody>
@@ -45,7 +45,7 @@
                         <td>${tariff.tariffName}</td>
                         <td>${tariff.plusCoef}</td>
                         <td>${tariff.multipleCoef}</td>
-<!--                        <td class="col-md-1"><a href="/admin/tariff" class="btn btn-default" >edit</a></td>-->
+                        <!--                        <td class="col-md-1"><a href="/admin/tariff" class="btn btn-default" >edit</a></td>-->
                     </tr>
                 </c:forEach>
             </tbody>
