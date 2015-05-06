@@ -30,7 +30,7 @@ public class UserDTO {
     public UserDTO(int id, String username, String email, List<String> groups, List<Roles> userRoles) {
         this.id = id;
         this.username = username;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.groups = groups;
         roles = userRoles;
     }
@@ -48,7 +48,7 @@ public class UserDTO {
     }
 
     public String getEmail() {
-        return email;
+        return email.toLowerCase();
     }
 
     public List<String> getGroups() {
@@ -64,7 +64,7 @@ public class UserDTO {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public void setGroups(List<String> groups) {

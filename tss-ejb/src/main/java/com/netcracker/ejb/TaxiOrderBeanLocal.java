@@ -31,9 +31,9 @@ public interface TaxiOrderBeanLocal extends EJBLocalObject {
 
     public TaxiOrderHistory getOrderForEdit(TaxiOrder order);
 
-    public void editTaxiOrderCustomer(int orderId, Address addFrom, Address addTo, Date orderTime);
+    public void editTaxiOrderCustomer(int orderId, Address addFrom, Address addTo, Date orderTime, float distance, double price);
 
-	public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
-			int pageSize, User user, Status status);
+    public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
+            int pageSize, User user, Status status);
 
 }
