@@ -49,7 +49,7 @@ public class CustomerUpdatePriceServlet extends HttpServlet {
 		float distance = calculateDistance(request);
 		PriceBeanLocal priceBean = getPriceBean(request);
 		double price = priceBean.calculatePrice(distance,
-				DateParser.parseDate(request));
+                                    DateParser.parseDate(request));
 		String text = String.valueOf(price);
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
