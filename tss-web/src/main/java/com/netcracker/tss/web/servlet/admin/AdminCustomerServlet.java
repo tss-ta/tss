@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  *
  * @author maks
  */
+@Deprecated
 @WebServlet(urlPatterns = "/admin/u")
 public class AdminCustomerServlet extends HttpServlet {
 

@@ -16,6 +16,7 @@ import java.util.List;
  * Created by Kyrylo Berehovyi on 20/04/2015.
  */
 
+@Deprecated
 //@WebServlet(urlPatterns = "/admin")
 public class AdminHomeServlet extends HttpServlet {
 
