@@ -71,7 +71,7 @@ public class TaxiOrderBean implements SessionBean {
 
     }
 
-    private Contacts createContacts(User user) {
+    public Contacts createContacts(User user) {
         ContactsDAO contactsDAO = null;
         UserDAO userDAO = null;
         Contacts contacts = null;
