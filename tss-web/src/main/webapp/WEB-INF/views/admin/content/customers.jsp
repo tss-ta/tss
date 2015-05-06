@@ -11,20 +11,23 @@
     <div class="col-md-offset-1 col-md-10">
         <div class="col-md-10">
             <div class="text-center">
-                <h1>Customers Panel</h1>
+                <h1>Users Panel</h1>
             </div>
             
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-1">
-                        <a href="/admin" class="btn btn-default">Dashboard</a>
+                        <a href="/admin?menu=dashboard&action=view" class="btn btn-default">Dashboard</a>
                     </div>
                     <div class="col-md-offset-1">
                         <form action = "/admin" >
                                 <select class="bootstrap-select col-md-offset-1" name ="role" onchange="this.form.submit()" >
-                                    <option value="CUSTOMER" ${'CUSTOMER' == param.role ? 'selected="selected"' : ''}> CUSTOMER </option>
-                                    <option value="ADMIN" ${'ADMIN' eq param.role ? 'selected="selected"' : ''}> ADMIN </option>
-                                    <option value="BANNED" ${'BANNED' == param.role ? 'selected="selected"' : ''}> BANNED </option>
+                                    <c:forEach var = "role" items = "${requestScope.rolesEnum}">
+                                        <option ${role == param.role ? 'selected="selected"' : ''}> ${role} </option>
+                                    </c:forEach>
+                                    <%--<option value="CUSTOMER" ${'CUSTOMER' == param.role ? 'selected="selected"' : ''}> CUSTOMER </option>--%>
+                                    <%--<option value="ADMIN" ${'ADMIN' eq param.role ? 'selected="selected"' : ''}> ADMIN </option>--%>
+                                    <%--<option value="BANNED" ${'BANNED' == param.role ? 'selected="selected"' : ''}> BANNED </option>--%>
                                 </select>
                             <input type="hidden" name="page" value="1">
                             <input type="hidden" name="action" value="view">
