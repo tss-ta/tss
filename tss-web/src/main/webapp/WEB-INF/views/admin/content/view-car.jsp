@@ -109,7 +109,7 @@
                     </div>
 
                     <div class="col-md-offset-5 col-sm-2">
-                        <a href="/admin?menu=car&action=edit" class="btn btn-default">Edit</a>
+                        <a href="/admin?menu=car&action=edit&id=${car.id}" class="btn btn-default">Edit</a>
                     </div>
 
                 </div>
