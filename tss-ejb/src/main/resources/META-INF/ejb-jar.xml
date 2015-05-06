@@ -95,6 +95,23 @@
                 <local>com.netcracker.ejb.MapBeanLocal</local>
             </ejb-local-ref>
         </session> 
+         <session>
+            <description>An EJB named MeetMyGuestBean</description>
+            <display-name>MeetMyGuestBean</display-name>
+            <ejb-name>MeetMyGuestBean</ejb-name>
+            <local-home>com.netcracker.ejb.MeetMyGuestBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.MeetMyGuestBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.MeetMyGuestBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/MeetMyGuestBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.MeetMyGuestBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.MeetMyGuestBeanLocal</local>
+            </ejb-local-ref>
+        </session> 
         
          <session>
             <description>An EJB named PriceBean</description>
