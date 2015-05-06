@@ -28,7 +28,10 @@ import com.netcracker.tss.web.util.UserUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -151,10 +154,13 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
     private void redirectToEditDriver(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
+        DateFormat format = new SimpleDateFormat("HH:mm, dd MM yyyy",
+                Locale.ENGLISH);
         UserBeanLocal userBeanLocal = getUserBean(req);
         req.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
         TaxiOrder taxiOrder = getTaxiOrderBean(req).getOrderById(taxiOrderId);
         TaxiOrderHistory toh = getTaxiOrderBean(req).getOrderForEdit(taxiOrder);
+        req.setAttribute("orderTime", format.format(toh.getOrderTime()));
         req.setAttribute("toh", toh);
         req.setAttribute("pageContent", "content/editTaxiOrder.jsp");
         req.setAttribute("pageType", "editpage");
@@ -202,14 +208,6 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         }
     }
 
-    private Float parseDistance(String distStr) {
-        if (distStr.length() > 0) {
-            distStr = distStr.substring(0, distStr.length() - 3).replaceAll(",", ".");
-        } else {
-            return Float.valueOf(0);
-        }
-        return Float.valueOf(distStr);
-    }
 
     private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
         Context context;

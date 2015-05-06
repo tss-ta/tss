@@ -22,7 +22,7 @@
                     <label class="col-sm-2 col-sm-2 control-label">Order Time</label>
                     <div class="col-sm-6">
                         <input type="text" id="ordertime" name="ordertime"
-                               class="form-control" value="${toh.getOrderTime()}"/>
+                               class="form-control" value="${orderTime}"/>
                     </div>
                 </div>
             </div>
@@ -176,7 +176,8 @@
             url: "http://localhost:8080/price",
             data: {
                 fromAddr: $("#fromAddr").val(),
-                toAddr: $("#toAddr").val()
+                toAddr: $("#toAddr").val(),
+                ordertime: $("#ordertime").val()
             },
             dataType: "text",
         }).done(function (res) {

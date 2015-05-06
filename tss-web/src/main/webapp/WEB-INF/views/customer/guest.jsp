@@ -352,7 +352,8 @@
 				url : "http://localhost:8080/price",
 				data : {
 					fromAddr : $("#fromAddr").val(),
-					toAddr : $("#toAddr").val()
+					toAddr : $("#toAddr").val(),
+                                        ordertime: $("#ordertime").val()
 				},
 				dataType : "text",
 			}).done(function(res) {
