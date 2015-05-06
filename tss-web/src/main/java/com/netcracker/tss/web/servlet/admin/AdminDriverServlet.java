@@ -6,8 +6,10 @@ import com.netcracker.ejb.*;
 import com.netcracker.entity.Car;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.Category;
+import com.netcracker.tss.web.router.config.HttpMethod;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.util.BeansLocator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.servlet.ServletException;
@@ -122,7 +124,11 @@ public class AdminDriverServlet extends HttpServlet {
 
             getDriverBean().unassignCar(driverId, carId);
             redirectToEditDriver(req, resp);
+        } else if("search".equals(action)) {
+
+            redirectToSearchedDrivers(1, 10, req, resp);
         }
+
     }
 
     private Driver createDriverFromRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -174,6 +180,15 @@ public class AdminDriverServlet extends HttpServlet {
         List<Driver> drivers = getDriverBean().getDriverPage(pageNumber, pageSize);
 
         req.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
+
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
+        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
+        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+    }
+
+    private void redirectToSearchedDrivers(int pageNumber, int pageSize, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        DriverLocal driverBean = BeansLocator.getInstance().getDriverBean();
+        req.setAttribute(RequestAttribute.DRIVER_LIST.getName(), driverBean.searchDriversByName(req.getParameter("search"), pageNumber, pageSize));
 
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
         req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());

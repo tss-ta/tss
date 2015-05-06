@@ -6,6 +6,7 @@ import com.netcracker.dao.DriverDAO;
 import com.netcracker.entity.Car;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.DriverCar;
+import com.netcracker.util.BeansLocator;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
@@ -62,6 +63,20 @@ public class DriverBean implements SessionBean {
         drDao.close();
 
         return driversPage;
+    }
+
+    public List<Driver> searchDriversByName(String namePart, int pageNumber, int pageSize) {
+        DriverDAO drDAO = null;
+        List<Driver> searchedDrivers;
+        try {
+            drDAO = new DriverDAO();
+            searchedDrivers = drDAO.searchByName(namePart, pageNumber, pageSize);
+            return searchedDrivers;
+        } finally {
+            if(drDAO != null) {
+                drDAO.close();
+            }
+        }
     }
 
     public void assignCar(Integer driverId, Integer carId) {
