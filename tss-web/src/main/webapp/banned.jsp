@@ -4,6 +4,8 @@
   Time: 12:01
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -20,7 +22,7 @@
           media="all" />
     <link href='http://fonts.googleapis.com/css?family=Raleway'
           rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/responsiveslides.css">
+    <link rel="stylesheet" href="/resources/css/responsiveslides.css">
     <script src="/resources/js/responsiveslides.min.js"></script>
 
     <!-- Bootstrap core CSS -->
@@ -42,48 +44,19 @@
 
 <body>
 
-<!-----start-header----->
-<div class="header">
-    <!---start-wrap---->
-    <div class="wrap">
-        <!---start-top-header---->
-        <div class="top-header">
-            <div class="clear"></div>
-        </div>
-        <!---End-top-header---->
-        <!----start-main-header----->
-        <div class="main-header">
-            <div class="logo">
-                <a href="index.html"><img src="/resources/images/logo1.png"
-                                          title="logo" /></a>
-            </div>
-            <div class="top-nav">
-                <ul>
-                    <li><a href="/signout">Home</a></li>
-                    <li class="active"><a href="/signin.jsp">Sign In</a></li>
-                    <li><a href="/signup.jsp">Sign Up</a></li>
-                    <li><a href="/guest">Guest</a></li>
-                    <li><a href="/signout">Sign Out</a></li>
-                    <div class="clear"></div>
-                </ul>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <!----End-main-header----->
-    </div>
-</div>
+<%@ include file="WEB-INF/views/partials/non-dasboard-header.jspf" %>
 
 <div class="container">
 
     <div class="row">
         <div class="col-md-offset-1 col-md-10 text-center banned-title">
-            <h1><i class="fa fa-lock fa-lg"></i> You are banned!</h1>
+            <h1><i class="fa fa-ban fa-lg"></i> You are banned!</h1>
         </div>
     </div>
 
 </div> <!-- /container -->
 
-<%@ include file="WEB-INF/views/partials/footer.jspf" %>
+<%--<%@ include file="WEB-INF/views/partials/footer.jspf" %>--%>
 
 <script src="/resources/js/jquery-1.11.2.min.js"></script>
 </body>

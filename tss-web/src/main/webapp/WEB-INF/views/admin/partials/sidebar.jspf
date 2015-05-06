@@ -55,7 +55,7 @@
         </a>
     </li>
     <li>
-        <a href="/admin/cars?menu=cars&action=all" ${activeCars}>
+        <a href="/admin?menu=car&action=all" ${activeCars}>
             <span class="icon-container"><i class="fa fa-taxi"></i></span>
             <span class="icon-label">Cars</span>
         </a>

@@ -249,25 +249,50 @@ a.trash:hover {
 /*  Custom Pager  */
 /*                */
 
+ul.custom-pager {
+    font-size: 0;
+}
+ul.custom-pager li a:link,
+ul.custom-pager li a:visited,
 ul.custom-pager li a {
+    color: #989898;
     border: none;
     background-color: #282828;
-    border-radius: 15px;
-    padding-left: 28px;
-    padding-right: 28px;
-    color: #fff;
-    margin-left: 3px;
-    margin-right: 3px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 0;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 18px;
+    font-weight: bold;
 }
 ul.custom-pager li a:hover,
 ul.custom-pager li a:active {
-    background-color: #F5C34C;
-    color: #282828;
+    color: #fff;
+    background-color: #181818;
 }
+
+ul.custom-pager li:first-child a {
+    border-radius: 18px 0 0 18px;
+}
+
+ul.custom-pager li:last-child a {
+    border-radius: 0 18px 18px 0;
+}
+
+
+/*              */
+/*  Page Title  */
+/*              */
 
 .page-title {
     padding-bottom: 25px;
 }
+
+
+/*                    */
+/*  Dashboard Panels  */
+/*                    */
 
 .custom-panel {
     background-color: #F5C34C;
