@@ -20,6 +20,8 @@ import com.netcracker.ejb.GroupBeanLocal;
 import com.netcracker.ejb.GroupBeanLocalHome;
 import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
+import com.netcracker.ejb.PriceBeanLocal;
+import com.netcracker.ejb.PriceBeanLocalHome;
 import com.netcracker.ejb.RegistrationBeanLocal;
 import com.netcracker.ejb.RegistrationBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBean;
@@ -57,14 +59,32 @@ public class GuestOrderServlet extends HttpServlet {
         String email = req.getParameter("email");
         User user = new User(name, email);
         TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
+        PriceBeanLocal priceBean = getPriceBean(req);
+        float distance = 0;
+        double price = 0;
+        try {
+            MapBeanLocal mapBean = getMapBean(req);
+            distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
+                    req.getParameter("toAddr"));
+        } catch (JSONException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if ("".equals(req.getParameter("price"))) {
+            price = priceBean.calculatePrice(distance,
+                    DateParser.parseDate(req));
+        }else{
+            price = Double.parseDouble(req.getParameter("price"));
+        }
         Route route = new Route("Guest Route");
+        route.setDistance(distance);
         Address addFrom = toAddress(req.getParameter("fromAddr"), req);
         Address addTo = toAddress(req.getParameter("toAddr"), req);
         TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
         taxiOrder.setBookingTime(new Date());
-        Date orderTime = DateParser.parseDate(req); //!!!!!!!!!
-//        orderTime.setYear(new Date().getYear());
+        Date orderTime = DateParser.parseDate(req); 
         taxiOrder.setOrderTime(orderTime);
+        taxiOrder.setPrice(price);
         taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
         int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user).get(0).getId();
 		req.setAttribute("taxiOrderId", latestTOId);
@@ -199,4 +219,19 @@ public class GuestOrderServlet extends HttpServlet {
 																	// exception?
 		}
 	}
+    
+    private PriceBeanLocal getPriceBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            PriceBeanLocalHome priceBeanLocalHome = (PriceBeanLocalHome) context
+                    .lookup("java:app/tss-ejb/PriceBean!com.netcracker.ejb.PriceBeanLocalHome");
+            return priceBeanLocalHome.create();
+        } catch (NamingException ex) {
+            throw new RuntimeException("Internal server error!");// maybe have
+            // to create
+            // custom
+            // exception?
+        }
+    }
 }

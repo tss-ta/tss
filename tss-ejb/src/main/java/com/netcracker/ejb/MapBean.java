@@ -7,6 +7,7 @@ package com.netcracker.ejb;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -23,10 +24,12 @@ import java.nio.charset.Charset;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+
 import java.io.Reader;
 
 /**
@@ -68,6 +71,7 @@ public class MapBean implements SessionBean {
     }
 
     public float calculateDistance(String addrFrom, String addrTo) throws IOException, JSONException {
+    	sleep(800);
         String sourceUrl = proxy + "http://maps.googleapis.com/maps/api/directions/json";
         Map<String, String> params = Maps.newHashMap();
         params.put("sensor", "false");
@@ -83,7 +87,15 @@ public class MapBean implements SessionBean {
         return (float) distance / 1000;
     }
 
-    private String encodeParams(final Map<String, String> params) {
+    private void sleep(int i) {
+    	try {
+			Thread.sleep(i);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String encodeParams(final Map<String, String> params) {
         final String paramsUrl = Joiner.on('&').join(
                 Iterables.transform(params.entrySet(), new Function<Map.Entry<String, String>, String>() {
 
