@@ -41,7 +41,6 @@
 	</div>
 
 	<!-- js placed at the end of the document so the pages load faster -->
-	<script src="/resources/customer_assets/js/jquery.js"></script>
 	<script src="/resources/customer_assets/js/jquery-1.8.3.min.js"></script>
 	<script src="/resources/customer_assets/js/bootstrap.min.js"></script>
 	<script class="include" type="text/javascript"
@@ -73,6 +72,14 @@
 	<script src="/resources/customer_assets/js/form-component.js"></script>
 
 	<script type="application/javascript">
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	
 		
@@ -116,17 +123,29 @@
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	</script>
 
-<script>
-	$('#pers_addr').on('change', function() {
-		var txt = $("#pers_addr option:selected").text();
-		$('#fromAddr').val(txt);
-	})
-	$('#pers_addr_to').on('change', function() {
-		var txt = $("#pers_addr_to option:selected").text();
-		$('#toAddr').val(txt);
-	})
-</script>
+
+
+	<script>
+		$('#pers_addr').on('change', function() {
+			var txt = $("#pers_addr option:selected").text();
+			$('#fromAddr').val(txt);
+		})
+		$('#pers_addr_to').on('change', function() {
+			var txt = $("#pers_addr_to option:selected").text();
+			$('#toAddr').val(txt);
+		})
+	</script>
+
+	
 </body>
 </html>

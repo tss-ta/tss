@@ -16,12 +16,12 @@ public class DateParser {
 
 	public static Date parseDate(HttpServletRequest req) {
 		String date = null;
-		DateFormat format = new SimpleDateFormat("HH:mm, MMMM dd",
+		DateFormat format = new SimpleDateFormat("HH:mm, dd MM yyyy",
 				Locale.ENGLISH);
 		try {
 			date = req.getParameter("ordertime");
 			if (date != null && date != "")
-				return format.parse(date.substring(0, date.length() - 2));
+				return format.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

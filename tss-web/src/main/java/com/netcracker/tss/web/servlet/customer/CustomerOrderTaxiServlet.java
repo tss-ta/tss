@@ -25,6 +25,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
+import com.netcracker.ejb.PriceBean;
+import com.netcracker.ejb.PriceBeanLocal;
+import com.netcracker.ejb.PriceBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
@@ -45,214 +48,235 @@ import java.util.Map;
 @WebServlet(urlPatterns = "/customer/order")
 public class CustomerOrderTaxiServlet extends HttpServlet {
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-	}
+    }
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		if (req.getParameter("addFrom") != null) {
-			addAddressFrom(req);
-			resp.sendRedirect("/customer/orderpage");
-		} else if (req.getParameter("addTo") != null) {
-			addAddressTo(req);
-			resp.sendRedirect("/customer/orderpage");
-		} else if (req.getParameter("deleteTo") != null
-				|| req.getParameter("deleteFrom") != null) {
-			deleteAddress(req);
-			resp.sendRedirect("/customer/orderpage");
-		} else {
-			User user = findCurrentUser();
-			TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
-			Route route = new Route(findCurrentUser().getUsername() + " Route");
-			route.setDistance(parseDistance(req.getParameter("route_distance")));
-			Address addFrom = toAddress(req.getParameter("fromAddr"), req);
-			Address addTo = toAddress(req.getParameter("toAddr"), req);
-			TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
-			taxiOrder.setBookingTime(new Date());
-			Date orderTime = DateParser.parseDate(req);
-			// orderTime.setYear(new Date().getYear());
-			taxiOrder.setOrderTime(orderTime);
-			taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo,
-					taxiOrder);
-			int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
-					.get(0).getId();
-			req.setAttribute("taxiOrderId", latestTOId);
-			req.setAttribute("pageContent", "content/confirmation.jsp");
-			req.getRequestDispatcher(
-					"/WEB-INF/views/customer/customer-template.jsp").forward(
-					req, resp);
-		}
-	}
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        if (req.getParameter("addFrom") != null) {
+            addAddressFrom(req);
+            resp.sendRedirect("/customer/orderpage");
+        } else if (req.getParameter("addTo") != null) {
+            addAddressTo(req);
+            resp.sendRedirect("/customer/orderpage");
+        } else if (req.getParameter("deleteTo") != null
+                || req.getParameter("deleteFrom") != null) {
+            deleteAddress(req);
+            resp.sendRedirect("/customer/orderpage");
+        } else {
+            User user = findCurrentUser();
+            TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
+            PriceBeanLocal priceBean = getPriceBean(req);
+            float distance = 0;
+            double price = 0;
+            try {
+                MapBeanLocal mapBean = getMapBean(req);
+                distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
+                        req.getParameter("toAddr"));
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if ("".equals(req.getParameter("price"))) {
+                price = priceBean.calculatePrice(distance,
+                        DateParser.parseDate(req));
+            }else{
+                price = Double.parseDouble(req.getParameter("price"));
+            }
+            Route route = new Route(findCurrentUser().getUsername() + " Route");
+            route.setDistance(distance);
+            Address addFrom = toAddress(req.getParameter("fromAddr"), req);
+            Address addTo = toAddress(req.getParameter("toAddr"), req);
+            TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
+            taxiOrder.setBookingTime(new Date());
+            Date orderTime = DateParser.parseDate(req);
+            taxiOrder.setOrderTime(orderTime);
+            taxiOrder.setPrice(price);
+            taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo,
+                    taxiOrder);
+            int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
+                    .get(0).getId();
+            req.setAttribute("taxiOrderId", latestTOId);
+            req.setAttribute("pageContent", "content/confirmation.jsp");
+            req.getRequestDispatcher(
+                    "/WEB-INF/views/customer/customer-template.jsp").forward(
+                            req, resp);
+        }
+    }
 
-	private void deleteAddress(HttpServletRequest req) {
-		String addr = null;
-		if (req.getParameter("deleteFrom") != null) {
-			addr = req.getParameter("pers_addr");
-		} else if (req.getParameter("deleteTo") != null) {
-			addr = req.getParameter("pers_addr_to");
-		}
-		if (addr != null) {
-			UserBeanLocal userBeanLocal = getUserBean(req);
-			userBeanLocal.removeFromPersonalList(UserUtils.findCurrentUser(),
-					addr);
-		}
-	}
+    private void deleteAddress(HttpServletRequest req) {
+        String addr = null;
+        if (req.getParameter("deleteFrom") != null) {
+            addr = req.getParameter("pers_addr");
+        } else if (req.getParameter("deleteTo") != null) {
+            addr = req.getParameter("pers_addr_to");
+        }
+        if (addr != null) {
+            UserBeanLocal userBeanLocal = getUserBean(req);
+            userBeanLocal.removeFromPersonalList(UserUtils.findCurrentUser(),
+                    addr);
+        }
+    }
 
-	private void addAddressFrom(HttpServletRequest req) {
-		String addr = req.getParameter("fromAddr");
-		if (addr != null) {
-			UserBeanLocal userBeanLocal = getUserBean(req);
-			userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
-		}
-	}
+    private void addAddressFrom(HttpServletRequest req) {
+        String addr = req.getParameter("fromAddr");
+        if (addr != null) {
+            UserBeanLocal userBeanLocal = getUserBean(req);
+            userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
+        }
+    }
 
-	private void addAddressTo(HttpServletRequest req) {
-		String addr = req.getParameter("toAddr");
-		if (addr != null) {
-			UserBeanLocal userBeanLocal = getUserBean(req);
-			userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
-		}
-	}
+    private void addAddressTo(HttpServletRequest req) {
+        String addr = req.getParameter("toAddr");
+        if (addr != null) {
+            UserBeanLocal userBeanLocal = getUserBean(req);
+            userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
+        }
+    }
 
-	private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
-		Integer carType = checkString(req.getParameter("carType"));
-		Integer wayOfPayment = checkString(req.getParameter("paymentType"));
-		Boolean driversGender = checkDriversGender(req
-				.getParameter("driverGender"));
-		Integer musicType = checkString(req.getParameter("musicType"));
-		String[] addParameters = req.getParameterValues("addOptions");
-		Boolean wifi = null;
-		Boolean animal = null;
-		Boolean noSmokeDriver = null;
-		Boolean conditioner = null;
-		if (addParameters != null) {
-			for (String st : addParameters) {
-				if ("wifi".equals(st)) {
-					wifi = Boolean.TRUE;
-				}
-				if ("animal".equals(st)) {
-					animal = Boolean.TRUE;
-				}
-				if ("nosmoke".equals(st)) {
-					noSmokeDriver = Boolean.TRUE;
-				}
-				if ("conditioner".equals(st)) {
-					conditioner = Boolean.TRUE;
-				}
-			}
-		}
-		return new TaxiOrder(wayOfPayment, musicType, driversGender,
-				noSmokeDriver, carType, animal, wifi, conditioner);
-	}
+    private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
+        Integer carType = checkString(req.getParameter("carType"));
+        Integer wayOfPayment = checkString(req.getParameter("paymentType"));
+        Boolean driversGender = checkDriversGender(req
+                .getParameter("driverGender"));
+        Integer musicType = checkString(req.getParameter("musicType"));
+        String[] addParameters = req.getParameterValues("addOptions");
+        Boolean wifi = null;
+        Boolean animal = null;
+        Boolean noSmokeDriver = null;
+        Boolean conditioner = null;
+        if (addParameters != null) {
+            for (String st : addParameters) {
+                if ("wifi".equals(st)) {
+                    wifi = Boolean.TRUE;
+                }
+                if ("animal".equals(st)) {
+                    animal = Boolean.TRUE;
+                }
+                if ("nosmoke".equals(st)) {
+                    noSmokeDriver = Boolean.TRUE;
+                }
+                if ("conditioner".equals(st)) {
+                    conditioner = Boolean.TRUE;
+                }
+            }
+        }
+        return new TaxiOrder(wayOfPayment, musicType, driversGender,
+                noSmokeDriver, carType, animal, wifi, conditioner);
+    }
 
-	private Boolean checkDriversGender(String s) {
-		if (!"".equals(s)) {
-			if ("male".equals(s)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return null;
-	}
+    private Boolean checkDriversGender(String s) {
+        if (!"".equals(s)) {
+            if ("male".equals(s)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return null;
+    }
 
-	private Integer checkString(String s) {
-		if (!"".equals(s)) {
-			return Integer.parseInt(s);
-		}
-		return null;
-	}
+    private Integer checkString(String s) {
+        if (!"".equals(s)) {
+            return Integer.parseInt(s);
+        }
+        return null;
+    }
 
-	private Float parseDistance(String distStr) {
-		if (distStr.length() > 0) {
-			distStr = distStr.substring(0, distStr.length() - 3).replaceAll(
-					",", ".");
-		}
-		else
-			return Float.valueOf(0);
-		return Float.valueOf(distStr);
-	}
+    private Address toAddress(String addr, HttpServletRequest req) {
+        MapBeanLocal mapBeanLocal = getMapBean(req);
+        double[] to = {0, 0};
+        try {
+            to = mapBeanLocal.geocodeAddress(addr);
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        return new Address((float) to[1], (float) to[0]);
+    }
 
-	private Address toAddress(String addr, HttpServletRequest req) {
-		MapBeanLocal mapBeanLocal = getMapBean(req);
-		double[] to = { 0, 0 };
-		try {
-			to = mapBeanLocal.geocodeAddress(addr);
-		} catch (JSONException | IOException e) {
-			e.printStackTrace();
-		}
-		return new Address((float) to[1], (float) to[0]);
-	}
+    private User findCurrentUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+        UserDAO userDao = new UserDAO();
+        User user = userDao.getByEmail(userDetails.getUsername());
+        userDao.close();
+        return user;
+    }
 
-	private User findCurrentUser() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder
-				.getContext().getAuthentication().getPrincipal();
-		UserDAO userDao = new UserDAO();
-		User user = userDao.getByEmail(userDetails.getUsername());
-		userDao.close();
-		return user;
-	}
+    private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            TaxiOrderBeanLocalHome taxiOrderBeanLocalHome = (TaxiOrderBeanLocalHome) context
+                    .lookup("java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome");
+            return taxiOrderBeanLocalHome.create();
+        } catch (NamingException ex) {
+            Logger.getLogger(AdminGroupServlet.class.getName())
+                    .log(Level.SEVERE,
+                            "Can't find taxiOrderBean with name java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome ",
+                            ex);
+            throw new RuntimeException("Internal server error!");// maybe have
+            // to create
+            // custom
+            // exception?
+        }
+    }
 
-	private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
-		Context context;
-		try {
-			context = new InitialContext();
-			TaxiOrderBeanLocalHome taxiOrderBeanLocalHome = (TaxiOrderBeanLocalHome) context
-					.lookup("java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome");
-			return taxiOrderBeanLocalHome.create();
-		} catch (NamingException ex) {
-			Logger.getLogger(AdminGroupServlet.class.getName())
-					.log(Level.SEVERE,
-							"Can't find taxiOrderBean with name java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome ",
-							ex);
-			throw new RuntimeException("Internal server error!");// maybe have
-			// to create
-			// custom
-			// exception?
-		}
-	}
+    private MapBeanLocal getMapBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            MapBeanLocalHome mapBeanLocalHome = (MapBeanLocalHome) context
+                    .lookup("java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome");
+            return mapBeanLocalHome.create();
+        } catch (NamingException ex) {
+            Logger.getLogger(AdminGroupServlet.class.getName())
+                    .log(Level.SEVERE,
+                            "Can't find taxiOrderBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
+                            ex);
+            throw new RuntimeException("Internal server error!");// maybe have
+            // to create
+            // custom
+            // exception?
+        }
+    }
 
-	private MapBeanLocal getMapBean(HttpServletRequest req) {
-		Context context;
-		try {
-			context = new InitialContext();
-			MapBeanLocalHome mapBeanLocalHome = (MapBeanLocalHome) context
-					.lookup("java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome");
-			return mapBeanLocalHome.create();
-		} catch (NamingException ex) {
-			Logger.getLogger(AdminGroupServlet.class.getName())
-					.log(Level.SEVERE,
-							"Can't find taxiOrderBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
-							ex);
-			throw new RuntimeException("Internal server error!");// maybe have
-			// to create
-			// custom
-			// exception?
-		}
-	}
+    private UserBeanLocal getUserBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            UserBeanLocalHome userBeanLocalHome = (UserBeanLocalHome) context
+                    .lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
+            return userBeanLocalHome.create();
+        } catch (NamingException ex) {
+            Logger.getLogger(AdminGroupServlet.class.getName())
+                    .log(Level.SEVERE,
+                            "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
+                            ex);
+            throw new RuntimeException("Internal server error!");// maybe have
+            // to create
+            // custom
+            // exception?
+        }
+    }
 
-	private UserBeanLocal getUserBean(HttpServletRequest req) {
-		Context context;
-		try {
-			context = new InitialContext();
-			UserBeanLocalHome userBeanLocalHome = (UserBeanLocalHome) context
-					.lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
-			return userBeanLocalHome.create();
-		} catch (NamingException ex) {
-			Logger.getLogger(AdminGroupServlet.class.getName())
-					.log(Level.SEVERE,
-							"Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
-							ex);
-			throw new RuntimeException("Internal server error!");// maybe have
-			// to create
-			// custom
-			// exception?
-		}
-	}
-
+    private PriceBeanLocal getPriceBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            PriceBeanLocalHome priceBeanLocalHome = (PriceBeanLocalHome) context
+                    .lookup("java:app/tss-ejb/PriceBean!com.netcracker.ejb.PriceBeanLocalHome");
+            return priceBeanLocalHome.create();
+        } catch (NamingException ex) {
+            throw new RuntimeException("Internal server error!");// maybe have
+            // to create
+            // custom
+            // exception?
+        }
+    }
 }

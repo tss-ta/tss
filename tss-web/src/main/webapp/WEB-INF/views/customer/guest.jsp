@@ -86,28 +86,41 @@
 							<i class="fa"></i> Book Your Taxi Now!
 							<div
 								style="display: block; margin-left: auto; margin-right: auto; text-align: center">
-								<input type="button" class="btn btn-default" onclick="geoloc()"
-									value="Find Me" /> <input type="button"
-									class="btn btn-default" onclick="initialize()" value="Show Map" />
-								<input type="button" class="btn btn-default"
-									onclick="showonmap()" value="Show on Map" />
+
 							</div>
 						</h4>
+						<div class="text-center">
+							<input type="button" class="btn btn-default" onclick="geoloc()"
+								value="Find Me" /> <input type="button" class="btn btn-default"
+								onclick="showonmap()" value="Show on Map" />
+						</div>
+						<br>&nbsp;<br>
 						<div class="form-group">
 							<label class="col-sm-2 col-sm-2 control-label">From :</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="fromAddr"
-									name="fromAddr" value="Holosiivskyi Avenue, 12, Kyiv, Ukraine" />
-								<p id="fromAddrMessage"></p>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" id="fromAddr"
+										name="fromAddr" value="Ukraine, Kiev, Pobedy 55" />
+								</div>	
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 col-sm-2 control-label">To :</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="toAddr"
-									name="toAddr"
-									value="Vasylya Zhukovs'koho Lane, 6, Kyiv, Ukraine" />
-								<p id="toAddrMessage"></p>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" id="toAddr"
+										name="toAddr" value="Ukraine, Kiev" />
+								</div>							
+                                                                <br>&nbsp;<br>
+								<div class="col-sm-6">
+									<input id="price_field" class="form-control" name="price"
+										type="text" placeholder="Price will be shown here" readonly>
+									<div class="text-center">
+										<br>
+										<button id="update_price" name="update_price" type="button"
+											class="btn btn-default">Calculate Price</button>
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -135,7 +148,7 @@
 							<label class="col-sm-2 col-sm-2 control-label">Choose car
 								type :</label> <select class="selectpicker" title="Choose car type"
 								name="carType">
-<!--								<option></option>-->
+								<!--								<option></option>-->
 								<option value="1">Economy class</option>
 								<option value="2">Business class</option>
 								<option value="3">Van</option>
@@ -145,7 +158,7 @@
 							<label class="col-sm-2 col-sm-2 control-label">Way of
 								payment :</label> <select class="selectpicker"
 								title="Choose way of payment" name="paymentType">
-<!--								<option></option>-->
+								<!--								<option></option>-->
 								<option value="1">Cash</option>
 								<option value="2">Mastercard</option>
 								<option value="3">Visa</option>
@@ -199,7 +212,6 @@
 	</div>
 
 	<!-- js placed at the end of the document so the pages load faster -->
-	<script src="/resources/customer_assets/js/jquery.js"></script>
 	<script src="/resources/customer_assets/js/jquery-1.8.3.min.js"></script>
 	<script src="/resources/customer_assets/js/bootstrap.min.js"></script>
 	<script class="include" type="text/javascript"
@@ -231,6 +243,9 @@
 	<script src="/resources/customer_assets/js/form-component.js"></script>
 
 	<script type="application/javascript">
+		
+		
+		
 		
 		
 		
@@ -288,6 +303,9 @@
 	
 	
 	
+	
+	
+	
 	</script>
 
 	<script src="/resources/customer_assets/js/form-component.js"></script>
@@ -296,7 +314,7 @@
 
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script type="text/javascript"
-		src="http://maps.googleapis.com/maps/api/js?sensor=false">
+		src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
 		
 	</script>
 
@@ -307,6 +325,12 @@
 
 	<script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
 	<script>
+		$(function() {
+			window.onload = function() {
+				initialize();
+				showonmap();
+			}
+		});
 		//custom select box
 
 		$(function() {
@@ -320,6 +344,26 @@
 			firstDOW : 1
 		});
 	</script>
+
+	<script>
+		$('#update_price').click(function() {
+			$.ajax({
+				type : "GET",
+				url : "http://localhost:8080/price",
+				data : {
+					fromAddr : $("#fromAddr").val(),
+					toAddr : $("#toAddr").val(),
+                                        ordertime: $("#ordertime").val()
+				},
+				dataType : "text",
+			}).done(function(res) {
+				$('#price_field').val(res);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+			});
+		});
+	</script>
+
 
 
 </body>
