@@ -79,8 +79,8 @@
 
         <h2 class="form-sign-heading">Please Sign In</h2>
         <h5 class="form-sign-error-msg">Incorrect Email and/or Password!</h5>
-        <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus><br/>
-        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required><br/>
+        <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" maxlength="40" required autofocus><br/>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
 

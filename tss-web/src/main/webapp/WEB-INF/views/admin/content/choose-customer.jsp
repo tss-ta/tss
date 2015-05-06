@@ -21,7 +21,7 @@
                     <div class="col-md-offset-7 col-md-4">
                         <form action="/admin/report" method="get">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}">
+                                <input type="email" class="form-control" placeholder="Search by email" name="email" value="${param.email}" maxlength="40">
                                 <input type="hidden" name="action" value="search-users">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
