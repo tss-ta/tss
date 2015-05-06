@@ -62,13 +62,13 @@ public class User implements Serializable {
     public User(String username, String email, String passwordHash) {
         super();
         this.username = username;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.passwordHash = passwordHash;
     }
 
     public User(String username, String email) {
     	 this.username = username;
-         this.email = email;
+         this.email = email.toLowerCase();
 	}
 
 	public Integer getId() {
@@ -104,11 +104,11 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return email.toLowerCase();
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public String getPasswordHash() {

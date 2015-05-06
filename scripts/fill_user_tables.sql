@@ -227,4 +227,12 @@ INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef) 
 VALUES
 ('convey', 0, 0.9);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('animal', 20, 1.1);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('per_km', 5, 1);
 

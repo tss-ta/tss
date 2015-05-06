@@ -84,7 +84,15 @@
 			<version>1.4.7</version>
 		</dependency>
 
-		<!-- Test dependencies -->
+        <!-- Excel lib -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.11</version>
+        </dependency>
+
+
+        <!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

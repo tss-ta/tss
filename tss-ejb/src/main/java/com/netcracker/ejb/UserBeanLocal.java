@@ -59,7 +59,7 @@ public interface UserBeanLocal extends EJBLocalObject {
      * @param paginationStep - rows on one page
      * @return List of UserDTO where email have emailPart and role with rolename
      */
-    List<UserDTO> searchUsersByEmailAndRolename(String emailPart, String rolename, int pageNumber, int paginationStep);
+    List<UserDTO> searchUsersByEmailAndRole(String emailPart, Roles role, int pageNumber, int paginationStep);
     
     List<UserDTO> searchCustomersByEmail(String emailPart, int pageNumber, int paginationStep);
     
