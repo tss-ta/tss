@@ -96,6 +96,24 @@
             </ejb-local-ref>
         </session> 
         
+         <session>
+            <description>An EJB named PriceBean</description>
+            <display-name>PriceBean</display-name>
+            <ejb-name>PriceBean</ejb-name>
+            <local-home>com.netcracker.ejb.PriceBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.PriceBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.PriceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/PriceBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.PriceBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.PriceBeanLocal</local>
+            </ejb-local-ref>
+        </session>  
+        
         <session>
             <description>An EJB named MailerBean</description>
             <display-name>MailerBean</display-name>
