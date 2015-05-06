@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Kyrylo Berehovyi on 29/04/2015.
  */
 
+@Deprecated
 public class AddCarGetRoute implements Route {
 
     private static final String ROUTE_NAME = "get&menu=cars&action=add-car";

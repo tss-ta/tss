@@ -226,10 +226,18 @@ body {
     }
 }
 
+/*           */
+/*  Row FIX  */
+/*           */
+
 .row-fix {
     margin-right: 0;
     margin-left: 0;
 }
+
+/*               */
+/*  Custom Link  */
+/*               */
 
 a.custom-link {
     margin-left: 5px;
@@ -243,7 +251,9 @@ a.custom-link:hover {
 a.trash:hover {
     color: #FF3030;
 }
-
+a.hover-green:hover {
+    color: limegreen;
+}
 
 /*                */
 /*  Custom Pager  */

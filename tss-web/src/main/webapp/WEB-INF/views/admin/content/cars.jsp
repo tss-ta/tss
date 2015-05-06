@@ -18,7 +18,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-4 col-xs-4">
-                    <a href="/admin/cars?menu=cars&action=add-car" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
+                    <a href="/admin?menu=car&action=add" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
                 </div>
                 <div class="col-md-offset-7 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12">
                     <form action="/admin" method="get" >
@@ -54,7 +54,7 @@
                 <tbody>
                 <c:forEach items="${carList}" var="car">
                     <tr class="text-center">
-                        <td><a class="custom-link" href="/admin/cars?menu=cars&action=partial&id=${car.id}">${car.getLicPlate()}</a></td>
+                        <td><a class="custom-link" href="/admin?menu=car&action=view&id=${car.id}">${car.getLicPlate()}</a></td>
                         <td class="hidden-sm hidden-xs">
                             <c:choose>
                                 <c:when test="${car.category == 1}">
@@ -110,13 +110,13 @@
 
                         <td>
                             <c:if test="${not assign}">
-                            <a class="custom-link" href="/admin/cars?menu=cars&action=edit&id=${car.id}" title="Edit"><i class="fa fa-pencil fa-lg"></i></a>
-                            <a class="custom-link trash" href="/admin/cars?menu=cars&action=remove&id=${car.id}" title="Delete"><i class="fa fa-trash-o fa-lg"></i></a>
+                                <a class="custom-link" href="/admin?menu=car&action=edit&id=${car.id}" title="Edit"><i class="fa fa-pencil fa-lg"></i></a>
+                                <%--<a class="custom-link trash" href="/admin?menu=car&action=remove&id=${car.id}" title="Delete"><i class="fa fa-trash-o fa-lg"></i></a>--%>
                             </c:if>
 
                             <c:if test="${assign}">
-                        <td><a href="/admin/driver?action=assigncar&carid=${car.id}&driverid=${driverid}"><i class="fa fa-check-circle"></i></a></td>
-                        </c:if>
+                                <a class="custom-link hover-green" href="/admin/driver?action=assigncar&carid=${car.id}&driverid=${driverid}"><i class="fa fa-check-circle"></i></a>
+                            </c:if>
                         </td>
 
                     </tr>

@@ -75,6 +75,48 @@ public class CarBean implements SessionBean {
         return true;
     }
 
+    public void updateCar(Car car) {
+        CarDao carDao = new CarDao();
+        try {
+            carDao.update(car);
+        } finally {
+            if (carDao != null) {
+                carDao.close();
+            }
+        }
+    }
+
+    public void deleteById(Integer id) {
+        CarDao carDao = new CarDao();
+        Car car = new Car();
+        car.setId(id);
+        try {
+            carDao.delete(car);
+        } finally {
+            if (carDao != null) {
+                carDao.close();
+            }
+        }
+    }
+
+    public Car getById(Integer id) {
+        CarDao carDao = new CarDao();
+        Car car;
+        try {
+            try {
+                car = carDao.get(id);
+            }
+            catch (NoResultException e) {
+                car = null;
+            }
+        } finally {
+            if (carDao != null) {
+                carDao.close();
+            }
+        }
+        return car;
+    }
+
     private CarDTO convertEntityToTransferObject(Car car) {
         CarDTO carDTO = new CarDTO();
         carDTO.setId(car.getId());

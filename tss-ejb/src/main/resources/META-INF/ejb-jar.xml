@@ -250,5 +250,22 @@
             </ejb-local-ref>
         </session>
 
+        <session>
+            <display-name>ValidatorBean</display-name>
+            <ejb-name>ValidatorBean</ejb-name>
+            <local-home>com.netcracker.ejb.ValidatorBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.ValidatorBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.ValidatorBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/ValidatorBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.ValidatorBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.ValidatorBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+
     </enterprise-beans>
 </ejb-jar>

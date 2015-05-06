@@ -1,15 +1,17 @@
 package com.netcracker.tss.web.util;
 
 /**
- * Created by Kyrylo Berehovyi on 26/04/2015.
+ * @author Kyrylo Berehovyi
  * @author maks
  */
+
 public enum Page {
 
     ADMIN_TEMPLATE("template", "admin/admin-template.jsp"),
     ADMIN_DASHBOARD_CONTENT("dashboard", "admin/content/dashboard.jsp"),
     ADMIN_CARS_CONTENT("cars", "admin/content/cars.jsp"),
     ADMIN_ADD_CAR_CONTENT("cars", "admin/content/add-car.jsp"),
+    ADMIN_VIEW_CAR_CONTENT("cars", "admin/content/view-car.jsp"),
     ADMIN_CUSTOMERS_CONTENT("customers", "admin/content/customers.jsp"),
     ADMIN_ADD_ROLES_CONTENT("customers", "admin/content/add-roles.jsp"),
     ADMIN_DRIVERS_CONTENT("drivers", "admin/content/drivers.jsp"),

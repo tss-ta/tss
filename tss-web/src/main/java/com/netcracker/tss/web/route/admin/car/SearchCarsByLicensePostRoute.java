@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  * Created by happy on 30/04/2015.
  */
 
+@Deprecated
 public class SearchCarsByLicensePostRoute implements Route {
 
     private static final String ROUTE_NAME = "post&menu=cars&action=search";

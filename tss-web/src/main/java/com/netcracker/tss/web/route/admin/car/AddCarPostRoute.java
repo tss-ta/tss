@@ -26,6 +26,7 @@ import java.util.logging.Logger;
  * Created by Kyrylo Berehovyi on 28/04/2015.
  */
 
+@Deprecated
 public class AddCarPostRoute implements Route {
 
     public static final String ROUTE_NAME = "post&menu=cars&action=add-car";
