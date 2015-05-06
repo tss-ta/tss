@@ -21,7 +21,7 @@
                     <div class="form-group">
                         <label for="plate" class="col-md-4 control-label">License plate</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="plate" placeholder="License" name="license">
+                            <input type="text" class="form-control" id="plate" placeholder="License" name="license" maxlength="11" required autofocus>
                         </div>
                     </div>
                     <div class="form-group">

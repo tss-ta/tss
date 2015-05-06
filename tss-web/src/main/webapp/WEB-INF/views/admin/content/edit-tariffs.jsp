@@ -7,7 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="row row-fix">
     <div class="col-md-offset-2 col-md-8">
-        
+
         <div class="text-center">
             <h1>Tariffs Edit Panel</h1>
         </div>
@@ -20,7 +20,7 @@
                 <div class="col-md-offset-7 col-md-4">
                     <form action="/admin/tariff" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="name" placeholder="Search " value="${param.name}">
+                            <input type="text" class="form-control" name="name" placeholder="Search " value="${param.name}" maxlength="40">
                             <input type="hidden" name="action" value="search-for-edit">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
