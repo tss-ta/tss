@@ -133,6 +133,7 @@
 						<option value="1">Economy class</option>
 						<option value="2">Business class</option>
 						<option value="3">Van</option>
+						<option value="4">Cargo</option>
 					</select>
 				</div>
 				<div class="form-group">
