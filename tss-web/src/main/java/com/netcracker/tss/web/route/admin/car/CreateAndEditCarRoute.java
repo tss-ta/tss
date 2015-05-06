@@ -76,6 +76,7 @@ public class CreateAndEditCarRoute {
     @Action(action = "edit")
     public ActionResponse getEditCarForm(HttpServletRequest request) {
         Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
+        ActionResponse actionResponse = new ActionResponse();
         CarBeanLocal carBean;
         Car car;
         if(id != null) {
@@ -83,9 +84,12 @@ public class CreateAndEditCarRoute {
             car = carBean.getById(id);
             request.setAttribute(RequestAttribute.CAR.getName(), car);
             request.setAttribute(RequestAttribute.PAGER_LINK.getName(), createEditPageLink(id));
+            request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_CAR_CONTENT.getType());
+            actionResponse.setPageContent(Page.ADMIN_ADD_CAR_CONTENT.getAbsolutePath());
+        } else {
+            actionResponse.setPageContent(Page.ERROR_404_CONTENT.getAbsolutePath());
         }
-        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_CAR_CONTENT.getType());
-        return new ActionResponse(Page.ADMIN_ADD_CAR_CONTENT.getAbsolutePath());
+        return actionResponse;
     }
 
     private void performAddCar(ActionResponse actionResponse, Car car) {
