@@ -20,6 +20,8 @@ INSERT INTO tss_user VALUES
   (DEFAULT, 'Trevor', 'trevor.rovert@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
   (DEFAULT, 'Monica', 'monica.harmonica@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Izya', 'iz@ya.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 
 
 INSERT INTO tss_group VALUES
@@ -110,6 +112,8 @@ INSERT INTO tss_user_role VALUES
   (10, 4);
 INSERT INTO tss_user_role VALUES
   (10, 1);
+INSERT INTO tss_user_role VALUES
+  (11, 4);
 
 INSERT INTO tss_group_role VALUES
   (1, 2);

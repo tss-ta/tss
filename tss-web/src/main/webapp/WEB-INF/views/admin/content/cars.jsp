@@ -21,8 +21,10 @@
                     <a href="/admin/cars?menu=cars&action=add-car" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
                 </div>
                 <div class="col-md-offset-7 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12">
-                    <form action="/admin/cars?menu=cars&action=search" method="post" >
+                    <form action="/admin" method="get" >
                         <div class="input-group">
+                            <input type="hidden" name="menu" value="car">
+                            <input type="hidden" name="action" value="search">
                             <input type="text" class="form-control" name="search" placeholder="Search by License Plate" value="${param.search}">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>

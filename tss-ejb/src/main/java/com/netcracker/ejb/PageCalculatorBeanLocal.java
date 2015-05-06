@@ -9,4 +9,6 @@ import javax.ejb.EJBLocalObject;
  */
 public interface PageCalculatorBeanLocal extends EJBLocalObject {
     Pager createCarPager(Integer pageNumber, Integer pageSize);
+
+    Pager createSearchCarPager(Integer pageNumber, Integer pageSize, String searchWord);
 }
