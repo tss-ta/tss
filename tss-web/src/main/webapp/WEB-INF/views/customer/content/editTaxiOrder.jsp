@@ -52,7 +52,7 @@
                     <div class="col-sm-10">
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="fromAddr"
-                                   name="fromAddr" value="${toh.getFromAddr()}" />
+                                   name="fromAddr" value="${toh.getFromAddr()}" maxlength="140"/>
                         </div>
                         <br>&nbsp;<br>
                         <p id="fromAddrMessage"></p>
@@ -77,7 +77,7 @@
                     <div class="col-sm-10">
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="toAddr" name="toAddr" 
-                                   value="${toh.getToAddr()}" />
+                                   value="${toh.getToAddr()}" maxlength="140"/>
                         </div>
                         <br>&nbsp;<br>
                         <p id="toAddrMessage"></p>
@@ -124,10 +124,11 @@
     <!-- /form-panel -->
 
     <!-- /col-lg-12 -->
-    <div class="text-center">
-        <input type="hidden" id="id_rout_dist" name="route_distance" value=""/>
-        <button class="btn btn-success btn-lg btn-block" type="submit">Update</button>
-
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <input type="hidden" id="id_rout_dist" name="route_distance" value=""/>
+            <button class="btn btn-success btn-lg btn-block" type="submit">Update</button>
+        </div>
     </div>
 </form>
 
@@ -150,23 +151,23 @@
 
 <script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
 <script>
-                               //custom select box
+    //custom select box
 
-                               $(function () {
-                                   window.onload = function () {
-                                       initialize();
-                                       showonmap();
-                                   }
-                               });
-                               $(function () {
-                                   $('select.styled').customSelect();
-                               });
+    $(function () {
+    window.onload = function () {
+    initialize();
+    showonmap();
+    }
+    });
+    $(function () {
+    $('select.styled').customSelect();
+    });
 </script>
 
 <script>
     AnyTime.picker("ordertime", {
-        format: "%H:%i, %d %m %Y",
-        firstDOW: 1
+    format: "%H:%i, %d %m %Y",
+    firstDOW: 1
     });
 </script>
 <script>

@@ -24,6 +24,9 @@
         <link rel="stylesheet" href="css/responsiveslides.css">
         <script src="/resources/js/responsiveslides.min.js"></script>
 
+        <!-- Custom javascript for password confirmation -->
+        <script type="text/javascript" src="resources/js/confirmPassword.js"></script>
+
         <!-- Bootstrap core CSS -->
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 
@@ -73,10 +76,12 @@
 
             <form class="form-sign" action="RegistrationServlet" method="post" autocomplete="off">
                 <h2 class="form-sign-heading">Registrate please</h2>
-                <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name" required autofocus><br/>
-                <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email" required autofocus><br/>
-                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required><br/>
-                <input type="password" id="confirmInputPassword" name="confirPassword" class="form-control" placeholder="Confirm Password" required><br/>
+                <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name" maxlength="40" required autofocus><br/>
+                <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" maxlength="40" required><br/>
+                <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" maxlength="60" required><br/>
+                <input type="password" id="confirmInputPassword" name="confirmInputPassword" onkeyup="checkPass();
+                        return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
+                <span id="confirmMessage" class="confirmMessage"></span>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Registrate</button>
             </form>
         </div> <!-- /container -->

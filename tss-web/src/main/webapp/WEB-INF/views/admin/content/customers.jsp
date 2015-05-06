@@ -13,7 +13,7 @@
             <div class="text-center">
                 <h1>Customers Panel</h1>
             </div>
-            
+
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-1">
@@ -22,7 +22,7 @@
                     <div class="col-md-offset-7 col-md-4">
                         <form action="/admin/customer" method="get">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}">
+                                <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}" maxlength="40">
                                 <input type="hidden" name="action" value="search-users">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
