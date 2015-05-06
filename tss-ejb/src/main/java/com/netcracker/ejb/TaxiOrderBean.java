@@ -202,13 +202,21 @@ public class TaxiOrderBean implements SessionBean {
     }
 
     private String getFromAddr(TaxiOrderHistory toh) {
+           if(toh.getRouteId()!=null){
         Address a = toh.getRouteId().getFromAddrId();
         return toAddress(a.getAltitude(), a.getLongtitude());
+           }else{
+               return "";
+           }
     }
 
     private String getToAddr(TaxiOrderHistory toh) {
+          if(toh.getRouteId()!=null){
         Address a = toh.getRouteId().getToAddrId();
         return toAddress(a.getAltitude(), a.getLongtitude());
+          }else{
+             return "";  
+          }
     }
 
     private String toAddress(float lng, float alt) {
