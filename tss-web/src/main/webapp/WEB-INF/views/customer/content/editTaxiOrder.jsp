@@ -38,56 +38,73 @@
                     <i class="fa"></i> Book Your Taxi Now!
                     <div
                         style="display: block; margin-left: auto; margin-right: auto; text-align: center">
-                        <input type="button" class="btn btn-default" onclick="geoloc()"
-                               value="Find Me" /> <input type="button" class="btn btn-default"
-                               onclick="initialize()" value="Show Map" /> <input type="button"
-                               class="btn btn-default" onclick="showonmap()" value="Show on Map" />
+
                     </div>
                 </h4>
+                <div class="text-center">
+                    <input type="button" class="btn btn-default" onclick="geoloc()"
+                           value="Find Me" /> <input type="button" class="btn btn-default"
+                           onclick="showonmap()" value="Show on Map" />
+                </div>
+                <br>&nbsp;<br>
                 <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">From :</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="fromAddr"
-                               name="fromAddr" value="${toh.getFromAddr()}" />
-                        <p id="fromAddrMessage"></p>
-                        <div class="text-center">
-                            <c:if test="${not empty personal_addr}">
-                                <select class="selectpicker" title="Choose from personal list"
-                                        name="pers_addr" id="pers_addr">
-                                    <option></option>
-                                    <c:forEach items="${personal_addr}" var="list" varStatus="loop">
-                                        <option value="${list.addr}">${list.addr}</option>
-                                    </c:forEach>
-                                </select>
-                            </c:if>
-                            <button type="submit" class="btn btn-default" id="addFrom"
-                                    name="addFrom">Add Current</button>
-                            <button type="submit" class="btn btn-default" id="deleteFrom"
-                                    name="deleteFrom">Delete Current</button>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="fromAddr"
+                                   name="fromAddr" value="${toh.getFromAddr()}" />
                         </div>
+                        <br>&nbsp;<br>
+                        <p id="fromAddrMessage"></p>
+                        <c:if test="${not empty personal_addr}">
+                            <select class="selectpicker" title="Choose from personal list"
+                                    name="pers_addr" id="pers_addr">
+                                <option></option>
+                                <c:forEach items="${personal_addr}" var="list" varStatus="loop">
+                                    <option value="${list.addr}">${list.addr}</option>
+                                </c:forEach>
+                            </select>
+                        </c:if>
+                        <button type="submit" class="btn btn-default" id="addFrom"
+                                name="addFrom">Add Current</button>
+                        <button type="submit" class="btn btn-default" id="deleteFrom"
+                                name="deleteFrom">Delete Current</button>
+
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">To :</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="toAddr" name="toAddr" 
-                               value="${toh.getToAddr()}" />
-                        <p id="toAddrMessage"></p>
-                        <div class="text-center">
-                            <c:if test="${not empty personal_addr}">
-                                <select class="selectpicker" title="Choose from personal list"
-                                        name="pers_addr_to" id="pers_addr_to">
-                                    <option></option>
-                                    <c:forEach items="${personal_addr}" var="list" varStatus="loop">
-                                        <option value="${list.addr}">${list.addr}</option>
-                                    </c:forEach>
-                                </select>
-                            </c:if>
-                            <button type="submit" class="btn btn-default" id="addTo"
-                                    name="addTo">Add Current</button>
-                            <button type="submit" class="btn btn-default" id="deleteTo"
-                                    name="deleteTo">Delete Current</button>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="toAddr" name="toAddr" 
+                                   value="${toh.getToAddr()}" />
                         </div>
+                        <br>&nbsp;<br>
+                        <p id="toAddrMessage"></p>
+                        <c:if test="${not empty personal_addr}">
+                            <select class="selectpicker" title="Choose from personal list"
+                                    name="pers_addr_to" id="pers_addr_to">
+                                <option></option>
+                                <c:forEach items="${personal_addr}" var="list" varStatus="loop">
+                                    <option value="${list.addr}">${list.addr}</option>
+                                </c:forEach>
+                            </select>
+                        </c:if>
+                        <button type="submit" class="btn btn-default" id="addTo"
+                                name="addTo">Add Current</button>
+                        <button type="submit" class="btn btn-default" id="deleteTo"
+                                name="deleteTo">Delete Current</button>
+                        <br>&nbsp;<br>
+                        <div class="col-sm-6">
+                            <input id="price_field" class="form-control" name ="price" type="text"
+                                   placeholder="Price will be shown here" readonly>
+                            <div class="text-center">
+                                <br>
+                                <button id="update_price" name="update_price" type="button"
+                                        class="btn btn-default">Calculate Price</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -122,7 +139,7 @@
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript"
-        src="http://maps.googleapis.com/maps/api/js?sensor=false">
+        src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
 
 </script>
 
@@ -133,22 +150,39 @@
 
 <script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
 <script>
-                                   //custom select box
+                               //custom select box
 
-                                   $(function () {
-                                       $('#toAddr').focusout(function () {
-                                           initialize();
-                                           showonmap();
-                                       })
-                                   });
-                                   $(function () {
-                                       $('select.styled').customSelect();
-                                   });
+                               $(function () {
+                                   window.onload = function () {
+                                       initialize();
+                                       showonmap();
+                                   }
+                               });
+                               $(function () {
+                                   $('select.styled').customSelect();
+                               });
 </script>
 
 <script>
     AnyTime.picker("ordertime", {
-        format: "%H:%i, %M %D",
+        format: "%H:%i, %d %m %Y",
         firstDOW: 1
+    });
+</script>
+<script>
+    $('#update_price').click(function () {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/price",
+            data: {
+                fromAddr: $("#fromAddr").val(),
+                toAddr: $("#toAddr").val()
+            },
+            dataType: "text",
+        }).done(function (res) {
+            $('#price_field').val(res);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+        });
     });
 </script>
