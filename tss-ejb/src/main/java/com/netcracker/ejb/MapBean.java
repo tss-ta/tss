@@ -7,6 +7,7 @@ package com.netcracker.ejb;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -23,10 +24,12 @@ import java.nio.charset.Charset;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+
 import java.io.Reader;
 
 /**
@@ -36,10 +39,11 @@ import java.io.Reader;
 public class MapBean implements SessionBean {
 
     private final String baseUrl = "http://maps.googleapis.com/maps/api/geocode/json";
+    private final static String proxy = "http://anonymouse.org/cgi-bin/anon-www.cgi/";
 
     public String geodecodeAddress(double lng, double lat) throws JSONException, IOException {
         Map<String, String> params = Maps.newHashMap();
-        params.put("language", "ru");
+        params.put("language", "en");
         params.put("sensor", "false");
         params.put("latlng", Double.toString(lng) + "," + Double.toString(lat));
         String url = baseUrl + '?' + encodeParams(params);
@@ -66,7 +70,32 @@ public class MapBean implements SessionBean {
         return coordinates;
     }
 
-    private String encodeParams(final Map<String, String> params) {
+    public float calculateDistance(String addrFrom, String addrTo) throws IOException, JSONException {
+    	sleep(800);
+        String sourceUrl = proxy + "http://maps.googleapis.com/maps/api/directions/json";
+        Map<String, String> params = Maps.newHashMap();
+        params.put("sensor", "false");
+        params.put("language", "en");
+        params.put("mode", "driving");
+        params.put("origin", addrFrom);
+        params.put("destination", addrTo);
+        final String url = sourceUrl + '?' + encodeParams(params);
+        final JSONObject response = read(url);
+        JSONObject location = response.getJSONArray("routes").getJSONObject(0);
+        location = location.getJSONArray("legs").getJSONObject(0);
+        int distance = location.getJSONObject("distance").getInt("value");
+        return (float) distance / 1000;
+    }
+
+    private void sleep(int i) {
+    	try {
+			Thread.sleep(i);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String encodeParams(final Map<String, String> params) {
         final String paramsUrl = Joiner.on('&').join(
                 Iterables.transform(params.entrySet(), new Function<Map.Entry<String, String>, String>() {
 
@@ -109,7 +138,7 @@ public class MapBean implements SessionBean {
 
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {
-  
+
     }
 
     @Override

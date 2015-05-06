@@ -25,6 +25,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
+import com.netcracker.ejb.PriceBean;
+import com.netcracker.ejb.PriceBeanLocal;
+import com.netcracker.ejb.PriceBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
@@ -68,15 +71,32 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
         } else {
             User user = findCurrentUser();
             TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
+            PriceBeanLocal priceBean = getPriceBean(req);
+            float distance = 0;
+            double price = 0;
+            try {
+                MapBeanLocal mapBean = getMapBean(req);
+                distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
+                        req.getParameter("toAddr"));
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if ("".equals(req.getParameter("price"))) {
+                price = priceBean.calculatePrice(distance,
+                        DateParser.parseDate(req));
+            }else{
+                price = Double.parseDouble(req.getParameter("price"));
+            }
             Route route = new Route(findCurrentUser().getUsername() + " Route");
-            route.setDistance(parseDistance(req.getParameter("route_distance")));
+            route.setDistance(distance);
             Address addFrom = toAddress(req.getParameter("fromAddr"), req);
             Address addTo = toAddress(req.getParameter("toAddr"), req);
             TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
             taxiOrder.setBookingTime(new Date());
             Date orderTime = DateParser.parseDate(req);
-            //orderTime.setYear(new Date().getYear());
             taxiOrder.setOrderTime(orderTime);
+            taxiOrder.setPrice(price);
             taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo,
                     taxiOrder);
             int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
@@ -98,7 +118,8 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
         }
         if (addr != null) {
             UserBeanLocal userBeanLocal = getUserBean(req);
-            userBeanLocal.removeFromPersonalList(UserUtils.findCurrentUser(), addr);
+            userBeanLocal.removeFromPersonalList(UserUtils.findCurrentUser(),
+                    addr);
         }
     }
 
@@ -165,13 +186,6 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             return Integer.parseInt(s);
         }
         return null;
-    }
-
-    private Float parseDistance(String distStr) {
-        if (distStr.length() > 0) {
-            distStr = distStr.substring(0, distStr.length() - 3).replaceAll(",", ".");
-        }
-        return Float.valueOf(distStr);
     }
 
     private Address toAddress(String addr, HttpServletRequest req) {
@@ -251,4 +265,18 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
         }
     }
 
+    private PriceBeanLocal getPriceBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            PriceBeanLocalHome priceBeanLocalHome = (PriceBeanLocalHome) context
+                    .lookup("java:app/tss-ejb/PriceBean!com.netcracker.ejb.PriceBeanLocalHome");
+            return priceBeanLocalHome.create();
+        } catch (NamingException ex) {
+            throw new RuntimeException("Internal server error!");// maybe have
+            // to create
+            // custom
+            // exception?
+        }
+    }
 }
