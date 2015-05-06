@@ -101,23 +101,7 @@
 								<div class="col-sm-6">
 									<input type="text" class="form-control" id="fromAddr"
 										name="fromAddr" value="Ukraine, Kiev, Pobedy 55" />
-								</div>
-								<br>&nbsp;<br>
-								<p id="fromAddrMessage"></p>
-								<c:if test="${not empty personal_addr}">
-									<select class="selectpicker" title="Choose from personal list"
-										name="pers_addr" id="pers_addr">
-										<option></option>
-										<c:forEach items="${personal_addr}" var="list"
-											varStatus="loop">
-											<option value="${list.addr}">${list.addr}</option>
-										</c:forEach>
-									</select>
-								</c:if>
-								<button type="submit" class="btn btn-default" id="addFrom"
-									name="addFrom">Add Current To List</button>
-								<button type="submit" class="btn btn-default" id="deleteFrom"
-									name="deleteFrom">Delete Current</button>
+								</div>	
 							</div>
 						</div>
 						<div class="form-group">
@@ -126,24 +110,8 @@
 								<div class="col-sm-6">
 									<input type="text" class="form-control" id="toAddr"
 										name="toAddr" value="Ukraine, Kiev" />
-								</div>
-								<br>&nbsp;<br>
-								<p id="toAddrMessage"></p>
-								<c:if test="${not empty personal_addr}">
-									<select class="selectpicker" title="Choose from personal list"
-										name="pers_addr_to" id="pers_addr_to">
-										<option></option>
-										<c:forEach items="${personal_addr}" var="list"
-											varStatus="loop">
-											<option value="${list.addr}">${list.addr}</option>
-										</c:forEach>
-									</select>
-								</c:if>
-								<button type="submit" class="btn btn-default" id="addTo"
-									name="addTo">Add Current To List</button>
-								<button type="submit" class="btn btn-default" id="deleteTo"
-									name="deleteTo">Delete Current</button>
-								<br>&nbsp;<br>
+								</div>							
+                                                                <br>&nbsp;<br>
 								<div class="col-sm-6">
 									<input id="price_field" class="form-control" name="price"
 										type="text" placeholder="Price will be shown here" readonly>
