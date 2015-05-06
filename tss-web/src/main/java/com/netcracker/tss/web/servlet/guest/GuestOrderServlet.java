@@ -50,11 +50,6 @@ public class GuestOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        if (req.getParameter("addTo") != null
-				|| req.getParameter("addFrom") != null) {
-			addAddress(req);
-			resp.sendRedirect("/guest");
-		} else {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         User user = new User(name, email);
@@ -90,20 +85,10 @@ public class GuestOrderServlet extends HttpServlet {
 		req.setAttribute("taxiOrderId", latestTOId);
 		req.getRequestDispatcher("/WEB-INF/views/customer/guest-confirmation.jsp")
 				.forward(req, resp);
-		}
+		
     }
 
-    private void addAddress(HttpServletRequest req) {
-    	String addr = null;
-		if (req.getParameter("fromAddr") != null)
-			addr = req.getParameter("fromAddr");
-		else if (req.getParameter("toAddr") != null)
-			addr = req.getParameter("toAddr");
-		if (addr != null) {
-			UserBeanLocal userBeanLocal = getUserBean(req);
-			userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
-		}
-	}
+ 
 
 	private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
         Integer carType = checkString(req.getParameter("carType"));
