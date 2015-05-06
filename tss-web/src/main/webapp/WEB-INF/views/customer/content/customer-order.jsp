@@ -10,8 +10,8 @@
 
 
 
-<form id="submit_id" action="/customer/order" class="form-horizontal style-form"
-	method="post">
+<form id="submit_id" action="/customer/order"
+	class="form-horizontal style-form" method="post">
 	<div class="row mt bottom_line">
 		<div class="col-lg-12">
 			<div class="form-panel">
@@ -38,55 +38,70 @@
 					<i class="fa"></i> Book Your Taxi Now!
 					<div
 						style="display: block; margin-left: auto; margin-right: auto; text-align: center">
-						<input type="button" class="btn btn-default" onclick="geoloc()"
-							value="Find Me" /> <input type="button" class="btn btn-default"
-							onclick="initialize()" value="Show Map" /> <input type="button"
-							class="btn btn-default" onclick="showonmap()" value="Show on Map" />
+
 					</div>
 				</h4>
+				<div class="text-center">
+					<input type="button" class="btn btn-default" onclick="geoloc()"
+						value="Find Me" /> <input type="button" class="btn btn-default"
+						onclick="showonmap()" value="Show on Map" />
+				</div>
+				<br>&nbsp;<br>
 				<div class="form-group">
 					<label class="col-sm-2 col-sm-2 control-label">From :</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="fromAddr"
-							name="fromAddr" value="Ukraine, Kiev" />
-						<p id="fromAddrMessage"></p>
-						<div class="text-center">
-							<c:if test="${not empty personal_addr}">
-								<select class="selectpicker" title="Choose from personal list"
-									name="pers_addr" id="pers_addr">
-									<option></option>
-									<c:forEach items="${personal_addr}" var="list" varStatus="loop">
-										<option value="${list.addr}">${list.addr}</option>
-									</c:forEach>
-								</select>
-							</c:if>
-							<button type="submit" class="btn btn-default" id="addFrom"
-								name="addFrom">Add Current</button>
-							<button type="submit" class="btn btn-default" id="deleteFrom"
-								name="deleteFrom">Delete Current</button>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" id="fromAddr"
+								name="fromAddr" value="Ukraine, Kiev, Pobedy 55" />
 						</div>
+						<br>&nbsp;<br>
+						<p id="fromAddrMessage"></p>
+						<c:if test="${not empty personal_addr}">
+							<select class="selectpicker" title="Choose from personal list"
+								name="pers_addr" id="pers_addr">
+								<option></option>
+								<c:forEach items="${personal_addr}" var="list" varStatus="loop">
+									<option value="${list.addr}">${list.addr}</option>
+								</c:forEach>
+							</select>
+						</c:if>
+						<button type="submit" class="btn btn-default" id="addFrom"
+							name="addFrom">Add Current To List</button>
+						<button type="submit" class="btn btn-default" id="deleteFrom"
+							name="deleteFrom">Delete Current</button>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 col-sm-2 control-label">To :</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="toAddr" name="toAddr"
-							value="Ukraine, Kiev" />
+						<div class="col-sm-6">
+							<input type="text" class="form-control" id="toAddr" name="toAddr"
+								value="Ukraine, Kiev" />
+						</div>
+						<br>&nbsp;<br>
 						<p id="toAddrMessage"></p>
-						<div class="text-center">
-							<c:if test="${not empty personal_addr}">
-								<select class="selectpicker" title="Choose from personal list"
-									name="pers_addr_to" id="pers_addr_to">
-									<option></option>
-									<c:forEach items="${personal_addr}" var="list" varStatus="loop">
-										<option value="${list.addr}">${list.addr}</option>
-									</c:forEach>
-								</select>
-							</c:if>
-							<button type="submit" class="btn btn-default" id="addTo"
-								name="addTo">Add Current</button>
-							<button type="submit" class="btn btn-default" id="deleteTo"
-								name="deleteTo">Delete Current</button>
+						<c:if test="${not empty personal_addr}">
+							<select class="selectpicker" title="Choose from personal list"
+								name="pers_addr_to" id="pers_addr_to">
+								<option></option>
+								<c:forEach items="${personal_addr}" var="list" varStatus="loop">
+									<option value="${list.addr}">${list.addr}</option>
+								</c:forEach>
+							</select>
+						</c:if>
+						<button type="submit" class="btn btn-default" id="addTo"
+							name="addTo">Add Current To List</button>
+						<button type="submit" class="btn btn-default" id="deleteTo"
+							name="deleteTo">Delete Current</button>
+						<br>&nbsp;<br>
+						<div class="col-sm-6">
+							<input id="price_field" class="form-control" name ="price" type="text"
+								placeholder="Price will be shown here" readonly>
+							<div class="text-center">
+								<br>
+								<button id="update_price" name="update_price" type="button"
+									class="btn btn-default">Calculate Price</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -114,7 +129,7 @@
 					<label class="col-sm-2 col-sm-2 control-label">Choose car
 						type :</label> <select class="selectpicker" title="Choose car type"
 						name="carType">
-<!--						<option></option>-->
+						<!--						<option></option>-->
 						<option value="1">Economy class</option>
 						<option value="2">Business class</option>
 						<option value="3">Van</option>
@@ -124,7 +139,7 @@
 					<label class="col-sm-2 col-sm-2 control-label">Way of
 						payment :</label> <select class="selectpicker"
 						title="Choose way of payment" name="paymentType">
-<!--						<option></option>-->
+						<!--						<option></option>-->
 						<option value="1">Cash</option>
 						<option value="2">Mastercard</option>
 						<option value="3">Visa</option>
@@ -165,8 +180,8 @@
 	</div>
 	<!-- /col-lg-12 -->
 	<div class="text-center">
-		<input type="hidden" id="id_rout_dist" name="route_distance" value=""/>
-		<button class="btn btn-success btn-lg btn-block" type="submit" >Order
+		<input type="hidden" id="id_rout_dist" name="route_distance" value="" />
+		<button class="btn btn-success btn-lg btn-block" type="submit">Order
 			Now</button>
 
 	</div>
@@ -180,7 +195,7 @@
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript"
-	src="http://maps.googleapis.com/maps/api/js?sensor=false">
+	src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
 	
 </script>
 
@@ -189,28 +204,29 @@
 	
 </script>
 
+
 <script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
 <script>
-//	$(function() {
-//		$('#submit_id').submit(function(event) {
-//			event.preventDefault();
-//			initialize();
-//			showonmap();
-//			var distance = $('#id_route_dist').val();
-//
-//			if(distance != null && distance != "") {
-//				$('#submit_id').submit();
-//				distance.val("");
-//			}
-//			return true;
-//		});
-//	});
+	//	$(function() {
+	//		$('#submit_id').submit(function(event) {
+	//			event.preventDefault();
+	//			initialize();
+	//			showonmap();
+	//			var distance = $('#id_route_dist').val();
+	//
+	//			if(distance != null && distance != "") {
+	//				$('#submit_id').submit();
+	//				distance.val("");
+	//			}
+	//			return true;
+	//		});
+	//	});
 
 	$(function() {
-		$('#toAddr').focusout(function() {
+		window.onload = function() {
 			initialize();
 			showonmap();
-		})
+		}
 	});
 
 	$(function() {
@@ -222,5 +238,23 @@
 	AnyTime.picker("ordertime", {
 		format : "%H:%i, %d %m %Y",
 		firstDOW : 1
+	});
+</script>
+
+<script>
+	$('#update_price').click(function() {
+		$.ajax({
+			type : "GET",
+			url : "http://localhost:8080/price",
+			data : {
+				fromAddr : $("#fromAddr").val(),
+				toAddr : $("#toAddr").val()
+			},
+			dataType : "text",
+		}).done(function(res) {
+			$('#price_field').val(res);
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+		});
 	});
 </script>

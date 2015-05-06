@@ -23,7 +23,7 @@ public enum Page {
     ADMIN_CAR_OPTIONS_REPORTS_CONTENT("reports", "admin/content/car-options-report.jsp"),
     ADMIN_NEW_ORDERS_REPORTS_CONTENT("reports", "admin/content/new-orders-report.jsp"),
     ADMIN_CHOOSE_USER_REPORTS_CONTENT("reports", "admin/content/choose-customer.jsp"),
-    ERROR_500_CONTENT("", "admin/content/500.jsp");
+    ERROR_500_CONTENT("", "content/500.jsp");
 
     public static final String ROOT_PATH_PREFIX = "/WEB-INF/views/";
 
