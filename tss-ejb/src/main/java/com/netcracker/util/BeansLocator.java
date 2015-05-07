@@ -58,34 +58,34 @@ public class BeansLocator {
         return result;
     }
 
-    public GroupBeanLocal getGroupBean() {
-        GroupBeanLocalHome groupBeanLocalHome = (GroupBeanLocalHome) lookup("java:app/tss-ejb/GroupBean!com.netcracker.ejb.GroupBeanLocalHome"); //have to catch or throws ClassCastException?
-        return groupBeanLocalHome.create();
-    }
-
+//    public GroupBeanLocal getGroupBean() {
+//        GroupBeanLocalHome groupBeanLocalHome = (GroupBeanLocalHome) lookup("java:app/tss-ejb/GroupBean!com.netcracker.ejb.GroupBeanLocalHome"); //have to catch or throws ClassCastException?
+//        return groupBeanLocalHome.create();
+//    }
+    @Deprecated
     public UserBeanLocal getUserBean() {
         UserBeanLocalHome customerBeanLocalHome = (UserBeanLocalHome) lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
         return customerBeanLocalHome.create();
     }
-
+    @Deprecated
     public CarBeanLocal getCarBean() {
         CarBeanLocalHome carBeanLocalHome = (CarBeanLocalHome) lookup("java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocalHome");
         return carBeanLocalHome.create();
     }
-
+    @Deprecated
     public TariffBeanLocal getTariffBean() {
         TariffBeanLocalHome tariffBeanLocalHome = (TariffBeanLocalHome) lookup("java:app/tss-ejb/TariffBean!com.netcracker.ejb.TariffBeanLocalHome");
         return tariffBeanLocalHome.create();
     }
-
+    @Deprecated
     public DriverLocal getDriverBean() {
         DriverLocalHome driverLocalHome = (DriverLocalHome) lookup("java:app/tss-ejb/DriverBean!com.netcracker.ejb.DriverLocalHome");
         return driverLocalHome.create();
     }
 
-    public ReportsBeanLocal getReportsBean() {
-        ReportsBeanLocalHome reportsBeanLocalHome = (ReportsBeanLocalHome) lookup("java:app/tss-ejb/ReportsBean!com.netcracker.ejb.ReportsBeanLocalHome");
-        return reportsBeanLocalHome.create();
-    }
+//    public ReportsBeanLocal getReportsBean() {
+//        ReportsBeanLocalHome reportsBeanLocalHome = (ReportsBeanLocalHome) lookup("java:app/tss-ejb/ReportsBean!com.netcracker.ejb.ReportsBeanLocalHome");
+//        return reportsBeanLocalHome.create();
+//    }
 
 }
