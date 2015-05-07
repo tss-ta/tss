@@ -47,7 +47,7 @@ public class CustomerOrderTaxiHistoryPageServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Integer pageNumber = updatePageNumber(req);
-		getServletContext().setAttribute("pageNumber", pageNumber);
+		req.getSession(true).setAttribute("pageNumber", pageNumber);
 		List<TaxiOrderHistory> list = getHistory(pageNumber, req);
 		req.setAttribute("history", list);
 		req.setAttribute("pageType", "history");
@@ -63,7 +63,7 @@ public class CustomerOrderTaxiHistoryPageServlet extends HttpServlet {
 				pageNumber, pageSize, UserUtils.findCurrentUser(), Status.COMPLETED);
 		if (list.size() == 0 && pageNumber>1) {
 			pageNumber--;
-			getServletContext().setAttribute("pageNumber", pageNumber);
+			req.getSession(true).setAttribute("pageNumber", pageNumber);
 			list = taxiOrderBeanLocal
 					.getTaxiOrderHistory(pageNumber, pageSize,
 							UserUtils.findCurrentUser());
@@ -72,7 +72,7 @@ public class CustomerOrderTaxiHistoryPageServlet extends HttpServlet {
 	}
 
 	private Integer updatePageNumber(HttpServletRequest req) {
-		Integer pageNumber = (Integer) getServletContext().getAttribute(
+		Integer pageNumber = (Integer) req.getSession(true).getAttribute(
 				"pageNumber");
 		if (pageNumber == null)
 			pageNumber = 1;
