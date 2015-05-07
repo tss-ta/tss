@@ -16,6 +16,9 @@
     <c:when test="${pageType == 'mmgService'}">
         <c:set var="activemmgService" scope="request" value="${'class=\"active\"'}" />
     </c:when>
+	<c:when test="${pageType == 'celebrService'}">
+		<c:set var="activeCelebrService" scope="request" value="${'class=\"active\"'}" />
+	</c:when>
 </c:choose>
 
 <!--sidebar start-->
@@ -47,4 +50,8 @@
                 class="icon-container"><i class="fa fa-user"></i></span> <span
                 class="icon-label">Meet My Guest</span>
         </a></li>
+	<li><a href="/customer/celebrServicePage" ${activeCelebrService}> <span
+			class="icon-container"><i class="fa fa-user"></i></span> <span
+			class="icon-label">Celebration</span>
+	</a></li>
 </ul>

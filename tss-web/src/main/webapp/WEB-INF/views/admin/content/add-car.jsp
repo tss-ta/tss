@@ -32,7 +32,7 @@
                         <input type="hidden" name="id" value="${car.id}">
                         <label for="license" class="col-md-4 control-label">License plate</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" pattern="[a-zA-Z]{3}-[0-9]{3}-[a-zA-Z]{3}" minlength="11" maxlength="11" id="license" placeholder="License" value="${car.licPlate}" name="license">
+                            <input type="text" class="form-control" pattern="[a-zA-Z]{3}-[0-9]{3}-[a-zA-Z]{3}" minlength="11" maxlength="11" id="license" placeholder="License" value="${car.licPlate}" name="license" maxlength="11" required autofocus>
                         </div>
                         <div class="col-md-offset-4 col-md-8 help-block">Format: XXX-YYY-XXX. Length: 11</div>
                     </div>

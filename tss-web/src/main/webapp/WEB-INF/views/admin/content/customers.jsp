@@ -13,7 +13,7 @@
             <div class="text-center">
                 <h1>Users Panel</h1>
             </div>
-            
+
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-1">
@@ -37,7 +37,7 @@
                     <div class="col-md-offset-2 col-md-4">
                         <form action="/admin" method="get">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}">
+                                <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}" maxlength="40">
                                 <input type="hidden" name="action" value="search">
                                 <input type="hidden" name="menu" value="users">
                                 <input type="hidden" name="role" value="${param.role}"/>
