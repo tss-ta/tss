@@ -226,7 +226,99 @@ body {
     }
 }
 
+/*           */
+/*  Row FIX  */
+/*           */
+
 .row-fix {
     margin-right: 0;
     margin-left: 0;
+}
+
+/*               */
+/*  Custom Link  */
+/*               */
+
+a.custom-link {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #484848;
+    text-decoration: none;
+}
+a.custom-link:hover {
+    color: #222;
+}
+a.trash:hover {
+    color: #FF3030;
+}
+a.hover-green:hover {
+    color: limegreen;
+}
+
+/*                */
+/*  Custom Pager  */
+/*                */
+
+ul.custom-pager {
+    font-size: 0;
+}
+ul.custom-pager li a:link,
+ul.custom-pager li a:visited,
+ul.custom-pager li a {
+    color: #989898;
+    border: none;
+    background-color: #282828;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 0;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+ul.custom-pager li a:hover,
+ul.custom-pager li a:active {
+    color: #fff;
+    background-color: #181818;
+}
+
+ul.custom-pager li:first-child a {
+    border-radius: 18px 0 0 18px;
+}
+
+ul.custom-pager li:last-child a {
+    border-radius: 0 18px 18px 0;
+}
+
+
+/*              */
+/*  Page Title  */
+/*              */
+
+.page-title {
+    padding-bottom: 25px;
+}
+
+
+/*                    */
+/*  Dashboard Panels  */
+/*                    */
+
+.custom-panel {
+    background-color: #F5C34C;
+    border-radius: 0;
+    color: #282828;
+    border: none;
+}
+.custom-panel .panel-footer {
+    background-color: #282828;
+    border: none;
+    color: #989898;
+    font-weight: bold;
+}
+.custom-panel a {
+    color: #555;
+}
+.custom-panel a:hover {
+    color: #282828;
 }

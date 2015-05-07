@@ -5,6 +5,8 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -23,6 +25,8 @@
               rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/responsiveslides.css">
         <script src="/resources/js/responsiveslides.min.js"></script>
+        <!-- Custom javascript for password confirmation -->
+        <script type="text/javascript" src="resources/js/confirmPassword.js"></script>
 
         <!-- Bootstrap core CSS -->
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -39,44 +43,17 @@
 
     <body>
 
-        <!-----start-header----->
-        <div class="header">
-            <!---start-wrap---->
-            <div class="wrap">
-                <!---start-top-header---->
-                <div class="top-header">
-                    <div class="clear"></div>
-                </div>
-                <!---End-top-header---->
-                <!----start-main-header----->
-                <div class="main-header">
-                    <div class="logo">
-                        <a href="index.html"><img src="/resources/images/logo1.png"
-                                                  title="logo" /></a>
-                    </div>
-                    <div class="top-nav">
-                        <ul>
-                            <li><a href="/signout">Home</a></li>
-                            <li><a href="/signin.jsp">Sign In</a></li>
-                            <li class="active"><a href="/signup.jsp">Sign Up</a></li>
-                            <li><a href="/guest">Guest</a></li>
-                            <li><a href="/signout">Sign Out</a></li>
-                            <div class="clear"></div>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                <!----End-main-header----->
-            </div>
-        </div>
+        <%@ include file="WEB-INF/views/partials/non-dasboard-header.jspf" %>
+
         <div class="container">
 
             <form class="form-sign" action="RegistrationServlet" method="post" autocomplete="off">
                 <h2 class="form-sign-heading">Registrate please</h2>
-                <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name" required autofocus><br/>
-                <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email" required autofocus><br/>
-                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required><br/>
-                <input type="password" id="confirmInputPassword" name="confirPassword" class="form-control" placeholder="Confirm Password" required><br/>
+                <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name" maxlength="40" required autofocus><br/>
+                <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" maxlength="40" required><br/>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
+                <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass(); return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
+                <span id="confirmMessage" class="confirmMessage"></span>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Registrate</button>
             </form>
         </div> <!-- /container -->

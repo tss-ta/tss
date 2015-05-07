@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,24 +41,26 @@ public class Service implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   // @Basic(optional = false)
+    // @Basic(optional = false)
     @Column(name = "service_id")
     private Integer serviceId;
    // @Basic(optional = false)
-   // @NotNull
-   // @Size(min = 1, max = 60)
+    // @NotNull
+    // @Size(min = 1, max = 60)
     @Column(name = "service_name")
     private String serviceName;
- @JoinColumn(name = "order_id", referencedColumnName = "id")
-	@ManyToOne
-	private TaxiOrder orderId;
-    
-      @OneToMany
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @ManyToOne
+    private TaxiOrder orderId;
+
+    @OneToMany
     @JoinTable(
             name = "conveycorp",
             joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "route_id", referencedColumnName = "route_id"))
     private List<Route> routes = new ArrayList<Route>();
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "service")
+    private MeetMyGuest meetMyGuest;
 
     public Service() {
     }
@@ -69,7 +73,8 @@ public class Service implements Serializable {
         this.serviceId = serviceId;
         this.serviceName = serviceName;
     }
-  public List<Route> getRoutes() {
+
+    public List<Route> getRoutes() {
         return routes;
     }
 
@@ -88,6 +93,7 @@ public class Service implements Serializable {
     public void setOrderId(TaxiOrder orderId) {
         this.orderId = orderId;
     }
+
     public Integer getServiceId() {
         return serviceId;
     }
@@ -128,5 +134,13 @@ public class Service implements Serializable {
     public String toString() {
         return "com.netcracker.entity.Service[ serviceId=" + serviceId + " ]";
     }
-    
+
+    public MeetMyGuest getMeetMyGuest() {
+        return meetMyGuest;
+    }
+
+    public void setMeetMyGuest(MeetMyGuest meetMyGuest) {
+        this.meetMyGuest = meetMyGuest;
+    }
+
 }

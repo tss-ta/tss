@@ -14,7 +14,9 @@
                     <a href="/admin/report" class="btn btn-default"> Back </a>
                 </div>
                 <div class="col-md-1">
-                    <a href="/admin/report" class="btn btn-default"> Export to excel file <i class="fa fa-download"></i></a>
+                    <a href="/admin/report?action=to-excel&reptype=${requestScope.reptype}" class="btn btn-default">
+                        Export to excel file <i class="fa fa-download"></i>
+                    </a>
                 </div>
             </div>
         </div>

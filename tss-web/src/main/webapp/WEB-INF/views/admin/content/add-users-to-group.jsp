@@ -23,7 +23,7 @@
                     <div class="col-md-offset-7 col-md-4">
                         <form action="/admin/group" method="get">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}">
+                                <input type="email" class="form-control" placeholder="Search by email" name="email" value="${param.email}" maxlength="40">
                                 <input type="hidden" name="action" value="search-users">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
@@ -64,7 +64,7 @@
                                     <input type="hidden" name="action" value="add-to-group">
                                     <input type="hidden" name="groupid" value="${param.groupid}">
                                     <input type="hidden" name="userid" value="${customer.id}">
-                                    <input type="hidden" name="userid" value="${param.groupname}">
+                                    <input type="hidden" name="groupname" value="${param.groupname}">
                                     <button type="submit" class="btn btn-default">Add to group <i class="fa fa-users"></i></button>
                                 </form>
                             </td>
@@ -73,7 +73,7 @@
                                     <input type="hidden" name="action" value="remove-from-group">
                                     <input type="hidden" name="groupid" value="${param.groupid}">
                                     <input type="hidden" name="userid" value="${customer.id}">
-                                    <input type="hidden" name="userid" value="${param.groupname}">
+                                    <input type="hidden" name="groupname" value="${param.groupname}">
                                     <button type="submit" class="btn btn-default btn-danger">Remove from group <i class="fa fa-users"></i></button>
                                 </form>
                             </td>

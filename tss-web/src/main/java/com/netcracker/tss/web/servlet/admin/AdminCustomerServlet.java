@@ -22,7 +22,8 @@ import java.util.logging.Logger;
  *
  * @author maks
  */
-@WebServlet(urlPatterns = "/admin/customer")
+@Deprecated
+@WebServlet(urlPatterns = "/admin/u")
 public class AdminCustomerServlet extends HttpServlet {
 
 //        public static final Page template = Page.ADMIN_TEMPLATE;

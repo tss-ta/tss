@@ -7,7 +7,7 @@
     <div class="col-md-1"></div>
     <div class="col-md-10">
         <h1 class="text-center">Reports Panel</h1>
-        
+
         <ul>
             <li><a href="/admin/report?action=most-profitable-service">Most profitable taxi service</a></li>
             <li><a href="/admin/report?action=popular-car-category">Most popular car category</a></li>
