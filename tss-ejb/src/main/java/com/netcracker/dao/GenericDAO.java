@@ -3,6 +3,7 @@ package com.netcracker.dao;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;

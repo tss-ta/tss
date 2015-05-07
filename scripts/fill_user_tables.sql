@@ -123,7 +123,7 @@ INSERT INTO tss_group_role VALUES
 INSERT INTO tss_group_role VALUES
   (3, 3);
 INSERT INTO tss_group_role VALUES
-  (3, 4);
+  (4, 3);
 
 
 INSERT INTO contacts 

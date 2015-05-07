@@ -10,36 +10,69 @@
     <div class="col-md-10">
         <h1>Drivers Panel</h1>
 
-        <p>
-            <a href="/admin/driver?action=adddriver">Add driver</a>
+        <div class="row row-fix">
+            <%--<div class="col-md-offset-1 col-md-10">--%>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-md-1">
+                            <a href="/admin/driver?menu=drivers&action=adddriver" class="btn btn-default">New Driver</a>
+                        </div>
+                        <div class="col-md-offset-7 col-md-4">
+                            <form action="/admin/driver?menu=drivers&action=search" method="post" >
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search" placeholder="Driver name" value="${param.search}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <%--</div>--%>
+            </div>
+        </div>
 
-        </p>
-
-        <table class="table table-striped table-bordered">
-            <thead class="tablehead">
-            <%--<td>surname</td>--%>
-            <%--<td>first name</td>--%>
-            <td>driver name</td>
-            <td>category</td>
-            <td>available</td>
-            <%--<td>hired date</td>--%>
-            <%--<td>fired date</td>--%>
-            <%--<td>salary</td>--%>
-            <td>is male</td>
-            <td>smokes</td>
-            <td>car</td>
-            <%--<td>car active from date</td>--%>
-            <%--<td>car active to date</td>--%>
+        <table class="table table-hover table-bordered">
+            <thead class="tablehead text-center">
+            <td class="col-md-2">driver name</td>
+            <td class="col-md-1">category</td>
+            <td class="col-md-1">available</td>
+            <td class="col-md-1">gender</td>
+            <td class="col-md-1">smokes</td>
+            <td class="col-md-2">car</td>
+            <td class="col-md-1">edit</td>
+            <td class="col-md-1">delete</td>
             </thead>
             <tbody>
 
             <c:forEach items="${driverList}" var="driver">
-                <tr>
+                <tr class="text-center">
                     <td>${driver.getUsername()}</td>
                     <td>${driver.getCategory().getCatStr()}</td>
-                    <td>${driver.isAvailable()}</td>
-                    <td>${driver.isMale()}</td>
-                    <td>${driver.isSmokes()}</td>
+                    <td>
+                        <c:if test="${driver.isAvailable()}">
+                            <i class="fa fa-check"></i>
+                        </c:if>
+                        <c:if test="${!driver.isAvailable()}">
+                            <i class="fa fa-minus"></i>
+                        </c:if>
+                    </td>
+                    <td>
+                        <c:if test="${driver.isMale()}">
+                            <i class="fa fa-male"></i>
+                        </c:if>
+                        <c:if test="${!driver.isMale()}">
+                            <i class="fa fa-female"></i>
+                        </c:if>
+                    </td>
+                    <td>
+                        <c:if test="${driver.isSmokes()}">
+                            <i class="fa fa-fire"></i>
+                        </c:if>
+                        <c:if test="${!driver.isSmokes()}">
+                            <i class="fa fa-minus"></i>
+                        </c:if>
+                    </td>
                     <td>${driver.getCar().getLicPlate()}</td>
                     <td><a href="/admin/driver?action=editdriver&driverid=${driver.getId()}">edit</a></td>
                     <td><a href="/admin/driver?action=deletedriver&driverid=${driver.getId()}">X</a></td>
