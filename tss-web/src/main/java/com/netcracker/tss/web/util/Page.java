@@ -1,15 +1,17 @@
 package com.netcracker.tss.web.util;
 
 /**
- * Created by Kyrylo Berehovyi on 26/04/2015.
+ * @author Kyrylo Berehovyi
  * @author maks
  */
+
 public enum Page {
 
     ADMIN_TEMPLATE("template", "admin/admin-template.jsp"),
     ADMIN_DASHBOARD_CONTENT("dashboard", "admin/content/dashboard.jsp"),
     ADMIN_CARS_CONTENT("cars", "admin/content/cars.jsp"),
     ADMIN_ADD_CAR_CONTENT("cars", "admin/content/add-car.jsp"),
+    ADMIN_VIEW_CAR_CONTENT("cars", "admin/content/view-car.jsp"),
     ADMIN_CUSTOMERS_CONTENT("customers", "admin/content/customers.jsp"),
     ADMIN_ADD_ROLES_CONTENT("customers", "admin/content/add-roles.jsp"),
     ADMIN_DRIVERS_CONTENT("drivers", "admin/content/drivers.jsp"),
@@ -23,7 +25,8 @@ public enum Page {
     ADMIN_CAR_OPTIONS_REPORTS_CONTENT("reports", "admin/content/car-options-report.jsp"),
     ADMIN_NEW_ORDERS_REPORTS_CONTENT("reports", "admin/content/new-orders-report.jsp"),
     ADMIN_CHOOSE_USER_REPORTS_CONTENT("reports", "admin/content/choose-customer.jsp"),
-    ERROR_500_CONTENT("", "content/500.jsp");
+    ERROR_500_CONTENT("", "admin/content/500.jsp"),
+    ERROR_404_CONTENT("", "content/404.jsp");
 
     public static final String ROOT_PATH_PREFIX = "/WEB-INF/views/";
 

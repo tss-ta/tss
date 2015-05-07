@@ -20,15 +20,18 @@
     </appender>
 
     <category name="org.springframework">
-        <priority value="debug" />
+        <priority value="warning" />
     </category>
 
     <category name="org.springframework.security">
-        <priority value="debug" />
+        <priority value="warning" />
+    </category>
+
+    <category name="org.hibernate">
+        <priority value="warning" />
     </category>
 
     <root>
-        <priority value="debug" />
         <appender-ref ref="springAppender" />
         <!-- <appender-ref ref="STDOUT"/>  -->
     </root>

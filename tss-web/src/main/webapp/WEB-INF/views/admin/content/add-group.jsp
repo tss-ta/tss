@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <label for="name" class="col-md-4 control-label">Group name</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="${param.name}">
+                            <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="${param.name}" maxlength="100"x>
                         </div>
                     </div>
                     <%@ include file="../partials/rolescheckboxes.jspf" %>

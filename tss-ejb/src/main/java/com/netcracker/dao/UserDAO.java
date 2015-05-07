@@ -28,7 +28,7 @@ public class UserDAO extends GenericDAO<User> {
      */
     public User getByEmail(String email) {
         TypedQuery<User> query = em.createNamedQuery("User.findByEmail", User.class);
-        query.setParameter("email", email);
+        query.setParameter("email", email.toLowerCase());
         return query.getSingleResult();
     }
 
@@ -51,7 +51,7 @@ public class UserDAO extends GenericDAO<User> {
 
     public List<User> searchByEmail(String email, int pageNumber, int paginationStep) {
         Query query = em.createQuery("SELECT u FROM User u WHERE u.email like :email", User.class);
-        query.setParameter("email", "%" + email + "%");
+        query.setParameter("email", "%" + email.toLowerCase() + "%");
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
         return query.getResultList();
@@ -60,10 +60,20 @@ public class UserDAO extends GenericDAO<User> {
     public List<User> searchByEmailAndRolename(String email, String rolename, int pageNumber, int paginationStep) {
         Query query = em.createQuery("SELECT u FROM User u JOIN u.roles r WHERE (r.rolename = :rolename) and (u.email like :email)", User.class);
         query.setParameter("rolename", rolename);
-        query.setParameter("email", "%" + email + "%");
+        query.setParameter("email", "%" + email.toLowerCase() + "%");
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
         return query.getResultList();
+    }
+
+    public Long countByRolename(String rolename) {
+        Query query = em.createQuery("SELECT COUNT(u.id) FROM User u JOIN u.roles ur JOIN u.groups g JOIN g.roles gr WHERE (ur.rolename = :userRolename) OR (gr.rolename = :groupRolename)");
+//        Query query = em.createQuery("SELECT COUNT(u.id) FROM User u");
+        query.setParameter("userRolename", rolename);
+        query.setParameter("groupRolename", rolename);
+//        query.setParameter("rolename", rolename);
+        return (Long) query.getSingleResult();
+
     }
 
     public boolean isOpen() {
