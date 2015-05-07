@@ -303,7 +303,7 @@ CREATE TABLE celebration_driver_car
   CONSTRAINT driver_car_id_fk FOREIGN KEY (driver_car_id)
   REFERENCES driver_car (id) MATCH SIMPLE
   ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+);
 
 
 
