@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,17 +24,18 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "MeetMyGuest.findByServiceId", query = "SELECT m FROM MeetMyGuest m WHERE m.serviceId = :serviceId"),
     @NamedQuery(name = "MeetMyGuest.findByGuestName", query = "SELECT m FROM MeetMyGuest m WHERE m.guestName = :guestName")})
 public class MeetMyGuest implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-   // @Basic(optional = false)
     @NotNull
     @Column(name = "service_id")
     private Integer serviceId;
-  //  @Basic(optional = false)
+
     @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "guest_name")
     private String guestName;
+
     @JoinColumn(name = "service_id", referencedColumnName = "service_id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Service service;
@@ -81,28 +77,28 @@ public class MeetMyGuest implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (serviceId != null ? serviceId.hashCode() : 0);
-        return hash;
+    public final int hashCode() {
+        return Objects.hash(guestName, service);
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MeetMyGuest)) {
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof MeetMyGuest)) {
             return false;
         }
-        MeetMyGuest other = (MeetMyGuest) object;
-        if ((this.serviceId == null && other.serviceId != null) || (this.serviceId != null && !this.serviceId.equals(other.serviceId))) {
+
+        MeetMyGuest other = (MeetMyGuest) obj;
+        if (!Objects.equals(this.guestName, other.guestName)) {
             return false;
         }
-        return true;
+        return Objects.equals(this.service, other.service);
     }
 
     @Override
     public String toString() {
         return "com.netcracker.entity.MeetMyGuest[ serviceId=" + serviceId + " ]";
     }
-    
 }
