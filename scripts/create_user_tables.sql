@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS taxi_order CASCADE;
 DROP TABLE IF EXISTS personal_address CASCADE;
 DROP TABLE IF EXISTS tss_user_group CASCADE;
@@ -14,9 +13,8 @@ DROP TABLE IF EXISTS route CASCADE;
 DROP TABLE IF EXISTS car CASCADE;
 DROP TABLE IF EXISTS tariff CASCADE;
 DROP TABLE IF EXISTS address CASCADE;
-
-
-
+DROP TABLE IF EXISTS conveycorp CASCADE;
+DROP TABLE IF EXISTS service CASCADE;
 
 CREATE TABLE tss_user
 (
@@ -137,10 +135,10 @@ CREATE TABLE driver_car
   CONSTRAINT pk_driv_car PRIMARY KEY (id),
   CONSTRAINT fk_car_id FOREIGN KEY (car_id)
   REFERENCES car (id) MATCH SIMPLE
-  ON UPDATE NO ACTION ON DELETE NO ACTION,
+  ON UPDATE NO ACTION ON DELETE CASCADE,
   CONSTRAINT fk_drv_id FOREIGN KEY (driver_id)
   REFERENCES driver (driver_id) MATCH SIMPLE
-  ON UPDATE NO ACTION ON DELETE NO ACTION
+  ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
 
@@ -198,6 +196,7 @@ CREATE TABLE route
 	route_id serial NOT NULL,
 	from_addr_id integer NOT NULL,
 	to_addr_id integer NOT NULL,
+  distance FLOAT,
 	path_content CHARACTER VARYING(40) NOT NULL,
 	CONSTRAINT route_id_pk PRIMARY KEY (route_id),
 	CONSTRAINT route_addr_from_id_fk FOREIGN KEY (from_addr_id)
@@ -244,3 +243,33 @@ CREATE TABLE taxi_order
       REFERENCES route (route_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+
+CREATE TABLE service
+(
+  service_id serial NOT NULL,
+  service_name character varying(60) NOT NULL,
+  order_id integer,
+   CONSTRAINT service_service_id_pk PRIMARY KEY (service_id),
+   CONSTRAINT service_order_id_fk FOREIGN KEY (order_id)
+      REFERENCES taxi_order (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE conveycorp
+(
+  service_id integer NOT NULL, 
+  route_id integer NOT NULL,
+ CONSTRAINT  conveycorp_service_id_route_id_pk PRIMARY KEY (service_id, route_id),
+  
+ CONSTRAINT conveycorp_service_id_fk FOREIGN KEY (service_id)
+      REFERENCES service (service_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE,
+	  
+ CONSTRAINT conveycorp_route_id_fk FOREIGN KEY (route_id)
+   REFERENCES route (route_id) MATCH SIMPLE
+   ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
