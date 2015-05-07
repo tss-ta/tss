@@ -7,8 +7,7 @@ import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
-import com.netcracker.tss.web.util.Page;
-import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.tss.web.util.*;
 import com.netcracker.util.BeansLocator;
 
 import javax.servlet.ServletException;
@@ -26,14 +25,33 @@ import java.util.logging.Logger;
 @ActionRoute(menu = "users")
 public class Users {
 
+    private static final Integer DEFAULT_PAGE_SIZE = 10;
+    private static final Integer MIN_PAGE_NUMBER = 1;
+    private static final String MENU_PARAMETER_NAME = "menu";
+    private static final String MENU_PARAMETER_VALUE = "users";
+    private static final String ACTION_PARAMETER_NAME = "action";
 
     @Action(action = "view")
     public ActionResponse getUsersView(HttpServletRequest request) {
         try {
+            Integer page = parsePageNumberFromRequest(request);
+//            if(page >= MIN_PAGE_NUMBER) {
             String roleName = request.getParameter("role");
+            Roles role = roleToEnum(roleName);
             UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-            request.setAttribute("users", userBeanLocal.getUsersByRolename(roleToEnum(roleName), 1, 10));//!!!
+
             request.setAttribute("rolesEnum", Roles.values());
+
+            PagerLink pagerLink = new PagerLink();
+            pagerLink.addParameter(MENU_PARAMETER_NAME, MENU_PARAMETER_VALUE);
+            pagerLink.addParameter(ACTION_PARAMETER_NAME, "view");
+            pagerLink.addParameter("role", role.toString());
+
+            request.setAttribute(RequestAttribute.PAGER.getName(),
+                    userBeanLocal.getPager(page, DEFAULT_PAGE_SIZE, role));
+//            System.out.println();
+            request.setAttribute(RequestAttribute.PAGER_LINK.getName(), pagerLink);
+            request.setAttribute("users", userBeanLocal.getUsersByRolename(role, page, DEFAULT_PAGE_SIZE));//!!!
             request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
             return new ActionResponse(Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
         } catch (RuntimeException e) {
@@ -45,7 +63,7 @@ public class Users {
 
     @Action(action = "add-role")
     public ActionResponse redirectToAddRole(HttpServletRequest request) {
-            return new ActionResponse(Page.ADMIN_ADD_ROLES_CONTENT.getAbsolutePath());
+        return new ActionResponse(Page.ADMIN_ADD_ROLES_CONTENT.getAbsolutePath());
     }
 
     @Action(action = "search")
@@ -78,14 +96,14 @@ public class Users {
         }
     }
 
-    private Roles roleToEnum (String roleName){
+    private Roles roleToEnum(String roleName) {
         try {
-            if (roleName == null){
+            if (roleName == null) {
                 return Roles.ADMIN;
             } else {
                 return Roles.valueOf(roleName);
             }
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return Roles.ADMIN;
         }
     }
@@ -109,5 +127,13 @@ public class Users {
             roles.add(Roles.BANNED);
         }
         return roles;
+    }
+
+    private Integer parsePageNumberFromRequest(HttpServletRequest request) {
+        Integer pageNumber = RequestParameterParser.parseInteger(request, RequestParameter.PAGE.getValue());
+        if (pageNumber == null || pageNumber < MIN_PAGE_NUMBER) {
+            return MIN_PAGE_NUMBER;
+        }
+        return pageNumber;
     }
 }

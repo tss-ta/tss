@@ -9,3 +9,4 @@ import com.netcracker.entity.CelebrationService;
 public class CelebrationServiceDAO extends GenericDAO<CelebrationService> {
 
 }
+

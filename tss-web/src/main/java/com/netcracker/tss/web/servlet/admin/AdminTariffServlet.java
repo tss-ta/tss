@@ -15,6 +15,7 @@ import java.io.IOException;
 
 /**
  * Created by Kyrylo Berehovyi on 25/04/2015.
+ * @author maks
  */
 @WebServlet(urlPatterns = "/admin/tariff")
 public class AdminTariffServlet extends HttpServlet {
@@ -39,7 +40,7 @@ public class AdminTariffServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if ("edit".equals(action)) {
-            TariffBeanLocal tariffBean = BeansLocator.getInstance().getTariffBean();
+            TariffBeanLocal tariffBean = BeansLocator.getInstance().getBean(TariffBeanLocal.class);
             tariffBean.editTariff(Integer.parseInt(req.getParameter("id")), new Float(req.getParameter("add")),
                     new Float(req.getParameter("mult")));
             req.setAttribute(RequestAttribute.SUCCESS_MESSAGE.getName(), "Saved");
@@ -51,7 +52,7 @@ public class AdminTariffServlet extends HttpServlet {
 
     private void searchTariffs(String pagePath, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            TariffBeanLocal groupBeanLocal = BeansLocator.getInstance().getTariffBean();
+            TariffBeanLocal groupBeanLocal = BeansLocator.getInstance().getBean(TariffBeanLocal.class);
             req.setAttribute("tariffs", groupBeanLocal.searchTariffByName(req.getParameter("name"), 1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_TARIFFS_CONTENT.getType());
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), pagePath);
@@ -63,7 +64,7 @@ public class AdminTariffServlet extends HttpServlet {
 
     private void redirectToTariffs(String pagePath, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            TariffBeanLocal groupBeanLocal = BeansLocator.getInstance().getTariffBean();
+            TariffBeanLocal groupBeanLocal = BeansLocator.getInstance().getBean(TariffBeanLocal.class);
             req.setAttribute("tariffs", groupBeanLocal.getTariffPage(1, 10));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_TARIFFS_CONTENT.getType());
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), pagePath);

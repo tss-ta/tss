@@ -38,217 +38,229 @@ import org.json.JSONException;
  */
 public class TaxiOrderBean implements SessionBean {
 
-    public void addTaxiOrder(User user, Route route, Address addFrom,
-            Address addTo, TaxiOrder taxiOrder) {
-        AddressDAO addressDAO = null;
-        RouteDAO routeDAO = null;
-        TaxiOrderDAO taxiOrderDAO = null;
-        try {
-            addressDAO = new AddressDAO();
-            addressDAO.persist(addFrom);
-            addressDAO.persist(addTo);
-            routeDAO = new RouteDAO();
-            route.setFromAddrId(addFrom);
-            route.setToAddrId(addTo);
-            routeDAO.persist(route);
-            taxiOrder.setRouteId(route);
-            taxiOrder.setContactsId(createContacts(user));
-            taxiOrder.setStatus(Status.QUEUED);
-            taxiOrder.setRouteId(route);
-            taxiOrderDAO = new TaxiOrderDAO();
-            taxiOrderDAO.persist(taxiOrder);
-        } finally {
-            if (addressDAO != null) {
-                addressDAO.close();
-            }
-            if (routeDAO != null) {
-                routeDAO.close();
-            }
-            if (taxiOrderDAO != null) {
-                taxiOrderDAO.close();
-            }
-        }
+	public void addTaxiOrder(User user, Route route, Address addFrom,
+			Address addTo, TaxiOrder taxiOrder) {
+		AddressDAO addressDAO = null;
+		RouteDAO routeDAO = null;
+		TaxiOrderDAO taxiOrderDAO = null;
+		try {
+			addressDAO = new AddressDAO();
+			addressDAO.persist(addFrom);
+			addressDAO.persist(addTo);
+			routeDAO = new RouteDAO();
+			route.setFromAddrId(addFrom);
+			route.setToAddrId(addTo);
+			routeDAO.persist(route);
+			taxiOrder.setRouteId(route);
+			taxiOrder.setContactsId(createContacts(user));
+			taxiOrder.setStatus(Status.QUEUED);
+			taxiOrder.setRouteId(route);
+			taxiOrderDAO = new TaxiOrderDAO();
+			taxiOrderDAO.persist(taxiOrder);
+		} finally {
+			if (addressDAO != null) {
+				addressDAO.close();
+			}
+			if (routeDAO != null) {
+				routeDAO.close();
+			}
+			if (taxiOrderDAO != null) {
+				taxiOrderDAO.close();
+			}
+		}
 
-    }
+	}
 
-    public Contacts createContacts(User user) {
-        ContactsDAO contactsDAO = null;
-        UserDAO userDAO = null;
-        Contacts contacts = null;
-        try {
-            userDAO = new UserDAO();
-            User userFromDB = null;
-            try {
-                userFromDB = userDAO.getByEmail(user.getEmail());
-            } catch (NoResultException nre) {
-            }
-            contactsDAO = new ContactsDAO();
-            if (userFromDB != null) {
-                contactsDAO.persist(new Contacts(userFromDB));
-            } else {
-                contactsDAO.persist(new Contacts(user.getUsername(), user
-                        .getEmail()));
-            }
-            contacts = contactsDAO.getByEmail(user.getEmail());
-        } finally {
-            if (userDAO != null) {
-                userDAO.close();
-            }
-            if (contactsDAO != null) {
-                contactsDAO.close();
-            }
-        }
-        return contacts;
-    }
+	public Contacts createContacts(User user) {
+		ContactsDAO contactsDAO = null;
+		UserDAO userDAO = null;
+		Contacts contacts = null;
+		try {
+			userDAO = new UserDAO();
+			User userFromDB = null;
+			try {
+				userFromDB = userDAO.getByEmail(user.getEmail());
+			} catch (NoResultException nre) {
+			}
+			contactsDAO = new ContactsDAO();
+			if (userFromDB != null) {
+				contactsDAO.persist(new Contacts(userFromDB));
+			} else {
+				contactsDAO.persist(new Contacts(user.getUsername(), user
+						.getEmail()));
+			}
+			contacts = contactsDAO.getByEmail(user.getEmail());
+		} finally {
+			if (userDAO != null) {
+				userDAO.close();
+			}
+			if (contactsDAO != null) {
+				contactsDAO.close();
+			}
+		}
+		return contacts;
+	}
 
-    public TaxiOrder getOrderById(int id) {
-        TaxiOrderDAO dao = null;
-        TaxiOrder taxiOrder = null;
-        try {
-            dao = new TaxiOrderDAO();
-            taxiOrder = dao.get(id);
-        } finally {
-            if (dao != null) {
-                dao.close();
-            }
-        }
+	public TaxiOrder getOrderById(int id) {
+		TaxiOrderDAO dao = null;
+		TaxiOrder taxiOrder = null;
+		try {
+			dao = new TaxiOrderDAO();
+			taxiOrder = dao.get(id);
+		} finally {
+			if (dao != null) {
+				dao.close();
+			}
+		}
 
-        return taxiOrder;
-    }
+		return taxiOrder;
+	}
 
-    public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
-            int pageSize, User user, Status status) {
-        TaxiOrderDAO dao = null;
-        ContactsDAO daoC = null;
-        List<TaxiOrder> orders = null;
-        try {
-            dao = new TaxiOrderDAO();
-            daoC = new ContactsDAO();
-            orders = dao.getTaxiOrderHistory(pageNumber, pageSize,
-                    daoC.getByEmail(user.getEmail()), status);
-        } finally {
-            if (dao != null) {
-                dao.close();
-            }
-            if (daoC != null) {
-                daoC.close();
-            }
-        }
-        List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
-        return taxiOrderHistory;
-    }
+	public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
+			int pageSize, User user, Status status) {
+		TaxiOrderDAO dao = null;
+		ContactsDAO daoC = null;
+		List<TaxiOrder> orders = null;
+		try {
+			dao = new TaxiOrderDAO();
+			daoC = new ContactsDAO();
+			orders = dao.getTaxiOrderHistory(pageNumber, pageSize,
+					daoC.getByEmail(user.getEmail()), status);
+		} finally {
+			if (dao != null) {
+				dao.close();
+			}
+			if (daoC != null) {
+				daoC.close();
+			}
+		}
+		List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
+		return taxiOrderHistory;
+	}
 
-    public List<TaxiOrderHistory> getTaxiOrderHistory(int pageNumber,
-            int pageSize, User user) {
-        return getTaxiOrderHistory(pageNumber, pageSize, user, null);
-    }
+	public List<TaxiOrderHistory> getTaxiOrderHistory(int pageNumber,
+			int pageSize, User user) {
+		return getTaxiOrderHistory(pageNumber, pageSize, user, null);
+	}
 
-    public void editTaxiOrderCustomer(int orderId, Address addFrom,
-            Address addTo, Date orderTime, float distance, double price) {
-        TaxiOrderDAO taxiOrderDAO = null;
-        TaxiOrder taxiOrder = null;
-        AddressDAO addressDAO = null;
-        RouteDAO routeDAO = null;
-        Route route = null;
-        try {
-            taxiOrderDAO = new TaxiOrderDAO();
-            taxiOrder = taxiOrderDAO.get(orderId);
-            addressDAO = new AddressDAO();
-            route = taxiOrder.getRouteId();
-            route.setDistance(distance);
-            routeDAO = new RouteDAO();
-            routeDAO.update(route);
-            Address addressFrom = taxiOrder.getRouteId().getFromAddrId();
-            Address addressTo = taxiOrder.getRouteId().getToAddrId();
-            addressFrom.setAltitude(addFrom.getAltitude());
-            addressFrom.setLongtitude(addFrom.getLongtitude());
-            addressTo.setAltitude(addTo.getAltitude());
-            addressTo.setLongtitude(addTo.getLongtitude());
-            addressDAO.update(addressFrom);
-            addressDAO.update(addressTo);
-            taxiOrder.setOrderTime(orderTime);
-            taxiOrder.setPrice(price);
-            taxiOrderDAO.update(taxiOrder);
-        } finally {
-            if (routeDAO != null) {
-                routeDAO.close();
-            }
-            if (taxiOrderDAO != null) {
-                taxiOrderDAO.close();
-            }
-            if (addressDAO != null) {
-                addressDAO.close();
-            }
-        }
+	public void updateTaxiOrder(TaxiOrder taxiOrder) {
+		TaxiOrderDAO taxiOrderDAO = null;
+		try {
+			taxiOrderDAO = new TaxiOrderDAO();
+			taxiOrderDAO.update(taxiOrder);
+		} finally {
+			if (taxiOrderDAO != null) {
+				taxiOrderDAO.close();
+			}
+		}
+	}
 
-    }
+	public void editTaxiOrderCustomer(int orderId, Address addFrom,
+			Address addTo, Date orderTime, float distance, double price) {
+		TaxiOrderDAO taxiOrderDAO = null;
+		TaxiOrder taxiOrder = null;
+		AddressDAO addressDAO = null;
+		RouteDAO routeDAO = null;
+		Route route = null;
+		try {
+			taxiOrderDAO = new TaxiOrderDAO();
+			taxiOrder = taxiOrderDAO.get(orderId);
+			addressDAO = new AddressDAO();
+			route = taxiOrder.getRouteId();
+			route.setDistance(distance);
+			routeDAO = new RouteDAO();
+			routeDAO.update(route);
+			Address addressFrom = taxiOrder.getRouteId().getFromAddrId();
+			Address addressTo = taxiOrder.getRouteId().getToAddrId();
+			addressFrom.setAltitude(addFrom.getAltitude());
+			addressFrom.setLongtitude(addFrom.getLongtitude());
+			addressTo.setAltitude(addTo.getAltitude());
+			addressTo.setLongtitude(addTo.getLongtitude());
+			addressDAO.update(addressFrom);
+			addressDAO.update(addressTo);
+			taxiOrder.setOrderTime(orderTime);
+			taxiOrder.setPrice(price);
+			taxiOrderDAO.update(taxiOrder);
+		} finally {
+			if (routeDAO != null) {
+				routeDAO.close();
+			}
+			if (taxiOrderDAO != null) {
+				taxiOrderDAO.close();
+			}
+			if (addressDAO != null) {
+				addressDAO.close();
+			}
+		}
 
-    public TaxiOrderHistory getOrderForEdit(TaxiOrder order) {
-        TaxiOrderHistory toh = new TaxiOrderHistory(order);
-        toh.setToAddr(getToAddr(toh));
-        toh.setFromAddr(getFromAddr(toh));
-        return toh;
-    }
+	}
 
-    private List<TaxiOrderHistory> createTOHistory(List<TaxiOrder> orders) {
-        List<TaxiOrderHistory> listTOH = new ArrayList<>();
-        for (TaxiOrder to : orders) {
-            TaxiOrderHistory toh = new TaxiOrderHistory(to);
-            toh.setToAddr(getToAddr(toh));
-            toh.setFromAddr(getFromAddr(toh));
-            listTOH.add(toh);
-        }
-        return listTOH;
-    }
+	public TaxiOrderHistory getOrderForEdit(TaxiOrder order) {
+		TaxiOrderHistory toh = new TaxiOrderHistory(order);
+		toh.setToAddr(getToAddr(toh));
+		toh.setFromAddr(getFromAddr(toh));
+		return toh;
+	}
 
-    private String getFromAddr(TaxiOrderHistory toh) {
-           if(toh.getRouteId()!=null){
-        Address a = toh.getRouteId().getFromAddrId();
-        return toAddress(a.getAltitude(), a.getLongtitude());
-           }else{
-               return "";
-           }
-    }
+	private List<TaxiOrderHistory> createTOHistory(List<TaxiOrder> orders) {
+		List<TaxiOrderHistory> listTOH = new ArrayList<>();
+		for (TaxiOrder to : orders) {
+			TaxiOrderHistory toh = new TaxiOrderHistory(to);
+			toh.setToAddr(getToAddr(toh));
+			toh.setFromAddr(getFromAddr(toh));
+			listTOH.add(toh);
+		}
+		return listTOH;
+	}
 
-    private String getToAddr(TaxiOrderHistory toh) {
-          if(toh.getRouteId()!=null){
-        Address a = toh.getRouteId().getToAddrId();
-        return toAddress(a.getAltitude(), a.getLongtitude());
-          }else{
-             return "";  
-          }
-    }
+	private String getFromAddr(TaxiOrderHistory toh) {
+		if (toh.getRouteId() != null) {
+			Address a = toh.getRouteId().getFromAddrId();
+			return toAddress(a.getAltitude(), a.getLongtitude());
+		} else {
+			return "";
+		}
+	}
 
-    private String toAddress(float lng, float alt) {
-        MapBean mapBean = new MapBean();
-        String to = "";
-        try {
-            to = mapBean.geodecodeAddress(lng, alt);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-        return to;
-    }
+	private String getToAddr(TaxiOrderHistory toh) {
+		if (toh.getRouteId() != null) {
+			Address a = toh.getRouteId().getToAddrId();
+			return toAddress(a.getAltitude(), a.getLongtitude());
+		} else {
+			return "";
+		}
+	}
 
-    @Override
-    public void setSessionContext(SessionContext ctx) throws EJBException,
-            RemoteException {
+	private String toAddress(float lng, float alt) {
+		MapBean mapBean = new MapBean();
+		String to = "";
+		try {
+			to = mapBean.geodecodeAddress(lng, alt);
+		} catch (JSONException | IOException e) {
+			e.printStackTrace();
+		}
+		return to;
+	}
 
-    }
+	@Override
+	public void setSessionContext(SessionContext ctx) throws EJBException,
+			RemoteException {
 
-    @Override
-    public void ejbRemove() throws EJBException, RemoteException {
+	}
 
-    }
+	@Override
+	public void ejbRemove() throws EJBException, RemoteException {
 
-    @Override
-    public void ejbActivate() throws EJBException, RemoteException {
+	}
 
-    }
+	@Override
+	public void ejbActivate() throws EJBException, RemoteException {
 
-    @Override
-    public void ejbPassivate() throws EJBException, RemoteException {
+	}
 
-    }
+	@Override
+	public void ejbPassivate() throws EJBException, RemoteException {
+
+	}
 
 }

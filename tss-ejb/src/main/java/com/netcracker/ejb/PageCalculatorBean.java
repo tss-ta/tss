@@ -2,6 +2,7 @@ package com.netcracker.ejb;
 
 import com.netcracker.dao.CarDao;
 import com.netcracker.dao.GenericDAO;
+import com.netcracker.entity.Car;
 import com.netcracker.entity.helper.Pager;
 
 import javax.ejb.EJBException;
@@ -18,18 +19,22 @@ public class PageCalculatorBean implements SessionBean {
     private static final Integer FIRST_PAGE = 1;
 
     public Pager createCarPager(Integer pageNumber, Integer pageSize) {
-        CarDao carDao = null;
-        Pager pager = null;
-        try {
-            carDao = new CarDao();
-            pager = calculatePages(pageNumber, pageSize, carDao.count());
-        } finally {
-            if (carDao != null) {
-                carDao.close();
-            }
-        }
-        return pager;
+        return createPager(Car.class, pageNumber, pageSize);
     }
+
+//    public Pager createCarPager(Integer pageNumber, Integer pageSize) {
+//        CarDao carDao = null;
+//        Pager pager = null;
+//        try {
+//            carDao = new CarDao();
+//            pager = calculatePages(pageNumber, pageSize, carDao.count());
+//        } finally {
+//            if (carDao != null) {
+//                carDao.close();
+//            }
+//        }
+//        return pager;
+//    }
 
     public Pager createSearchCarPager(Integer pageNumber, Integer pageSize, String searchWord) {
         CarDao carDao = null;
@@ -46,7 +51,22 @@ public class PageCalculatorBean implements SessionBean {
         return pager;
     }
 
-    private Pager calculatePages(Integer pageNumber, Integer pageSize, Integer amount) {
+    public <T> Pager createPager (Class <T> entity, Integer pageNumber, Integer pageSize) {
+
+        GenericDAO <T> dao = null;
+        Pager pager = null;
+        try {
+            dao = new GenericDAO<T>(entity);
+            pager = calculatePages(pageNumber, pageSize, dao.count());
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+        return pager;
+    }
+
+    public Pager calculatePages(Integer pageNumber, Integer pageSize, Integer amount) {
         if (pageNumber == null) {
             throw new IllegalArgumentException("Integer 'pageNumber' must not be a null.");
         }
