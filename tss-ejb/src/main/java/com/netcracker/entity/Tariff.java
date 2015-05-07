@@ -111,7 +111,12 @@ public class Tariff implements Serializable {
 
     @Override
     public String toString() {
-        return "com.netcracker.entity.Tariff[ id=" + id + " ]";
+        final StringBuilder sb = new StringBuilder("Tariff{");
+        sb.append("id=").append(id);
+        sb.append(", tariffName='").append(tariffName).append('\'');
+        sb.append(", plusCoef=").append(plusCoef);
+        sb.append(", multipleCoef=").append(multipleCoef);
+        sb.append('}');
+        return sb.toString();
     }
-    
 }
