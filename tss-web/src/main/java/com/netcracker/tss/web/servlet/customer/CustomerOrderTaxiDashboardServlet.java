@@ -1,7 +1,6 @@
 package com.netcracker.tss.web.servlet.customer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,17 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.netcracker.dao.UserDAO;
-import com.netcracker.ejb.MapBeanLocal;
-import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
-import com.netcracker.entity.Address;
-import com.netcracker.entity.TaxiOrder;
-import com.netcracker.entity.User;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.UserUtils;
@@ -45,7 +35,7 @@ public class CustomerOrderTaxiDashboardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Integer pageNumber = updatePageNumber(req);
-		getServletContext().setAttribute("pageNumber", pageNumber);
+		req.getSession(true).setAttribute("pageNumber", pageNumber);
 		List<TaxiOrderHistory> list = getHistory(pageNumber, req);
 		req.setAttribute("history", list);
 		req.setAttribute("pageType", "dashboard");
@@ -61,7 +51,7 @@ public class CustomerOrderTaxiDashboardServlet extends HttpServlet {
 				pageNumber, pageSize, UserUtils.findCurrentUser());
 		if (list.size() == 0 && pageNumber>1) {
 			pageNumber--;
-			getServletContext().setAttribute("pageNumber", pageNumber);
+			req.getSession(true).setAttribute("pageNumber", pageNumber);
 			list = taxiOrderBeanLocal
 					.getTaxiOrderHistory(pageNumber, pageSize,
 							UserUtils.findCurrentUser());
@@ -70,7 +60,7 @@ public class CustomerOrderTaxiDashboardServlet extends HttpServlet {
 	}
 
 	private Integer updatePageNumber(HttpServletRequest req) {
-		Integer pageNumber = (Integer) getServletContext().getAttribute(
+		Integer pageNumber = (Integer) req.getSession(true).getAttribute(
 				"pageNumber");
 		if (pageNumber == null)
 			pageNumber = 1;
