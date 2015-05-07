@@ -16,7 +16,8 @@ import java.util.List;
  * Created by Kyrylo Berehovyi on 20/04/2015.
  */
 
-@WebServlet(urlPatterns = "/admin")
+@Deprecated
+//@WebServlet(urlPatterns = "/admin")
 public class AdminHomeServlet extends HttpServlet {
 
     private static final Page page = Page.ADMIN_DASHBOARD_CONTENT;

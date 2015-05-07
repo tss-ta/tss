@@ -1,8 +1,8 @@
 function checkPass()
 {
     //Store the password field objects into variables ...
-    var pass1 = document.getElementById('inputPassword');
-    var pass2 = document.getElementById('confirmInputPassword');
+    var pass1 = document.getElementById('password');
+    var pass2 = document.getElementById('confirPassword');
     //Store the Confimation Message Object ...
     var message = document.getElementById('confirmMessage');
     //Set the colors we will be using ...

@@ -4,46 +4,75 @@
   Time: 22:20
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
-    <title>Taxi Service System</title>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/resources/img/favicon.ico">
 
-    <!-- Bootstrap -->
+    <title>Taxi Service System Sign In</title>
+
+    <link href="/resources/css/style.css" rel="stylesheet" type="text/css"
+          media="all" />
+    <link href='http://fonts.googleapis.com/css?family=Raleway'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/resources/css/responsiveslides.css">
+    <script src="/resources/js/responsiveslides.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
     <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/css/custom.css" rel="stylesheet">
-    <link href="/resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/resources/css/sign.css" rel="stylesheet">
+    <style>
+        .title h1 {
+            color: #989898;
+        }
+    </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+
 <body>
 
-<%@ include file="/WEB-INF/views/partials/header.jspf" %>
+<%@ include file="WEB-INF/views/partials/non-dasboard-header.jspf" %>
 
 <div class="container">
 
-    <div class="jumbotron">
-        <h1 class="text-danger">403 Forbidden</h1>
-        <h3>Please, try again!</h3>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 text-center title">
+            <sec:authorize access="hasRole('BANNED')" var="banned" />
+            <c:choose>
+                <c:when test="${banned}">
+                    <h1>
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-user fa-stack-1x"></i>
+                            <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                        </span>
+                        You are banned!
+                    </h1>
+                </c:when>
+                <c:otherwise>
+                    <h1><i class="fa fa-lock fa-lg"></i> 403 - Access denied.</h1>
+                </c:otherwise>
+            </c:choose>
+
+        </div>
     </div>
 
+</div> <!-- /container -->
 
-</div><!-- /.container -->
+<%--<%@ include file="WEB-INF/views/partials/footer.jspf" %>--%>
 
-<%@ include file="/WEB-INF/views/partials/footer.jspf" %>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/resources/js/jquery-1.11.2.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

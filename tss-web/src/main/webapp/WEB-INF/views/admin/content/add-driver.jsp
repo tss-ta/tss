@@ -40,11 +40,11 @@
                     <label for="inputEmail" class="sr-only">Email address</label>
                     <c:if test="${empty driver}">
                         <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" maxlength="40" required>
-                        <label for="inputPassword" class="sr-only">Password</label>
-                        <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" maxlength="60" required><br/>
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
 
-                        <label for="confirmInputPassword" class="sr-only">Confirm Password</label>
-                        <input type="password" id="confirmInputPassword" name="confirmInputPassword" onkeyup="checkPass();
+                        <label for="confirPassword" class="sr-only">Confirm Password</label>
+                        <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass();
                                 return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
                         <span id="confirmMessage" class="confirmMessage"></span>
                     </c:if>

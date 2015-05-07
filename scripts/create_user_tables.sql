@@ -17,7 +17,6 @@ DROP TABLE IF EXISTS conveycorp CASCADE;
 DROP TABLE IF EXISTS service CASCADE;
 DROP TABLE IF EXISTS meet_my_guest CASCADE;
 
-
 CREATE TABLE tss_user
 (
   id serial NOT NULL,
@@ -82,7 +81,7 @@ CREATE TABLE driver
     ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT fk_car FOREIGN KEY (car_id)
     REFERENCES car (id) MATCH SIMPLE
-  ON UPDATE NO ACTION ON DELETE NO ACTION
+  ON UPDATE SET NULL ON DELETE SET NULL
 );
 
 
@@ -246,14 +245,13 @@ CREATE TABLE taxi_order
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-CREATE TABLE service
 
+CREATE TABLE service
 (
   service_id serial NOT NULL,
   service_name character varying(60) NOT NULL,
   order_id integer,
-   CONSTRAINT service_service_id_pk PRIMARY KEY (service_id)
-,
+   CONSTRAINT service_service_id_pk PRIMARY KEY (service_id),
    CONSTRAINT service_order_id_fk FOREIGN KEY (order_id)
       REFERENCES taxi_order (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE CASCADE

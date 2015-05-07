@@ -59,10 +59,10 @@
 
             </div>
 
-        </div>
-        <!-- Custom javascript for password confirmation -->
-        <script type="text/javascript" src="../../../resources/js/confirmPassword.js"></script>
-        <script src="/resources/js/jquery-1.11.2.min.js"></script>
-        <script src="/resources/js/bootstrap.min.js"></script>
-    </body>
+<script src="/resources/js/jquery-1.11.2.min.js"></script>
+<script src="/resources/js/bootstrap.min.js"></script>
+<script src="/resources/js/validator.js"></script>
+<!-- Custom javascript for password confirmation -->
+<script type="text/javascript" src="/resources/js/confirmPassword.js"></script>
+</body>
 </html>

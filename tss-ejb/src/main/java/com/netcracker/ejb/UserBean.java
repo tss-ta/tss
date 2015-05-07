@@ -42,12 +42,13 @@ public class UserBean implements SessionBean {
             userDAO = new UserDAO();
             roleDAO = new RoleDAO();
             User user = userDAO.get(userId);
-
-            user.setRoles(toRoleList(roles, roleDAO));
-            userDAO.update(user);
             if (roles.contains(Roles.BANNED)) {
+                roles.clear();
+                roles.add(Roles.BANNED);
                 notifyAboutBan(user.getEmail());
             }
+            user.setRoles(toRoleList(roles, roleDAO));
+            userDAO.update(user);
         } finally {
             if (roleDAO != null) {
                 roleDAO.close();
@@ -279,15 +280,14 @@ public class UserBean implements SessionBean {
     }
 
     public List<UserDTO> searchCustomersByEmail(String emailPart, int pageNumber, int paginationStep) {
-        String rolename = Roles.CUSTOMER.toString();
-        return searchUsersByEmailAndRolename(emailPart, rolename, pageNumber, paginationStep);
+        return searchUsersByEmailAndRole(emailPart, Roles.CUSTOMER, pageNumber, paginationStep);
     }
 
-    public List<UserDTO> searchUsersByEmailAndRolename(String emailPart, String rolename, int pageNumber, int paginationStep) {
+    public List<UserDTO> searchUsersByEmailAndRole(String emailPart, Roles role, int pageNumber, int paginationStep) {
         UserDAO dao = null;
         try {
             dao = new UserDAO();
-            return toUserDTOList(dao.searchByEmailAndRolename(emailPart, rolename, pageNumber, paginationStep));
+            return toUserDTOList(dao.searchByEmailAndRolename(emailPart, role.toString(), pageNumber, paginationStep));
         } finally {
             if (dao != null) {
                 dao.close();
