@@ -52,7 +52,7 @@
 					<div class="col-sm-10">
 						<div class="col-sm-6">
 							<input type="text" class="form-control" id="fromAddr"
-								name="fromAddr" value="Ukraine, Kiev, Pobedy 55" />
+								name="fromAddr" value="Ukraine, Kiev, Pobedy 55" maxlength="140" />
 						</div>
 						<br>&nbsp;<br>
 						<p id="fromAddrMessage"></p>
@@ -76,7 +76,7 @@
 					<div class="col-sm-10">
 						<div class="col-sm-6">
 							<input type="text" class="form-control" id="toAddr" name="toAddr"
-								value="Ukraine, Kiev" />
+								value="Ukraine, Kiev" maxlength="140" />
 						</div>
 						<br>&nbsp;<br>
 						<p id="toAddrMessage"></p>
@@ -95,8 +95,8 @@
 							name="deleteTo">Delete Current</button>
 						<br>&nbsp;<br>
 						<div class="col-sm-6">
-							<input id="price_field" class="form-control" name ="price" type="text"
-								placeholder="Price will be shown here" readonly>
+							<input id="price_field" class="form-control" name="price"
+								type="text" placeholder="Price will be shown here" readonly>
 							<div class="text-center">
 								<br>
 								<button id="update_price" name="update_price" type="button"
@@ -180,11 +180,16 @@
 		<!-- /form-panel -->
 	</div>
 	<!-- /col-lg-12 -->
-	<div class="text-center">
-		<input type="hidden" id="id_rout_dist" name="route_distance" value="" />
-		<button class="btn btn-success btn-lg btn-block" type="submit">Order
-			Now</button>
+	<div class="row">
+		<div class="col-lg-12 text-center">
+			<div class="text-center">
+				<input type="hidden" id="id_rout_dist" name="route_distance"
+					value="" />
+				<button class="btn btn-success btn-lg btn-block" type="submit">Order
+					Now</button>
 
+			</div>
+		</div>
 	</div>
 </form>
 
@@ -243,14 +248,23 @@
 </script>
 
 <script>
+var a = {"Ё":"YO","Й":"I","Ц":"TS","У":"U","К":"K","Е":"E","Н":"N","Г":"G","Ш":"SH","Щ":"SCH","З":"Z","Х":"H","Ъ":"'","ё":"yo","й":"i","ц":"ts","у":"u","к":"k","е":"e","н":"n","г":"g","ш":"sh","щ":"sch","з":"z","х":"h","ъ":"'","Ф":"F","Ы":"I","В":"V","А":"a","П":"P","Р":"R","О":"O","Л":"L","Д":"D","Ж":"ZH","Э":"E","ф":"f","ы":"i","в":"v","а":"a","п":"p","р":"r","о":"o","л":"l","д":"d","ж":"zh","э":"e","Я":"Ya","Ч":"CH","С":"S","М":"M","И":"I","Т":"T","Ь":"'","Б":"B","Ю":"YU","я":"ya","ч":"ch","с":"s","м":"m","и":"i","т":"t","ь":"'","б":"b","ю":"yu"};
+
+function transliterate(word){
+  return word.split('').map(function (char) { 
+    return a[char] || char; 
+  }).join("");
+} </script>
+
+<script>
 	$('#update_price').click(function() {
 		$.ajax({
 			type : "GET",
 			url : "http://localhost:8080/price",
 			data : {
-				fromAddr : $("#fromAddr").val(),
-				toAddr : $("#toAddr").val(),
-                                ordertime : $("#ordertime").val()
+				fromAddr : transliterate($("#fromAddr").val()),
+				toAddr : transliterate($("#toAddr").val()),
+				ordertime : $("#ordertime").val()
 			},
 			dataType : "text",
 		}).done(function(res) {

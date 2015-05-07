@@ -31,7 +31,7 @@
                 <div class="col-md-8">
                     <label for="inputDriverName" class="sr-only">Driver name</label>
                     <c:if test="${empty driver}">
-                        <input type="text" id="inputDriverName" name="drivername" class="form-control" placeholder="Driver name" required autofocus>
+                        <input type="text" id="inputDriverName" name="drivername" class="form-control" placeholder="Driver name" maxlength="40" required autofocus>
                     </c:if>
                     <c:if test="${not empty driver}">
                         <input type="text" id="inputDriverName" name="drivername" class="form-control" value="${driver.getUsername()}" autofocus>
@@ -39,32 +39,35 @@
 
                     <label for="inputEmail" class="sr-only">Email address</label>
                     <c:if test="${empty driver}">
-                        <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required>
-                        <label for="inputPassword" class="sr-only">Password</label>
-                        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
-                        <label for="confirmInputPassword" class="sr-only">Confirm Password</label>
-                        <input type="password" id="confirmInputPassword" name="confirmPassword" class="form-control" placeholder="Confirm Password" required><br/>
+                        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" maxlength="40" required>
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
+
+                        <label for="confirPassword" class="sr-only">Confirm Password</label>
+                        <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass();
+                                return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
+                        <span id="confirmMessage" class="confirmMessage"></span>
                     </c:if>
                     <c:if test="${not empty driver}">
-                        <input type="text" id="inputEmail" name="email" class="form-control" value="${driver.getEmail()}" required>
+                        <input type="email" id="inputEmail" name="email" class="form-control" value="${driver.getEmail()}" required>
                     </c:if>
                 </div>
 
                 <div class="col-md-4">
                     <%--Choose driver category--%>
                     <label for="inputCategory">Choose category</label>
-                        <select id="inputCategory" name="category">
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D">D</option>
-                        </select>
+                    <select id="inputCategory" name="category">
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
 
-                        <%--Choose driver options--%>
-                        <div class="checkbox">
-                            <label class="checkbox"><input id="availableChkBox" type="checkbox" name="available" >available</label>
-                            <label class="checkbox"><input id="isMaleChkBox" type="checkbox" name="ismale">is male</label>
-                            <label class="checkbox"><input id="smokesChkBox" type="checkbox" name="smokes">smokes</label>
-                        </div>
+                    <%--Choose driver options--%>
+                    <div class="checkbox">
+                        <label class="checkbox"><input id="availableChkBox" type="checkbox" name="available" >available</label>
+                        <label class="checkbox"><input id="isMaleChkBox" type="checkbox" name="ismale">is male</label>
+                        <label class="checkbox"><input id="smokesChkBox" type="checkbox" name="smokes">smokes</label>
+                    </div>
                 </div>
             </div>
 
@@ -90,123 +93,123 @@
 
     <div class="col-md-5">
         <%--Assigned Car--%>
-            <div class="row row-fix">
-                <div class="col-md-11">
-                    <c:if test="${not empty driver}">
-                        <c:set var="car" value="${driver.getCar()}"/>
-                        <c:if test="${not empty car}">
-                            <div class="row row-fix">
-                                <div class="col-md-4">
-                                    <h4>Assigned car</h4>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <form action="/admin/driver" method="post">
-                                        <input type="hidden" name="action" value="unassign">
-                                        <input type="hidden" name="driverid" value="${driver.getId()}">
-                                        <input type="hidden" name="carid" value="${car.getId()}">
-                                        <button class="btn btn btn-danger" type="submit" >Unassign</button>
-                                    </form>
-                                </div>
+        <div class="row row-fix">
+            <div class="col-md-11">
+                <c:if test="${not empty driver}">
+                    <c:set var="car" value="${driver.getCar()}"/>
+                    <c:if test="${not empty car}">
+                        <div class="row row-fix">
+                            <div class="col-md-4">
+                                <h4>Assigned car</h4>
                             </div>
 
-                            <table class="table table-striped table-bordered">
-                                <thead class="tablehead text-center">
-                                <td class="col-md-1">Option</td>
-                                <td class="col-md-1">Value</td>
-                                </thead>
+                            <div class="col-md-4">
+                                <form action="/admin/driver" method="post">
+                                    <input type="hidden" name="action" value="unassign">
+                                    <input type="hidden" name="driverid" value="${driver.getId()}">
+                                    <input type="hidden" name="carid" value="${car.getId()}">
+                                    <button class="btn btn btn-danger" type="submit" >Unassign</button>
+                                </form>
+                            </div>
+                        </div>
 
-                                <tbody>
-                                    <%--License Plate--%>
+                        <table class="table table-striped table-bordered">
+                            <thead class="tablehead text-center">
+                            <td class="col-md-1">Option</td>
+                            <td class="col-md-1">Value</td>
+                            </thead>
+
+                            <tbody>
+                                <%--License Plate--%>
                                 <tr class="text-center">
                                     <td>№</td>
                                     <td>${car.getLicPlate()}</td>
                                 </tr>
 
-                                        <%--Car Type--%>
-                                    <tr>
-                                        <td class="text-center">Type</td>
-                                        <td class="text-center">
-                                            <c:choose>
-                                                <c:when test="${car.category == 1}">
-                                                    Business
-                                                </c:when>
-                                                <c:when test="${car.category == 2}">
-                                                    Economy
-                                                </c:when>
-                                                <c:when test="${car.category == 3}">
-                                                    Van
-                                                </c:when>
-                                                <c:when test="${car.category == 4}">
-                                                    Cargo
-                                                </c:when>
-                                                <c:otherwise>
-                                                    Other
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
+                                <%--Car Type--%>
+                                <tr>
+                                    <td class="text-center">Type</td>
+                                    <td class="text-center">
+                                        <c:choose>
+                                            <c:when test="${car.category == 1}">
+                                                Business
+                                            </c:when>
+                                            <c:when test="${car.category == 2}">
+                                                Economy
+                                            </c:when>
+                                            <c:when test="${car.category == 3}">
+                                                Van
+                                            </c:when>
+                                            <c:when test="${car.category == 4}">
+                                                Cargo
+                                            </c:when>
+                                            <c:otherwise>
+                                                Other
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <td class="text-center">Wi-fi</td>
-                                        <td class="text-center">
-                                            <c:if test="${car.wifi}">
-                                                <i class="fa fa-wifi"></i>
-                                            </c:if>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="text-center">Wi-fi</td>
+                                    <td class="text-center">
+                                        <c:if test="${car.wifi}">
+                                            <i class="fa fa-wifi"></i>
+                                        </c:if>
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <td class="text-center">Conditioner</td>
-                                        <td class="text-center">
-                                            <c:if test="${car.conditioner}">
-                                                <i class="fa fa-check"></i>
-                                            </c:if>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="text-center">Conditioner</td>
+                                    <td class="text-center">
+                                        <c:if test="${car.conditioner}">
+                                            <i class="fa fa-check"></i>
+                                        </c:if>
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <td class="text-center">Animalable</td>
-                                        <td class="text-center">
-                                            <c:if test="${car.animalable}">
-                                                <i class="fa fa-check"></i>
-                                            </c:if>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="text-center">Animalable</td>
+                                    <td class="text-center">
+                                        <c:if test="${car.animalable}">
+                                            <i class="fa fa-check"></i>
+                                        </c:if>
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <td class="text-center">Available</td>
-                                        <td class="text-center">
-                                            <c:if test="${car.available}">
-                                                <i class="fa fa-check"></i>
-                                            </c:if>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="text-center">Available</td>
+                                    <td class="text-center">
+                                        <c:if test="${car.available}">
+                                            <i class="fa fa-check"></i>
+                                        </c:if>
+                                    </td>
+                                </tr>
 
-                                        <%--<td><a href="/admin?action=edit">Edit</a></td>--%>
-                                </tbody>
-                            </table>
-                        </c:if>
-                        <c:if test="${empty car}">
-                            <div class="row row-fix">
-                                <div class="col-md-6">
-                                    <h4>There is no assigned Car</h4>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <form action="/admin/driver" method="post">
-                                        <input type="hidden" name="action" value="assign">
-                                        <input type="hidden" name="driverid" value="${driver.getId()}">
-                                        <button class="btn btn btn-info" type="submit">Assign</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </c:if>
+                                <%--<td><a href="/admin?action=edit">Edit</a></td>--%>
+                            </tbody>
+                        </table>
                     </c:if>
+                    <c:if test="${empty car}">
+                        <div class="row row-fix">
+                            <div class="col-md-6">
+                                <h4>There is no assigned Car</h4>
+                            </div>
 
-                    <div class="col-md-2"></div>
-                </div>
+                            <div class="col-md-4">
+                                <form action="/admin/driver" method="post">
+                                    <input type="hidden" name="action" value="assign">
+                                    <input type="hidden" name="driverid" value="${driver.getId()}">
+                                    <button class="btn btn btn-info" type="submit">Assign</button>
+                                </form>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:if>
+
+                <div class="col-md-2"></div>
             </div>
+        </div>
     </div>
 </div> <%--Row end--%>
 
