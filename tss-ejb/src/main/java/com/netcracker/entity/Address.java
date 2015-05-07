@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -38,18 +30,23 @@ import javax.validation.constraints.NotNull;
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "addr_id", updatable = false)
     private Integer addrId;
+
     @NotNull
     @Column(name = "altitude")
     private float altitude;
+
     @NotNull
     @Column(name = "longtitude")
     private float longtitude;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fromAddrId")
     private Collection<Route> routeCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "toAddrId")
     private Collection<Route> routeCollection1;
 
@@ -66,10 +63,10 @@ public class Address implements Serializable {
     }
 
     public Address(double[] mass) {
-		this((float)mass[1],(float)mass[0]);
-	}
+        this((float) mass[1], (float) mass[0]);
+    }
 
-	public Integer getAddrId() {
+    public Integer getAddrId() {
         return addrId;
     }
 
@@ -110,37 +107,32 @@ public class Address implements Serializable {
     }
 
     @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Float.floatToIntBits(altitude);
-		result = prime * result + Float.floatToIntBits(longtitude);
-		return result;
-	}
-
-    
+    public final int hashCode() {
+        return Objects.hash(Float.floatToIntBits(altitude), Float.floatToIntBits(longtitude));
+    }
 
     @Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Address other = (Address) obj;
-		if (Float.floatToIntBits(altitude) != Float
-				.floatToIntBits(other.altitude))
-			return false;
-		if (Float.floatToIntBits(longtitude) != Float
-				.floatToIntBits(other.longtitude))
-			return false;
-		return true;
-	}
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Address)) {
+            return false;
+        }
 
-	@Override
+        Address other = (Address) obj;
+        if (!Objects.equals(
+                Float.floatToIntBits(this.altitude),
+                Float.floatToIntBits(other.altitude))) {
+            return false;
+        }
+        return Objects.equals(
+                Float.floatToIntBits(this.longtitude),
+                Float.floatToIntBits(other.longtitude));
+    }
+
+    @Override
     public String toString() {
         return "com.netcracker.entity.Address[ addrId=" + addrId + " ]";
     }
-
 }
