@@ -25,7 +25,7 @@
                         <div class="input-group">
                             <input type="hidden" name="menu" value="car">
                             <input type="hidden" name="action" value="search">
-                            <input type="text" class="form-control" name="search" placeholder="Search by License Plate" value="${param.search}">
+                            <input type="text" class="form-control" name="search" placeholder="Search by License Plate" value="${param.search}" maxlength="11">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>

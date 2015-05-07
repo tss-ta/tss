@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,19 +31,26 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Tariff.findByPlusCoef", query = "SELECT t FROM Tariff t WHERE t.plusCoef = :plusCoef"),
     @NamedQuery(name = "Tariff.findByMultipleCoef", query = "SELECT t FROM Tariff t WHERE t.multipleCoef = :multipleCoef")})
 public class Tariff implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer id;
+
     @Size(max = 40)
     @Column(name = "tariff_name")
     private String tariffName;
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "plus_coef")
+    @NotNull
     private Float plusCoef;
+
     @Column(name = "multiple_coef")
-    @Min(value=0)
+    @NotNull
+    @Min(value = 0)
     @Max(value = 100000)
     private Float multipleCoef;
 
@@ -88,30 +92,44 @@ public class Tariff implements Serializable {
     public void setMultipleCoef(Float multipleCoef) {
         this.multipleCoef = multipleCoef;
     }
-    
+
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public final int hashCode() {
+        return Objects.hash(tariffName, Float.floatToIntBits(this.plusCoef),
+                Float.floatToIntBits(this.multipleCoef));
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Tariff)) {
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Tariff)) {
             return false;
         }
-        Tariff other = (Tariff) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+
+        Tariff other = (Tariff) obj;
+        if (!Objects.equals(this.tariffName, other.tariffName)) {
             return false;
         }
-        return true;
+        if (!Objects.equals(
+                Float.floatToIntBits(this.plusCoef),
+                Float.floatToIntBits(other.plusCoef))) {
+            return false;
+        }
+        return Objects.equals(
+                Float.floatToIntBits(this.multipleCoef),
+                Float.floatToIntBits(other.multipleCoef));
     }
 
     @Override
     public String toString() {
-        return "com.netcracker.entity.Tariff[ id=" + id + " ]";
+        final StringBuilder sb = new StringBuilder("Tariff{");
+        sb.append("id=").append(id);
+        sb.append(", tariffName='").append(tariffName).append('\'');
+        sb.append(", plusCoef=").append(plusCoef);
+        sb.append(", multipleCoef=").append(multipleCoef);
+        sb.append('}');
+        return sb.toString();
     }
-    
 }

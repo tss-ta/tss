@@ -10,6 +10,7 @@ import com.netcracker.entity.Address;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
 import com.netcracker.util.BeansLocator;
@@ -116,6 +117,30 @@ public class UserBean implements SessionBean {
                 roleDAO.close();
             }
         }
+    }
+
+
+    public Pager getPager(Integer pageNumber, Integer pageSize) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        return pageCalculator.createPager(User.class, pageNumber, pageSize);
+    }
+
+    public Pager getPager(Integer pageNumber, Integer pageSize, Roles role) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        UserDAO userDAO = null;
+        Pager pager = null;
+        try {
+            userDAO = new UserDAO();
+//            Long amount = userDAO.countByRolename(role.toString());
+            Long amount = userDAO.countByUserRoleName(role.toString());
+            System.out.println("==========="+ role + "!!!!!!!!!!!!!!!!!!" + amount);
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount.intValue());
+        } finally {
+            if (userDAO != null) {
+                userDAO.close();
+            }
+        }
+        return pager;
     }
 
     /**

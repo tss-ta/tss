@@ -109,14 +109,14 @@
 
     <script>
         AnyTime.picker("begin", {
-            format: "%H:%i, %d %m %Y",
-            firstDOW: 1
+        format: "%H:%i, %d %m %Y",
+        firstDOW: 1
         });
     </script>
     <script>
         AnyTime.picker("end", {
-            format: "%H:%i, %d %m %Y",
-            firstDOW: 1
+        format: "%H:%i, %d %m %Y",
+        firstDOW: 1
         });
     </script>
 

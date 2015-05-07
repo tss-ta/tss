@@ -2,9 +2,10 @@ package com.netcracker.ejb;
 
 
 import com.netcracker.dao.TariffDAO;
-import com.netcracker.entity.Role;
 import com.netcracker.entity.Tariff;
-import com.netcracker.entity.helper.Roles;
+import com.netcracker.entity.helper.Pager;
+import com.netcracker.util.BeansLocator;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +15,9 @@ import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
 
+/**
+ * @author maks
+ */
 public class TariffBean implements SessionBean {
 
 
@@ -40,7 +44,7 @@ public class TariffBean implements SessionBean {
         TariffDAO dao = null;
         try {
             dao = new TariffDAO();
-            return dao.findPageOrderedByName(pageNumber, paginationStep); //maybe should cloneot convert to DTO?
+            return dao.findPageOrderedByName(pageNumber, paginationStep); //maybe should clone or convert to DTO?
         } finally {
             if (dao != null) {
                 dao.close();
@@ -62,15 +66,20 @@ public class TariffBean implements SessionBean {
         }
     }
 
-    public List<Roles> toEnumRolesList(List<Role> roleList) {
-        List<Roles> rolesList = new ArrayList<Roles>(); //enum
-        Iterator<Role> roleIterator = roleList.iterator();
-        while (roleIterator.hasNext()) {
-            String roleName = roleIterator.next().getRolename();
-            rolesList.add(Roles.valueOf(roleName));
-        }
-        return rolesList;
+    public Pager getPager(Integer pageNumber, Integer pageSize) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        return pageCalculator.createPager(Tariff.class, pageNumber, pageSize);
     }
+
+//    public List<Roles> toEnumRolesList(List<Role> roleList) {
+//        List<Roles> rolesList = new ArrayList<Roles>(); //enum
+//        Iterator<Role> roleIterator = roleList.iterator();
+//        while (roleIterator.hasNext()) {
+//            String roleName = roleIterator.next().getRolename();
+//            rolesList.add(Roles.valueOf(roleName));
+//        }
+//        return rolesList;
+//    }
 
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {

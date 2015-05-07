@@ -20,7 +20,7 @@
                 <div class="col-md-offset-7 col-md-4">
                     <form action="/admin/group" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="groupname" placeholder="Search by group name" value="${param.groupname}">
+                            <input type="text" class="form-control" name="groupname" placeholder="Search by group name" value="${param.groupname}" maxlength="100">
                             <input type="hidden" name="action" value="search">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
@@ -55,8 +55,8 @@
                             </td>
                             <td class="col-md-1">
                                 <a href="/admin/group?action=edit-group&id=${group.id}&name=${group.name}" class="btn btn-default">
-                                    Edit <i class="fa fa-users"></i>
-                                </a>
+                                Edit <i class="fa fa-users"></i>
+                            </a>
                         </td>
                         <td class="col-md-1">
                             <form action="/admin/group" method="post">

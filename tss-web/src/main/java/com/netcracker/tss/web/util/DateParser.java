@@ -20,7 +20,7 @@ public class DateParser {
 				Locale.ENGLISH);
 		try {
 			date = req.getParameter("ordertime");
-			if (date != null && date != "")
+			if (date != null && !date.equals(""))
 				return format.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
