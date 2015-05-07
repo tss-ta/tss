@@ -3,6 +3,7 @@ package com.netcracker.ejb;
 import com.netcracker.dto.UserDTO;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
 
@@ -70,6 +71,10 @@ public interface UserBeanLocal extends EJBLocalObject {
     void addToPersonalList(User user, String pa);
     
     void removeFromPersonalList(User user, String pa);
+
+    Pager getPager(Integer pageNumber, Integer pageSize, Roles role);
+
+    Pager getPager(Integer pageNumber, Integer pageSize);
 
 
 }
