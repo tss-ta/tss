@@ -21,20 +21,17 @@
                     </div>
                     <div class="col-md-offset-1">
                         <form action = "/admin" >
-                                <select class="bootstrap-select col-md-offset-1" name ="role" onchange="this.form.submit()" >
+                                <select class="bootstrap-select col-md-offset-2 col-md-2" name ="role" onchange="this.form.submit()" >
                                     <c:forEach var = "role" items = "${requestScope.rolesEnum}">
                                         <option ${role == param.role ? 'selected="selected"' : ''}> ${role} </option>
                                     </c:forEach>
-                                    <%--<option value="CUSTOMER" ${'CUSTOMER' == param.role ? 'selected="selected"' : ''}> CUSTOMER </option>--%>
-                                    <%--<option value="ADMIN" ${'ADMIN' eq param.role ? 'selected="selected"' : ''}> ADMIN </option>--%>
-                                    <%--<option value="BANNED" ${'BANNED' == param.role ? 'selected="selected"' : ''}> BANNED </option>--%>
                                 </select>
                             <input type="hidden" name="page" value="1">
                             <input type="hidden" name="action" value="view">
                             <input type="hidden" name="menu" value="users">
                         </form>
                     </div>
-                    <div class="col-md-offset-2 col-md-4">
+                    <div class="col-md-offset-3 col-md-4">
                         <form action="/admin" method="get">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}" maxlength="40">

@@ -17,7 +17,7 @@ import javax.persistence.Query;
  * @author maks
  *
  */
-public abstract class GenericDAO<T> {
+public class GenericDAO<T> {
 
     protected Class<T> entityClass;
 
