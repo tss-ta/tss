@@ -12,6 +12,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "driver")
 @PrimaryKeyJoinColumn(name = "driver_id")
+@NamedQueries({
+        @NamedQuery(name = "Driver.searchDriverByName", query = "SELECT d FROM Driver d WHERE d.username like :drivername")
+})
 public class Driver extends User {
 
     @NotNull

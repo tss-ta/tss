@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS tariff CASCADE;
 DROP TABLE IF EXISTS address CASCADE;
 DROP TABLE IF EXISTS conveycorp CASCADE;
 DROP TABLE IF EXISTS service CASCADE;
+DROP TABLE IF EXISTS meet_my_guest CASCADE;
 
 CREATE TABLE tss_user
 (
@@ -273,3 +274,13 @@ CREATE TABLE conveycorp
    ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
+CREATE TABLE meet_my_guest
+(
+service_id integer NOT NULL,
+guest_name character varying(60) NOT NULL,
+CONSTRAINT  meet_my_guest_service_id_pk PRIMARY KEY (service_id),
+
+ CONSTRAINT meet_my_guest_service_id_fk FOREIGN KEY (service_id)
+      REFERENCES service (service_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+);
