@@ -45,11 +45,11 @@ public class CustomerUpdatePriceServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding("UTF-8");
 		float distance = calculateDistance(request);
 		PriceBeanLocal priceBean = getPriceBean(request);
 		double price = priceBean.calculatePrice(distance,
-                                    DateParser.parseDate(request));
+				DateParser.parseDate(request));
 		String text = String.valueOf(price);
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
@@ -62,7 +62,6 @@ public class CustomerUpdatePriceServlet extends HttpServlet {
 			return mapBean.calculateDistance(request.getParameter("fromAddr"),
 					request.getParameter("toAddr"));
 		} catch (JSONException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;
