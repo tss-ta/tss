@@ -2,9 +2,9 @@ package com.netcracker.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -23,7 +23,6 @@ public class Group implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @Column(name = "name", columnDefinition = "bpchar")
     @Column(name = "name", columnDefinition = "bpchar")
     private String name;
 
@@ -36,11 +35,11 @@ public class Group implements Serializable {
 
     public Group() {
     }
-    
+
     public Group(int id) {
         this.id = id;
     }
-    
+
     public Group(String name) {
         this.name = name;
     }
@@ -54,7 +53,7 @@ public class Group implements Serializable {
         return id;
     }
 
-    public void setId(Integer groupId) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -79,31 +78,21 @@ public class Group implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Group group = (Group) o;
-
-        if (id != null ? !id.equals(group.id) : group.id != null) {
-            return false;
-        }
-        if (name != null ? !name.equals(group.name) : group.name != null) {
-            return false;
-        }
-
-        return true;
+    public final int hashCode() {
+        return Objects.hashCode(name);
     }
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Group)) {
+            return false;
+        }
+
+        Group other = (Group) obj;
+        return Objects.equals(this.name, other.name);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.netcracker.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.*;
 
@@ -46,7 +47,7 @@ public class User implements Serializable {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
     private List<Group> groups = new ArrayList<Group>();
-    
+
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "personal_address",
@@ -54,9 +55,7 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "addr_id", referencedColumnName = "addr_id"))
     private List<Address> addresses = new ArrayList<>();
 
-    
-
-	public User() {
+    public User() {
     }
 
     public User(String username, String email, String passwordHash) {
@@ -67,25 +66,25 @@ public class User implements Serializable {
     }
 
     public User(String username, String email) {
-    	 this.username = username;
-         this.email = email.toLowerCase();
-	}
+        this.username = username;
+        this.email = email.toLowerCase();
+    }
 
-	public Integer getId() {
+    public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
-    
-    public List<Address> getAddresses() {
-		return addresses;
-	}
 
-	public void setAddresses(List<Address> addresses) {
-		this.addresses = addresses;
-	}
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
 
     public List<Role> getRoles() {
         return roles;
@@ -136,39 +135,27 @@ public class User implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        User user = (User) o;
-
-        if (email != null ? !email.equals(user.email) : user.email != null) {
-            return false;
-        }
-        if (id != null ? !id.equals(user.id) : user.id != null) {
-            return false;
-        }
-        if (passwordHash != null ? !passwordHash.equals(user.passwordHash) : user.passwordHash != null) {
-            return false;
-        }
-        if (username != null ? !username.equals(user.username) : user.username != null) {
-            return false;
-        }
-
-        return true;
+    public int hashCode() {
+        return Objects.hash(username, email, passwordHash);
     }
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (passwordHash != null ? passwordHash.hashCode() : 0);
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof User)) {
+            return false;
+        }
+
+        User other = (User) obj;
+        if (!Objects.equals(this.username, other.username)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        return Objects.equals(this.passwordHash, other.passwordHash);
     }
 
     @Override
@@ -181,6 +168,6 @@ public class User implements Serializable {
         sb.append(", roles=").append(roles);
         sb.append(", groups=").append(groups);
         sb.append('}');
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 }
