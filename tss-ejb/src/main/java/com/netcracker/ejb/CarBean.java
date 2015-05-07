@@ -17,13 +17,11 @@ import java.util.List;
  */
 public class CarBean implements SessionBean {
 
-    private static final int DEFAULT_PAGE_SIZE = 15;
-
-    public List<Car> getPageOfCars(int pageNumber) {
+    public List<Car> getPageOfCars(int pageNumber, int pageSize) {
         CarDao carDao = new CarDao();
         List<Car> carList = null;
         try {
-            carList = carDao.getPage(pageNumber, DEFAULT_PAGE_SIZE);
+            carList = carDao.getPage(pageNumber, pageSize);
         } finally {
             if (carDao != null) {
                 carDao.close();
@@ -45,6 +43,20 @@ public class CarBean implements SessionBean {
         return carList;
     }
 
+    public List<Car> getPageOfCarsSearchedByLicPlate(int pageNumber, int pageSize, String licPlate) {
+        CarDao carDao = new CarDao();
+        List<Car> carList = null;
+        try {
+            carList = carDao.getPageOfCarsSearchedByLicPlate(pageNumber, pageSize, licPlate);
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            carDao.close();
+        }
+        return carList;
+    }
+
+
     public boolean insertCar(Car car) {
         CarDao carDao = new CarDao();
         try {
@@ -61,6 +73,48 @@ public class CarBean implements SessionBean {
             }
         }
         return true;
+    }
+
+    public void updateCar(Car car) {
+        CarDao carDao = new CarDao();
+        try {
+            carDao.update(car);
+        } finally {
+            if (carDao != null) {
+                carDao.close();
+            }
+        }
+    }
+
+    public void deleteById(Integer id) {
+        CarDao carDao = new CarDao();
+        Car car = new Car();
+        car.setId(id);
+        try {
+            carDao.delete(car);
+        } finally {
+            if (carDao != null) {
+                carDao.close();
+            }
+        }
+    }
+
+    public Car getById(Integer id) {
+        CarDao carDao = new CarDao();
+        Car car;
+        try {
+            try {
+                car = carDao.get(id);
+            }
+            catch (NoResultException e) {
+                car = null;
+            }
+        } finally {
+            if (carDao != null) {
+                carDao.close();
+            }
+        }
+        return car;
     }
 
     private CarDTO convertEntityToTransferObject(Car car) {

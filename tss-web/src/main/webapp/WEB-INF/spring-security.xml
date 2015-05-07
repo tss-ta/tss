@@ -10,8 +10,7 @@
                 class="com.netcracker.tss.web.config.security.CustomSuccessHandler">
     </beans:bean>
 
-    <beans:bean id="encoder"
-                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+    <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
         <beans:constructor-arg name="strength" value="11" />
     </beans:bean>
 
@@ -23,12 +22,22 @@
         <beans:property name="passwordEncoder" ref="encoder"/>
     </beans:bean>
 
+    <beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+    <beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+        <beans:property name="sessionRegistry" ref="sessionRegistry" />
+        <beans:property name="expiredUrl" value="/signin.jsp" />
+    </beans:bean>
+
     <!-- enable use-expressions -->
     <http auto-config="true" use-expressions="true">
 
-        <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+        <intercept-url pattern="/banned.jsp*" access="hasRole('BANNED')" />
+        <intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
         <intercept-url pattern="/driver**" access="hasRole('DRIVER')" />
         <intercept-url pattern="/customer**" access="hasRole('CUSTOMER')" />
+        <intercept-url pattern="/signin.jsp**" access="isAnonymous()" />
+        <intercept-url pattern="/signup.jsp**" access="isAnonymous()" />
 
         <!-- access denied page -->
         <access-denied-handler error-page="/403.jsp" />

@@ -1,0 +1,54 @@
+<%--
+  User: Kyrylo Berehovyi
+  Date: 06/05/2015
+  Time: 14:28
+--%>
+<!-----start-header----->
+<div class="header">
+    <!---start-wrap---->
+    <div class="wrap">
+        <!---start-top-header---->
+        <div class="top-header">
+            <div class="clear"></div>
+        </div>
+        <!---End-top-header---->
+        <!----start-main-header----->
+        <div class="main-header">
+            <div class="logo">
+                <a href="index.html"><img src="/resources/images/logo1.png"
+                                          title="logo" /></a>
+            </div>
+            <div class="top-nav">
+                <ul>
+                    <li><a href="/home">Home</a></li>
+                    <sec:authorize access="isAnonymous()" var="anonymous" />
+                    <sec:authorize access="hasRole('ADMIN')" var="admin" />
+                    <sec:authorize access="hasRole('DRIVER')" var="driver" />
+                    <sec:authorize access="hasRole('CUSTOMER')" var="customer" />
+                    <c:choose>
+                        <c:when test="${admin}">
+                            <li><a href="/admin?menu=dashboard&action=view">Dashboard</a></li>
+                        </c:when>
+                        <c:when test="${customer}">
+                            <li><a href="/customer">Dashboard</a></li>
+                        </c:when>
+                        <c:when test="${driver}">
+                            <li><a href="/customer">Dashboard</a></li>
+                        </c:when>
+                        <c:when test="${anonymous}">
+                            <li><a href="/guest">Order NOW!</a></li>
+                            <li><a href="/signin.jsp">Sign In</a></li>
+                            <li><a href="/signup.jsp">Sign Up</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="/signout">Sign Out</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="clear"></div>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <!----End-main-header----->
+    </div>
+</div>
