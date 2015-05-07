@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN"
+        "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
 <ejb-jar>
 
     <!--<enterprise-beans>-->
@@ -41,7 +42,7 @@
                 <local>com.netcracker.ejb.TestLocal</local>
             </ejb-local-ref>
         </session>
-        
+
         <session>
             <description>An EJB named RegistrationBean</description>
             <display-name>RegistrationBean</display-name>
@@ -51,15 +52,15 @@
             <ejb-class>com.netcracker.ejb.RegistrationBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+
             <ejb-local-ref>
                 <ejb-ref-name>ejb/RegistrationBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <local-home>com.netcracker.ejb.RegistrationBeanLocalHome</local-home>
                 <local>com.netcracker.ejb.RegistrationBeanLocal</local>
             </ejb-local-ref>
-        </session> 
-         
+        </session>
+
         <session>
             <description>An EJB named TaxiOrderBean</description>
             <display-name>TaxiOrderBean</display-name>
@@ -69,15 +70,15 @@
             <ejb-class>com.netcracker.ejb.TaxiOrderBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+
             <ejb-local-ref>
                 <ejb-ref-name>ejb/TaxiOrderBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <local-home>com.netcracker.ejb.TaxiOrderBeanLocalHome</local-home>
                 <local>com.netcracker.ejb.TaxiOrderBeanLocal</local>
             </ejb-local-ref>
-        </session>  
-        
+        </session>
+
         <session>
             <description>An EJB named MapBean</description>
             <display-name>MapBean</display-name>
@@ -87,15 +88,33 @@
             <ejb-class>com.netcracker.ejb.MapBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+
             <ejb-local-ref>
                 <ejb-ref-name>ejb/MapBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <local-home>com.netcracker.ejb.MapBeanLocalHome</local-home>
                 <local>com.netcracker.ejb.MapBeanLocal</local>
             </ejb-local-ref>
-        </session> 
-        
+        </session>
+
+        <session>
+            <description>An EJB named PriceBean</description>
+            <display-name>PriceBean</display-name>
+            <ejb-name>PriceBean</ejb-name>
+            <local-home>com.netcracker.ejb.PriceBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.PriceBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.PriceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/PriceBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.PriceBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.PriceBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+
         <session>
             <description>An EJB named MailerBean</description>
             <display-name>MailerBean</display-name>
@@ -105,15 +124,15 @@
             <ejb-class>com.netcracker.ejb.MailerBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+
             <ejb-local-ref>
                 <ejb-ref-name>ejb/MailerBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <local-home>com.netcracker.ejb.MailerBeanLocalHome</local-home>
                 <local>com.netcracker.ejb.MailerBeanLocal</local>
             </ejb-local-ref>
-        </session> 
-        
+        </session>
+
         <session>
             <display-name>GroupBean</display-name>
             <ejb-name>GroupBean</ejb-name>
@@ -122,7 +141,7 @@
             <ejb-class>com.netcracker.ejb.GroupBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+
             <ejb-local-ref>
                 <ejb-ref-name>ejb/GroupBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
@@ -130,7 +149,7 @@
                 <local>com.netcracker.ejb.GroupBeanLocal</local>
             </ejb-local-ref>
         </session>
-                
+
         <session>
             <display-name>UserBean</display-name>
             <ejb-name>UserBean</ejb-name>
@@ -139,7 +158,7 @@
             <ejb-class>com.netcracker.ejb.UserBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+
             <ejb-local-ref>
                 <ejb-ref-name>ejb/UserBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
@@ -147,7 +166,7 @@
                 <local>com.netcracker.ejb.UserBeanLocal</local>
             </ejb-local-ref>
         </session>
-        
+
         <session>
             <display-name>TariffBean</display-name>
             <ejb-name>TariffBean</ejb-name>
@@ -156,7 +175,7 @@
             <ejb-class>com.netcracker.ejb.TariffBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+
             <ejb-local-ref>
                 <ejb-ref-name>ejb/TariffBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
@@ -164,7 +183,7 @@
                 <local>com.netcracker.ejb.TariffBeanLocal</local>
             </ejb-local-ref>
         </session>
-        
+
         <session>
             <display-name>ReportsBean</display-name>
             <ejb-name>ReportsBean</ejb-name>
@@ -173,7 +192,7 @@
             <ejb-class>com.netcracker.ejb.ReportsBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+
             <ejb-local-ref>
                 <ejb-ref-name>ejb/ReportsBean</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
@@ -181,7 +200,7 @@
                 <local>com.netcracker.ejb.ReportsBeanLocal</local>
             </ejb-local-ref>
         </session>
-        
+
         <session>
             <display-name>DriverBean</display-name>
             <ejb-name>DriverBean</ejb-name>
@@ -264,6 +283,24 @@
                 <ejb-ref-type>Session</ejb-ref-type>
                 <local-home>com.netcracker.ejb.ValidatorBeanLocalHome</local-home>
                 <local>com.netcracker.ejb.ValidatorBeanLocal</local>
+            </ejb-local-ref>
+        </session>
+
+        <session>
+            <description>An EJB named ConveyCorpServiceBean</description>
+            <display-name>ConveyCorpServiceBean</display-name>
+            <ejb-name>ConveyCorpServiceBean</ejb-name>
+            <local-home>com.netcracker.ejb.ConveyCorpServiceBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.ConveyCorpServiceBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.ConveyCorpServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/ConveyCorpServiceBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.ConveyCorpServiceBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.ConveyCorpServiceBeanLocal</local>
             </ejb-local-ref>
         </session>
 

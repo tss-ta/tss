@@ -64,7 +64,7 @@
                                     <input type="hidden" name="action" value="add-to-group">
                                     <input type="hidden" name="groupid" value="${param.groupid}">
                                     <input type="hidden" name="userid" value="${customer.id}">
-                                    <input type="hidden" name="userid" value="${param.groupname}">
+                                    <input type="hidden" name="groupname" value="${param.groupname}">
                                     <button type="submit" class="btn btn-default">Add to group <i class="fa fa-users"></i></button>
                                 </form>
                             </td>
@@ -73,7 +73,7 @@
                                     <input type="hidden" name="action" value="remove-from-group">
                                     <input type="hidden" name="groupid" value="${param.groupid}">
                                     <input type="hidden" name="userid" value="${customer.id}">
-                                    <input type="hidden" name="userid" value="${param.groupname}">
+                                    <input type="hidden" name="groupname" value="${param.groupname}">
                                     <button type="submit" class="btn btn-default btn-danger">Remove from group <i class="fa fa-users"></i></button>
                                 </form>
                             </td>
