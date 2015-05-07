@@ -249,6 +249,22 @@
                 <local-home>com.netcracker.ejb.ConveyCorpServiceBeanLocalHome</local-home>
                 <local>com.netcracker.ejb.ConveyCorpServiceBeanLocal</local>
             </ejb-local-ref>
-        </session> 
+        </session>
+        <session>
+            <ejb-name>CelebrationServiceBean</ejb-name>
+            <display-name>CelebrationServiceBean</display-name>
+            <local-home>com.netcracker.ejb.CelebrationServiceBeanLocalHome</local-home>
+            <local>com.netcracker.ejb.CelebrationServiceBeanLocal</local>
+            <ejb-class>com.netcracker.ejb.CelebrationServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/CelebrationServiceBean</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local-home>com.netcracker.ejb.CelebrationServiceBeanLocalHome</local-home>
+                <local>com.netcracker.ejb.CelebrationServiceBeanLocal</local>
+            </ejb-local-ref>
+        </session>
     </enterprise-beans>
 </ejb-jar>

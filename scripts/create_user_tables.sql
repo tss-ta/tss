@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS tariff CASCADE;
 DROP TABLE IF EXISTS address CASCADE;
 DROP TABLE IF EXISTS conveycorp CASCADE;
 DROP TABLE IF EXISTS service CASCADE;
+DROP TABLE IF EXISTS celebration;
+DROP TABLE IF EXISTS celebration_driver_car;
 
 
 CREATE TABLE tss_user
@@ -262,7 +264,7 @@ CREATE TABLE service
 
 CREATE TABLE conveycorp
 (
-  service_id integer NOT NULL, 
+  service_id integer NOT NULL,
   route_id integer NOT NULL,
  CONSTRAINT  conveycorp_service_id_route_id_pk PRIMARY KEY (service_id, route_id),
   
@@ -274,4 +276,35 @@ CREATE TABLE conveycorp
    REFERENCES route (route_id) MATCH SIMPLE
    ON UPDATE NO ACTION ON DELETE CASCADE
 );
+
+CREATE TABLE celebration
+(
+  service_id serial,
+  drivers_amount integer,
+  duration integer,
+  order_id integer,
+  from_addr_id integer,
+  CONSTRAINT celebration_id_pk PRIMARY KEY (service_id),
+  CONSTRAINT service_order_id_fk FOREIGN KEY (order_id)
+      REFERENCES taxi_order (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT from_addr_id_fk FOREIGN KEY (from_addr_id)
+      REFERENCES address (addr_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+CREATE TABLE celebration_driver_car
+(
+  service_id integer NOT NULL,
+  driver_car_id integer NOT NULL,
+  CONSTRAINT celebration_driver_car_id_pk PRIMARY KEY (service_id, driver_car_id),
+  CONSTRAINT celebration_id_fk FOREIGN KEY (service_id)
+  REFERENCES celebration (service_id) MATCH SIMPLE
+  ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT driver_car_id_fk FOREIGN KEY (driver_car_id)
+  REFERENCES driver_car (id) MATCH SIMPLE
+  ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+
+
 

@@ -10,9 +10,13 @@
 	<c:when test="${pageType == 'history'}">
 		<c:set var="activeHistory" scope="request" value="${'class=\"active\"'}" />
 	</c:when>
-        <c:when test="${pageType == 'cceService'}">
+	<c:when test="${pageType == 'cceService'}">
 		<c:set var="activeCceService" scope="request" value="${'class=\"active\"'}" />
 	</c:when>
+	<c:when test="${pageType == 'celebrService'}">
+		<c:set var="activeCelebrService" scope="request" value="${'class=\"active\"'}" />
+	</c:when>
+
 </c:choose>
 
 <!--sidebar start-->
@@ -36,8 +40,12 @@
 			class="icon-container"><i class="fa fa-history"></i></span> <span
 			class="icon-label">Orders History</span>
 	</a></li>
-          <li><a href="/customer/cceServicePage" ${activeCceService}> <span
+    <li><a href="/customer/cceServicePage" ${activeCceService}> <span
 			class="icon-container"><i class="fa fa-user"></i></span> <span
 			class="icon-label">Convey corp</span>
+	</a></li>
+	<li><a href="/customer/celebrServicePage" ${activeCelebrService}> <span
+			class="icon-container"><i class="fa fa-user"></i></span> <span
+			class="icon-label">Celebration</span>
 	</a></li>
 </ul>
