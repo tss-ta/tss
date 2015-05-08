@@ -17,6 +17,7 @@ import java.io.IOException;
  * Created by Kyrylo Berehovyi on 25/04/2015.
  * @author maks
  */
+@Deprecated
 @WebServlet(urlPatterns = "/admin/tariff")
 public class AdminTariffServlet extends HttpServlet {
 

@@ -70,6 +70,21 @@ public class TariffBean implements SessionBean {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         return pageCalculator.createPager(Tariff.class, pageNumber, pageSize);
     }
+    public Pager getPager(Integer pageNumber, Integer pageSize, String namePart) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        TariffDAO tariffDAO = null;
+        Pager pager = null;
+        try {
+            tariffDAO = new TariffDAO();
+            int amount = tariffDAO.countByNamePart(namePart);
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount);
+        } finally {
+            if (tariffDAO != null) {
+                tariffDAO.close();
+            }
+        }
+        return pager;
+    }
 
 //    public List<Roles> toEnumRolesList(List<Role> roleList) {
 //        List<Roles> rolesList = new ArrayList<Roles>(); //enum

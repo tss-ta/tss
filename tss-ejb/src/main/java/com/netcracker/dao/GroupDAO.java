@@ -3,11 +3,13 @@ package com.netcracker.dao;
 import com.netcracker.entity.Group;
 import java.util.List;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
  *
  * @author Stanislav Zabielin
+ * @author maks
  */
 public class GroupDAO extends GenericDAO<Group> {
 
@@ -48,5 +50,11 @@ public class GroupDAO extends GenericDAO<Group> {
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
         return query.getResultList();
+    }
+
+    public int countByNamePart(String partOfName) {
+        Query query = em.createQuery("SELECT COUNT(g) FROM Group g WHERE g.name like :name");
+        query.setParameter("name", "%" + partOfName + "%");
+        return ((Long) query.getSingleResult()).intValue();
     }
 }

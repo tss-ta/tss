@@ -124,6 +124,18 @@ public class ReportsBean implements SessionBean {
             }
         }
     }
+
+    public List<TaxiOrder> getBookedOrders (Date begin, Date end){
+        TaxiOrderDAO dao = null;
+        try {
+            dao = new TaxiOrderDAO();
+            return dao.findBookedOrdersByPeriod(begin, end);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
     
     public List<TaxiOrder> getBookedOrders (Date begin, Date end, int pageNumber, int paginationStep){
          TaxiOrderDAO dao = null;

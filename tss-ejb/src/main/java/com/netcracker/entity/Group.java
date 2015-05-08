@@ -9,13 +9,14 @@ import java.util.Objects;
 /**
  *
  * @author Stanislav Zabielin
+ * @author maks
  * 
 */
 @Entity
 @Table(name = "tss_group")
 @NamedQueries({
     @NamedQuery(name = "Group.findAllOrderedByName", query = "SELECT g FROM Group g ORDER BY g.name"),
-    @NamedQuery(name = "Group.findByName", query = "SELECT g FROM Group g WHERE g.name = :name"),
+    @NamedQuery(name = "Group.findByName", query = "SELECT g FROM Group g WHERE g.name = :name ORDER BY g.name"),
     @NamedQuery(name = "Group.searchByName", query = "SELECT g FROM Group g WHERE g.name like :name")})
 public class Group implements Serializable {
 
