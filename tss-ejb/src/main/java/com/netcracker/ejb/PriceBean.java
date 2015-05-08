@@ -7,6 +7,7 @@ package com.netcracker.ejb;
 
 import com.netcracker.dao.TariffDAO;
 import com.netcracker.entity.Tariff;
+import com.netcracker.entity.TaxiOrder;
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,7 +22,7 @@ import javax.ejb.SessionContext;
  */
 public class PriceBean implements SessionBean {
 
-    public double calculatePrice(float distance, Date orderTime) {
+    public double calculatePrice(float distance, Date orderTime, TaxiOrder taxiOrder) {
         double orderPrice = 0;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(orderTime);
@@ -39,6 +40,47 @@ public class PriceBean implements SessionBean {
             if ((calendar.get(Calendar.HOUR_OF_DAY) >= 9) && (calendar.get(Calendar.HOUR_OF_DAY) <= 11)) {
                 tariff = tariffDAO.findByTariffName("rush_hour");
                 orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+            }
+            if ((taxiOrder.getAnimalTransport() != null) && (taxiOrder.getConditioner() != null) && (taxiOrder.getWifi() != null) && (taxiOrder.getSmoke() != null) && (taxiOrder.getCarCategory() != null)) {
+                switch (taxiOrder.getCarCategory()) {
+                    case 1:
+                        tariff = tariffDAO.findByTariffName("economy");
+                        orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+                        break;
+                    case 2:
+                        tariff = tariffDAO.findByTariffName("business");
+                        orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+                        break;
+                    case 3:
+                        tariff = tariffDAO.findByTariffName("van");
+                        orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+                        break;
+                    case 4:
+                        tariff = tariffDAO.findByTariffName("cargo");
+                        orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+                        break;
+                    default:
+                        break;
+                }
+                if (taxiOrder.getWifi()) {
+                    tariff = tariffDAO.findByTariffName("wi-fi");
+                    orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+                }
+                if (taxiOrder.getSmoke()) {
+                    tariff = tariffDAO.findByTariffName("no_smoked");
+                    orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+
+                }
+                if (taxiOrder.getAnimalTransport()) {
+                    tariff = tariffDAO.findByTariffName("animal");
+                    orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+
+                }
+                if (taxiOrder.getConditioner()) {
+                    tariff = tariffDAO.findByTariffName("conditioner");
+                    orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+
+                }
             }
         } finally {
             if (tariffDAO != null) {
