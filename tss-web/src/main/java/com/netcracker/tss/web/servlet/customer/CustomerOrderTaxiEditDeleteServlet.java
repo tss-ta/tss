@@ -5,6 +5,7 @@
  */
 package com.netcracker.tss.web.servlet.customer;
 
+import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
@@ -89,6 +90,8 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (ACTION_EDIT_TAXI_ORDER.equals(action)) {
             taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
+            TaxiOrder taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
+            request.getSession().setAttribute("taxiOrder", taxiOrder);
             redirectToEdit(request, response);
             return;
         }
@@ -133,11 +136,11 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             }
             if ("".equals(request.getParameter("price"))) {
                 price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request),null);
+                        DateParser.parseDate(request), (TaxiOrder) request.getSession().getAttribute("taxiOrder"));
             } else {
                 price = Double.parseDouble(request.getParameter("price"));
             }
-
+            request.getSession().removeAttribute("taxiOrder");
             Date orderTime = DateParser.parseDate(request);
             orderTime.setYear(new Date().getYear());
             taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
@@ -207,7 +210,6 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
         }
     }
-
 
     private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
         Context context;
