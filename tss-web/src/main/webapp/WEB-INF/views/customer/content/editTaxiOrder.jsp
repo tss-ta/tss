@@ -39,7 +39,6 @@
 		<!-- /form-panel -->
 
 		<div class="col-lg-12">
-			<%@ include file="../../partials/options_vert.jspf"%>
 			<div class="col-lg-12 text-center">
 				<input type="hidden" id="id_rout_dist" name="route_distance"
 					value="" />

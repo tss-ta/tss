@@ -19,8 +19,6 @@ import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.PriceBeanLocal;
 import com.netcracker.ejb.PriceBeanLocalHome;
-import com.netcracker.ejb.TaxiOrderBeanLocal;
-import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.AdditionalParameters;
