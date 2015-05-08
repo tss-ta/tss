@@ -236,3 +236,14 @@ INSERT INTO tariff
 VALUES
   ('per_km', 5, 1);
 
+
+---------------------------------------
+-- REPORT SYSTEM ----------------------
+---------------------------------------
+
+INSERT INTO report_info (id, name, description, db_query) values
+(DEFAULT, 'Count all Cars', 'This report count all cars in system', 'SELECT COUNT(id) FROM car');
+INSERT INTO report_info (id, name, description, db_query) values
+(DEFAULT, 'Count all Users', 'This report count all users in system', 'SELECT COUNT(id) FROM tss_user');
+INSERT INTO report_info (id, name, description, db_query) values
+(DEFAULT, 'Count all Taxi Orders', 'This report count all Taxi Orders in system', 'SELECT COUNT(id) FROM taxi_order');

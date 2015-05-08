@@ -1,5 +1,6 @@
 package com.netcracker.ejb;
 
+import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.util.reports.ReportsRow;
 import java.util.Date;
@@ -25,5 +26,6 @@ public interface ReportsBeanLocal extends EJBLocalObject {
     List<TaxiOrder> getBookedOrders (Date begin, Date end, int pageNumber, int paginationStep);
     
     List<ReportsRow> getCarCategoryReport();
-    
+
+    ReportInfo getReportInfoById(Integer id);
 }
