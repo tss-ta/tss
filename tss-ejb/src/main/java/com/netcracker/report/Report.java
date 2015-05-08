@@ -13,6 +13,11 @@ public class Report {
 
     public Report() {}
 
+    public Report(ReportInfo info, ReportData data) {
+        this.info = info;
+        this.data = data;
+    }
+
     public ReportInfo getInfo() {
         return info;
     }

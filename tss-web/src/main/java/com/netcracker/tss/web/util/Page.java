@@ -22,6 +22,7 @@ public enum Page {
     ADMIN_TARIFFS_CONTENT("tariffs", "admin/content/tariffs.jsp"),
     ADMIN_EDIT_TARIFFS_CONTENT("tariffs", "admin/content/edit-tariffs.jsp"),
     ADMIN_REPORTS_CONTENT("reports", "admin/content/reports.jsp"),
+    ADMIN_REPORT_CONTENT("reports", "admin/content/report.jsp"),
     ADMIN_REPORT_INFO_CONTENT("reports", "admin/content/report-info.jsp"),
     ADMIN_CAR_OPTIONS_REPORTS_CONTENT("reports", "admin/content/car-options-report.jsp"),
     ADMIN_NEW_ORDERS_REPORTS_CONTENT("reports", "admin/content/new-orders-report.jsp"),

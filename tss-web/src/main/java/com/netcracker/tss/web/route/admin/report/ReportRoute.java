@@ -3,6 +3,8 @@ package com.netcracker.tss.web.route.admin.report;
 import com.netcracker.dao.ReportDataDAO;
 import com.netcracker.ejb.ReportsBeanLocal;
 import com.netcracker.entity.ReportInfo;
+import com.netcracker.report.Report;
+import com.netcracker.report.mapper.DataType;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
@@ -28,10 +30,12 @@ public class ReportRoute {
         ActionResponse response = new ActionResponse();
         if (id != null) {
             reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-            ReportInfo reportInfo = reportsBean.getReportInfoById(id);
-            request.setAttribute(RequestAttribute.REPORT_INFO.getName(), reportInfo);
-            response.setPageContent(Page.ADMIN_REPORT_INFO_CONTENT.getAbsolutePath());
-            request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORT_INFO_CONTENT.getType());
+//            ReportInfo reportInfo = reportsBean.getReportInfoById(id);
+            Report report = reportsBean.getReportById(id);
+//            request.setAttribute("dataType", DataType.);
+            request.setAttribute(RequestAttribute.REPORT.getName(), report);
+            response.setPageContent(Page.ADMIN_REPORT_CONTENT.getAbsolutePath());
+            request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORT_CONTENT.getType());
         } else {
             response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
         }
@@ -42,7 +46,7 @@ public class ReportRoute {
     public ActionResponse getTest(HttpServletRequest request) {
         ActionResponse response = new ActionResponse();
         ReportDataDAO dao = new ReportDataDAO();
-        dao.createReportData("select id as \"Car ID\", lic_plate as \"Car Number\", wifi as \"WI-FI\" from car;");
+        dao.createReportData("select * from test");
         response.setPageContent(Page.ADMIN_REPORT_INFO_CONTENT.getAbsolutePath());
         return response;
     }

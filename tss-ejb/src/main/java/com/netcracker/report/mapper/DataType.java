@@ -7,5 +7,6 @@ public enum DataType {
     STRING,
     INTEGER,
     BOOLEAN,
-    DOUBLE;
+    DOUBLE,
+    TIMESTAMP;
 }

@@ -14,6 +14,7 @@ public enum RequestAttribute {
     PAGER("pager"),
     PAGER_LINK("pagerLink"),
     PAGE_TITLE("pageTitle"),
+    REPORT("report"),
     REPORT_INFO("reportInfo");
 
     private String name;
