@@ -41,6 +41,7 @@ public class CustomerMMGServicePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.getSession().removeAttribute("taxiOrder");
         UserBeanLocal userBeanLocal = getUserBean(request);
         request.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
         request.setAttribute("pageContent", "content/customer-mmgService.jsp");

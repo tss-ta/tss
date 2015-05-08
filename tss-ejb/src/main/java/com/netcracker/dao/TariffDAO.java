@@ -2,6 +2,7 @@ package com.netcracker.dao;
 
 import com.netcracker.entity.Tariff;
 import java.util.List;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -29,5 +30,11 @@ public class TariffDAO extends GenericDAO<Tariff> {
         TypedQuery<Tariff> query = em.createNamedQuery("Tariff.findByTariffName", Tariff.class);
         query.setParameter("tariffName", tariffName);
         return query.getSingleResult();
+    }
+
+    public int countByNamePart(String partOfName) {
+        Query query = em.createQuery("SELECT count(t) FROM Tariff t WHERE t.tariffName like :tariffName");
+        query.setParameter("tariffName", "%" + partOfName + "%");
+        return ((Long) query.getSingleResult()).intValue();
     }
 }

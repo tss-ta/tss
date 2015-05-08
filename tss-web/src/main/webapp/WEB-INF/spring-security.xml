@@ -34,8 +34,11 @@
 
         <intercept-url pattern="/banned.jsp*" access="hasRole('BANNED')" />
         <intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
+        <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
         <intercept-url pattern="/driver**" access="hasRole('DRIVER')" />
+        <intercept-url pattern="/driver/**" access="hasRole('DRIVER')" />
         <intercept-url pattern="/customer**" access="hasRole('CUSTOMER')" />
+        <intercept-url pattern="/customer/**" access="hasRole('CUSTOMER')" />
         <intercept-url pattern="/signin.jsp**" access="isAnonymous()" />
         <intercept-url pattern="/signup.jsp**" access="isAnonymous()" />
 

@@ -25,5 +25,7 @@ public interface ReportsBeanLocal extends EJBLocalObject {
     List<TaxiOrder> getBookedOrders (Date begin, Date end, int pageNumber, int paginationStep);
     
     List<ReportsRow> getCarCategoryReport();
+
+    List<TaxiOrder> getBookedOrders (Date begin, Date end);
     
 }

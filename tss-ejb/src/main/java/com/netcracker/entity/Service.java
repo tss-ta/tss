@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Basic;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,8 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,17 +32,19 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Service.findByServiceId", query = "SELECT s FROM Service s WHERE s.serviceId = :serviceId"),
     @NamedQuery(name = "Service.findByServiceName", query = "SELECT s FROM Service s WHERE s.serviceName = :serviceName")})
 public class Service implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @Basic(optional = false)
     @Column(name = "service_id")
     private Integer serviceId;
-   // @Basic(optional = false)
+
     // @NotNull
     // @Size(min = 1, max = 60)
     @Column(name = "service_name")
     private String serviceName;
+
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     @ManyToOne
     private TaxiOrder orderId;
@@ -59,6 +55,7 @@ public class Service implements Serializable {
             joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "route_id", referencedColumnName = "route_id"))
     private List<Route> routes = new ArrayList<Route>();
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "service")
     private MeetMyGuest meetMyGuest;
 
@@ -110,31 +107,6 @@ public class Service implements Serializable {
         this.serviceName = serviceName;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (serviceId != null ? serviceId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Service)) {
-            return false;
-        }
-        Service other = (Service) object;
-        if ((this.serviceId == null && other.serviceId != null) || (this.serviceId != null && !this.serviceId.equals(other.serviceId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.netcracker.entity.Service[ serviceId=" + serviceId + " ]";
-    }
-
     public MeetMyGuest getMeetMyGuest() {
         return meetMyGuest;
     }
@@ -143,4 +115,32 @@ public class Service implements Serializable {
         this.meetMyGuest = meetMyGuest;
     }
 
+    @Override
+    public final int hashCode() {
+        return Objects.hash(serviceName, orderId, meetMyGuest);
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Service)) {
+            return false;
+        }
+
+        Service other = (Service) obj;
+        if (!Objects.equals(this.serviceName, other.serviceName)) {
+            return false;
+        }
+        if (!Objects.equals(this.orderId, other.orderId)) {
+            return false;
+        }
+        return Objects.equals(this.meetMyGuest, other.meetMyGuest);
+    }
+
+    @Override
+    public String toString() {
+        return "com.netcracker.entity.Service[ serviceId=" + serviceId + " ]";
+    }
 }
