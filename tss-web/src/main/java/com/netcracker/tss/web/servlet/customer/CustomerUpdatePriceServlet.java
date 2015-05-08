@@ -27,7 +27,8 @@ import com.netcracker.tss.web.util.DateParser;
 /**
  * Author Stanislav Zabielin
  */
-@WebServlet("/price")
+@WebServlet(name = "PriceServlet",
+urlPatterns = "/price")
 public class CustomerUpdatePriceServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

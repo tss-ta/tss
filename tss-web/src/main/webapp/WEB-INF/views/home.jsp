@@ -85,6 +85,36 @@
 		</div>
 	</div>
 	<!---End-wrap---->
+	<!-- js placed at the end of the document so the pages load faster -->
+	<script src="/resources/customer_assets/js/jquery-1.8.3.min.js"></script>
+	<script src="/resources/customer_assets/js/bootstrap.min.js"></script>
+	<script class="include" type="text/javascript"
+		src="/resources/customer_assets/js/jquery.dcjqaccordion.2.7.js"></script>
+	<script src="/resources/customer_assets/js/jquery.scrollTo.min.js"></script>
+	<script src="/resources/customer_assets/js/jquery.nicescroll.js"
+		type="text/javascript"></script>
+	<script src="/resources/customer_assets/js/jquery.sparkline.js"></script>
+
+
+	<!--common script for all pages-->
+	<script src="/resources/customer_assets/js/common-scripts.js"></script>
+
+	<script type="text/javascript"
+		src="/resources/customer_assets/js/gritter/js/jquery.gritter.js"></script>
+	<script type="text/javascript"
+		src="/resources/customer_assets/js/gritter-conf.js"></script>
+
+	<!--script for this page-->
+	<script src="/resources/customer_assets/js/sparkline-chart.js"></script>
+	<script src="/resources/customer_assets/js/zabuto_calendar.js"></script>
+
+
+	<script type="text/javascript"
+		src="/resources/customer_assets/js/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
+	<script src="/resources/customer_assets/js/bootstrap-select.min.js"></script>
+
+
+	<script src="/resources/customer_assets/js/form-component.js"></script>
 </body>
 </html>
 

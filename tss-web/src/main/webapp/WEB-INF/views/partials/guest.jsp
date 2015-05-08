@@ -39,105 +39,6 @@
 	</div>
 </form>
 
-<!-- js placed at the end of the document so the pages load faster -->
-<script src="/resources/customer_assets/js/jquery-1.8.3.min.js"></script>
-<script src="/resources/customer_assets/js/bootstrap.min.js"></script>
-<script class="include" type="text/javascript"
-	src="/resources/customer_assets/js/jquery.dcjqaccordion.2.7.js"></script>
-<script src="/resources/customer_assets/js/jquery.scrollTo.min.js"></script>
-<script src="/resources/customer_assets/js/jquery.nicescroll.js"
-	type="text/javascript"></script>
-<script src="/resources/customer_assets/js/jquery.sparkline.js"></script>
-
-
-<!--common script for all pages-->
-<script src="/resources/customer_assets/js/common-scripts.js"></script>
-
-<script type="text/javascript"
-	src="/resources/customer_assets/js/gritter/js/jquery.gritter.js"></script>
-<script type="text/javascript"
-	src="/resources/customer_assets/js/gritter-conf.js"></script>
-
-<!--script for this page-->
-<script src="/resources/customer_assets/js/sparkline-chart.js"></script>
-<script src="/resources/customer_assets/js/zabuto_calendar.js"></script>
-
-
-<script type="text/javascript"
-	src="/resources/customer_assets/js/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
-<script src="/resources/customer_assets/js/bootstrap-select.min.js"></script>
-
-
-<script src="/resources/customer_assets/js/form-component.js"></script>
-
-<script type="application/javascript">
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		
-		
-		
-
-            $(document).ready(function () {
-            $("#date-popover").popover({html: true, trigger: "manual"});
-            $("#date-popover").hide();
-            $("#date-popover").click(function (e) {
-            $(this).hide();
-            });
-
-            $("#my-calendar").zabuto_calendar({
-            action: function () {
-            return myDateFunction(this.id, false);
-            },
-            action_nav: function () {
-            return myNavFunction(this.id);
-            },
-            ajax: {
-            url: "show_data.php?action=1",
-            modal: true
-            },
-            legend: [
-            {type: "text", label: "Special event", badge: "00"},
-            {type: "block", label: "Regular event", }
-            ]
-            });
-            });
-
-
-            function myNavFunction(id) {
-            $("#date-popover").hide();
-            var nav = $("#" + id).data("navigation");
-            var to = $("#" + id).data("to");
-            console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
-            }
-
-	
-	
-	
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-</script>
-
 <script src="/resources/customer_assets/js/form-component.js"></script>
 
 
@@ -176,6 +77,84 @@
 </script>
 
 <script>
+	var a = {
+		"Ё" : "YO",
+		"Й" : "I",
+		"Ц" : "TS",
+		"У" : "U",
+		"К" : "K",
+		"Е" : "E",
+		"Н" : "N",
+		"Г" : "G",
+		"Ш" : "SH",
+		"Щ" : "SCH",
+		"З" : "Z",
+		"Х" : "H",
+		"Ъ" : "'",
+		"ё" : "yo",
+		"й" : "i",
+		"ц" : "ts",
+		"у" : "u",
+		"к" : "k",
+		"е" : "e",
+		"н" : "n",
+		"г" : "g",
+		"ш" : "sh",
+		"щ" : "sch",
+		"з" : "z",
+		"х" : "h",
+		"ъ" : "'",
+		"Ф" : "F",
+		"Ы" : "I",
+		"В" : "V",
+		"А" : "a",
+		"П" : "P",
+		"Р" : "R",
+		"О" : "O",
+		"Л" : "L",
+		"Д" : "D",
+		"Ж" : "ZH",
+		"Э" : "E",
+		"ф" : "f",
+		"ы" : "i",
+		"в" : "v",
+		"а" : "a",
+		"п" : "p",
+		"р" : "r",
+		"о" : "o",
+		"л" : "l",
+		"д" : "d",
+		"ж" : "zh",
+		"э" : "e",
+		"Я" : "Ya",
+		"Ч" : "CH",
+		"С" : "S",
+		"М" : "M",
+		"И" : "I",
+		"Т" : "T",
+		"Ь" : "'",
+		"Б" : "B",
+		"Ю" : "YU",
+		"я" : "ya",
+		"ч" : "ch",
+		"с" : "s",
+		"м" : "m",
+		"и" : "i",
+		"т" : "t",
+		"ь" : "'",
+		"б" : "b",
+		"ю" : "yu"
+	};
+
+	function transliterate(word) {
+		return word.split('').map(function(char) {
+			return a[char] || char;
+		}).join("");
+	}
+</script>
+
+
+<script>
 	$('#update_price').click(function() {
 		$.ajax({
 			type : "GET",
@@ -195,8 +174,3 @@
 		});
 	});
 </script>
-
-
-
-</body>
-</html>
