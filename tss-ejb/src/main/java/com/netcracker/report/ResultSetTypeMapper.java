@@ -3,9 +3,7 @@ package com.netcracker.report;
 import com.netcracker.report.container.MultipurposeValue;
 import com.netcracker.report.mapper.DataType;
 import com.netcracker.report.mapper.TypeConverter;
-import com.netcracker.report.mapper.impl.BooleanTypeConverter;
-import com.netcracker.report.mapper.impl.IntegerTypeConverter;
-import com.netcracker.report.mapper.impl.StringTypeConverter;
+import com.netcracker.report.mapper.impl.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,20 +16,24 @@ import java.util.Map;
 
 public class ResultSetTypeMapper {
 
-    private static final int SERIAL = 4;
+    private static final int INTEGER = 4;
     private static final int VARCHAR = 12;
     private static final int BOOL = -7;
+    private static final int DOUBLE = 8;
+    private static final int TIMESTAMP = 93;
 
     private static final Map<Integer, DataType> typeRelationMap = new HashMap<>();
     private static final Map<DataType, TypeConverter> converterMap = new HashMap<>();
 
     static {
-        addDependency(SERIAL, DataType.INTEGER, new IntegerTypeConverter());
+        addDependency(INTEGER, DataType.INTEGER, new IntegerTypeConverter());
         addDependency(VARCHAR, DataType.STRING, new StringTypeConverter());
         addDependency(BOOL, DataType.BOOLEAN, new BooleanTypeConverter());
+        addDependency(DOUBLE, DataType.DOUBLE, new DoubleTypeConverter());
+        addDependency(TIMESTAMP, DataType.TIMESTAMP, new TimestampTypeConverter());
     }
 
-    public static void addDependency(Integer index, DataType type, TypeConverter converter) {
+    private static void addDependency(Integer index, DataType type, TypeConverter converter) {
         typeRelationMap.put(index, type);
         converterMap.put(type, converter);
     }

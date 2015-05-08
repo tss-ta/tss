@@ -1,11 +1,14 @@
 package com.netcracker.ejb;
 
+import com.netcracker.dao.ReportDataDAO;
 import com.netcracker.dao.ReportInfoDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.helper.CarCategory;
+import com.netcracker.report.Report;
+import com.netcracker.report.container.ReportData;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.reports.ReportsRow;
 import java.rmi.RemoteException;
@@ -35,6 +38,26 @@ public class ReportsBean implements SessionBean {
                 dao.close();
             }
         }
+    }
+
+    public Report getReportById(Integer id) {
+        ReportInfoDAO infoDAO = null;
+        ReportDataDAO dataDAO;
+        ReportInfo reportInfo;
+        ReportData reportData;
+        Report report = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            dataDAO = new ReportDataDAO();
+            reportInfo = infoDAO.get(id);
+            reportData = dataDAO.createReportData(reportInfo.getQuery());
+            report = new Report(reportInfo, reportData);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+        return report;
     }
 
     public int countAllOrders() {

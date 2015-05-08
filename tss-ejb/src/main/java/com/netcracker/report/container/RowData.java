@@ -21,6 +21,10 @@ public class RowData {
         row.put(number, data);
     }
 
+    public int getColumnAmount() {
+        return row.size();
+    }
+
     public Set<Integer> getAllColumnNumbers() {
         return row.keySet();
     }

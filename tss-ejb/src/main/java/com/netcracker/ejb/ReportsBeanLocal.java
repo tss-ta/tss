@@ -2,6 +2,7 @@ package com.netcracker.ejb;
 
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
+import com.netcracker.report.Report;
 import com.netcracker.util.reports.ReportsRow;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.ejb.EJBLocalObject;
  *
  * @author maks
  */
+
 public interface ReportsBeanLocal extends EJBLocalObject {
 
     int countAllOrders();
@@ -28,4 +30,6 @@ public interface ReportsBeanLocal extends EJBLocalObject {
     List<ReportsRow> getCarCategoryReport();
 
     ReportInfo getReportInfoById(Integer id);
+
+    Report getReportById(Integer id);
 }

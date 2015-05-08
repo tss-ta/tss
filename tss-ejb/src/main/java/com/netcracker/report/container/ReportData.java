@@ -32,6 +32,10 @@ public class ReportData {
         return columnMetaDataMap.keySet();
     }
 
+    public List<RowData> getRows() {
+        return rows;
+    }
+
     public void addRow(RowData data) {
         rows.add(data);
     }
