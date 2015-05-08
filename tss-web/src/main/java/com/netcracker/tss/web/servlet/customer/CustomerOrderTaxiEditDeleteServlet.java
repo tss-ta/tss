@@ -89,7 +89,7 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (ACTION_EDIT_TAXI_ORDER.equals(action)) {
             taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
-            redirectToEditDriver(request, response);
+            redirectToEdit(request, response);
             return;
         }
 
@@ -109,14 +109,14 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         if (request.getParameter("addTo") != null) {
             addAddressTo(request);
-            redirectToEditDriver(request, response);
+            redirectToEdit(request, response);
         } else if (request.getParameter("addFrom") != null) {
             addAddressFrom(request);
-            redirectToEditDriver(request, response);
+            redirectToEdit(request, response);
         } else if (request.getParameter("deleteTo") != null
                 || request.getParameter("deleteFrom") != null) {
             deleteAddress(request);
-            redirectToEditDriver(request, response);
+            redirectToEdit(request, response);
         } else {
             TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
             Address addFrom = toAddress(request.getParameter("fromAddr"), request);
@@ -151,7 +151,7 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         }
     }
 
-    private void redirectToEditDriver(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void redirectToEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         DateFormat format = new SimpleDateFormat("HH:mm, dd MM yyyy",

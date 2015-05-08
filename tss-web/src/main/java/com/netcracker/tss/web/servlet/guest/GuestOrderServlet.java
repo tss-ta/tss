@@ -34,6 +34,7 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.UserUtils;
 
@@ -75,7 +76,7 @@ public class GuestOrderServlet extends HttpServlet {
         route.setDistance(distance);
         Address addFrom = toAddress(req.getParameter("fromAddr"), req);
         Address addTo = toAddress(req.getParameter("toAddr"), req);
-        TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
+        TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
         taxiOrder.setBookingTime(new Date());
         Date orderTime = DateParser.parseDate(req); 
         taxiOrder.setOrderTime(orderTime);
@@ -90,52 +91,7 @@ public class GuestOrderServlet extends HttpServlet {
 
  
 
-	private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
-        Integer carType = checkString(req.getParameter("carType"));
-        Integer wayOfPayment = checkString(req.getParameter("paymentType"));
-        Boolean driversGender = checkDriversGender(req.getParameter("driverGender"));
-        Integer musicType = checkString(req.getParameter("musicType"));
-        String[] addParameters = req.getParameterValues("addOptions");
-        Boolean wifi = null;
-        Boolean animal = null;
-        Boolean noSmokeDriver = null;
-        Boolean conditioner = null;
-        if (addParameters != null) {
-            for (String st : addParameters) {
-                if ("wifi".equals(st)) {
-                    wifi = Boolean.TRUE;
-                }
-                if ("animal".equals(st)) {
-                    animal = Boolean.TRUE;
-                }
-                if ("nosmoke".equals(st)) {
-                    noSmokeDriver = Boolean.TRUE;
-                }
-                if ("conditioner".equals(st)) {
-                    conditioner = Boolean.TRUE;
-                }
-            }
-        }
-        return new TaxiOrder(wayOfPayment, musicType, driversGender, noSmokeDriver, carType, animal, wifi, conditioner);
-    }
-
-    private Boolean checkDriversGender(String s) {
-        if (!"".equals(s)) {
-            if ("male".equals(s)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return null;
-    }
-
-    private Integer checkString(String s) {
-        if (!"".equals(s)) {
-            return Integer.parseInt(s);
-        }
-        return null;
-    }
+	
 
     private Address toAddress(String addr, HttpServletRequest req) {
         MapBeanLocal mapBeanLocal = getMapBean(req);
