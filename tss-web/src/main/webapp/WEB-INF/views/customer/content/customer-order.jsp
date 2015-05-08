@@ -128,7 +128,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 col-sm-2 control-label">Choose car
 						type :</label> <select class="selectpicker" title="Choose car type"
-						name="carType">
+						 id ="carType" name="carType">
 						<!--						<option></option>-->
 						<option value="1">Economy class</option>
 						<option value="2">Business class</option>
@@ -168,7 +168,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 col-sm-2 control-label">Other
 						options :</label> <select class="selectpicker" multiple
-						title="Choose other options" name="addOptions">
+						title="Choose other options" id ="addOptions" name="addOptions">
 						<option value="wifi">WI-FI</option>
 						<option value="animal">Animal transportation</option>
 						<option value="nosmoke">Non-smoking driver</option>
@@ -264,7 +264,9 @@ function transliterate(word){
 			data : {
 				fromAddr : transliterate($("#fromAddr").val()),
 				toAddr : transliterate($("#toAddr").val()),
-				ordertime : $("#ordertime").val()
+				ordertime : $("#ordertime").val(),
+                                addOptions : $("#addOptions").val(),
+                                carType : $("#carType").val()
 			},
 			dataType : "text",
 		}).done(function(res) {

@@ -21,10 +21,13 @@ public class AdditionalParameters {
                 .getParameter("driverGender"));
         Integer musicType = checkString(req.getParameter("musicType"));
         String[] addParameters = req.getParameterValues("addOptions");
-        Boolean wifi = null;
-        Boolean animal = null;
-        Boolean noSmokeDriver = null;
-        Boolean conditioner = null;
+        if (addParameters == null) {
+            addParameters = req.getParameterValues("addOptions[]");
+        }
+        Boolean wifi = Boolean.FALSE;
+        Boolean animal = Boolean.FALSE;
+        Boolean noSmokeDriver = Boolean.FALSE;
+        Boolean conditioner = Boolean.FALSE;
         if (addParameters != null) {
             for (String st : addParameters) {
                 if ("wifi".equals(st)) {
@@ -46,7 +49,7 @@ public class AdditionalParameters {
     }
 
     private static Boolean checkDriversGender(String s) {
-        if (!"".equals(s)) {
+        if ((s != null) && (!"".equals(s))) {
             if ("male".equals(s)) {
                 return true;
             } else {
@@ -57,7 +60,7 @@ public class AdditionalParameters {
     }
 
     private static Integer checkString(String s) {
-        if (!"".equals(s)) {
+        if ((s != null) && (!"".equals(s))) {
             return Integer.parseInt(s);
         }
         return null;

@@ -22,6 +22,7 @@ import com.netcracker.ejb.PriceBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
 
 /**
@@ -49,7 +50,7 @@ public class CustomerUpdatePriceServlet extends HttpServlet {
 		float distance = calculateDistance(request);
 		PriceBeanLocal priceBean = getPriceBean(request);
 		double price = priceBean.calculatePrice(distance,
-				DateParser.parseDate(request));
+				DateParser.parseDate(request),AdditionalParameters.taxiOrderAddParameters(request));
 		String text = String.valueOf(price);
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");

@@ -147,11 +147,12 @@
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">Choose car
                                     type :</label> <select class="selectpicker" title="Choose car type"
-                                                       name="carType">
+                                                      id ="carType" name="carType">
                                     <!--								<option></option>-->
                                     <option value="1">Economy class</option>
                                     <option value="2">Business class</option>
                                     <option value="3">Van</option>
+                                    <option value="4">Cargo</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -186,7 +187,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">Other
                                     options :</label> <select class="selectpicker" multiple
-                                                          title="Choose other options" name="addOptions">
+                                                          title="Choose other options" id ="addOptions" name="addOptions">
                                     <option value="wifi">WI-FI</option>
                                     <option value="animal">Animal transportation</option>
                                     <option value="nosmoke">Non-smoking driver</option>
@@ -325,42 +326,44 @@
 
         <script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
         <script>
-            $(function() {
-            window.onload = function() {
-            initialize();
-            showonmap();
-            }
-            });
-            //custom select box
+                                           $(function () {
+                                               window.onload = function () {
+                                                   initialize();
+                                                   showonmap();
+                                               }
+                                           });
+                                           //custom select box
 
-            $(function() {
-            $('select.styled').customSelect();
-            });
+                                           $(function () {
+                                               $('select.styled').customSelect();
+                                           });
         </script>
 
         <script>
             AnyTime.picker("ordertime", {
-            format : "%H:%i, %d %m %Y",
-            firstDOW : 1
+                format: "%H:%i, %d %m %Y",
+                firstDOW: 1
             });
         </script>
 
         <script>
-            $('#update_price').click(function() {
-            $.ajax({
-            type : "GET",
-            url : "http://localhost:8080/price",
-            data : {
-            fromAddr : $("#fromAddr").val(),
-            toAddr : $("#toAddr").val(),
-            ordertime: $("#ordertime").val()
-            },
-            dataType : "text",
-            }).done(function(res) {
-            $('#price_field').val(res);
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert("AJAX call failed: " + textStatus + ", " + errorThrown);
-            });
+            $('#update_price').click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/price",
+                    data: {
+                        fromAddr: $("#fromAddr").val(),
+                        toAddr: $("#toAddr").val(),
+                        ordertime: $("#ordertime").val(),
+                        addOptions: $("#addOptions").val(),
+                        carType: $("#carType").val()
+                    },
+                    dataType: "text",
+                }).done(function (res) {
+                    $('#price_field').val(res);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+                });
             });
         </script>
 

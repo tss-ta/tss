@@ -133,7 +133,7 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             }
             if ("".equals(request.getParameter("price"))) {
                 price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request));
+                        DateParser.parseDate(request),null);
             } else {
                 price = Double.parseDouble(request.getParameter("price"));
             }

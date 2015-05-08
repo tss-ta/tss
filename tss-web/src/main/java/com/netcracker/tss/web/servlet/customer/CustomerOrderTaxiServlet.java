@@ -75,6 +75,13 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             PriceBeanLocal priceBean = getPriceBean(req);
             float distance = 0;
             double price = 0;
+
+            Route route = new Route(findCurrentUser().getUsername() + " Route");
+            route.setDistance(distance);
+            Address addFrom = toAddress(req.getParameter("fromAddr"), req);
+            Address addTo = toAddress(req.getParameter("toAddr"), req);
+            TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
+            taxiOrder.setBookingTime(new Date());
             try {
                 MapBeanLocal mapBean = getMapBean(req);
                 distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
@@ -85,16 +92,10 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             }
             if ("".equals(req.getParameter("price"))) {
                 price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(req));
-            }else{
+                        DateParser.parseDate(req),taxiOrder);
+            } else {
                 price = Double.parseDouble(req.getParameter("price"));
             }
-            Route route = new Route(findCurrentUser().getUsername() + " Route");
-            route.setDistance(distance);
-            Address addFrom = toAddress(req.getParameter("fromAddr"), req);
-            Address addTo = toAddress(req.getParameter("toAddr"), req);
-            TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
-            taxiOrder.setBookingTime(new Date());
             Date orderTime = DateParser.parseDate(req);
             taxiOrder.setOrderTime(orderTime);
             taxiOrder.setPrice(price);
@@ -139,8 +140,6 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
         }
     }
-
-   
 
     private Address toAddress(String addr, HttpServletRequest req) {
         MapBeanLocal mapBeanLocal = getMapBean(req);

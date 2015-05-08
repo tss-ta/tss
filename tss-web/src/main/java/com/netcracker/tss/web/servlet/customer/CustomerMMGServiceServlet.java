@@ -91,6 +91,12 @@ public class CustomerMMGServiceServlet extends HttpServlet {
             PriceBeanLocal priceBean = getPriceBean(request);
             float distance = 0;
             double price = 0;
+
+            Route route = new Route(findCurrentUser().getUsername() + " Route");
+            route.setDistance(distance);
+            Address addFrom = toAddress(request.getParameter("fromAddr"), request);
+            Address addTo = toAddress(request.getParameter("toAddr"), request);
+            TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(request));
             try {
                 MapBeanLocal mapBean = getMapBean(request);
                 distance = mapBean.calculateDistance(request.getParameter("fromAddr"),
@@ -101,15 +107,10 @@ public class CustomerMMGServiceServlet extends HttpServlet {
             }
             if ("".equals(request.getParameter("price"))) {
                 price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request));
+                        DateParser.parseDate(request),taxiOrder);
             } else {
                 price = Double.parseDouble(request.getParameter("price"));
             }
-            Route route = new Route(findCurrentUser().getUsername() + " Route");
-            route.setDistance(distance);
-            Address addFrom = toAddress(request.getParameter("fromAddr"), request);
-            Address addTo = toAddress(request.getParameter("toAddr"), request);
-            TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(request));
             taxiOrder.setBookingTime(new Date());
             Date orderTime = DateParser.parseDate(request);
             taxiOrder.setOrderTime(orderTime);
