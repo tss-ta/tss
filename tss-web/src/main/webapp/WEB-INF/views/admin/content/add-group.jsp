@@ -23,12 +23,13 @@
     <div class="col-md-offset-3 col-md-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                <form action="/admin/group" method="post" class="form-horizontal">
+                <form action="/admin" method="post" class="form-horizontal">
                     <div class="form-group">
                         <label for="name" class="col-md-4 control-label">Group name</label>
                         <div class="col-sm-5">
                             <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="${param.name}" maxlength="100"x>
                         </div>
+
                     </div>
                     <%@ include file="../partials/rolescheckboxes.jspf" %>
                     <c:choose>
@@ -45,6 +46,7 @@
                             <button type="submit" class="btn btn-default">Add <i class="fa fa-users"></i></button>
                         </div>
                     </div>
+                    <input type="hidden" name="menu" value="groups">
                 </form>
             </div>
         </div>

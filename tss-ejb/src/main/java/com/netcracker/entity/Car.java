@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -16,7 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author maks
  */
-
 @Entity
 @XmlRootElement
 @NamedQueries({
@@ -31,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Car.searchByLicPlate", query = "SELECT c FROM Car c WHERE c.licPlate like :licPlate")})
 @Table(name = "car")
 public class Car implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -61,7 +57,8 @@ public class Car implements Serializable {
     @Pattern(regexp = "[a-zA-z]{3}-[0-9]{3}-[a-zA-z]{3}", message = "Valid license plate should be like YYY-XXX-YYY.")
     private String licPlate;
 
-    public Car() {}
+    public Car() {
+    }
 
     public Car(String licPlace, boolean available, int category, boolean animalable, boolean wifi, boolean conditioner) {
         this.available = available;
@@ -129,6 +126,39 @@ public class Car implements Serializable {
     }
 
     @Override
+    public final int hashCode() {
+        return Objects.hash(available, category, animalable, wifi, conditioner, licPlate);
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Car)) {
+            return false;
+        }
+
+        Car other = (Car) obj;
+        if (!Objects.equals(this.animalable, other.animalable)) {
+            return false;
+        }
+        if (!Objects.equals(this.available, other.available)) {
+            return false;
+        }
+        if (!Objects.equals(this.category, other.category)) {
+            return false;
+        }
+        if (!Objects.equals(this.conditioner, other.conditioner)) {
+            return false;
+        }
+        if (!Objects.equals(this.wifi, other.wifi)) {
+            return false;
+        }
+        return Objects.equals(this.licPlate, other.licPlate);
+    }
+
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Car{");
         sb.append("id=").append(id);
@@ -140,35 +170,5 @@ public class Car implements Serializable {
         sb.append(", licPlate='").append(licPlate).append('\'');
         sb.append('}');
         return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Car car = (Car) o;
-
-        if (animalable != car.animalable) return false;
-        if (available != car.available) return false;
-        if (category != car.category) return false;
-        if (conditioner != car.conditioner) return false;
-        if (wifi != car.wifi) return false;
-        if (id != null ? !id.equals(car.id) : car.id != null) return false;
-        if (licPlate != null ? !licPlate.equals(car.licPlate) : car.licPlate != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (available ? 1 : 0);
-        result = 31 * result + category;
-        result = 31 * result + (animalable ? 1 : 0);
-        result = 31 * result + (wifi ? 1 : 0);
-        result = 31 * result + (conditioner ? 1 : 0);
-        result = 31 * result + (licPlate != null ? licPlate.hashCode() : 0);
-        return result;
     }
 }

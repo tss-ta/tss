@@ -1,0 +1,3 @@
+<input type="hidden" id="fromc" name="" value="" />
+<input type="hidden" id="toc" name="" value="" />
+<div id="map_canvas" style="width: 40em; height: 350px; display: block;"></div>

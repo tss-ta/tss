@@ -20,13 +20,19 @@
 <link href='http://fonts.googleapis.com/css?family=Raleway'
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/responsiveslides.css">
+<link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+<link href="/resources/css/customer.css" rel="stylesheet">
+<link href="/resources/customer_assets/css/anytime.5.1.0.css"
+	rel="stylesheet">
+<link href="/resources/customer_assets/css/bootstrap-select.css"
+	rel="stylesheet">
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="/resources/js/responsiveslides.min.js"></script>
 <script>
 	// You can also use "$(window).load(function() {"
 	$(function() {
-
 		// Slideshow 1
 		$("#slider1").responsiveSlides({
 			maxwidth : 1600,
@@ -66,7 +72,7 @@
 						<sec:authorize access="isAnonymous()">
 							<li><a href="/signin.jsp">Sign In</a></li>
 							<li><a href="/signup.jsp">Sign Up</a></li>
-							<li><a href="/guest">Order NOW!</a></li>
+							<li><a href="/track">Track Order</a></li>
 						</sec:authorize>
 						<div class="clear"></div>
 					</ul>
@@ -77,59 +83,14 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-	<div class="wrap">
-		<!---End-header--->
-		<!--start-image-slider---->
-		<div class="image-slider">
-			<!-- Slideshow 1 -->
-			<ul class="rslides" id="slider1">
-				<li><img src="/resources/images/slider1.jpg" alt=""></li>
-				<li><img src="/resources/images/slider2.jpg" alt=""></li>
-				<li><img src="/resources/images/slider1.jpg" alt=""></li>
-			</ul>
-			<!-- Slideshow 2 -->
-		</div>
-		<!--End-image-slider---->
-	</div>
-	<!---start-content----->
+	<jsp:include page="partials/guest.jsp" />
 	<div class="content">
 		<div class="wrap">
-			<div class="content-grids">
-				<div class="grid">
-					<h3 class="frist">FIND AN CAR</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-						sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-						ut enim ad.</p>
-					<a href="/signin.jsp">Sign In</a>
-				</div>
-				<div class="grid">
-					<h3 class="second">CHALLENGE</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-						sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-						ut enim ad.</p>
-					<a href="/signup.jsp">Sign Up</a>
-				</div>
-				<div class="grid last-grid">
-					<h3 class="second">CHALLENGE</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-						sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-						ut enim ad.</p>
-					<a href="/signin.jsp">Sign In</a>
-				</div>
-				<div class="grid">
-					<h3 class="last">FIND AN CAR</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-						sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-						ut enim ad.</p>
-					<a href="#">Guest</a>
-				</div>
-				<div class="clear"></div>
-			</div>
-			<div class="clear"></div>
 			<!---start-footer-grids--->
 			<div class="footer-grids">
 				<div class="footer-grid2 last-footer-grid">
-					<span> <%@ include file="partials/footer.jspf"%></span>
+					<span> EMail: team.a.taxi@gmail.com <br> <%@ include
+							file="partials/footer.jspf"%></span>
 				</div>
 				<div class="clear"></div>
 			</div>
