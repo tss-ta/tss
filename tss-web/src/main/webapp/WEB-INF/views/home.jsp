@@ -27,19 +27,6 @@
 	rel="stylesheet">
 <link href="/resources/customer_assets/css/bootstrap-select.css"
 	rel="stylesheet">
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="/resources/js/responsiveslides.min.js"></script>
-<script>
-	// You can also use "$(window).load(function() {"
-	$(function() {
-		// Slideshow 1
-		$("#slider1").responsiveSlides({
-			maxwidth : 1600,
-			speed : 600
-		});
-	});
-</script>
 </head>
 <body>
 	<!-----start-header----->
