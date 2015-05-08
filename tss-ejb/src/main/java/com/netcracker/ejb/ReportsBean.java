@@ -1,10 +1,10 @@
 package com.netcracker.ejb;
 
-import com.netcracker.dao.ContactsDAO;
+import com.netcracker.dao.ReportInfoDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
-import com.netcracker.entity.User;
 import com.netcracker.entity.helper.CarCategory;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.reports.ReportsRow;
@@ -20,8 +20,22 @@ import javax.ejb.SessionContext;
 /**
  *
  * @author maks
+ * @author Kyrylo Berehovyi
  */
+
 public class ReportsBean implements SessionBean {
+
+    public ReportInfo getReportInfoById(Integer id) {
+        ReportInfoDAO dao = null;
+        try {
+            dao = new ReportInfoDAO();
+            return dao.get(id);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
 
     public int countAllOrders() {
         TaxiOrderDAO dao = null;

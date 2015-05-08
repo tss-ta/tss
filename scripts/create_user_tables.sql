@@ -18,6 +18,8 @@ DROP TABLE IF EXISTS service CASCADE;
 DROP TABLE IF EXISTS meet_my_guest CASCADE;
 DROP TABLE IF EXISTS celebration CASCADE;
 DROP TABLE IF EXISTS celebration_driver_car CASCADE;
+DROP TABLE IF EXISTS report_info CASCADE;
+
 
 CREATE TABLE tss_user
 (
@@ -316,4 +318,19 @@ CONSTRAINT  meet_my_guest_service_id_pk PRIMARY KEY (service_id),
  CONSTRAINT meet_my_guest_service_id_fk FOREIGN KEY (service_id)
       REFERENCES service (service_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+
+
+---------------------------------------
+-- REPORT SYSTEM ----------------------
+---------------------------------------
+
+CREATE TABLE report_info
+(
+  id serial NOT NULL,
+  name character varying(100),
+  description text,
+  db_query text,
+  CONSTRAINT report_id_pk PRIMARY KEY (id)
 );

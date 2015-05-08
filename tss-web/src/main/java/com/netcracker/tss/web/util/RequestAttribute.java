@@ -13,7 +13,8 @@ public enum RequestAttribute {
     SUCCESS_MESSAGE("successMessage"),
     PAGER("pager"),
     PAGER_LINK("pagerLink"),
-    PAGE_TITLE("pageTitle");
+    PAGE_TITLE("pageTitle"),
+    REPORT_INFO("reportInfo");
 
     private String name;
 

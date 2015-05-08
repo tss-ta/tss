@@ -22,11 +22,13 @@ public enum Page {
     ADMIN_TARIFFS_CONTENT("tariffs", "admin/content/tariffs.jsp"),
     ADMIN_EDIT_TARIFFS_CONTENT("tariffs", "admin/content/edit-tariffs.jsp"),
     ADMIN_REPORTS_CONTENT("reports", "admin/content/reports.jsp"),
+    ADMIN_REPORT_INFO_CONTENT("reports", "admin/content/report-info.jsp"),
     ADMIN_CAR_OPTIONS_REPORTS_CONTENT("reports", "admin/content/car-options-report.jsp"),
     ADMIN_NEW_ORDERS_REPORTS_CONTENT("reports", "admin/content/new-orders-report.jsp"),
     ADMIN_CHOOSE_USER_REPORTS_CONTENT("reports", "admin/content/choose-customer.jsp"),
     ERROR_500_CONTENT("", "admin/content/500.jsp"),
-    ERROR_404_CONTENT("", "content/404.jsp");
+    ERROR_404_CONTENT("", "content/404.jsp"),
+    INCORRECT_ID_CONTENT("", "content/incorrect-id.jsp");
 
     public static final String ROOT_PATH_PREFIX = "/WEB-INF/views/";
 
