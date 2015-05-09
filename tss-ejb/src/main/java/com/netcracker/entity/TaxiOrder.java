@@ -110,9 +110,9 @@ public class TaxiOrder implements Serializable {
     @ManyToOne
     private Route routeId;
 
-    @JoinColumn(name = "tariff_id", referencedColumnName = "id")
-    @ManyToOne
-    private Tariff tariffId;
+//    @JoinColumn(name = "tariff_id", referencedColumnName = "id")
+//    @ManyToOne
+//    private Tariff tariffId;
 
     @JoinColumn(name = "contacts_id", referencedColumnName = "id")
     @ManyToOne
@@ -172,7 +172,7 @@ public class TaxiOrder implements Serializable {
         this.serviceOptionId = order.serviceOptionId;
         this.driverCarId = order.driverCarId;
         this.routeId = order.routeId;
-        this.tariffId = order.tariffId;
+//        this.tariffId = order.tariffId;
         this.contactsId = order.contactsId;
     }
 
@@ -370,13 +370,13 @@ public class TaxiOrder implements Serializable {
         this.routeId = routeId;
     }
 
-    public Tariff getTariffId() {
-        return tariffId;
-    }
-
-    public void setTariffId(Tariff tariffId) {
-        this.tariffId = tariffId;
-    }
+//    public Tariff getTariffId() {
+//        return tariffId;
+//    }
+//
+//    public void setTariffId(Tariff tariffId) {
+//        this.tariffId = tariffId;
+//    }
 
     public Contacts getContactsId() {
         return contactsId;
