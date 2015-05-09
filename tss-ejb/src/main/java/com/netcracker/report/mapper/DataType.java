@@ -8,5 +8,6 @@ public enum DataType {
     INTEGER,
     BOOLEAN,
     DOUBLE,
-    TIMESTAMP;
+    TIMESTAMP,
+    LONG;
 }
