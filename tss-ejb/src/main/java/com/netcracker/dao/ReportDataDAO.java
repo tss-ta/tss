@@ -10,10 +10,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * @author Kyrylo Berehovyi
@@ -21,8 +18,38 @@ import java.sql.SQLException;
 
 public class ReportDataDAO {
 
+    private static final int FIRST_COLUMN = 1;
+    private static final int LIMIT_POSITION = 1;
+    private static final int OFFSET_POSITION = 2;
+
     private DataSource dataSource = getDataSource();
     private ResultSetTypeMapper mapper = new ResultSetTypeMapper();
+
+    public long countResults(String query) {
+        Connection connection = null;
+        ResultSet resultSet;
+        long count = 0;
+        try {
+            connection = dataSource.getConnection();
+            resultSet = connection.prepareStatement(query).executeQuery();
+            count = getCountFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
+        return count;
+    }
+
+    private long getCountFromResultSet(ResultSet resultSet) throws SQLException {
+        long count = 0;
+        if (resultSet.next()) {
+            count = resultSet.getLong(FIRST_COLUMN);
+        }
+        return count;
+    }
 
     public ReportData createReportData(String query) {
         Connection connection = null;
@@ -107,5 +134,26 @@ public class ReportDataDAO {
         return dataSource;
     }
 
+    public ReportData createReportData(String query, int pageNumber, Integer pageSize) {
+        Connection connection = null;
+        ReportData reportData = new ReportData();
+        ResultSet resultSet;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(LIMIT_POSITION, pageSize);
+            statement.setInt(OFFSET_POSITION, (pageNumber - 1) * pageSize);
+            resultSet = statement.executeQuery();
+            initializeReportMetaData(reportData, resultSet.getMetaData());
+            generateDataFromResultSet(reportData, resultSet);
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
+        return reportData;
+    }
 }

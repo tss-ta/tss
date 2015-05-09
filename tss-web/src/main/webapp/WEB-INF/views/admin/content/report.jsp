@@ -22,24 +22,14 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-4 col-xs-4">
-                    <a href="/admin?menu=car&action=add" class="btn btn-default">Add <i class="fa fa-taxi"></i></a>
+                    <a href="" id="download" download="${report.info.name}.xlsx" data-id="" class="btn btn-default"><i class="fa fa-file-excel-o"></i> Download Excel</a>
                 </div>
-                <%--<div class="col-md-offset-7 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12">--%>
-                    <%--<form action="/admin" method="get" >--%>
-                        <%--<div class="input-group">--%>
-                            <%--<input type="hidden" name="menu" value="car">--%>
-                            <%--<input type="hidden" name="action" value="search">--%>
-                            <%--<input type="text" class="form-control" name="search" placeholder="Search by License Plate" value="${param.search}" maxlength="11">--%>
-                            <%--<span class="input-group-btn">--%>
-                                <%--<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>--%>
-                            <%--</span>--%>
-                        <%--</div>--%>
-                    <%--</form>--%>
-                <%--</div>--%>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <c:if test="${not empty report.data}">
     <div class="row row-fix">
@@ -103,3 +93,7 @@
     </div>
 </c:if>
 
+<script src="/resources/js/report/jszip.min.js"></script>
+<script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+<script src="/resources/js/report/xlsx.js"></script>
+<script src="/resources/js/report/excel-dowloader.js"></script>

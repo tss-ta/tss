@@ -328,9 +328,12 @@ CONSTRAINT  meet_my_guest_service_id_pk PRIMARY KEY (service_id),
 
 CREATE TABLE report_info
 (
-  id serial NOT NULL,
-  name character varying(100),
-  description text,
-  db_query text,
-  CONSTRAINT report_id_pk PRIMARY KEY (id)
+id serial NOT NULL,
+name character varying(100),
+description text,
+select_query text,
+count_query text,
+countable boolean,
+page_size integer,
+CONSTRAINT report_id_pk PRIMARY KEY (id)
 );
