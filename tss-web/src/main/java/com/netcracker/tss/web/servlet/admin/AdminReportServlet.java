@@ -28,10 +28,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by Kyrylo Berehovyi on 25/04/2015.
- *
+ * @author Kyrylo Berehovyi
  * @author maks
  */
+
 @WebServlet(urlPatterns = "/admin/report")
 public class AdminReportServlet extends HttpServlet {
 

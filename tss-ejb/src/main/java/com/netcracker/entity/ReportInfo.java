@@ -18,9 +18,16 @@ public class ReportInfo {
     private Integer id;
     private String name;
     private String description;
+    private boolean countable;
 
-    @Column(name = "db_query")
-    private String query;
+    @Column(name = "select_query")
+    private String selectQuery;
+
+    @Column(name = "count_query")
+    private String countQuery;
+
+    @Column(name = "page_size")
+    private Integer pageSize;
 
     public ReportInfo() {}
 
@@ -48,12 +55,36 @@ public class ReportInfo {
         this.description = description;
     }
 
-    public String getQuery() {
-        return query;
+    public boolean isCountable() {
+        return countable;
     }
 
-    public void setQuery(String query) {
-        this.query = query;
+    public void setCountable(boolean countable) {
+        this.countable = countable;
+    }
+
+    public String getSelectQuery() {
+        return selectQuery;
+    }
+
+    public void setSelectQuery(String selectQuery) {
+        this.selectQuery = selectQuery;
+    }
+
+    public String getCountQuery() {
+        return countQuery;
+    }
+
+    public void setCountQuery(String countQuery) {
+        this.countQuery = countQuery;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     @Override
@@ -63,10 +94,13 @@ public class ReportInfo {
 
         ReportInfo that = (ReportInfo) o;
 
+        if (countable != that.countable) return false;
+        if (countQuery != null ? !countQuery.equals(that.countQuery) : that.countQuery != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (query != null ? !query.equals(that.query) : that.query != null) return false;
+        if (pageSize != null ? !pageSize.equals(that.pageSize) : that.pageSize != null) return false;
+        if (selectQuery != null ? !selectQuery.equals(that.selectQuery) : that.selectQuery != null) return false;
 
         return true;
     }
@@ -76,7 +110,10 @@ public class ReportInfo {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (query != null ? query.hashCode() : 0);
+        result = 31 * result + (countable ? 1 : 0);
+        result = 31 * result + (selectQuery != null ? selectQuery.hashCode() : 0);
+        result = 31 * result + (countQuery != null ? countQuery.hashCode() : 0);
+        result = 31 * result + (pageSize != null ? pageSize.hashCode() : 0);
         return result;
     }
 
@@ -86,7 +123,10 @@ public class ReportInfo {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
-        sb.append(", query='").append(query).append('\'');
+        sb.append(", countable=").append(countable);
+        sb.append(", selectQuery='").append(selectQuery).append('\'');
+        sb.append(", countQuery='").append(countQuery).append('\'');
+        sb.append(", pageSize=").append(pageSize);
         sb.append('}');
         return sb.toString();
     }

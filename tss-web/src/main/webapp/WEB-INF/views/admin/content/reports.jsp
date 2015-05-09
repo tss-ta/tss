@@ -3,20 +3,60 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="row row-fix">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
-        <h1 class="text-center">Reports Panel</h1>
+<%-- OLD VERSION :--%>
+<%--<div class="row row-fix">--%>
+    <%--<div class="col-md-1"></div>--%>
+    <%--<div class="col-md-10">--%>
+        <%--<h1 class="text-center">Reports Panel</h1>--%>
 
-        <ul>
-            <li><a href="/admin/report?action=most-profitable-service">Most profitable taxi service</a></li>
-            <li><a href="/admin/report?action=popular-car-category">Most popular car category</a></li>
-            <li><a href="/admin/report?action=popular-driver-category">Most popular driver category</a></li>
-            <li><a href="/admin/report?action=customer-popular-car-options">Most popular additional car options for each customer user</a></li>
-            <li><a href="/admin/report?action=overall-popular-car-options">Most popular additional car options overall</a></li>
-            <li><a href="/admin/report?action=new-orders-report">New orders per period</a></li>
-            <li><a href="/admin/report?action=mont-service-profitability">Service profitability by month</a></li>
-        </ul>
+        <%--<ul>--%>
+            <%--<li><a href="/admin/report?action=most-profitable-service">Most profitable taxi service</a></li>--%>
+            <%--<li><a href="/admin/report?action=popular-car-category">Most popular car category</a></li>--%>
+            <%--<li><a href="/admin/report?action=popular-driver-category">Most popular driver category</a></li>--%>
+            <%--<li><a href="/admin/report?action=customer-popular-car-options">Most popular additional car options for each customer user</a></li>--%>
+            <%--<li><a href="/admin/report?action=overall-popular-car-options">Most popular additional car options overall</a></li>--%>
+            <%--<li><a href="/admin/report?action=new-orders-report">New orders per period</a></li>--%>
+            <%--<li><a href="/admin/report?action=mont-service-profitability">Service profitability by month</a></li>--%>
+        <%--</ul>--%>
+    <%--</div>--%>
+    <%--<div class="col-md-1"></div>--%>
+<%--</div>--%>
+
+<%-- NEW VERSION--%>
+
+<div class="row row-fix">
+    <div class="col-md-offset-1 col-md-10">
+        <div class="text-center page-title">
+            <h1>All Reports</h1>
+        </div>
     </div>
-    <div class="col-md-1"></div>
 </div>
+
+<c:if test="${not empty reportList}">
+    <div class="row row-fix">
+        <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12">
+            <div class="list-group custom-list-group">
+                <c:forEach items="${reportList}" var="report" >
+                    <a href="/admin?menu=report&action=view&id=${report.id}" class="list-group-item">
+                        <h4 class="list-group-item-heading">${report.name} - <small>${report.description}</small></h4>
+
+                        <%--<p class="list-group-item-text">${report.description}</p>--%>
+                    </a>
+                </c:forEach>
+            </div>
+
+            <%@ include file="../partials/pagination.jspf"%>
+
+        </div>
+    </div>
+</c:if>
+
+<c:if test="${empty reportList}">
+    <div class="row row-fix">
+        <div class="col-md-offset-1 col-md-10">
+            <div class="text-center">
+                <h3>No Reports found</h3>
+            </div>
+        </div>
+    </div>
+</c:if>

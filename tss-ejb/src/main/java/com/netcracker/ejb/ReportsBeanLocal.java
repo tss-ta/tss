@@ -2,6 +2,7 @@ package com.netcracker.ejb;
 
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
+import com.netcracker.entity.helper.Pager;
 import com.netcracker.report.Report;
 import com.netcracker.util.reports.ReportsRow;
 import java.util.Date;
@@ -32,4 +33,10 @@ public interface ReportsBeanLocal extends EJBLocalObject {
     ReportInfo getReportInfoById(Integer id);
 
     Report getReportById(Integer id);
+
+    List<ReportInfo> getPageOfReportsInfo(int pageNumber, int pageSize);
+
+    Report getReport(int id, int pageNumber);
+
+    Pager getReportPager(ReportInfo info, int page);
 }

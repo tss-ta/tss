@@ -322,3 +322,30 @@ ul.custom-pager li:last-child a {
 .custom-panel a:hover {
     color: #282828;
 }
+
+
+
+/*              */
+/*  List Group  */
+/*              */
+/*a.custom-list-group-item {*/
+    /*border-radius: 0;*/
+    /*border: none;*/
+    /*background-color: #282828;*/
+    /*color: #989898;*/
+/*}*/
+/*a.custom-list-group-item:active,*/
+/*a.custom-list-group-item:hover {*/
+    /*background-color: #181818;*/
+    /*color: #fff;*/
+/*}*/
+/*a.custom-list-group-item .custom-list-group-item-heading {*/
+    /*color: inherit;*/
+/*}*/
+/*a.custom-list-group-item .custom-list-group-item-text {*/
+    /*color: #555;*/
+/*}*/
+
+a.list-group-item p {
+    color: #777;
+}

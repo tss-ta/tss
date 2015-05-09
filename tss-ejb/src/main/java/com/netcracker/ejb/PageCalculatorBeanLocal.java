@@ -15,4 +15,5 @@ public interface PageCalculatorBeanLocal extends EJBLocalObject {
     Pager calculatePages(Integer pageNumber, Integer pageSize, Integer amount);
 
     <T> Pager createPager (Class <T> entity, Integer pageNumber, Integer pageSize);
+
 }

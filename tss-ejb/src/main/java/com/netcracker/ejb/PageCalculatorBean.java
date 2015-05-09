@@ -119,6 +119,7 @@ public class PageCalculatorBean implements SessionBean {
     private int calculateLastPageNumber(int pageSize, int amount) {
         return (int) Math.ceil((float) amount / pageSize);
     }
+
     @Override
     public void setSessionContext(SessionContext sessionContext) throws EJBException, RemoteException {
 
