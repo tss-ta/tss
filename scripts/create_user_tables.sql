@@ -230,7 +230,6 @@ CREATE TABLE taxi_order
   conditioner boolean,
   contacts_id integer,
   route_id integer,
-  tariff_id integer,
   service_option_id integer,
   CONSTRAINT tx_rdr_pk PRIMARY KEY (id),
   CONSTRAINT tx_rdr_drvr_cr_id_fk FOREIGN KEY (driver_car_id)
@@ -238,9 +237,6 @@ CREATE TABLE taxi_order
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT tx_rdr_cont_id_fk FOREIGN KEY (contacts_id)
       REFERENCES contacts (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
-	    CONSTRAINT tx_rdr_trff_id_fk FOREIGN KEY (tariff_id)
-      REFERENCES tariff (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT tx_rdr_rt_id_fk FOREIGN KEY (route_id)
       REFERENCES route (route_id) MATCH SIMPLE
