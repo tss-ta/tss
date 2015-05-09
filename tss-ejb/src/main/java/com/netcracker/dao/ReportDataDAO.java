@@ -34,8 +34,8 @@ public class ReportDataDAO {
             initializeReportMetaData(reportData, resultSet.getMetaData());
             generateDataFromResultSet(reportData, resultSet);
 
-//            resultSet = connection.prepareStatement("select * from test").executeQuery();
-
+//            resultSet = connection.prepareStatement("select count(id) from car").executeQuery();
+//
 //            ResultSetMetaData metaData = resultSet.getMetaData();
 //            System.out.println("==================================");
 //            for (int i = 1; i <= metaData.getColumnCount(); i++) {
@@ -67,6 +67,8 @@ public class ReportDataDAO {
         RowData rowData = new RowData();
         MultipurposeValue multiValue;
         for (int index = 1; index <= reportData.getColumnAmount(); index++) {
+            System.out.println("index=" + index);
+            System.out.println("colType=" + reportData.getColumnType(index));
             multiValue = mapper.getDataFromColumn(resultSet, index, reportData.getColumnType(index));
             rowData.addColumn(index, multiValue);
         }

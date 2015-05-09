@@ -73,6 +73,9 @@
                                         <c:when test="${rowColumn.type eq 'TIMESTAMP'}">
                                             ${rowColumn.timestampValue}
                                         </c:when>
+                                        <c:when test="${rowColumn.type eq 'LONG'}">
+                                            ${rowColumn.longValue}
+                                        </c:when>
                                         <c:otherwise>
                                             unknown
                                         </c:otherwise>

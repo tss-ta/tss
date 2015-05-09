@@ -15,6 +15,7 @@ public class MultipurposeValue {
     private double doubleValue;
     private boolean booleanValue;
     private Timestamp timestampValue;
+    private long longValue;
 
     public MultipurposeValue(DataType type, Timestamp timestampValue) {
         this.type = type;
@@ -39,6 +40,11 @@ public class MultipurposeValue {
     public MultipurposeValue(DataType type, boolean booleanValue) {
         this.type = type;
         this.booleanValue = booleanValue;
+    }
+
+    public MultipurposeValue(DataType type, long longValue) {
+        this.type = type;
+        this.longValue = longValue;
     }
 
     public DataType getType() {
@@ -69,6 +75,14 @@ public class MultipurposeValue {
         this.timestampValue = timestampValue;
     }
 
+    public long getLongValue() {
+        return longValue;
+    }
+
+    public void setLongValue(long longValue) {
+        this.longValue = longValue;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("MultipurposeValue{");
@@ -78,6 +92,7 @@ public class MultipurposeValue {
         sb.append(", doubleValue=").append(doubleValue);
         sb.append(", booleanValue=").append(booleanValue);
         sb.append(", timestampValue=").append(timestampValue);
+        sb.append(", longValue=").append(longValue);
         sb.append('}');
         return sb.toString();
     }
