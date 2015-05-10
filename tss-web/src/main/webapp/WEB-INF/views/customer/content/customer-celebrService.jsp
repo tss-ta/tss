@@ -7,107 +7,51 @@
 		</div>
 	</div>
 </div>
-
-
-
+<br>
+&nbsp;
+<br>
 <form id="submit_id" action="/customer/selebrService"
 	class="form-horizontal style-form" method="post">
 	<div class="row mt bottom_line">
-		<div class="col-lg-12">
-			<div class="form-panel">
-				<h4 class="mb">
-					<i class="fa"></i> Specify Time
-				</h4>
-				<div class="form-group">
-					<label class="col-sm-2 col-sm-2 control-label">Order Time</label>
-					<div class="col-sm-6">
-						<input type="text" id="ordertime" name="ordertime"
-							class="form-control" />
+		<div class="form-group">
+			<div class="col-md-6">
+				<div class="col-lg-12">
+					<div class="form-panel">
+						<%@ include file="../../partials/order_time_buttons.jspf"%>
 					</div>
-				</div>
-			</div>
-		</div>
-		<!-- col-lg-12-->
-	</div>
-	<!-- /row -->
-
-	<div class="row mt bottom_line">
-		<div class="col-lg-12">
-			<div class="form-panel">
-				<h4 class="mb">
-					<i class="fa"></i> Book Your Taxi Now!
-					<div
-						style="display: block; margin-left: auto; margin-right: auto; text-align: center">
-
-					</div>
-				</h4>
-				<div class="text-center">
-					<input type="button" class="btn btn-default" onclick="geoloc()"
-						value="Find Me" /> <input type="button" class="btn btn-default"
-						onclick="showonmap()" value="Show on Map" />
 				</div>
 				<br>&nbsp;<br>
+				<%@ include file="../../partials/from_addr.jspf"%>
+				<%@ include file="../../partials/from_pers_addr.jspf"%>
 				<div class="form-group">
-					<label class="col-sm-2 col-sm-2 control-label">From :</label>
-					<div class="col-sm-10">
-						<div class="col-sm-6">
-							<input type="text" class="form-control" id="fromAddr"
-								name="fromAddr" value="Ukraine, Kiev, Pobedy 55" />
-						</div>
-						<br>&nbsp;<br>
-						<p id="fromAddrMessage"></p>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 col-sm-2 control-label">How many
+					<label class="col-sm-6 col-sm-6 control-label">How many
 						drivers?</label>
-					<div class="col-sm-10">
+					<div class="col-sm-6">
 						<input type="text" class="form-control" id="driversAmountId"
 							name="driversAmount" placeholder="Insert amount here" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 col-sm-2 control-label">How long
-						would you selebrate?</label>
-					<div class="col-sm-10">
+					<label class="col-sm-6 col-sm-6 control-label">How long
+						would you celebrate?</label>
+					<div class="col-sm-6">
 						<input type="text" class="form-control" id="duration"
 							name="duration" placeholder="Insert duration here" />
 					</div>
 				</div>
-				<div class="form-group">
-					<div class="col-sm-10">
-						<div class="text-center">
-							<br>&nbsp;<br>
-							<div class="col-sm-6">
-								<input id="price_field" class="form-control" name="price"
-									type="text" placeholder="Price will be shown here" readonly>
-								<br>
-								<button id="update_price" name="update_price" type="button"
-									class="btn btn-default">Calculate Price</button>
-							</div>
-						</div>
-					</div>
-				</div>
+				<%@ include file="../../partials/price.jspf"%>
 			</div>
-
-			<input type="hidden" id="fromc" name="" value="" />
-
-			<div class="form-group" style="text-align: center;">
-				<div id="map_canvas"
-					style="width: 45em; height: 25em; display: block; margin-left: auto; margin-right: auto;">
-				</div>
+			<div class="col-md-6">
+				<%@ include file="../../partials/map.jspf"%>
 			</div>
 		</div>
-		<!-- col-lg-12-->
-	</div>
-	</div>
-
-	<!-- /col-lg-12 -->
-	<div class="text-center">
-		<input type="hidden" id="id_rout_dist" name="route_distance" value="" />
-		<button class="btn btn-success btn-lg btn-block" type="submit">Order
-			Now</button>
-
+		<div class="col-lg-12">
+			<!-- /col-lg-12 -->
+			<div class="col-lg-12 text-center">
+				<button class="btn btn-success btn-lg btn-block" type="submit">Order
+					Now</button>
+			</div>
+		</div>
 	</div>
 </form>
 

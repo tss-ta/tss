@@ -1,5 +1,5 @@
 <%--
-  User: Kyrylo Berehovyi
+  User: Kyrylo Berehovyi , maks
   Date: 26/04/2015
   Time: 16:24
 --%>
@@ -49,7 +49,7 @@
         </a>
     </li>
     <li>
-        <a href="/admin/group" ${activeGroups}>
+        <a href="/admin?menu=groups&action=view" ${activeGroups}>
             <span class="icon-container"><i class="fa fa-users"></i></span>
             <span class="icon-label">Groups</span>
         </a>
@@ -61,7 +61,7 @@
         </a>
     </li>
     <li>
-        <a href="/admin/tariff" ${activeTariffs}>
+        <a href="/admin?menu=tariffs&action=view" ${activeTariffs}>
             <span class="icon-container"><i class="fa fa-usd"></i></span>
             <span class="icon-label">Tariffs</span>
         </a>

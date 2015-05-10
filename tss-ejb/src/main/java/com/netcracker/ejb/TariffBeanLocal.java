@@ -18,4 +18,6 @@ public interface TariffBeanLocal extends EJBLocalObject {
     void editTariff(int tariffId, float additiveCoef, float multCoef);
 
     Pager getPager(Integer pageNumber, Integer pageSize);
+
+    Pager getPager(Integer pageNumber, Integer pageSize, String namePart);
 }

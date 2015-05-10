@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author Kyrylo Berehovyi
+ * @author maks
  */
 
 @ActionRoute(menu = "users")
@@ -33,13 +33,10 @@ public class Users {
 
     @Action(action = "view")
     public ActionResponse getUsersView(HttpServletRequest request) {
-        try {
             Integer page = parsePageNumberFromRequest(request);
 //            if(page >= MIN_PAGE_NUMBER) {
-            String roleName = request.getParameter("role");
-            Roles role = roleToEnum(roleName);
             UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-
+            Roles role = roleToEnum(request.getParameter("role"));
             request.setAttribute("rolesEnum", Roles.values());
 
             PagerLink pagerLink = new PagerLink();
@@ -54,11 +51,7 @@ public class Users {
             request.setAttribute("users", userBeanLocal.getUsersByRolename(role, page, DEFAULT_PAGE_SIZE));//!!!
             request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
             return new ActionResponse(Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
-        } catch (RuntimeException e) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't show customers", e);
-            return new ActionResponse(Page.ERROR_500_CONTENT.getAbsolutePath());
-        }
+
     }
 
     @Action(action = "add-role")
@@ -68,32 +61,31 @@ public class Users {
 
     @Action(action = "search")
     public ActionResponse searchUsers(HttpServletRequest request) {
-        try {
-            String roleName = request.getParameter("role");
+            Integer page = parsePageNumberFromRequest(request);
+            String email = request.getParameter("email");
             UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
             request.setAttribute("rolesEnum", Roles.values());
-            request.setAttribute("users", userBeanLocal.searchUsersByEmailAndRole(request.getParameter("email"),
-                    roleToEnum(roleName), 1, 10));//!!!!
+            Roles role = roleToEnum(request.getParameter("role"));
+            PagerLink pagerLink = new PagerLink();
+            pagerLink.addParameter(MENU_PARAMETER_NAME, MENU_PARAMETER_VALUE);
+            pagerLink.addParameter(ACTION_PARAMETER_NAME, "search");
+            pagerLink.addParameter("role", role.toString());
+            pagerLink.addParameter("email", email);
+
+            request.setAttribute(RequestAttribute.PAGER.getName(),
+                    userBeanLocal.getPager(page, DEFAULT_PAGE_SIZE, role, email));
+            request.setAttribute(RequestAttribute.PAGER_LINK.getName(), pagerLink);
+            request.setAttribute("users", userBeanLocal.searchUsersByEmailAndRole(email,
+                    role, page, DEFAULT_PAGE_SIZE));//!!!
             request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
             return new ActionResponse(Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
-        } catch (RuntimeException e) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't show customers", e);
-            return new ActionResponse(Page.ERROR_500_CONTENT.getAbsolutePath());
-        }
     }
 
     @Action(action = "add-roles", httpMethod = HttpMethod.POST)
     public ActionResponse getAddRoles(HttpServletRequest request) {
-        try {
             UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
             userBeanLocal.editRoles(Integer.parseInt(request.getParameter("id")), getRoles(request));
             return getUsersView(request);
-        } catch (RuntimeException e) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't show customers", e);
-            return new ActionResponse(Page.ERROR_500_CONTENT.getAbsolutePath());
-        }
     }
 
     private Roles roleToEnum(String roleName) {

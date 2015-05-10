@@ -4,6 +4,7 @@ import com.netcracker.ejb.TariffBean;
 import com.netcracker.ejb.TariffBeanLocal;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.tss.web.util.ServletUtils;
 import com.netcracker.util.BeansLocator;
 
 import javax.servlet.ServletException;
@@ -12,11 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by Kyrylo Berehovyi on 25/04/2015.
  * @author maks
  */
+@Deprecated
 @WebServlet(urlPatterns = "/admin/tariff")
 public class AdminTariffServlet extends HttpServlet {
 
@@ -31,8 +34,13 @@ public class AdminTariffServlet extends HttpServlet {
         } else if ("search-for-edit".equals(action)) {
             searchTariffs(Page.ADMIN_EDIT_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
         } else {
-            redirectToTariffs(Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
-
+            System.out.println("=====================" + ServletUtils.getBaseUrl(req));
+            System.out.println("=====================" + ServletUtils.getRelativeUrl(req));
+//            redirectToTariffs(Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
+            try (PrintWriter wr = resp.getWriter()){
+                wr.println(ServletUtils.getBaseUrl(req));
+                wr.println(ServletUtils.getRelativeUrl(req));
+            }
         }
     }
 

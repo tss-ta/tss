@@ -6,11 +6,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Illia Rudenko
  */
-
 @Entity
 @Table(name = "celebration")
 public class CelebrationService implements Serializable {
@@ -91,5 +91,32 @@ public class CelebrationService implements Serializable {
 
     public void setDriverCars(List<DriverCar> driverCars) {
         this.driverCars = driverCars;
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(taxiOrder, fromAddress, duration, driversAmount);
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof CelebrationService)) {
+            return false;
+        }
+
+        CelebrationService other = (CelebrationService) obj;
+        if (!Objects.equals(this.taxiOrder, other.taxiOrder)) {
+            return false;
+        }
+        if (!Objects.equals(this.fromAddress, other.fromAddress)) {
+            return false;
+        }
+        if (!Objects.equals(this.duration, other.duration)) {
+            return false;
+        }
+        return Objects.equals(this.driversAmount, other.driversAmount);
     }
 }

@@ -39,4 +39,7 @@ public interface ReportsBeanLocal extends EJBLocalObject {
     Report getReport(int id, int pageNumber);
 
     Pager getReportPager(ReportInfo info, int page);
+
+    List<TaxiOrder> getBookedOrders (Date begin, Date end);
+
 }
