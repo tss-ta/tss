@@ -70,6 +70,13 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
         return query.getResultList();
     }
 
+    public List<TaxiOrder> findBookedOrdersByPeriod(Date begin, Date end) {
+        TypedQuery<TaxiOrder> query = em.createQuery("SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end ", TaxiOrder.class);
+        query.setParameter("begin", begin);
+        query.setParameter("end", end);
+        return query.getResultList();
+    }
+
     public int countOrdersWithCarCategory(CarCategory category) {
         Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.carCategory = :category)");
         query.setParameter("category", category.getId());

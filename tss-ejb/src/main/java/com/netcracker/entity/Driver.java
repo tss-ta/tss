@@ -1,6 +1,7 @@
 package com.netcracker.entity;
 
 import com.netcracker.entity.helper.Category;
+import java.util.Objects;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,12 +9,11 @@ import javax.validation.constraints.NotNull;
 /**
  * @author Illia Rudenko
  */
-
 @Entity
 @Table(name = "driver")
 @PrimaryKeyJoinColumn(name = "driver_id")
 @NamedQueries({
-        @NamedQuery(name = "Driver.searchDriverByName", query = "SELECT d FROM Driver d WHERE d.username like :drivername")
+    @NamedQuery(name = "Driver.searchDriverByName", query = "SELECT d FROM Driver d WHERE d.username like :drivername")
 })
 public class Driver extends User {
 
@@ -39,12 +39,12 @@ public class Driver extends User {
     }
 
     public Driver(String username,
-                  String email,
-                  String passwordHash,
-                  Category category,
-                  boolean available,
-                  boolean isMale,
-                  boolean smokes) {
+            String email,
+            String passwordHash,
+            Category category,
+            boolean available,
+            boolean isMale,
+            boolean smokes) {
         super(username, email, passwordHash);
         this.category = category;
         this.available = available;
@@ -90,5 +90,35 @@ public class Driver extends User {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(category, available, isMale, smokes, car);
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Driver)) {
+            return false;
+        }
+
+        Driver other = (Driver) obj;
+        if (!Objects.equals(this.category, other.category)) {
+            return false;
+        }
+        if (!Objects.equals(this.available, other.available)) {
+            return false;
+        }
+        if (!Objects.equals(this.isMale, other.isMale)) {
+            return false;
+        }
+        if (!Objects.equals(this.smokes, other.smokes)) {
+            return false;
+        }
+        return Objects.equals(this.car, other.car);
     }
 }

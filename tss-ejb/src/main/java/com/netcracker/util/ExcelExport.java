@@ -10,8 +10,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,23 +32,31 @@ public class ExcelExport {
     }
 
     public File exportReportRows(String header, int allOrders, List<ReportsRow> rows) throws IOException {
-        String time = ((Long) Calendar.getInstance().getTimeInMillis()).toString();
-        String filePath = "mytemp" + File.separator + "Report" + time + ".xls";
-        return writeReport(header, allOrders, filePath, rows);
+        return writeReport(header, allOrders, createNewFile(), rows);
+
     }
 
     public File exportOrdersReport(Date begin, Date end, int allOrders, List<TaxiOrder> orders) throws IOException {
+        return writeOrdersReport(begin, end, allOrders, createNewFile(), orders);
+    }
+
+    private File createNewFile () {
+        String directory = "tsstemp";
+        if (!(Files.isDirectory(Paths.get(directory)))) {
+            new File(directory).mkdirs();
+        }
+
         String time = ((Long) Calendar.getInstance().getTimeInMillis()).toString();
-        String filePath = "mytemp" + File.separator + "TOReport" + time + ".xls";
-        return writeOrdersReport(begin, end, allOrders, filePath, orders);
+        String filePath = directory + File.separator + "Report" + time + ".xls"; //!!!!!!!!!
+        return new File(filePath);
     }
 
 
-    public File writeReport(String header, int allOrders, String path, List<ReportsRow> report) throws IOException {
+    public File writeReport(String header, int allOrders, File f, List<ReportsRow> report) throws IOException {
 
         HSSFWorkbook workbook = null;
         HSSFSheet sheet = null;
-        File f = new File(path);
+
 
         if (f.exists()) {
             f.delete();
@@ -84,11 +95,10 @@ public class ExcelExport {
         footer.createCell(4).setCellValue(allOrders);
     }
 
-    public File writeOrdersReport(Date begin, Date end, int allOrders, String path, List<TaxiOrder> report) throws IOException {
+    public File writeOrdersReport(Date begin, Date end, int allOrders, File f, List<TaxiOrder> report) throws IOException {
 
         HSSFWorkbook workbook = null;
         HSSFSheet sheet = null;
-        File f = new File(path);
 
         if (f.exists()) {
             f.delete();
@@ -234,6 +244,6 @@ public class ExcelExport {
 //            }
 //        }
 //    }
-    }
+}
     
 

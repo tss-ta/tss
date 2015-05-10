@@ -131,10 +131,43 @@ public class UserBean implements SessionBean {
         Pager pager = null;
         try {
             userDAO = new UserDAO();
-//            Long amount = userDAO.countByRolename(role.toString());
-            Long amount = userDAO.countByUserRoleName(role.toString());
-            System.out.println("==========="+ role + "!!!!!!!!!!!!!!!!!!" + amount);
-            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount.intValue());
+            int amount = userDAO.countByUserRoleName(role.toString());
+//            System.out.println("==========="+ role + "!!!!!!!!!!!!!!!!!!" + amount1);
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount);
+        } finally {
+            if (userDAO != null) {
+                userDAO.close();
+            }
+        }
+        return pager;
+    }
+
+    public Pager getPager(Integer pageNumber, Integer pageSize, Roles role, String emailPart) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        UserDAO userDAO = null;
+        Pager pager = null;
+        try {
+            userDAO = new UserDAO();
+            int amount = userDAO.countByEmailAndRolename(emailPart, role.toString());
+//            System.out.println("==========="+ role + "!!!!!!!!!!!!!!!!!!" + amount);
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount);
+        } finally {
+            if (userDAO != null) {
+                userDAO.close();
+            }
+        }
+        return pager;
+    }
+
+    public Pager getPager(Integer pageNumber, Integer pageSize, String emailPart) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        UserDAO userDAO = null;
+        Pager pager = null;
+        try {
+            userDAO = new UserDAO();
+            int amount = userDAO.countByEmail(emailPart);
+//            System.out.println("==========="+ role + "!!!!!!!!!!!!!!!!!!" + amount);
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount);
         } finally {
             if (userDAO != null) {
                 userDAO.close();

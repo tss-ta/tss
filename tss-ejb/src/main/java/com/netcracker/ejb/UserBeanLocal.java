@@ -55,7 +55,7 @@ public interface UserBeanLocal extends EJBLocalObject {
     /**
      *
      * @param emailPart - part of email
-     * @param rolename -name of role
+     * @param role - Roles (enum)
      * @param pageNumber - number of page
      * @param paginationStep - rows on one page
      * @return List of UserDTO where email have emailPart and role with rolename
@@ -75,6 +75,10 @@ public interface UserBeanLocal extends EJBLocalObject {
     Pager getPager(Integer pageNumber, Integer pageSize, Roles role);
 
     Pager getPager(Integer pageNumber, Integer pageSize);
+
+    Pager getPager(Integer pageNumber, Integer pageSize, String emailPart);
+
+    Pager getPager(Integer pageNumber, Integer pageSize, Roles role, String emailPart);
 
 
 }

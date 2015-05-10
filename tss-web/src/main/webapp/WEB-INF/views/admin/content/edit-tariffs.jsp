@@ -1,7 +1,5 @@
 <%--
-  User: Kyrylo Berehovyi
-  Date: 27/04/2015
-  Time: 01:55
+    author: maks
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -15,13 +13,14 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-1">
-                    <a href="/admin/tariff" class="btn btn-default"> Back </a>
+                    <a href="/admin?menu=tariffs&action=view" class="btn btn-default"> Back </a>
                 </div>
                 <div class="col-md-offset-7 col-md-4">
-                    <form action="/admin/tariff" method="get">
+                    <form action="/admin" method="get">
                         <div class="input-group">
                             <input type="text" class="form-control" name="name" placeholder="Search " value="${param.name}" maxlength="40">
                             <input type="hidden" name="action" value="search-for-edit">
+                            <input type="hidden" name="menu" value="tariffs">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </span>
@@ -42,7 +41,7 @@
                 <tbody>
                     <c:forEach var = "tariff" items = "${requestScope.tariffs}">
                         <tr>
-                    <form action="/admin/tariff" method="post">
+                    <form action="/admin" method="post">
                         <div class="form-group">
                             <td class="col-md-3">${tariff.tariffName}</td>
                             <td class="col-md-offset-1 col-md-2">
@@ -55,7 +54,8 @@
                                 <input type="submit" class="btn btn-default" value="save">
                             </td>
                             <input type="hidden" name="id" value="${tariff.id}">
-                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="action" value="save">
+                            <input type="hidden" name="menu" value="tariffs">
                         </div>
                     </form>
                     </tr>
