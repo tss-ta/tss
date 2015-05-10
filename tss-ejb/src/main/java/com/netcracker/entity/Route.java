@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,23 +28,31 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Route.findByRouteId", query = "SELECT r FROM Route r WHERE r.routeId = :routeId"),
     @NamedQuery(name = "Route.findByPathContent", query = "SELECT r FROM Route r WHERE r.pathContent = :pathContent")})
 public class Route implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "route_id", updatable = false)
     private Integer routeId;
+
     @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "path_content")
     private String pathContent;
+
     @JoinColumn(name = "from_addr_id", referencedColumnName = "addr_id")
     @ManyToOne(optional = false)
     private Address fromAddrId;
+
     @JoinColumn(name = "to_addr_id", referencedColumnName = "addr_id")
     @ManyToOne(optional = false)
     private Address toAddrId;
+
+    @NotNull
     @Column(name = "distance")
     private Float distance;
+
     @OneToMany(mappedBy = "routeId")
     private Collection<TaxiOrder> taxiOrderCollection;
 
@@ -113,28 +116,36 @@ public class Route implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (routeId != null ? routeId.hashCode() : 0);
-        return hash;
+    public final int hashCode() {
+        return Objects.hash(pathContent, fromAddrId, toAddrId, Float.floatToIntBits(this.distance));
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Route)) {
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Route)) {
             return false;
         }
-        Route other = (Route) object;
-        if ((this.routeId == null && other.routeId != null) || (this.routeId != null && !this.routeId.equals(other.routeId))) {
+
+        Route other = (Route) obj;
+        if (!Objects.equals(this.pathContent, other.pathContent)) {
             return false;
         }
-        return true;
+        if (!Objects.equals(this.fromAddrId, other.fromAddrId)) {
+            return false;
+        }
+        if (!Objects.equals(this.toAddrId, other.toAddrId)) {
+            return false;
+        }
+        return Objects.equals(
+                Float.floatToIntBits(this.distance),
+                Float.floatToIntBits(other.distance));
     }
 
     @Override
     public String toString() {
         return "com.netcracker.entity.Route[ routeId=" + routeId + " ]";
     }
-    
 }

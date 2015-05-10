@@ -18,13 +18,14 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-1">
-                        <a href="/admin/group" class="btn btn-default"> Back <i class="fa fa-users"></i></a>
+                        <a href="/admin?menu=groups&action=view" class="btn btn-default"> Back <i class="fa fa-users"></i></a>
                     </div>
                     <div class="col-md-offset-7 col-md-4">
-                        <form action="/admin/group" method="get">
+                        <form action="/admin" method="get">
                             <div class="input-group">
-                                <input type="email" class="form-control" placeholder="Search by email" name="email" value="${param.email}" maxlength="40">
+                                <input type="text" class="form-control" placeholder="Search by email" name="email" value="${param.email}" maxlength="40">
                                 <input type="hidden" name="action" value="search-users">
+                                <input type="hidden" name="menu" value="groups">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                                 </span>
@@ -45,35 +46,39 @@
                 </thead>
 
                 <tbody>
-                    <c:forEach var = "customer" items = "${requestScope.customers}">
+                    <c:forEach var = "user" items = "${requestScope.users}">
                         <tr>
-                            <td>${customer.username}</td>
-                            <td>${customer.email}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
                             <td>
-                                <c:forEach var = "role" items = "${customer.roles}">
+                                <c:forEach var = "role" items = "${user.roles}">
                                     ${role}; 
                                 </c:forEach> 
                             </td>
                             <td>
-                                <c:forEach var = "group" items = "${customer.groups}">
+                                <c:forEach var = "group" items = "${user.groups}">
                                     ${group}; 
                                 </c:forEach> 
                             </td>
                             <td class="col-md-1">
-                                <form action="/admin/group" method="post">
+                                <form action="/admin" method="post">
+                                    <input type="hidden" name="menu" value="groups">
                                     <input type="hidden" name="action" value="add-to-group">
                                     <input type="hidden" name="groupid" value="${param.groupid}">
-                                    <input type="hidden" name="userid" value="${customer.id}">
+                                    <input type="hidden" name="userid" value="${user.id}">
                                     <input type="hidden" name="groupname" value="${param.groupname}">
+                                    <input type="hidden" name="page" value="${param.page}">
                                     <button type="submit" class="btn btn-default">Add to group <i class="fa fa-users"></i></button>
                                 </form>
                             </td>
                             <td class="col-md-1">
-                                <form action="/admin/group" method="post">
+                                <form action="/admin" method="post">
+                                    <input type="hidden" name="menu" value="groups">
                                     <input type="hidden" name="action" value="remove-from-group">
                                     <input type="hidden" name="groupid" value="${param.groupid}">
-                                    <input type="hidden" name="userid" value="${customer.id}">
+                                    <input type="hidden" name="userid" value="${user.id}">
                                     <input type="hidden" name="groupname" value="${param.groupname}">
+                                    <input type="hidden" name="page" value="${param.page}">
                                     <button type="submit" class="btn btn-default btn-danger">Remove from group <i class="fa fa-users"></i></button>
                                 </form>
                             </td>
