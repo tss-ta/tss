@@ -1,9 +1,8 @@
-
+<%--author: maks--%>
 <div class="form-group">
     <div class="col-sm-offset-5 col-sm-8">
-        <label class="checkbox"><input type="checkbox" name="admin">admin</label>
-        <label class="checkbox"><input type="checkbox" name="driver">driver</label>
-        <label class="checkbox"><input type="checkbox" name="customer">customer</label>
-        <label class="checkbox"><input type="checkbox" name="banned">banned</label>
+        <c:forEach var="role" items="${requestScope.rolesEnum}">
+            <label class="checkbox"><input type="checkbox" name="${role}">${role.formattedName}</label>
+        </c:forEach>
     </div>
 </div> 

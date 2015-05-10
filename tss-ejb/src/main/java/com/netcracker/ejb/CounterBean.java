@@ -70,26 +70,27 @@ public class CounterBean implements SessionBean {
         return count;
     }
 
-    public Long countAllCustomers() {
+    public int countAllCustomers() {
         return countAllUsersByRolename(Roles.CUSTOMER);
     }
 
-    public Long countAllDrivers() {
+    public int countAllDrivers() {
         return countAllUsersByRolename(Roles.DRIVER);
     }
 
-    private Long countAllUsersByRolename(Roles roles) {
+    private int countAllUsersByRolename(Roles roles) {
         UserDAO userDao = null;
-        Long count = null;
+//        Long count = null;
         try {
             userDao = new UserDAO();
-            count = userDao.countByRolename(roles.getRolename());
+            return userDao.countByUserRoleName(roles.toString());
         } catch (Exception e) {
             if (userDao != null) {
                 userDao.close();
             }
+            return 0;
         }
-        return count;
+//        return count;
     }
 
     @Override
