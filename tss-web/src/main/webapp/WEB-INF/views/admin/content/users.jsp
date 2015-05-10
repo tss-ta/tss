@@ -1,7 +1,5 @@
 <%--
-  User: Kyrylo Berehovyi
-  Date: 27/04/2015
-  Time: 01:48
+  author: maks
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -85,7 +83,9 @@
                                 </c:forEach>
                             </td>
                             <td class="col-md-1">
-                                <a href="/admin?menu=users&action=add-role&email=${user.email}&id=${user.id}" class="btn btn-default">Add role</a>
+                                <a href="/admin?menu=users&action=add-role&email=${user.email}&id=${user.id}" class="btn btn-default">
+                                    Change roles
+                                </a>
                             </td>
                         </tr>
                     </c:forEach>
