@@ -10,16 +10,9 @@ import com.netcracker.router.container.ActionResponse;
 import com.netcracker.tss.web.util.*;
 import com.netcracker.util.BeansLocator;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author maks
@@ -77,11 +70,13 @@ public class Groups {
 
     @Action(action = "edit-group")
     public ActionResponse redirectToEditGroup(HttpServletRequest request){
+        request.setAttribute("rolesEnum", Roles.getGroupRoles());
         request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
         return new ActionResponse(Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
     }
     @Action(action = "add-group")
     public ActionResponse redirectToAddGroup(HttpServletRequest request){
+        request.setAttribute("rolesEnum", Roles.getGroupRoles());
         request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
         return new ActionResponse(Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
     }
@@ -193,17 +188,10 @@ public class Groups {
 
     private List<Roles> getRoles(HttpServletRequest req) {
         List<Roles> roles = new ArrayList<>();
-        if (isOn(req.getParameter("admin"))) {
-            roles.add(Roles.ADMIN);
-        }
-        if (isOn(req.getParameter("customer"))) {
-            roles.add(Roles.CUSTOMER);
-        }
-        if (isOn(req.getParameter("driver"))) {
-            roles.add(Roles.DRIVER);
-        }
-        if (isOn(req.getParameter("banned"))) {
-            roles.add(Roles.BANNED);
+        for (Roles role : Roles.getGroupRoles()){
+            if (isOn(req.getParameter(role.toString()))) {
+                roles.add(role);
+            }
         }
         return roles;
     }

@@ -46,10 +46,14 @@ public class UserBean implements SessionBean {
             if (roles.contains(Roles.BANNED)) {
                 roles.clear();
                 roles.add(Roles.BANNED);
-                notifyAboutBan(user.getEmail());
+                user.setRoles(toRoleList(roles, roleDAO));
+                userDAO.update(user);
+//                notifyAboutBan(user.getEmail());//!!!!!!!!!!
+                notifyAboutBan("maksbrunarskiy@gmail.com");//!!!!!!!!!!
+            } else {
+                user.setRoles(toRoleList(roles, roleDAO));
+                userDAO.update(user);
             }
-            user.setRoles(toRoleList(roles, roleDAO));
-            userDAO.update(user);
         } finally {
             if (roleDAO != null) {
                 roleDAO.close();
@@ -70,7 +74,7 @@ public class UserBean implements SessionBean {
      *
      * @param userId
      * @param groupId
-     * @return false if this list was alrady contained the specified element
+     * @return false if this list was already contained the specified element
      */
     public boolean addToGroup(int userId, int groupId) {
         if (groupId < 0 || userId < 0) {
