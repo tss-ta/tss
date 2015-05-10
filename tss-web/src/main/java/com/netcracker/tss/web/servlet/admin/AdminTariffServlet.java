@@ -34,13 +34,13 @@ public class AdminTariffServlet extends HttpServlet {
         } else if ("search-for-edit".equals(action)) {
             searchTariffs(Page.ADMIN_EDIT_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
         } else {
-            System.out.println("=====================" + ServletUtils.getBaseUrl(req));
-            System.out.println("=====================" + ServletUtils.getRelativeUrl(req));
-//            redirectToTariffs(Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
-            try (PrintWriter wr = resp.getWriter()){
-                wr.println(ServletUtils.getBaseUrl(req));
-                wr.println(ServletUtils.getRelativeUrl(req));
-            }
+//            System.out.println("=====================" + ServletUtils.getBaseUrl(req));
+//            System.out.println("=====================" + ServletUtils.getRelativeUrl(req));
+            redirectToTariffs(Page.ADMIN_TARIFFS_CONTENT.getAbsolutePath(), req, resp);
+//            try (PrintWriter wr = resp.getWriter()){
+//                wr.println(ServletUtils.getBaseUrl(req));
+//                wr.println(ServletUtils.getRelativeUrl(req));
+//            }
         }
     }
 

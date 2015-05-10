@@ -37,8 +37,8 @@ public class AdminCustomerServlet extends HttpServlet {
             try {
                 UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
                 req.setAttribute("customers", userBeanLocal.searchCustomersByEmail(req.getParameter("email"), 1, 10));
-                req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
-                req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
+                req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_USERS_CONTENT.getType());
+                req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_USERS_CONTENT.getAbsolutePath());
                 req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
             } catch (RuntimeException e) {
                 Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
@@ -71,8 +71,8 @@ public class AdminCustomerServlet extends HttpServlet {
         try {
             UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
             req.setAttribute("customers", userBeanLocal.getCustomers(1, 10));
-            req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getType());
-            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CUSTOMERS_CONTENT.getAbsolutePath());
+            req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_USERS_CONTENT.getType());
+            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_USERS_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } catch (RuntimeException e) {
             Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
