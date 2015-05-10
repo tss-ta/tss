@@ -5,6 +5,7 @@
  */
 package com.netcracker.ejb;
 
+import com.netcracker.entity.TaxiOrder;
 import java.util.Date;
 import javax.ejb.EJBLocalObject;
 
@@ -14,6 +15,6 @@ import javax.ejb.EJBLocalObject;
  */
 public interface PriceBeanLocal extends EJBLocalObject {
 
-    public double calculatePrice(float distance, Date orderTime);
+    public double calculatePrice(float distance, Date orderTime, TaxiOrder taxiOrder);
 
 }

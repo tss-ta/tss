@@ -8,7 +8,6 @@
 
 
 <div class="row row-fix">
-    <%--<div class="col-md-1"></div>--%>
     <div class="col-md-offset-1 col-md-10">
         <h1 class="text-center">Most Popular Car Options For ${requestScope.user}</h1>
 
@@ -19,7 +18,7 @@
                 </div>
                 <div class="col-md-1">
                     <a href="/admin/report?action=new-orders-excel&begin=${param.begin}&end=${param.end}" class="btn btn-default">
-                        Export to excel file (1000 orders max) <i class="fa fa-download"></i>
+                        Export to excel file <i class="fa fa-download"></i>
                     </a>
                 </div>
             </div>
@@ -30,19 +29,19 @@
             <form class="panel-body" action="/admin/report">
                 <table>
                     <thead>
-                    <th class="text-center">Begin Time</th>
-                    <th class="text-center">End Time</th>
+                    <th class=" col-md-offset-1 col-md-offset-3 text-center">Begin Time</th>
+                    <th class="col-md-offset-1 col-md-offset-3 text-center">End Time</th>
                     </thead>
                     <tbody>
-                    <td>
+                    <td class="col-md-offset-1 col-md-offset-3">
                         <input type="text" id="begin" name="begin"
                                class="form-control" value="${param.begin}">
                     </td>
-                    <td>
+                    <td class="col-md-offset-1 col-md-offset-3">
                         <input type="text" id="end" name="end"
                                class="form-control" value="${param.end}">
                     </td>
-                    <td class="col-md-offset-1">
+                    <td class="col-md-offset-1 col-md-offset-3">
                         <input type="hidden" name="action" value="new-orders-per-period">
                         <input type="submit" value="Ok" class="btn btn-default">
                     </td>

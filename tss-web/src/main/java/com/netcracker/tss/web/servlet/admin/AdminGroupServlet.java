@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  *
  * @author maks
  */
+@Deprecated
 @WebServlet(urlPatterns = "/admin/group")
 public class AdminGroupServlet extends HttpServlet {
 

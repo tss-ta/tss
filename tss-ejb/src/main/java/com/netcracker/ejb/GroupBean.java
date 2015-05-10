@@ -5,7 +5,10 @@ import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
+import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.util.BeansLocator;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +18,9 @@ import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
 
+/**
+ * @author maks
+ */
 public class GroupBean implements SessionBean {
 
     public void addGroup(String groupName, List<Roles> roles) {
@@ -173,6 +179,26 @@ public class GroupBean implements SessionBean {
             rolesList.add(Roles.valueOf(roleName));
         }
         return rolesList;
+    }
+
+    public Pager getPager(Integer pageNumber, Integer pageSize) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        return pageCalculator.createPager(Group.class, pageNumber, pageSize);
+    }
+    public Pager getPager(Integer pageNumber, Integer pageSize, String namePart) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        GroupDAO groupDAO = null;
+        Pager pager = null;
+        try {
+            groupDAO = new GroupDAO();
+            int amount = groupDAO.countByNamePart(namePart);
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount);
+        } finally {
+            if (groupDAO != null) {
+                groupDAO.close();
+            }
+        }
+        return pager;
     }
 
     @Override

@@ -40,6 +40,7 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.UserUtils;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class CustomerCceServiceServlet extends HttpServlet {
                         }
                          String toAddr=req.getParameter("toAddr");
 			Address addTo = toAddress( toAddr, req);
-			TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
+			TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
 			taxiOrder.setBookingTime(new Date());
 			Date orderTime = DateParser.parseDate(req);
 			orderTime.setYear(new Date().getYear());
@@ -124,55 +125,6 @@ public class CustomerCceServiceServlet extends HttpServlet {
 			UserBeanLocal userBeanLocal = getUserBean(req);
 			userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
 		}
-	}
-
-	private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
-		Integer carType = checkString(req.getParameter("carType"));
-		Integer wayOfPayment = checkString(req.getParameter("paymentType"));
-		Boolean driversGender = checkDriversGender(req
-				.getParameter("driverGender"));
-		Integer musicType = checkString(req.getParameter("musicType"));
-		String[] addParameters = req.getParameterValues("addOptions");
-		Boolean wifi = null;
-		Boolean animal = null;
-		Boolean noSmokeDriver = null;
-		Boolean conditioner = null;
-		if (addParameters != null) {
-			for (String st : addParameters) {
-				if ("wifi".equals(st)) {
-					wifi = Boolean.TRUE;
-				}
-				if ("animal".equals(st)) {
-					animal = Boolean.TRUE;
-				}
-				if ("nosmoke".equals(st)) {
-					noSmokeDriver = Boolean.TRUE;
-				}
-				if ("conditioner".equals(st)) {
-					conditioner = Boolean.TRUE;
-				}
-			}
-		}
-		return new TaxiOrder(wayOfPayment, musicType, driversGender,
-				noSmokeDriver, carType, animal, wifi, conditioner);
-	}
-
-	private Boolean checkDriversGender(String s) {
-		if (!"".equals(s)) {
-			if ("male".equals(s)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return null;
-	}
-
-	private Integer checkString(String s) {
-		if (!"".equals(s)) {
-			return Integer.parseInt(s);
-		}
-		return null;
 	}
 
 	private Address toAddress(String addr, HttpServletRequest req) {

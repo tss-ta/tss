@@ -3,6 +3,7 @@ package com.netcracker.entity.helper;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * @author Illia Rudenko
@@ -10,12 +11,12 @@ import java.util.Calendar;
 @Entity
 @Table(name = "driver_car")
 @NamedQueries({
-        @NamedQuery(name = "DriverCar.findByDriverId", query = "from DriverCar a \n" +
-                "where a.assignedTime in (\n" +
-                "    select max(b.assignedTime) \n" +
-                "    from DriverCar b \n" +
-                "    where b.driverId= :driver_id" +
-                ")")})
+    @NamedQuery(name = "DriverCar.findByDriverId", query = "from DriverCar a \n"
+            + "where a.assignedTime in (\n"
+            + "    select max(b.assignedTime) \n"
+            + "    from DriverCar b \n"
+            + "    where b.driverId= :driver_id"
+            + ")")})
 public class DriverCar implements Serializable {
 
     @Id
@@ -37,7 +38,8 @@ public class DriverCar implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Calendar unassignedTime;
 
-    public DriverCar() {}
+    public DriverCar() {
+    }
 
     public DriverCar(Integer driverId, Integer carId, Calendar assignedTime) {
         this.driverId = driverId;
@@ -86,19 +88,36 @@ public class DriverCar implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DriverCar driverCar = (DriverCar) o;
-
-        if (!drvCarId.equals(driverCar.drvCarId)) return false;
-
-        return true;
+    public final int hashCode() {
+        return Objects.hash(driverId, carId, assignedTime, unassignedTime);
     }
 
     @Override
-    public int hashCode() {
-        return drvCarId.hashCode();
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof DriverCar)) {
+            return false;
+        }
+
+        DriverCar other = (DriverCar) obj;
+        if (!Objects.equals(this.driverId, other.driverId)) {
+            return false;
+        }
+        if (!Objects.equals(this.carId, other.carId)) {
+            return false;
+        }
+        if (!Objects.equals(this.assignedTime, other.assignedTime)) {
+            return false;
+        }
+        return Objects.equals(this.unassignedTime, other.unassignedTime);
+    }
+
+    @Override
+    public String toString() {
+        return "DriverCar{" + "drvCarId=" + drvCarId + ", driverId=" + driverId
+                + ", carId=" + carId + ", assignedTime=" + assignedTime
+                + ", unassignedTime=" + unassignedTime + '}';
     }
 }

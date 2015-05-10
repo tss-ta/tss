@@ -21,6 +21,7 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.UserUtils;
 import java.io.IOException;
@@ -90,6 +91,12 @@ public class CustomerMMGServiceServlet extends HttpServlet {
             PriceBeanLocal priceBean = getPriceBean(request);
             float distance = 0;
             double price = 0;
+
+            Route route = new Route(findCurrentUser().getUsername() + " Route");
+            route.setDistance(distance);
+            Address addFrom = toAddress(request.getParameter("fromAddr"), request);
+            Address addTo = toAddress(request.getParameter("toAddr"), request);
+            TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(request));
             try {
                 MapBeanLocal mapBean = getMapBean(request);
                 distance = mapBean.calculateDistance(request.getParameter("fromAddr"),
@@ -100,15 +107,10 @@ public class CustomerMMGServiceServlet extends HttpServlet {
             }
             if ("".equals(request.getParameter("price"))) {
                 price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request));
+                        DateParser.parseDate(request),taxiOrder);
             } else {
                 price = Double.parseDouble(request.getParameter("price"));
             }
-            Route route = new Route(findCurrentUser().getUsername() + " Route");
-            route.setDistance(distance);
-            Address addFrom = toAddress(request.getParameter("fromAddr"), request);
-            Address addTo = toAddress(request.getParameter("toAddr"), request);
-            TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(request));
             taxiOrder.setBookingTime(new Date());
             Date orderTime = DateParser.parseDate(request);
             taxiOrder.setOrderTime(orderTime);
@@ -172,55 +174,6 @@ public class CustomerMMGServiceServlet extends HttpServlet {
             // custom
             // exception?
         }
-    }
-
-    private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
-        Integer carType = checkString(req.getParameter("carType"));
-        Integer wayOfPayment = checkString(req.getParameter("paymentType"));
-        Boolean driversGender = checkDriversGender(req
-                .getParameter("driverGender"));
-        Integer musicType = checkString(req.getParameter("musicType"));
-        String[] addParameters = req.getParameterValues("addOptions");
-        Boolean wifi = null;
-        Boolean animal = null;
-        Boolean noSmokeDriver = null;
-        Boolean conditioner = null;
-        if (addParameters != null) {
-            for (String st : addParameters) {
-                if ("wifi".equals(st)) {
-                    wifi = Boolean.TRUE;
-                }
-                if ("animal".equals(st)) {
-                    animal = Boolean.TRUE;
-                }
-                if ("nosmoke".equals(st)) {
-                    noSmokeDriver = Boolean.TRUE;
-                }
-                if ("conditioner".equals(st)) {
-                    conditioner = Boolean.TRUE;
-                }
-            }
-        }
-        return new TaxiOrder(wayOfPayment, musicType, driversGender,
-                noSmokeDriver, carType, animal, wifi, conditioner);
-    }
-
-    private Boolean checkDriversGender(String s) {
-        if (!"".equals(s)) {
-            if ("male".equals(s)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return null;
-    }
-
-    private Integer checkString(String s) {
-        if (!"".equals(s)) {
-            return Integer.parseInt(s);
-        }
-        return null;
     }
 
     private Address toAddress(String addr, HttpServletRequest req) {
