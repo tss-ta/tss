@@ -9,6 +9,7 @@ public class ActionResponse {
     private String errorMessage;
     private String successMessage;
     private String redirectURI;
+    private Object model;
 
     public ActionResponse() {}
 
@@ -54,6 +55,14 @@ public class ActionResponse {
         this.redirectURI = redirectURI;
     }
 
+    public Object getModel() {
+        return model;
+    }
+
+    public void setModel(Object model) {
+        this.model = model;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ActionResponse{");
@@ -61,6 +70,7 @@ public class ActionResponse {
         sb.append(", errorMessage='").append(errorMessage).append('\'');
         sb.append(", successMessage='").append(successMessage).append('\'');
         sb.append(", redirectURI='").append(redirectURI).append('\'');
+        sb.append(", model=").append(model);
         sb.append('}');
         return sb.toString();
     }

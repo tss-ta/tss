@@ -12,32 +12,32 @@ import java.util.Map;
  */
 
 public class HttpMethodContainer {
-    private Map<HttpMethod, InstanceAndMethod> container = new HashMap<>();
+    private Map<HttpMethod, ActionMetaData> container = new HashMap<>();
 
     public HttpMethodContainer() {}
 
-    public void addInstanceAndMethod(HttpMethod httpMethod, InstanceAndMethod instanceAndMethod) {
+    public void addInstanceAndMethod(HttpMethod httpMethod, ActionMetaData actionMetaData) {
         ArgumentValidator.validateOnNull(httpMethod, "httpMethod");
-        ArgumentValidator.validateOnNull(instanceAndMethod, "instanceAndMethod");
+        ArgumentValidator.validateOnNull(actionMetaData, "instanceAndMethod");
 
-        InstanceAndMethod oldInstanceAndMethod = container.get(httpMethod);
-        if (oldInstanceAndMethod != null) {
+        ActionMetaData oldActionMetaData = container.get(httpMethod);
+        if (oldActionMetaData != null) {
             throw new IllegalArgumentException("Http method '" + httpMethod + "' duplication.");
         }
 
-        container.put(httpMethod, instanceAndMethod);
+        container.put(httpMethod, actionMetaData);
     }
 
-    public InstanceAndMethod findInstanceAndMethod(HttpMethod httpMethod) {
+    public ActionMetaData findInstanceAndMethod(HttpMethod httpMethod) {
         ArgumentValidator.validateOnNull(httpMethod, "httpMethod");
 
-        InstanceAndMethod searchedInstanceAndMethod = container.get(httpMethod);
-        if (searchedInstanceAndMethod == null) {
+        ActionMetaData searchedActionMetaData = container.get(httpMethod);
+        if (searchedActionMetaData == null) {
             throw new HttpMethodNotAllowedException("Http method '" +
                     httpMethod.getName() + "' not allowed for this action.");
         }
 
-        return searchedInstanceAndMethod;
+        return searchedActionMetaData;
     }
 
     @Override
@@ -50,13 +50,13 @@ public class HttpMethodContainer {
 
     public String info(String message) {
         final StringBuilder sb = new StringBuilder();
-        InstanceAndMethod instanceAndMethod = null;
+        ActionMetaData actionMetaData = null;
         for (HttpMethod httpMethod : container.keySet()) {
-            instanceAndMethod = container.get(httpMethod);
+            actionMetaData = container.get(httpMethod);
             sb.append(message)
               .append(" httpMethod=").append(httpMethod.getName())
-              .append(" classMethod=").append(instanceAndMethod.getMethod().getName())
-              .append(" class=").append(instanceAndMethod.getInstance().getClass().getSimpleName())
+              .append(" classMethod=").append(actionMetaData.getMethod().getName())
+              .append(" class=").append(actionMetaData.getInstance().getClass().getSimpleName())
               .append("}\n");
         }
         return sb.toString();

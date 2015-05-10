@@ -3,8 +3,8 @@ package com.netcracker.router;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
-import com.netcracker.router.container.InstanceAndMethod;
-import com.netcracker.router.container.MetaAction;
+import com.netcracker.router.container.ActionMetaData;
+import com.netcracker.router.container.ActionInfo;
 import com.netcracker.router.exception.RouterInitializationException;
 import org.reflections.Reflections;
 
@@ -38,34 +38,32 @@ public class AnnotationRouterInitializer {
             if (!methods.isEmpty()) {
                 menu = annotated.getAnnotation(ActionRoute.class).menu();
                 instance = createInstance(annotated);
-                addInstanceAndMethodToRouter(methods, instance, menu, router);
+                addActionsToRouter(methods, instance, menu, router);
             }
         }
     }
 
-    private void addInstanceAndMethodToRouter(List<Method> methods, Object instance, String menu, AnnotationRouter router) {
+    private void addActionsToRouter(List<Method> methods, Object instance, String menu, AnnotationRouter router) {
         for (Method method : methods) {
-            router.addActionMethod(createMetaAction(instance, menu, method));
+            router.addActionMethod(createActionInfo(instance, menu, method));
         }
     }
 
-    private MetaAction createMetaAction(Object instance, String menu, Method method) {
-        MetaAction metaAction = new MetaAction();
+    private ActionInfo createActionInfo(Object instance, String menu, Method method) {
+        ActionInfo actionInfo = new ActionInfo();
         Action actionAnnotation = method.getAnnotation(Action.class);
-        metaAction.setMenu(menu);
-        metaAction.setAction(actionAnnotation.action());
-        metaAction.setMethod(actionAnnotation.httpMethod());
-        metaAction.setInstanceAndMethod(new InstanceAndMethod(instance, method));
-        return metaAction;
+        actionInfo.setMenu(menu);
+        actionInfo.setAction(actionAnnotation.action());
+        actionInfo.setMethod(actionAnnotation.httpMethod());
+        actionInfo.setActionMetaData(new ActionMetaData(instance, method, actionAnnotation.responseContentType()));
+        return actionInfo;
     }
 
     private Object createInstance(Class<?> type) {
         Object instance = null;
         try {
             instance = type.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return instance;
@@ -77,7 +75,6 @@ public class AnnotationRouterInitializer {
 
     private List<Method> findAllValidAnnotatedMethods(Class<? extends Annotation> annotation,
                                                       Class<?> type, Class<?> returnType, Class<?> parameterType) {
-
         Method[] methods = type.getMethods();
         List<Method> validMethods = new ArrayList<>();
         for (Method method : methods) {
