@@ -15,7 +15,7 @@ import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
-import com.netcracker.entity.TaxiOrder.Status;
+import com.netcracker.entity.helper.Status;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 
@@ -29,7 +29,6 @@ import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
 
