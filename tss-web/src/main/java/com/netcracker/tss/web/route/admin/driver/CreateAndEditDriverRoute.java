@@ -3,6 +3,7 @@ package com.netcracker.tss.web.route.admin.driver;
 import com.netcracker.dao.DriverDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.ejb.DriverLocal;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.Role;
@@ -78,6 +79,8 @@ public class CreateAndEditDriverRoute {
 
             BeansLocator.getInstance().getDriverBean().addDriver(driver);
 
+        } catch (NoSuchEntity noSuchEntity) {
+            noSuchEntity.printStackTrace();
         } finally {
             if(userDAO != null && userDAO.isOpen()) {
                 userDAO.close();
