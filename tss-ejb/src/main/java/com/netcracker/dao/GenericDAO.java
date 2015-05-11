@@ -3,13 +3,14 @@ package com.netcracker.dao;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -17,14 +18,19 @@ import javax.persistence.Query;
  * @author maks
  *
  */
+
+@Transactional
 public class GenericDAO<T> {
 
     protected Class<T> entityClass;
 
+    @PersistenceContext
     protected EntityManager em;
+    
+    private static String entityLookup = "java:jboss/EntityManagerFactory";
 
     public GenericDAO() {
-        em = createEntityManager();       
+        em = createEntityManager();   
         entityClass = (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
@@ -32,6 +38,10 @@ public class GenericDAO<T> {
     public GenericDAO(Class<T> entityClass) {
         em = createEntityManager();
         this.entityClass = entityClass;
+    }
+    
+    public void setEntityManager(EntityManager em){
+    	this.em = em;
     }
 
     public T get(int id) {
@@ -97,7 +107,7 @@ public class GenericDAO<T> {
         try {
             initCtx = new InitialContext();
             EntityManagerFactory emf = (EntityManagerFactory) initCtx
-                    .lookup("java:jboss/EntityManagerFactory");
+                    .lookup(entityLookup);
             em = emf.createEntityManager();
         } catch (NamingException e) {
             e.printStackTrace();
@@ -110,5 +120,13 @@ public class GenericDAO<T> {
             throw new IllegalArgumentException("Argument 'entity' is null");
         }
     }
+
+	public String getEntityLookup() {
+		return entityLookup;
+	}
+
+	public void setEntityLookup(String entityLookup) {
+		this.entityLookup = entityLookup;
+	}
 
 }
