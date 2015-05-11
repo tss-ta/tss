@@ -1,10 +1,12 @@
 package com.netcracker.dao;
 
 import com.netcracker.entity.User;
-import javax.persistence.NoResultException;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
 import java.util.List;
+
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
@@ -106,4 +108,6 @@ public class UserDAO extends GenericDAO<User> {
     public boolean isOpen() {
         return em.isOpen();
     }
+
+	
 }

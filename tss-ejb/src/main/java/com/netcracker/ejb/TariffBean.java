@@ -2,6 +2,7 @@ package com.netcracker.ejb;
 
 
 import com.netcracker.dao.TariffDAO;
+import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.util.BeansLocator;
@@ -10,6 +11,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -33,7 +35,9 @@ public class TariffBean implements SessionBean {
             tariff.setPlusCoef(additiveCoef);
             tariff.setMultipleCoef(multCoef);
             tariffDAO.update(tariff);
-        } finally {
+        } catch (NoSuchEntity e) {
+			e.printStackTrace();
+		} finally {
             if (tariffDAO != null) {
                 tariffDAO.close();
             }

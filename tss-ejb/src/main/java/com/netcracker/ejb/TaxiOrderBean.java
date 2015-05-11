@@ -10,6 +10,7 @@ import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.RouteDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Route;
@@ -107,6 +108,8 @@ public class TaxiOrderBean implements SessionBean {
 		try {
 			dao = new TaxiOrderDAO();
 			taxiOrder = dao.get(id);
+		} catch (NoSuchEntity e) {
+			e.printStackTrace();
 		} finally {
 			if (dao != null) {
 				dao.close();
@@ -181,6 +184,8 @@ public class TaxiOrderBean implements SessionBean {
 			taxiOrder.setOrderTime(orderTime);
 			taxiOrder.setPrice(price);
 			taxiOrderDAO.update(taxiOrder);
+		} catch (NoSuchEntity e) {
+			e.printStackTrace();
 		} finally {
 			if (routeDAO != null) {
 				routeDAO.close();
