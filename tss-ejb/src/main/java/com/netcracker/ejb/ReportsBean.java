@@ -3,6 +3,7 @@ package com.netcracker.ejb;
 import com.netcracker.dao.ReportDataDAO;
 import com.netcracker.dao.ReportInfoDAO;
 import com.netcracker.dao.TaxiOrderDAO;
+import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
@@ -12,11 +13,13 @@ import com.netcracker.report.Report;
 import com.netcracker.report.container.ReportData;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.reports.ReportsRow;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -33,11 +36,14 @@ public class ReportsBean implements SessionBean {
         try {
             dao = new ReportInfoDAO();
             return dao.get(id);
-        } finally {
+        } catch (NoSuchEntity e) {
+			e.printStackTrace();
+		} finally {
             if (dao != null) {
                 dao.close();
             }
         }
+		return null;
     }
 
     public Report getReportById(Integer id) {
@@ -45,14 +51,16 @@ public class ReportsBean implements SessionBean {
         ReportDataDAO dataDAO;
         ReportInfo reportInfo;
         ReportData reportData;
-        Report report;
+        Report report = null;
         try {
             infoDAO = new ReportInfoDAO();
             dataDAO = new ReportDataDAO();
             reportInfo = infoDAO.get(id);
             reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
             report = new Report(reportInfo, reportData);
-        } finally {
+        } catch (NoSuchEntity e) {
+			e.printStackTrace();
+		} finally {
             if (infoDAO != null) {
                 infoDAO.close();
             }
@@ -104,7 +112,7 @@ public class ReportsBean implements SessionBean {
         ReportInfoDAO infoDAO = null;
         ReportInfo reportInfo;
         ReportData reportData;
-        Report report;
+        Report report = null;
         try {
             infoDAO = new ReportInfoDAO();
             reportInfo = infoDAO.get(id);
@@ -114,7 +122,9 @@ public class ReportsBean implements SessionBean {
                 reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
             }
             report = new Report(reportInfo, reportData);
-        } finally {
+        } catch (NoSuchEntity e) {
+			e.printStackTrace();
+		} finally {
             if (infoDAO != null) {
                 infoDAO.close();
             }

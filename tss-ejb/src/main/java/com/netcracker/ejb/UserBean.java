@@ -5,6 +5,7 @@ import com.netcracker.dto.UserDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Group;
@@ -20,7 +21,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.json.JSONException;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -39,7 +42,6 @@ public class UserBean implements SessionBean {
         UserDAO userDAO = null;
         RoleDAO roleDAO = null;
         try {
-
             userDAO = new UserDAO();
             roleDAO = new RoleDAO();
             User user = userDAO.get(userId);
@@ -54,7 +56,9 @@ public class UserBean implements SessionBean {
                 user.setRoles(toRoleList(roles, roleDAO));
                 userDAO.update(user);
             }
-        } finally {
+        } catch (NoSuchEntity e) {
+			e.printStackTrace();
+		} finally {
             if (roleDAO != null) {
                 roleDAO.close();
             }
@@ -100,7 +104,9 @@ public class UserBean implements SessionBean {
                 return true;
             }
 
-        } finally {
+        } catch (NoSuchEntity e) {
+			e.printStackTrace();
+		} finally {
             if (userDAO != null) {
                 userDAO.close();
             }
@@ -108,6 +114,7 @@ public class UserBean implements SessionBean {
                 groupDAO.close();
             }
         }
+		return false;
     }
 
     private boolean isGroupContainsRole(Group group, Roles role) {
@@ -205,7 +212,9 @@ public class UserBean implements SessionBean {
             } else {
                 return false;
             }
-        } finally {
+        } catch (NoSuchEntity e) {
+			e.printStackTrace();
+		} finally {
             if (userDAO != null) {
                 userDAO.close();
             }
@@ -213,6 +222,7 @@ public class UserBean implements SessionBean {
                 groupDAO.close();
             }
         }
+		return false;
     }
 
     public Contacts getContacts(int userId) {
@@ -224,8 +234,7 @@ public class UserBean implements SessionBean {
             User userFromDB = null;
             try {
                 userFromDB = userDAO.get(userId);
-
-            } catch (NoResultException nre) {
+            } catch (NoResultException | NoSuchEntity nre) {
                 throw new IllegalArgumentException("User with id = " + userId + " is not exist", nre);
             }
             try {
