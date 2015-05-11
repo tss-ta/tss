@@ -13,7 +13,12 @@ import javax.validation.constraints.NotNull;
 @Table(name = "driver")
 @PrimaryKeyJoinColumn(name = "driver_id")
 @NamedQueries({
-    @NamedQuery(name = "Driver.searchDriverByName", query = "SELECT d FROM Driver d WHERE d.username like :drivername")
+    @NamedQuery(name = "Driver.searchDriverByName", query = "SELECT d FROM Driver d WHERE d.username like :drivername"),
+//    @NamedQuery(name = "Driver.createDriverFromUser", query = "update Driver set category = :category, " +
+//                                                              "available = :available, " +
+//                                                              "isMale = :isMale, " +
+//                                                              "smokes = :smokes " +
+//                                                              "where id = :driverId")
 })
 public class Driver extends User {
 
