@@ -21,19 +21,22 @@
                     <a href="/admin?menu=dashboard&action=view" class="btn btn-default">Dashboard</a>
                 </div>
 
-                <div class="col-md-offset-1 col-md-2 col-sm-offset-1 col-sm-2 col-xs-offset-4 col-xs-4">
-                    <form action = "/admin" class="text-center">
+                <c:if test="${not forAssignee}">
+                    <div class="col-md-offset-1 col-md-2 col-sm-offset-1 col-sm-2 col-xs-offset-4 col-xs-4">
+                        <form action = "/admin" class="text-center">
 
-                        <select class="bootstrap-select" name ="role" onchange="this.form.submit()" style="margin-top: 5px">
-                            <c:forEach var = "role" items = "${requestScope.rolesEnum}">
-                                <option ${role == param.role ? 'selected="selected"' : ''}> ${role} </option>
-                            </c:forEach>
-                        </select>
-                        <input type="hidden" name="page" value="1">
-                        <input type="hidden" name="action" value="view">
-                        <input type="hidden" name="menu" value="users">
-                    </form>
-                </div>
+                            <select class="bootstrap-select" name ="role" onchange="this.form.submit()" style="margin-top: 5px">
+                                <c:forEach var = "role" items = "${requestScope.rolesEnum}">
+                                    <option ${role == param.role ? 'selected="selected"' : ''}> ${role} </option>
+                                </c:forEach>
+                            </select>
+                            <input type="hidden" name="page" value="1">
+                            <input type="hidden" name="action" value="view">
+                            <input type="hidden" name="menu" value="users">
+                        </form>
+                    </div>
+                </c:if>
+
 
                 <div class="col-md-offset-4 col-md-4 col-sm-offset-1 col-sm-6 col-xs-12">
                     <form action="/admin" method="get">
@@ -83,9 +86,25 @@
                                 </c:forEach>
                             </td>
                             <td class="col-md-1">
-                                <a href="/admin?menu=users&action=add-role&email=${user.email}&id=${user.id}" class="btn btn-default">
-                                    Change roles
-                                </a>
+
+                                <c:if test="${forAssignee}">
+                                    <form action="/admin" class="form-horizontal">
+                                        <input type="hidden" name="id" value="${user.id}">
+                                        <input type="hidden" name="menu" value="drivers">
+                                        <input type="hidden" name="action" value="assignFields">
+                                        <button type="submit" class="btn btn-default">Make Driver</button>
+                                    </form>
+                                    <%--<a href="/admin?menu=users&action=add-roles&id=${user.id}&role=DRIVER" class="btn btn-default">--%>
+                                        <%--Make a Driver--%>
+                                    <%--</a>--%>
+                                </c:if>
+                                <c:if test="${not forAssignee}">
+                                    <a href="/admin?menu=users&action=add-role&email=${user.email}&id=${user.id}" class="btn btn-default">
+                                        Change roles
+                                    </a>
+                                </c:if>
+
+
                             </td>
                         </tr>
                     </c:forEach>

@@ -25,18 +25,18 @@
 				<%@ include file="../../partials/from_pers_addr.jspf"%>
 				<div class="form-group">
 					<label class="col-sm-6 col-sm-6 control-label">How many
-						drivers?</label>
+						cars?</label>
 					<div class="col-sm-6">
-						<input type="text" class="form-control" id="driversAmountId"
-							name="driversAmount" placeholder="Insert amount here" />
+						<input type="number" class="form-control" id="driversAmountId"
+							name="driversAmount" placeholder="Insert cars amount here" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-6 col-sm-6 control-label">How long
 						would you celebrate?</label>
 					<div class="col-sm-6">
-						<input type="text" class="form-control" id="duration"
-							name="duration" placeholder="Insert duration here" />
+						<input type="number" class="form-control" id="duration"
+							name="duration" placeholder="Insert duration in hours here" />
 					</div>
 				</div>
 				<%@ include file="../../partials/price.jspf"%>

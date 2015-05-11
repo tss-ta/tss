@@ -26,32 +26,32 @@
 
 <div class="row row-fix">
     <div class="col-md-7">
-        <form action="/admin/driver" method="post">
+        <form action="/admin">
             <div class="row row-fix">
-                <div class="col-md-8">
-                    <label for="inputDriverName" class="sr-only">Driver name</label>
-                    <c:if test="${empty driver}">
-                        <input type="text" id="inputDriverName" name="drivername" class="form-control" placeholder="Driver name" maxlength="40" required autofocus>
-                    </c:if>
-                    <c:if test="${not empty driver}">
-                        <input type="text" id="inputDriverName" name="drivername" class="form-control" value="${driver.getUsername()}" autofocus>
-                    </c:if>
+                <%--<div class="col-md-8">--%>
+                    <%--<label for="inputDriverName" class="sr-only">Driver name</label>--%>
+                    <%--<c:if test="${empty driver}">--%>
+                        <%--<input type="text" id="inputDriverName" name="drivername" class="form-control" placeholder="Driver name" maxlength="40" required autofocus>--%>
+                    <%--</c:if>--%>
+                    <%--<c:if test="${not empty driver}">--%>
+                        <%--<input type="text" id="inputDriverName" name="drivername" class="form-control" value="${driver.getUsername()}" autofocus>--%>
+                    <%--</c:if>--%>
 
-                    <label for="inputEmail" class="sr-only">Email address</label>
-                    <c:if test="${empty driver}">
-                        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" maxlength="40" required>
-                        <label for="password" class="sr-only">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
+                    <%--<label for="inputEmail" class="sr-only">Email address</label>--%>
+                    <%--<c:if test="${empty driver}">--%>
+                        <%--<input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" maxlength="40" required>--%>
+                        <%--<label for="password" class="sr-only">Password</label>--%>
+                        <%--<input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>--%>
 
-                        <label for="confirPassword" class="sr-only">Confirm Password</label>
-                        <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass();
-                                return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
-                        <span id="confirmMessage" class="confirmMessage"></span>
-                    </c:if>
-                    <c:if test="${not empty driver}">
-                        <input type="email" id="inputEmail" name="email" class="form-control" value="${driver.getEmail()}" required>
-                    </c:if>
-                </div>
+                        <%--<label for="confirPassword" class="sr-only">Confirm Password</label>--%>
+                        <%--<input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass();--%>
+                                <%--return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>--%>
+                        <%--<span id="confirmMessage" class="confirmMessage"></span>--%>
+                    <%--</c:if>--%>
+                    <%--<c:if test="${not empty driver}">--%>
+                        <%--<input type="email" id="inputEmail" name="email" class="form-control" value="${driver.getEmail()}" required>--%>
+                    <%--</c:if>--%>
+                <%--</div>--%>
 
                 <div class="col-md-4">
                     <%--Choose driver category--%>
@@ -76,12 +76,15 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-11">
                         <c:if test="${empty driver}">
+                            <input type="hidden" name="menu" value="drivers">
                             <input type="hidden" name="action" value="newdriver">
+                            <input id="driver_id" type="hidden" name="id" value="">
                             <button class="btn btn-lg btn-primary" type="submit">Register Driver</button>
                         </c:if>
                         <c:if test="${not empty driver}">
+                            <input type="hidden" name="menu" value="drivers">
                             <input type="hidden" name="action" value="editdriver">
-                            <input type="hidden" name="driverid" value="${driver.getId()}">
+                            <input type="hidden" name="id" value="${driver.getId()}">
                             <button class="btn btn-lg btn-primary" type="submit">Edit Driver</button>
                         </c:if>
                     </div>
@@ -214,13 +217,31 @@
 </div> <%--Row end--%>
 
 
-
+<script src="/resources/js/jquery-1.11.2.min.js"></script>
 <c:if test="${not empty driver}">
-    <script src="/resources/js/jquery-1.11.2.min.js"></script>
     <script>
         $("#inputCategory").val("${driver.getCategory().getCatStr()}");
         $("#availableChkBox").prop('checked', ${driver.isAvailable()});
         $("#isMaleChkBox").prop('checked', ${driver.isMale()});
         $("#smokesChkBox").prop('checked', ${driver.isSmokes()});
+    </script>
+</c:if>
+<c:if test="${empty driver}">
+    <script>
+        function getUrlParameter(sParam)
+        {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++)
+            {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam)
+                {
+                    return sParameterName[1];
+                }
+            }
+        }
+
+        $('#driver_id').val(getUrlParameter('id'));
     </script>
 </c:if>
