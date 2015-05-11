@@ -3,6 +3,7 @@ package com.netcracker.ejb;
 import com.netcracker.dto.GroupDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
+import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.helper.Pager;
@@ -13,6 +14,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -56,15 +58,12 @@ public class GroupBean implements SessionBean {
             groupDAO = new GroupDAO();
             roleDAO = new RoleDAO();
             Group group = groupDAO.get(groupId);
-
-//            if (group == null) { //isPersist
-//                throw new IllegalArgumentException("Group with id " + groupId
-//                        + " doesn't exist");
-//            }
             group.setName(groupName);
             group.setRoles(toRoleList(roles, roleDAO));
             groupDAO.update(group);
-        } finally {
+        } catch (NoSuchEntity e) {
+			e.printStackTrace();
+		} finally {
             if (roleDAO != null) {
                 roleDAO.close();
             }
@@ -121,7 +120,7 @@ public class GroupBean implements SessionBean {
             } else {
                 return false;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchEntity e) {
             return false;
         }
     }

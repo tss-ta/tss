@@ -35,7 +35,7 @@ public class GreeterTest {
 
 	@Before
 	public void initialize() {
-		new UserDAO().setEntityLookup(entityLookup);
+		new UserDAO().updateEntityManager(entityLookup);
 	}
 
 	@Deployment
