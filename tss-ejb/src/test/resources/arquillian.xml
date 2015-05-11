@@ -9,7 +9,7 @@
 			<property name="managementAddress">127.0.0.1</property>
 			<property name="managementPort">10999</property>
 			<property name="username">rokill</property>
-			<property name="password">hjrbkk74_qqq</property>
+			<property name="password">password</property>
 		</configuration>
 	</container>
 
