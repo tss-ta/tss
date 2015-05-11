@@ -9,6 +9,7 @@ import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Status;
 import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.util.BeansLocator;
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
         CelebrationServiceBeanLocal celBean = BeansLocator.getInstance().getBean(CelebrationServiceBeanLocal.class);
 
         TaxiOrder taxiOrder = new TaxiOrder();
-        taxiOrder.setStatus(TaxiOrder.Status.QUEUED);
+        taxiOrder.setStatus(Status.QUEUED);
         taxiOrder.setBookingTime(new Date());
         taxiOrder.setOrderTime(DateParser.parseDate(req));
         User user = findCurrentUser();
