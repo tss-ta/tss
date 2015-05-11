@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.ejb.RegistrationBean;
 import com.netcracker.ejb.TariffBean;
+import com.netcracker.entity.Role;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.DriverCar;
@@ -39,9 +40,9 @@ public class GenericDAOTest {
 	private UserDAO userDao;
 	private UserTransaction transaction;
 
-	private User testUser = new User("TestUser", "test@me.now");
-	private User testUserMarkTwo = new User("TestUserMarkTwo",
-			"test@me.not.now");
+	private User testUser = new User("TestUser", "test@me.now", "123");
+	private User testUserMarkTwo = new User("TestUserMarkTwo", "test@not.now",
+			"123");
 
 	@Before
 	public void initialize() {
@@ -116,7 +117,7 @@ public class GenericDAOTest {
 				| SecurityException | IllegalStateException | RollbackException
 				| HeuristicMixedException | HeuristicRollbackException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	private void persist(User user) {
@@ -151,7 +152,7 @@ public class GenericDAOTest {
 				| SecurityException | IllegalStateException | RollbackException
 				| HeuristicMixedException | HeuristicRollbackException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 
 }
