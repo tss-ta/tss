@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.netcracker.ejb;
 
 import com.netcracker.dao.AddressDAO;
@@ -16,6 +12,8 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.Service;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Status;
+
 import java.rmi.RemoteException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
@@ -44,7 +42,7 @@ public class MeetMyGuestBean implements SessionBean {
             routeDAO.persist(route);
             taxiOrder.setRouteId(route);
             taxiOrder.setContactsId(new TaxiOrderBean().createContacts(user));
-            taxiOrder.setStatus(TaxiOrder.Status.QUEUED);
+            taxiOrder.setStatus(Status.QUEUED);
             taxiOrder.setRouteId(route);
             taxiOrderDAO = new TaxiOrderDAO();
             taxiOrderDAO.persist(taxiOrder);

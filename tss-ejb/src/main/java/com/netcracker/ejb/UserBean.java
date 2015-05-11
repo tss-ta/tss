@@ -14,6 +14,7 @@ import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.util.BeansLocator;
 
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class UserBean implements SessionBean {
                 userDAO.update(user);
             }
         } catch (NoSuchEntity e) {
-			e.printStackTrace();
+			throw new InvalidEntityException("User with id = " + userId + " does not exist");
 		} finally {
             if (roleDAO != null) {
                 roleDAO.close();
