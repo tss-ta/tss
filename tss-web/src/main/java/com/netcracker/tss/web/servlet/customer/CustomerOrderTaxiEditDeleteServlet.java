@@ -7,6 +7,7 @@ package com.netcracker.tss.web.servlet.customer;
 
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.PriceBeanLocal;
@@ -90,7 +91,12 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (ACTION_EDIT_TAXI_ORDER.equals(action)) {
             taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
-            TaxiOrder taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
+            TaxiOrder taxiOrder = null;
+			try {
+				taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
+			} catch (NoSuchEntity e) {
+				e.printStackTrace();
+			}
             request.getSession().setAttribute("taxiOrder", taxiOrder);
             redirectToEdit(request, response);
             return;
