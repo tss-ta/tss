@@ -9,8 +9,8 @@ import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
-import com.netcracker.entity.TaxiOrder.Status;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Status;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 
 import java.util.Date;

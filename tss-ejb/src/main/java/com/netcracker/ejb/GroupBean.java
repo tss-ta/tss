@@ -8,6 +8,7 @@ import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.util.BeansLocator;
 
 import java.rmi.RemoteException;
@@ -36,6 +37,8 @@ public class GroupBean implements SessionBean {
                 throw new IllegalArgumentException("Group with name " + groupName + " is already exist");
             }
             List<Role> roleList = toRoleList(roles, roleDAO);
+            Group group  = new Group(groupName, roleList);
+            validate(group);
             groupDAO.persist(new Group(groupName, roleList));
         } finally {
             if (roleDAO != null) {
@@ -44,6 +47,16 @@ public class GroupBean implements SessionBean {
             if (groupDAO != null) {
                 groupDAO.close();
             }
+        }
+    }
+
+    private void validate (Group group){
+        ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+        String message = validatorBean.validate(group);
+        if (message != null){
+            System.out.println("INVALID GROUP ===================="
+            + message);
+            throw new InvalidEntityException(message);
         }
     }
 
