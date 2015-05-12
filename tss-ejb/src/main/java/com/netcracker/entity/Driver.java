@@ -14,15 +14,10 @@ import javax.validation.constraints.NotNull;
 @PrimaryKeyJoinColumn(name = "driver_id")
 @NamedQueries({
     @NamedQuery(name = "Driver.searchDriverByName", query = "SELECT d FROM Driver d WHERE d.username like :drivername"),
-//    @NamedQuery(name = "Driver.createDriverFromUser", query = "update Driver set category = :category, " +
-//                                                              "available = :available, " +
-//                                                              "isMale = :isMale, " +
-//                                                              "smokes = :smokes " +
-//                                                              "where id = :driverId")
+    @NamedQuery(name = "Driver.searchDriverByToken", query = "SELECT d FROM Driver d WHERE d.token = :token"),
 })
 public class Driver extends User {
 
-    @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Category category;
 
@@ -35,12 +30,21 @@ public class Driver extends User {
     @Column(name = "smokes")
     private boolean smokes;
 
+    @Column(name = "token")
+    private Integer token;
+
     @OneToOne
     @JoinColumn(name = "car_id")
     private Car car;
 
     public Driver() {
 
+    }
+
+    public Driver(String email, Integer token) {
+        super();
+        super.setEmail(email);
+        this.token = token;
     }
 
     public Driver(String username,
@@ -51,6 +55,16 @@ public class Driver extends User {
             boolean isMale,
             boolean smokes) {
         super(username, email, passwordHash);
+        this.category = category;
+        this.available = available;
+        this.isMale = isMale;
+        this.smokes = smokes;
+    }
+
+    public Driver(Category category,
+                  boolean available,
+                  boolean isMale,
+                  boolean smokes) {
         this.category = category;
         this.available = available;
         this.isMale = isMale;
@@ -87,6 +101,14 @@ public class Driver extends User {
 
     public void setSmokes(boolean smokes) {
         this.smokes = smokes;
+    }
+
+    public Integer getToken() {
+        return token;
+    }
+
+    public void setToken(Integer token) {
+        this.token = token;
     }
 
     public Car getCar() {

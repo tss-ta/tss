@@ -28,18 +28,15 @@ public class User implements Serializable {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "username")
     private String username;
 
     @Column(name = "email")
-    @NotNull
     @Size(min = 1, max = 60)
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Incorrect email address")
     private String email;
 
-    @NotNull
     @Size(min = 1, max = 60)
     @Column(name = "pass_hash")
     private String passwordHash;
