@@ -241,9 +241,20 @@ VALUES
 -- REPORT SYSTEM ----------------------
 ---------------------------------------
 
+INSERT INTO driver_category (id, name) VALUES (1, 'B');
+INSERT INTO driver_category (id, name) VALUES (2, 'C');
+INSERT INTO driver_category (id, name) VALUES (3, 'D');
+
+INSERT INTO car_category (id, name) VALUES (1, 'Econom');
+INSERT INTO car_category (id, name) VALUES (2, 'Van');
+INSERT INTO car_category (id, name) VALUES (3, 'Business');
+INSERT INTO car_category (id, name) VALUES (4, 'Cargo');
+
+
 INSERT INTO report_info (id, name, description, db_query) values
 (DEFAULT, 'Count all Cars', 'This report count all cars in system', 'SELECT COUNT(id) FROM car');
 INSERT INTO report_info (id, name, description, db_query) values
 (DEFAULT, 'Count all Users', 'This report count all users in system', 'SELECT COUNT(id) FROM tss_user');
 INSERT INTO report_info (id, name, description, db_query) values
 (DEFAULT, 'Count all Taxi Orders', 'This report count all Taxi Orders in system', 'SELECT COUNT(id) FROM taxi_order');
+

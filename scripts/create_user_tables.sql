@@ -18,8 +18,9 @@ DROP TABLE IF EXISTS service CASCADE;
 DROP TABLE IF EXISTS meet_my_guest CASCADE;
 DROP TABLE IF EXISTS celebration CASCADE;
 DROP TABLE IF EXISTS celebration_driver_car CASCADE;
-DROP TABLE IF EXISTS report_info CASCADE;
-
+DROP TABLE IF EXISTS report_info;
+DROP TABLE IF EXISTS car_category;
+DROP TABLE IF EXISTS driver_category;
 
 CREATE TABLE tss_user
 (
@@ -321,6 +322,18 @@ CONSTRAINT  meet_my_guest_service_id_pk PRIMARY KEY (service_id),
 ---------------------------------------
 -- REPORT SYSTEM ----------------------
 ---------------------------------------
+
+CREATE TABLE car_category
+(
+  id integer,
+  name varchar(40)
+);
+
+CREATE TABLE driver_category
+(
+  id integer,
+  name varchar(40)
+);
 
 CREATE TABLE report_info
 (
