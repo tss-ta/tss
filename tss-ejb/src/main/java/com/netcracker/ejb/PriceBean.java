@@ -113,11 +113,10 @@ public class PriceBean implements SessionBean {
         }
 
         tariff = tariffDAO.findByTariffName("per_car");
-        orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+        orderPrice = orderPrice + carsAmount * ((1 + tariff.getPlusCoef()) * tariff.getMultipleCoef());
 
         tariff = tariffDAO.findByTariffName("per_hour");
-        orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
-
+        orderPrice = orderPrice + duration * ((1 + tariff.getPlusCoef()) * tariff.getMultipleCoef());
         return orderPrice;
     }
 
