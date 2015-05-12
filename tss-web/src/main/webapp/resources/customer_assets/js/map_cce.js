@@ -6,6 +6,9 @@ var markerTo;
 var map;
 var directionsDisplay;
 var directionsService;
+
+var markersArrayFrom = [];
+
 function initialize() {
 	if (markerFrom != null) {
 		removeFromMarker();
@@ -58,7 +61,7 @@ function placeFromMarker(location) {
 	// codeLatLngFrom(location);
 	$("#fromc").val(location);
 	fromCoord = location;
-         var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/from.png",
+        var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/from.png",
             new google.maps.Size(32, 32),
             new google.maps.Point(0, 0),
             new google.maps.Point(16, 32));
@@ -96,7 +99,7 @@ function placeToMarker(location) {
 	// codeLatLngTo(location);
 	$("#toc").val(location);
 	toCoord = location;
-         var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/to.png",
+        var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/to.png",
             new google.maps.Size(32, 32),
             new google.maps.Point(0, 0),
             new google.maps.Point(16, 32));
@@ -262,4 +265,83 @@ function geoloc() {
 	} else {
 		alert("Your browser does not support geolocation");
 	}
+}
+
+
+
+function removeSelectedFromList() {
+    $("#fromList :selected").remove();
+    showmarkersArrayFrom();
+}
+function  addToList() {
+    showmarkersArrayFrom();
+    addMarkerToArrayFrom($('#fromAddr').val());
+}
+function beforeSave() {
+    $('#fromList option').each(function() {
+        this.selected = true;
+    });
+}
+
+
+function addMarkerToArrayFrom(address) {
+    var location = null;
+    geocoder.geocode({'address': address}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            $("#fromList").append($('<option value=' + address + '>' + address + '</option>'));
+            var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/from_in_list.png",
+                    new google.maps.Size(32, 32),
+                    new google.maps.Point(0, 0),
+                    new google.maps.Point(16, 32));
+
+
+            location = results[0].geometry.location;
+            var newmarker = new google.maps.Marker({
+                position: location,
+                icon: pinImage,
+                map: map
+            });
+
+            markersArrayFrom.push(newmarker);
+
+        } else {
+            alert("Incorrect address assignments");
+        }
+    });
+}
+function putMarkerFromArrayFrom(address) {
+    var location = null;
+    geocoder.geocode({'address': address}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+
+            var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/from_in_list.png",
+                    new google.maps.Size(32, 32),
+                    new google.maps.Point(0, 0),
+                    new google.maps.Point(16, 32));
+
+
+            location = results[0].geometry.location;
+            var newmarker = new google.maps.Marker({
+                position: location,
+                icon: pinImage,
+                map: map
+            });
+
+            markersArrayFrom.push(newmarker);
+        } else {
+            // alert("Incorrect address assignments");  
+        }
+    });
+
+}
+
+function showmarkersArrayFrom() {
+    for (i in markersArrayFrom) {
+        markersArrayFrom[i].setMap(null);
+    }
+    markersArrayFrom = [];
+    $('#fromList option').each(function() {
+        putMarkerFromArrayFrom(this.text);
+    });
+
 }
