@@ -32,7 +32,7 @@ import javax.persistence.NoResultException;
  */
 public class ConveyCorpServiceBean implements SessionBean{
 
-    public Integer addCorpService(User user, List<Address> addFrom,
+    public Integer addCorpService(User user,List<Route> routes, List<Address> addFrom,
 			Address addTo, TaxiOrder taxiOrder){
         TaxiOrderDAO taxiOrderDAO = null;
         ServiceDAO serviceDAO=null;
@@ -47,19 +47,16 @@ public class ConveyCorpServiceBean implements SessionBean{
        Service s=new Service();
        s.setServiceName("conveycorp");
        s.setOrderId(taxiOrder);
-       List<Route> rl=new ArrayList<Route>();
        routeDAO = new RouteDAO();
        addressDAO = new AddressDAO();
        addressDAO.persist(addTo);
-       for(Address a:addFrom){
-           addressDAO.persist(a);
-           Route r= new Route(user.getUsername() + " Route");
-           r.setFromAddrId(a);
-	   r.setToAddrId(addTo);
-           routeDAO.persist(r);
-           rl.add(r);
+       for(int i=0;i<addFrom.size();i++){
+          addressDAO.persist(addFrom.get(i));  
+          routes.get(i).setFromAddrId(addFrom.get(i));
+          routes.get(i).setToAddrId(addTo);
+          routeDAO.persist(routes.get(i));
        }
-       s.setRoutes(rl);
+       s.setRoutes(routes);
        serviceDAO.persist(s);
         }finally{
            if (addressDAO != null) {

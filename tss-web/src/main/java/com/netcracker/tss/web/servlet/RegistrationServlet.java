@@ -49,8 +49,11 @@ public class RegistrationServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirPassword");
-        Integer driverToken = Integer.valueOf(request.getParameter("token"));
-
+        Integer driverToken = null;
+        if (!"".equals(request.getParameter("token")) && (request.getParameter("token") != null)) {
+            driverToken = Integer.valueOf(request.getParameter("token"));
+        }
+        
 
         if (password.equals(confirmPassword)) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -58,7 +61,7 @@ public class RegistrationServlet extends HttpServlet {
 
             RegistrationBeanLocal rb = getRegistrationBean(request);
 
-            if(driverToken != null) {
+            if (driverToken != null) {
                 Driver driver = createDriverWithSpecifiedParameters(request);
                 driver.setUsername(userName);
                 driver.setPasswordHash(password);
@@ -68,7 +71,6 @@ public class RegistrationServlet extends HttpServlet {
                 response.sendRedirect("/driver");
                 return;
             }
-
 
             User user = new User(userName, email, password);
             if (!rb.isUserExist(user)) {
@@ -85,12 +87,12 @@ public class RegistrationServlet extends HttpServlet {
 
     private Driver createDriverWithSpecifiedParameters(HttpServletRequest req) {
         return new Driver(Category.valueOf(req.getParameter("category")),
-                           isOn(req.getParameter("available")),
-                           isOn(req.getParameter("ismale")),
-                           isOn(req.getParameter("smokes")));
+                isOn(req.getParameter("available")),
+                isOn(req.getParameter("ismale")),
+                isOn(req.getParameter("smokes")));
     }
 
-    private boolean isOn (String checkBoxText){
+    private boolean isOn(String checkBoxText) {
         return "on".equals(checkBoxText);
     }
 
@@ -142,13 +144,13 @@ public class RegistrationServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
                     "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
-            throw new RuntimeException("Internal server error!" + 
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");// maybe have to create custom exception?
-        } catch (ClassCastException ex){
-                        Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+            throw new RuntimeException("Internal server error!"
+                    + "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");// maybe have to create custom exception?
+        } catch (ClassCastException ex) {
+            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
                     "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
-            throw new RuntimeException("Internal server error!" + 
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
+            throw new RuntimeException("Internal server error!"
+                    + "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
         }
     }
 }
