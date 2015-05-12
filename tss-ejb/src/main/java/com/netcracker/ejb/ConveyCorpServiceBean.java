@@ -16,6 +16,8 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.Service;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Status;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class ConveyCorpServiceBean implements SessionBean{
         try{
        taxiOrder.setContactsId(createContacts(user));
        taxiOrderDAO = new TaxiOrderDAO();
-       taxiOrder.setStatus(TaxiOrder.Status.QUEUED);
+       taxiOrder.setStatus(Status.QUEUED);
        taxiOrderDAO.persist(taxiOrder);
        serviceDAO=new ServiceDAO();
        Service s=new Service();

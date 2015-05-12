@@ -8,7 +8,7 @@ package com.netcracker.dao;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import java.util.Date;
-import com.netcracker.entity.TaxiOrder.Status;
+import com.netcracker.entity.helper.Status;
 import com.netcracker.entity.helper.CarCategory;
 import java.util.ArrayList;
 import java.util.List;

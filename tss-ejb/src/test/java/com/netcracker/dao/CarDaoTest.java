@@ -55,7 +55,7 @@ public class CarDaoTest {
 
 	@Deployment
 	public static WebArchive createDeployment() {
-		return ShrinkWrap.create(WebArchive.class, "generic_dao_test.war")
+		return ShrinkWrap.create(WebArchive.class, "car_dao_test.war")
 				.addPackage(TariffBean.class.getPackage())
 				.addPackage(TariffDAO.class.getPackage())
 				.addPackage(Tariff.class.getPackage())
