@@ -61,7 +61,6 @@ public class RegistrationServlet extends HttpServlet {
             if(driverToken != null) {
                 Driver driver = createDriverWithSpecifiedParameters(request);
                 driver.setUsername(userName);
-                driver.setEmail(email);
                 driver.setPasswordHash(password);
                 driver.setToken(driverToken);
 
