@@ -263,7 +263,7 @@
 			<transaction-type>Container</transaction-type>
 
 			<ejb-local-ref>
-				<ejb-ref-name>ejb/CarBean</ejb-ref-name>
+				<ejb-ref-name>ejb/CounterBean</ejb-ref-name>
 				<ejb-ref-type>Session</ejb-ref-type>
 				<local-home>com.netcracker.ejb.CounterBeanLocalHome</local-home>
 				<local>com.netcracker.ejb.CounterBeanLocal</local>

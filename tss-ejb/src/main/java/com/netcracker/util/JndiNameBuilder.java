@@ -6,7 +6,7 @@ package com.netcracker.util;
 
 public class JndiNameBuilder {
 
-    private static final String JNDI_MODULE_PREFIX = "java:app/tss-ejb/";
+    private static String JNDI_MODULE_PREFIX = "java:app/tss-ejb/";
 
     public <T> String buildEjbName(Class<T> beanLocal) {
         if (beanLocal == null)
@@ -18,5 +18,9 @@ public class JndiNameBuilder {
             .append(beanLocal.getCanonicalName())
             .append("Home");
         return name.toString();
+    }
+    
+    public static void setPrefix(String prefix){
+    	JNDI_MODULE_PREFIX = prefix;
     }
 }

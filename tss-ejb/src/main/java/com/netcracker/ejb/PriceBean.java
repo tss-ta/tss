@@ -8,10 +8,12 @@ package com.netcracker.ejb;
 import com.netcracker.dao.TariffDAO;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.TaxiOrder;
+
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -23,6 +25,8 @@ import javax.ejb.SessionContext;
 public class PriceBean implements SessionBean {
 
     public double calculatePrice(float distance, Date orderTime, TaxiOrder taxiOrder) {
+    	if (distance<0)
+    		throw new IllegalArgumentException("distance must be > 0");
         double orderPrice = 0;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(orderTime);
