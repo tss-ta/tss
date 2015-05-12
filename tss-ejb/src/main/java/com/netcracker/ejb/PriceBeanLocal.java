@@ -17,4 +17,6 @@ public interface PriceBeanLocal extends EJBLocalObject {
 
     public double calculatePrice(float distance, Date orderTime, TaxiOrder taxiOrder);
 
+    public float calculateCelebrationServicePrice(int carsAmount, int duration, Date orderTime);
+
 }

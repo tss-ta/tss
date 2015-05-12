@@ -112,18 +112,19 @@
 <script>
 	$('#update_price').click(function() {
 		$.ajax({
-		//      type : "GET",
-		//      url : "http://localhost:8080/price",
-		//      data : {
-		//        fromAddr : $("#fromAddr").val(),
-		//        toAddr : $("#toAddr").val(),
-		//        ordertime : $("#ordertime").val()
-		//      },
-		//      dataType : "text"
-		//    }).done(function(res) {
-		//      $('#price_field').val(res);
-		//    }).fail(function(jqXHR, textStatus, errorThrown) {
-		//      alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+			type : "POST",
+			url : "http://localhost:8080/price",
+			data : {
+				service: "celebration",
+				ordertime : $("#ordertime").val(),
+				driversAmount: $('#driversAmountId').val(),
+				duration: $('#duration').val()
+			},
+			dataType : "text"
+		}).done(function(res) {
+			$('#price_field').val(res);
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert("AJAX call failed: " + textStatus + ", " + errorThrown);
 		});
 	});
 </script>

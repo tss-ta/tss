@@ -1,6 +1,5 @@
 package com.netcracker.tss.web.route.admin.driver;
 
-import com.netcracker.dao.*;
 import com.netcracker.ejb.DriverLocal;
 import com.netcracker.ejb.MailerBeanLocal;
 import com.netcracker.entity.Driver;
@@ -13,7 +12,6 @@ import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.TokenGenerator;
-import org.springframework.context.annotation.Bean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
