@@ -45,6 +45,7 @@ public class RegistrationBean implements SessionBean {
     public void registrateDriver(Driver driver) throws NoSuchEntity {
         DriverDAO driverDAO = null;
         RoleDAO roleDAO = null;
+        ContactsDAO contactsDAO = null;
         try {
             driverDAO = new DriverDAO();
             Driver foundDriver = driverDAO.getDriverByToken(driver.getToken());
@@ -64,6 +65,9 @@ public class RegistrationBean implements SessionBean {
                 foundDriver.addRole(role);
 
                 driverDAO.update(foundDriver);
+
+                contactsDAO = new ContactsDAO();
+                contactsDAO.persist(new Contacts(foundDriver));
             }/* else {
                 throw new NoSuchEntity("There is no driver with such a token!");
             }*/
@@ -74,6 +78,10 @@ public class RegistrationBean implements SessionBean {
 
             if(roleDAO != null) {
                 roleDAO.close();
+            }
+
+            if(contactsDAO != null) {
+                contactsDAO.close();
             }
         }
     }
