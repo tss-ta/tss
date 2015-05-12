@@ -15,7 +15,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="col-md-1">
-                            <a href="/admin?role=CUSTOMER&page=1&action=checkUsers&menu=drivers" class="btn btn-default">New Driver</a>
+                            <a href="/admin?menu=drivers&action=add" class="btn btn-default">New Driver</a>
                         </div>
                         <div class="col-md-offset-7 col-md-4">
                             <form action="/admin/driver?menu=drivers&action=search" method="post" >

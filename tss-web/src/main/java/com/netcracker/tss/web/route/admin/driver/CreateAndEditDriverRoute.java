@@ -1,29 +1,23 @@
 package com.netcracker.tss.web.route.admin.driver;
 
-import com.netcracker.dao.DriverDAO;
-import com.netcracker.dao.RoleDAO;
-import com.netcracker.dao.UserDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.*;
 import com.netcracker.ejb.DriverLocal;
+import com.netcracker.ejb.MailerBeanLocal;
 import com.netcracker.entity.Driver;
-import com.netcracker.entity.Role;
-import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Category;
-import com.netcracker.entity.helper.Roles;
+import com.netcracker.router.HttpMethod;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
-import com.netcracker.tss.web.route.admin.Users;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.util.BeansLocator;
+import com.netcracker.util.TokenGenerator;
+import org.springframework.context.annotation.Bean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,11 +32,12 @@ public class CreateAndEditDriverRoute {
     public static final String PARAMETER_AVAILABLE = "available";
     public static final String PARAMETER_IS_MALE = "ismale";
     public static final String PARAMETER_SMOKES = "smokes";
+    public static final String PARAMETER_DRIVER_EMAIL = "email";
 
-    @Action(action = "checkUsers")
-    public ActionResponse addDriver(HttpServletRequest req) {
-        req.setAttribute("forAssignee", true);
-        return new Users().getUsersView(req);
+    @Action(action = "add")
+    public ActionResponse getAddDriverForm(HttpServletRequest req) {
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_SEND_TOKEN_CONTENT.getType());
+        return new ActionResponse(Page.ADMIN_SEND_TOKEN_CONTENT.getAbsolutePath());
     }
 
     @Action(action = "assignFields")
@@ -50,51 +45,32 @@ public class CreateAndEditDriverRoute {
         return new ActionResponse(Page.ADMIN_ADD_DRIVER_CONTENT.getAbsolutePath());
     }
 
-    @Action(action = "newdriver")
-    public ActionResponse createDriver(HttpServletRequest req) throws ServletException, IOException {
-        UserDAO userDAO = null;
-        RoleDAO roleDAO = null;
+    @Action(action = "add", httpMethod = HttpMethod.POST)
+    public ActionResponse sendTokenToDriverEmail(HttpServletRequest req) throws ServletException, IOException {
+
+        String driverEmail = req.getParameter(PARAMETER_DRIVER_EMAIL);
         Driver driver = null;
-        try {
-            userDAO = new UserDAO();
-            User user = userDAO.get(Integer.parseInt(req.getParameter(PARAMETER_DRIVER_ID)));
+        Integer token = TokenGenerator.generate();
 
-            roleDAO = new RoleDAO();
-            Role role = roleDAO.findByRolename(Roles.DRIVER.getFormattedName());
-            ArrayList<Role> roles = new ArrayList<>();
-            roles.add(role);
-
-            driver = new Driver(user.getUsername(),
-                                user.getEmail(),
-                                user.getPasswordHash(),
-                                Category.valueOf(req.getParameter(PARAMETER_CATEGORY)),
-                                isOn(req.getParameter(PARAMETER_AVAILABLE)),
-                                isOn(req.getParameter(PARAMETER_IS_MALE)),
-                                isOn(req.getParameter(PARAMETER_SMOKES)));
-
-
-            driver.setRoles(roles);
-
-            userDAO.delete(user); //TODO:userDAO doesn't delete unnecessary user!
-
+        if(driverEmail != null) {
+            driver = new Driver(driverEmail, token);
             BeansLocator.getInstance().getDriverBean().addDriver(driver);
-
-        } catch (NoSuchEntity noSuchEntity) {
-            noSuchEntity.printStackTrace();
-        } finally {
-            if(userDAO != null && userDAO.isOpen()) {
-                userDAO.close();
-            }
-
-            if(roleDAO != null) {
-                roleDAO.close();
-            }
         }
 
-        req.setAttribute("page", 1);
-        req.setAttribute("role", Roles.DRIVER.getFormattedName());
+        ActionResponse actResp = new ActionResponse();
 
-        return new Users().getUsersView(req);
+        if(driver != null) {
+            MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
+            mailerBean.sendToken(driverEmail, token);
+            actResp.setSuccessMessage("Token was successfully sent");
+        } else {
+            actResp.setErrorMessage("Error while sending token");
+        }
+
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_SEND_TOKEN_CONTENT.getType());
+        actResp.setPageContent(Page.ADMIN_SEND_TOKEN_CONTENT.getAbsolutePath());
+
+        return actResp;
     }
 
     @Action(action = "editdriver")
