@@ -26,6 +26,12 @@ public class DriverDAO extends GenericDAO<Driver> {
         return query.getResultList();
     }
 
+    public Driver getDriverByToken(Integer token) {
+        Query query = em.createNamedQuery("Driver.searchDriverByToken");
+        query.setParameter("token", token);
+        return (Driver) query.getSingleResult();
+    }
+
     public void createDriverFromUser(Category category,
                                      boolean available,
                                      boolean isMale,
