@@ -22,6 +22,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.json.JSONException;
 
@@ -29,6 +30,7 @@ import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
+import javax.validation.ConstraintViolation;
 
 /**
  *
@@ -273,32 +275,15 @@ public class UserBean implements SessionBean {
         }
         return roleList;
     }
-//
-//    private boolean isGroupPersist(String groupName, GroupDAO dao) {
-//        try {
-//            if (dao.findByName(groupName) != null) {
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        } catch (NoResultException e) {
-//            return false;
-//        } catch (IllegalArgumentException e) {
-//            return false;
-//        }
-//    }
-//
-//    private boolean isGroupPersist(int groupId, GroupDAO dao) {
-//        try {
-//            if (dao.get(groupId) != null) {
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        } catch (IllegalArgumentException e) {
-//            return false;
-//        }
-//    }
+
+    public String validate(User user) {
+        ValidatorBeanLocal validator = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+        Set<ConstraintViolation<User>> constraintViolations = validator.cretateValidator().validate(user);
+        if(constraintViolations.isEmpty()) {
+            return null;
+        }
+        return validator.generateErrorMessageFromViolations(constraintViolations);
+    }
 
     public List<UserDTO> getCustomers(int pageNumber, int paginationStep) {
         return getUsersByRolename(Roles.CUSTOMER, pageNumber, paginationStep);
