@@ -29,6 +29,7 @@
 					<div class="col-sm-6">
 						<input type="number" class="form-control" id="driversAmountId"
 							name="driversAmount" placeholder="Insert cars amount here" />
+						<div id="alert_drivers_amount"></div>
 					</div>
 				</div>
 				<div class="form-group">
@@ -37,6 +38,7 @@
 					<div class="col-sm-6">
 						<input type="number" class="form-control" id="duration"
 							name="duration" placeholder="Insert duration in hours here" />
+						<div id="alert_duration"></div>
 					</div>
 				</div>
 				<%@ include file="../../partials/price.jspf"%>
@@ -110,10 +112,35 @@
 </script>
 
 <script>
+	var driversAmountInput = $('#driversAmountId');
+	driversAmountInput.keyup(function() {
+		var alertDriversAmount = $('#alert_drivers_amount');
+		if(driversAmountInput.val() < 5) {
+			alertDriversAmount.empty();
+			alertDriversAmount.append('<h5 style="color: red">Cars amount should be more than 5</h5>');
+		} else {
+			alertDriversAmount.empty();
+		}
+
+
+	});
+
+	var durationInput = $('#duration');
+	durationInput.keyup(function() {
+		var alertDuration = $('#alert_duration');
+
+		if(durationInput.val() < 8) {
+			alertDuration.empty();
+			alertDuration.append('<h5 style="color: red">Duration should be more than 8 hours</h5>');
+		} else {
+			alertDuration.empty();
+		}
+	});
+
 	$('#update_price').click(function() {
 		$.ajax({
 			type : "POST",
-			url : "http://localhost:8080/price",
+			url : "/price",
 			data : {
 				service: "celebration",
 				ordertime : $("#ordertime").val(),

@@ -84,11 +84,15 @@ public class CustomerUpdatePriceServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(">>> Hello in doPost!!!");
         if("celebration".equals(request.getParameter("service"))) {
             request.setCharacterEncoding("UTF-8");
-            Integer carsAmount = Integer.valueOf(request.getParameter("driversAmount"));
-            Integer duration = Integer.valueOf(request.getParameter("duration"));
+            Integer carsAmount;
+            Integer duration;
+            String carsAmountStr = request.getParameter("driversAmount");
+            String durationStr = request.getParameter("duration");
+
+            carsAmount = (carsAmountStr.equals("")) ? 0 : Integer.valueOf(carsAmountStr);
+            duration = (durationStr.equals("")) ? 0 : Integer.valueOf(durationStr);
 
             PriceBeanLocal priceBean = BeansLocator.getInstance().getBean(PriceBeanLocal.class);
             float celebrPrice = priceBean.calculateCelebrationServicePrice(carsAmount, duration, DateParser.parseDate(request));

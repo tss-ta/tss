@@ -1,7 +1,5 @@
 package com.netcracker.dao;
 
-import static org.junit.Assert.*;
-
 import javax.ejb.EJBException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -21,7 +19,6 @@ import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.dto.CarDTO;
 import com.netcracker.ejb.TariffBean;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
-import com.netcracker.ejb.UserBeanLocal;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.Tariff;
