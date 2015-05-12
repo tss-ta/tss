@@ -48,12 +48,17 @@
 			<div class="col-md-6">
 				<%@ include file="../../partials/map.jspf"%>
 			</div>
+                        <div class="col-md-6">
+				<img src="/resources/customer_assets/img/from.png" width="32" height="32" alt="from"/>from
+                                <img src="/resources/customer_assets/img/from_in_list.png" width="32" height="32" alt="from in list"/>from selected in list
+                                <img src="/resources/customer_assets/img/to.png" width="32" height="32" alt="to"/>to
+			</div>
 			<div class="col-lg-12">
 				<%@ include file="../../partials/options_vert.jspf"%>
 				<!-- /col-lg-12 -->
 				<div class="row">
 					<div class="col-lg-12 text-center">
-						<button class="btn btn-success btn-lg btn-block" type="submit">Order
+						<button class="btn btn-success btn-lg btn-block" onclick="beforeSave()" type="submit">Order
 							Now</button>
 					</div>
 				</div>
@@ -75,7 +80,7 @@
 </script>
 
 <script type="text/javascript"
-	src="/resources/customer_assets/js/map.js">
+	src="/resources/customer_assets/js/map_cce.js">
 	
 </script>
 
@@ -116,18 +121,18 @@
 	});
 </script>
 <script>
-	function removeSelectedFromList() {
-		$("#fromList :selected").remove();
-	}
-	function addToList() {
-		$("#fromList").append(
-				$('<option value=' + $('#fromAddr').val() + '>'
-						+ $('#fromAddr').val() + '</option>'));
-		id++;
-	}
-	function beforeSave() {
-		$('#fromList option').each(function() {
-			this.selected = true;
-		});
-	}
+	//function removeSelectedFromList() {
+	//	$("#fromList :selected").remove();
+	//}
+	//function addToList() {
+	//	$("#fromList").append(
+	//			$('<option value=' + $('#fromAddr').val() + '>'
+	//					+ $('#fromAddr').val() + '</option>'));
+	//	id++;
+	//}
+	//function beforeSave() {
+	//	$('#fromList option').each(function() {
+	//		this.selected = true;
+	//	});
+	//}
 </script>
