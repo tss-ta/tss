@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.util.GlobalVariables;
 
 /**
  *
@@ -28,8 +29,6 @@ public class GenericDAO<T> {
 
 	@PersistenceContext
 	protected EntityManager em;
-
-	private static String entityLookup = "java:jboss/EntityManagerFactory";
 
 	public GenericDAO() {
 		em = createEntityManager();
@@ -108,10 +107,9 @@ public class GenericDAO<T> {
 		try {
 			initCtx = new InitialContext();
 			EntityManagerFactory emf = (EntityManagerFactory) initCtx
-					.lookup(entityLookup);
+					.lookup(GlobalVariables.entityLookup);
 			em = emf.createEntityManager();
 		} catch (NamingException e) {
-			e.printStackTrace();
 		}
 		return em;
 	}
@@ -123,7 +121,7 @@ public class GenericDAO<T> {
 	}
 
 	public void updateEntityManager(String entityLookup) {
-		this.entityLookup = entityLookup;		
+		GlobalVariables.entityLookup = entityLookup;
 		em = createEntityManager();
 	}
 

@@ -40,6 +40,16 @@ public class TaxiOrderBean implements SessionBean {
 
 	public void addTaxiOrder(User user, Route route, Address addFrom,
 			Address addTo, TaxiOrder taxiOrder) {
+		if (user == null)
+			throw new IllegalArgumentException("User can't be null");
+		if (route == null)
+			throw new IllegalArgumentException("Route can't be null");
+		if (addFrom == null)
+			throw new IllegalArgumentException("addFrom can't be null");
+		if (addTo == null)
+			throw new IllegalArgumentException("addTo can't be null");
+		if (taxiOrder == null)
+			throw new IllegalArgumentException("TaxiOrder can't be null");
 		AddressDAO addressDAO = null;
 		RouteDAO routeDAO = null;
 		TaxiOrderDAO taxiOrderDAO = null;
@@ -72,6 +82,8 @@ public class TaxiOrderBean implements SessionBean {
 	}
 
 	public Contacts createContacts(User user) {
+		if (user == null)
+			throw new IllegalArgumentException("User can't be null");
 		ContactsDAO contactsDAO = null;
 		UserDAO userDAO = null;
 		Contacts contacts = null;
