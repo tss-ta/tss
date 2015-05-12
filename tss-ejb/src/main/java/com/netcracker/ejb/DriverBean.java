@@ -38,10 +38,18 @@ public class DriverBean implements SessionBean {
 		return driver;
 	}
 
+
+
 	public void addDriver(Driver driver) {
-		DriverDAO drDao = new DriverDAO();
-		drDao.persist(driver);
-		drDao.close();
+		DriverDAO drDao = null;
+		try {
+			drDao = new DriverDAO();
+			drDao.persist(driver);
+		} finally {
+			if(drDao != null) {
+				drDao.close();
+			}
+		}
 	}
 
 	public void editDriver(Driver driver) {

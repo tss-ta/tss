@@ -1,9 +1,12 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dao.ContactsDAO;
+import com.netcracker.dao.DriverDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Driver;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
 import java.rmi.RemoteException;
@@ -34,6 +37,50 @@ public class RegistrationBean implements SessionBean {
                 userDAO.close();
             }
             if (contactsDAO != null) {
+                contactsDAO.close();
+            }
+        }
+    }
+
+    public void registrateDriver(Driver driver) throws NoSuchEntity {
+        DriverDAO driverDAO = null;
+        RoleDAO roleDAO = null;
+        ContactsDAO contactsDAO = null;
+        try {
+            driverDAO = new DriverDAO();
+            Driver foundDriver = driverDAO.getDriverByToken(driver.getToken());
+
+            if(foundDriver != null) {
+
+                //update foundDriver fields using driver from registration form
+                foundDriver.setUsername(driver.getUsername());
+                foundDriver.setPasswordHash(driver.getPasswordHash());
+                foundDriver.setCategory(driver.getCategory());
+                foundDriver.setAvailable(driver.isAvailable());
+                foundDriver.setMale(driver.isMale());
+                foundDriver.setSmokes(driver.isSmokes());
+
+                roleDAO = new RoleDAO();
+                Role role = roleDAO.findByRolename("DRIVER");//by name or ID?
+                foundDriver.addRole(role);
+
+                driverDAO.update(foundDriver);
+
+                contactsDAO = new ContactsDAO();
+                contactsDAO.persist(new Contacts(foundDriver));
+            }/* else {
+                throw new NoSuchEntity("There is no driver with such a token!");
+            }*/
+        } finally {
+            if(driverDAO != null) {
+                driverDAO.close();
+            }
+
+            if(roleDAO != null) {
+                roleDAO.close();
+            }
+
+            if(contactsDAO != null) {
                 contactsDAO.close();
             }
         }
