@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.netcracker.util.BeansLocator;
 import org.json.JSONException;
 
 import com.netcracker.ejb.MapBeanLocal;
@@ -83,7 +84,20 @@ public class CustomerUpdatePriceServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        System.out.println(">>> Hello in doPost!!!");
+        if("celebration".equals(request.getParameter("service"))) {
+            request.setCharacterEncoding("UTF-8");
+            Integer carsAmount = Integer.valueOf(request.getParameter("driversAmount"));
+            Integer duration = Integer.valueOf(request.getParameter("duration"));
+
+            PriceBeanLocal priceBean = BeansLocator.getInstance().getBean(PriceBeanLocal.class);
+            float celebrPrice = priceBean.calculateCelebrationServicePrice(carsAmount, duration, DateParser.parseDate(request));
+
+            String text = String.valueOf(celebrPrice);
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(text);
+        }
     }
 
     private PriceBeanLocal getPriceBean(HttpServletRequest req) {

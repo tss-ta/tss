@@ -30,7 +30,11 @@ public enum Page {
     ADMIN_CHOOSE_USER_REPORTS_CONTENT("reports", "admin/content/choose-customer.jsp"),
     ERROR_500_CONTENT("", "admin/content/500.jsp"),
     ERROR_404_CONTENT("", "content/404.jsp"),
-    INCORRECT_ID_CONTENT("", "content/incorrect-id.jsp");
+    INCORRECT_ID_CONTENT("", "content/incorrect-id.jsp"),
+
+    CUSTOMER_CELEBRATION_SERVICE_CONTENT("celebrService", "customer/content/customer-celebrService.jsp");
+
+
 
     public static final String ROOT_PATH_PREFIX = "/WEB-INF/views/";
 

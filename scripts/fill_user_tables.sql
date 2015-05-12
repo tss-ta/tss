@@ -235,6 +235,14 @@ INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef)
 VALUES
   ('per_km', 5, 1);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('per_car', 100, 1.2);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('per_hour', 20, 1.1);
 
 
 ---------------------------------------
