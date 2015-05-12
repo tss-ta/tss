@@ -9,8 +9,10 @@ import com.netcracker.ejb.RegistrationBeanLocal;
 import com.netcracker.ejb.RegistrationBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBean;
 import com.netcracker.entity.Address;
+import com.netcracker.entity.Driver;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Category;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -47,11 +49,28 @@ public class RegistrationServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirPassword");
-       
+        Integer driverToken = Integer.valueOf(request.getParameter("token"));
+
+
         if (password.equals(confirmPassword)) {
-            RegistrationBeanLocal rb = getRegistrationBean(request);
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             password = encoder.encode(password);
+
+            RegistrationBeanLocal rb = getRegistrationBean(request);
+
+            if(driverToken != null) {
+                Driver driver = createDriverWithSpecifiedParameters(request);
+                driver.setUsername(userName);
+                driver.setEmail(email);
+                driver.setPasswordHash(password);
+                driver.setToken(driverToken);
+
+                rb.registrateDriver(driver);
+                response.sendRedirect("/driver");
+                return;
+            }
+
+
             User user = new User(userName, email, password);
             if (!rb.isUserExist(user)) {
                 rb.registrate(user);
@@ -63,6 +82,17 @@ public class RegistrationServlet extends HttpServlet {
             response.sendRedirect("/signup.jsp");
         }
 
+    }
+
+    private Driver createDriverWithSpecifiedParameters(HttpServletRequest req) {
+        return new Driver(Category.valueOf(req.getParameter("category")),
+                           isOn(req.getParameter("available")),
+                           isOn(req.getParameter("ismale")),
+                           isOn(req.getParameter("smokes")));
+    }
+
+    private boolean isOn (String checkBoxText){
+        return "on".equals(checkBoxText);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
