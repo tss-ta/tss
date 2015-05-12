@@ -28,30 +28,30 @@
     <div class="col-md-7">
         <form action="/admin">
             <div class="row row-fix">
-                <%--<div class="col-md-8">--%>
-                    <%--<label for="inputDriverName" class="sr-only">Driver name</label>--%>
-                    <%--<c:if test="${empty driver}">--%>
-                        <%--<input type="text" id="inputDriverName" name="drivername" class="form-control" placeholder="Driver name" maxlength="40" required autofocus>--%>
-                    <%--</c:if>--%>
-                    <%--<c:if test="${not empty driver}">--%>
-                        <%--<input type="text" id="inputDriverName" name="drivername" class="form-control" value="${driver.getUsername()}" autofocus>--%>
-                    <%--</c:if>--%>
+                <div class="col-md-8">
+                    <label for="inputDriverName" class="sr-only">Driver name</label>
+                    <c:if test="${empty driver}">
+                        <input type="text" id="inputDriverName" name="drivername" class="form-control" placeholder="Driver name" maxlength="40" required autofocus>
+                    </c:if>
+                    <c:if test="${not empty driver}">
+                        <input type="text" id="inputDriverName" name="drivername" class="form-control" value="${driver.getUsername()}" autofocus>
+                    </c:if>
 
-                    <%--<label for="inputEmail" class="sr-only">Email address</label>--%>
-                    <%--<c:if test="${empty driver}">--%>
-                        <%--<input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" maxlength="40" required>--%>
-                        <%--<label for="password" class="sr-only">Password</label>--%>
-                        <%--<input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>--%>
+                    <label for="inputEmail" class="sr-only">Email address</label>
+                    <c:if test="${empty driver}">
+                        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" maxlength="40" required>
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
 
-                        <%--<label for="confirPassword" class="sr-only">Confirm Password</label>--%>
-                        <%--<input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass();--%>
-                                <%--return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>--%>
-                        <%--<span id="confirmMessage" class="confirmMessage"></span>--%>
-                    <%--</c:if>--%>
-                    <%--<c:if test="${not empty driver}">--%>
-                        <%--<input type="email" id="inputEmail" name="email" class="form-control" value="${driver.getEmail()}" required>--%>
-                    <%--</c:if>--%>
-                <%--</div>--%>
+                        <label for="confirPassword" class="sr-only">Confirm Password</label>
+                        <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass();
+                                return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
+                        <span id="confirmMessage" class="confirmMessage"></span>
+                    </c:if>
+                    <c:if test="${not empty driver}">
+                        <input type="email" id="inputEmail" name="email" class="form-control" value="${driver.getEmail()}" required>
+                    </c:if>
+                </div>
 
                 <div class="col-md-4">
                     <%--Choose driver category--%>

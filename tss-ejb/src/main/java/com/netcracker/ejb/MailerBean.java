@@ -63,7 +63,7 @@ public class MailerBean implements SessionBean {
 		}
 	}
         
-        public void sendEmail(User user, String title, String msg){
+	public void sendEmail(User user, String title, String msg){
             sendEmail(user.getEmail(), title, msg);
         }
 
@@ -99,6 +99,16 @@ public class MailerBean implements SessionBean {
 				"Yours Taxi Order was Completed",
 				"Dear, " + user.getUsername() + ". Your Taxi Order (id = "
 						+ to.getId() + ") status was Completed.");
+	}
+
+	public void sendToken(String email, Integer token) {
+		sendEmail(
+				email,
+				"Driver Registration",
+				"Hello!" +
+						"  Please, register your Driver account using this: " + token + " token."
+
+		);
 	}
 
 	@Override

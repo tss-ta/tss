@@ -16,6 +16,7 @@ public enum Page {
     ADMIN_ADD_ROLES_CONTENT("customers", "admin/content/add-roles.jsp"),
     ADMIN_DRIVERS_CONTENT("drivers", "admin/content/drivers.jsp"),
     ADMIN_ADD_DRIVER_CONTENT("drivers", "admin/content/add-driver.jsp"),
+    ADMIN_SEND_TOKEN_CONTENT("drivers", "admin/content/send-token.jsp"),
     ADMIN_GROUPS_CONTENT("groups", "admin/content/groups.jsp"),
     ADMIN_ADD_GROUP_CONTENT("groups", "admin/content/add-group.jsp"),
     ADMIN_ADD_TO_GROUP_CONTENT("groups", "admin/content/add-users-to-group.jsp"),
