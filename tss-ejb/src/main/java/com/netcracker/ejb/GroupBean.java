@@ -34,7 +34,7 @@ public class GroupBean implements SessionBean {
             roleDAO = new RoleDAO();
 
             if (isGroupPersist(groupName, groupDAO)) {
-                throw new IllegalArgumentException("Group with name " + groupName + " is already exist");
+                throw new InvalidEntityException("Group with name " + groupName + " is already exist");
             }
             List<Role> roleList = toRoleList(roles, roleDAO);
             Group group  = new Group(groupName, roleList);
@@ -54,8 +54,6 @@ public class GroupBean implements SessionBean {
         ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
         String message = validatorBean.validate(group);
         if (message != null){
-            System.out.println("INVALID GROUP ===================="
-            + message);
             throw new InvalidEntityException(message);
         }
     }
@@ -73,9 +71,11 @@ public class GroupBean implements SessionBean {
             Group group = groupDAO.get(groupId);
             group.setName(groupName);
             group.setRoles(toRoleList(roles, roleDAO));
+            validate(group);
             groupDAO.update(group);
         } catch (NoSuchEntity e) {
-			e.printStackTrace();
+            throw new IllegalArgumentException("Can't edit this group! \n Group with id = " + groupId + " doesn't exist");
+//			throw new InvalidEntityException("Can't edit this group! Try again later! \n Group with id = " + groupId + " doesn't exist");
 		} finally {
             if (roleDAO != null) {
                 roleDAO.close();
@@ -104,9 +104,6 @@ public class GroupBean implements SessionBean {
         while (rolesIterator.hasNext()) {
             String rolename = rolesIterator.next().toString();
             Role role = roleDAO.findByRolename(rolename);
-//            if (role == null) {
-//                throw new IllegalArgumentException("Role with name " + rolename + " doesn't exist");
-//            }
             roleList.add(role);
         }
         return roleList;

@@ -3,6 +3,7 @@ package com.netcracker.tss.web.route.admin;
 import com.netcracker.ejb.GroupBeanLocal;
 import com.netcracker.ejb.UserBeanLocal;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.router.HttpMethod;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
@@ -125,9 +126,12 @@ public class Groups {
             GroupBeanLocal groupBeanLocal = BeansLocator.getInstance().getBean(GroupBeanLocal.class);
             groupBeanLocal.addGroup(groupName, getRoles(request));
             return redirectToGroups(request);
-        } catch (RuntimeException e) {
-            request.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Group with name '" + groupName + "' is already exist");
-            return new ActionResponse(Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
+        } catch (InvalidEntityException e) {
+            request.setAttribute("rolesEnum", Roles.getGroupRoles());
+            request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
+            ActionResponse response = new ActionResponse(Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
+            response.setErrorMessage(e.getMessage());
+            return response;
         }
     }
 
@@ -138,9 +142,12 @@ public class Groups {
             GroupBeanLocal groupBeanLocal = BeansLocator.getInstance().getBean(GroupBeanLocal.class);
             groupBeanLocal.editGroup(Integer.parseInt(request.getParameter("id")), groupName, getRoles(request));
             return redirectToGroups(request);
-        } catch (RuntimeException e) {
-            request.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Can't edit this group");
-            return new ActionResponse(Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
+        } catch (InvalidEntityException e) {
+            request.setAttribute("rolesEnum", Roles.getGroupRoles());
+            request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
+            ActionResponse response = new ActionResponse(Page.ADMIN_ADD_GROUP_CONTENT.getAbsolutePath());
+            response.setErrorMessage(e.getMessage());
+            return response;
         }
     }
 
@@ -150,7 +157,7 @@ public class Groups {
             GroupBeanLocal groupBeanLocal = BeansLocator.getInstance().getBean(GroupBeanLocal.class);
             groupBeanLocal.deleteGroup(Integer.parseInt(request.getParameter("id")));
             return redirectToGroups(request);
-        } catch (RuntimeException e) {
+        } catch (InvalidEntityException e) {
             request.setAttribute(RequestAttribute.ERROR_MESSAGE.getName(), "Sorry! Can't delete this group");
             return redirectToGroups(request);
         }

@@ -5,11 +5,11 @@ import com.netcracker.dao.TariffDAO;
 import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.helper.Pager;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.util.BeansLocator;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJBException;
@@ -34,9 +34,10 @@ public class TariffBean implements SessionBean {
             Tariff tariff = tariffDAO.get(tariffId);           
             tariff.setPlusCoef(additiveCoef);
             tariff.setMultipleCoef(multCoef);
+            validate(tariff);
             tariffDAO.update(tariff);
         } catch (NoSuchEntity e) {
-			e.printStackTrace();
+            throw new IllegalArgumentException("Can't edit this tariff! \n Tariff with id = " + tariffId + " doesn't exist");
 		} finally {
             if (tariffDAO != null) {
                 tariffDAO.close();
@@ -90,15 +91,13 @@ public class TariffBean implements SessionBean {
         return pager;
     }
 
-//    public List<Roles> toEnumRolesList(List<Role> roleList) {
-//        List<Roles> rolesList = new ArrayList<Roles>(); //enum
-//        Iterator<Role> roleIterator = roleList.iterator();
-//        while (roleIterator.hasNext()) {
-//            String roleName = roleIterator.next().getRolename();
-//            rolesList.add(Roles.valueOf(roleName));
-//        }
-//        return rolesList;
-//    }
+    private void validate (Tariff group){
+        ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+        String message = validatorBean.validate(group);
+        if (message != null){
+            throw new InvalidEntityException(message);
+        }
+    }
 
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {

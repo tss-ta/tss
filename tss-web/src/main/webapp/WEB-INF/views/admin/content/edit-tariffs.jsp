@@ -48,7 +48,7 @@
                                 <input class="form-control" type="number" name="add" value="${tariff.plusCoef}">
                             </td>
                             <td class="col-md-offset-1 col-md-2">
-                                <input class="form-control" type="number" name="mult" value="${tariff.multipleCoef}">
+                                <input class="form-control" type="number" name="mult" value="${tariff.multipleCoef}" min="0" max="100000">
                             </td>
                             <td class="col-md-offset-1 col-md-2">
                                 <input type="submit" class="btn btn-default" value="save">

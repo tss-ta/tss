@@ -44,7 +44,7 @@ public class Tariff implements Serializable {
     @Basic(optional = false)
     private Integer id;
 
-    @Size(max = 40)
+    @Size(min = 1, max = 40, message = "tariff name is too short or too long")
     @Column(name = "tariff_name")
     private String tariffName;
 
@@ -55,8 +55,8 @@ public class Tariff implements Serializable {
 
     @Column(name = "multiple_coef")
     @NotNull
-    @Min(value = 0)
-    @Max(value = 100000)
+    @Min(value = 0, message = "multiplier can't be less than zero")
+    @Max(value = 100000, message = "multiplier is too big")
     private Float multipleCoef;
 
     public Tariff() {
