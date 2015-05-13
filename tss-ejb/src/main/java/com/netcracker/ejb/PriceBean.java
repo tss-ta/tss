@@ -8,6 +8,8 @@ package com.netcracker.ejb;
 import com.netcracker.dao.TariffDAO;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.TaxiOrder;
+import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Status;
 
 import java.rmi.RemoteException;
 import java.util.Calendar;
@@ -24,9 +26,10 @@ import javax.ejb.SessionContext;
  */
 public class PriceBean implements SessionBean {
 
-    public double calculatePrice(float distance, Date orderTime, TaxiOrder taxiOrder) {
-    	if (distance<0)
-    		throw new IllegalArgumentException("distance must be > 0");
+    public double calculatePrice(float distance, Date orderTime, TaxiOrder taxiOrder, User user) {
+        if (distance < 0) {
+            throw new IllegalArgumentException("distance must be > 0");
+        }
         double orderPrice = 0;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(orderTime);
@@ -86,6 +89,12 @@ public class PriceBean implements SessionBean {
 
                 }
             }
+            if (user != null) {
+                int countRefuse = new TaxiOrderBean().countOrdersByStatus(user, Status.REFUSED);
+                if (countRefuse != 0) {
+                    orderPrice = orderPrice * (1 + 0.1 * countRefuse);
+                }
+            }
         } finally {
             if (tariffDAO != null) {
                 tariffDAO.close();
@@ -95,7 +104,7 @@ public class PriceBean implements SessionBean {
         return orderPrice;
     }
 
-    public float calculateCelebrationServicePrice(int carsAmount, int duration, Date orderTime) {
+    public float calculateCelebrationServicePrice(int carsAmount, int duration, Date orderTime, User user) {
         float orderPrice = 0;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(orderTime);
@@ -117,6 +126,12 @@ public class PriceBean implements SessionBean {
 
         tariff = tariffDAO.findByTariffName("per_hour");
         orderPrice = orderPrice + duration * ((1 + tariff.getPlusCoef()) * tariff.getMultipleCoef());
+        if (user != null) {
+            int countRefuse = new TaxiOrderBean().countOrdersByStatus(user, Status.REFUSED);
+            if (countRefuse != 0) {
+                orderPrice = (float) (orderPrice * (1 + 0.1 * countRefuse));
+            }
+        }
         return orderPrice;
     }
 
