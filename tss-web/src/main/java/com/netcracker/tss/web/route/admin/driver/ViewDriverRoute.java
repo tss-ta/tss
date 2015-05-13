@@ -30,7 +30,7 @@ public class ViewDriverRoute {
     private static final String SEARCH_DRIVERS_ACTION_PARAMETER_VALUE = "search";
 
     @Action(action = "all")
-    public ActionResponse getAllDriversPage(HttpServletRequest req) {
+    public ActionResponse getAllDriversPage(HttpServletRequest req, String message) {
         Integer page = parsePageNumberFromRequest(req);
 
         if(page >= MIN_PAGE_NUMBER) {
@@ -48,9 +48,17 @@ public class ViewDriverRoute {
                     pageCalculatorBeanLocal.createPager(Driver.class, page, DEFAULT_PAGE_SIZE));
             req.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
         }
+        ActionResponse actResp = new ActionResponse();
+
+        if(message != null) {
+            actResp.setErrorMessage(message);
+        }
+
 
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
-        return new ActionResponse(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
+        actResp.setPageContent(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
+
+        return actResp;
     }
 
     @Action(action = "search", httpMethod = HttpMethod.POST)

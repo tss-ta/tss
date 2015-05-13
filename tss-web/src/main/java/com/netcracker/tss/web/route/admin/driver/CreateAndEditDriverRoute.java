@@ -3,6 +3,7 @@ package com.netcracker.tss.web.route.admin.driver;
 import com.netcracker.ejb.DriverLocal;
 import com.netcracker.ejb.MailerBeanLocal;
 import com.netcracker.ejb.PageCalculatorBeanLocal;
+import com.netcracker.ejb.ValidatorBeanLocal;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.Category;
 import com.netcracker.router.HttpMethod;
@@ -52,12 +53,18 @@ public class CreateAndEditDriverRoute {
         Driver driver = null;
         Integer token = TokenGenerator.generate();
 
+        ActionResponse actResp = new ActionResponse();
+
         if(driverEmail != null) {
             driver = new Driver(driverEmail, token);
-            BeansLocator.getInstance().getDriverBean().addDriver(driver);
-        }
+            String errorMessage = validateDriver(driver);
 
-        ActionResponse actResp = new ActionResponse();
+            if(errorMessage == null) {
+                BeansLocator.getInstance().getDriverBean().addDriver(driver);
+            } else {
+                actResp.setErrorMessage(errorMessage);
+            }
+        }
 
         if(driver != null) {
             MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
@@ -79,10 +86,19 @@ public class CreateAndEditDriverRoute {
         Driver driver = driverLocal.getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
 
         if(driver != null) {
-            driverLocal.editDriver(updateDriverFromRequest(driver, req));
+            driver = updateDriverFromRequest(driver, req);
+            ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+            String errorMessage = validatorBean.validate(driver);
+
+            ViewDriverRoute viewDriverRoute = new ViewDriverRoute();
+            if(errorMessage != null) {
+                return viewDriverRoute.getAllDriversPage(req, errorMessage);
+            } else {
+                driverLocal.editDriver(driver);
+            }
         }
 
-        return new ViewDriverRoute().getAllDriversPage(req);
+        return new ViewDriverRoute().getAllDriversPage(req, null);
     }
 
     private Driver updateDriverFromRequest(Driver driver, HttpServletRequest req) throws ServletException, IOException {
@@ -97,5 +113,10 @@ public class CreateAndEditDriverRoute {
 
     private boolean isOn (String checkBoxText){
         return "on".equals(checkBoxText);
+    }
+
+    private String validateDriver(Driver driver) {
+        ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+        return validatorBean.validate(driver);
     }
 }
