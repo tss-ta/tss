@@ -353,6 +353,82 @@ VALUES
   ('per_hour', 20, 1.1);
 
 
+INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 19, 1, null, null);
+INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 12, 2, null, null);
+INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 13, 3, null, null);
+INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 14, 4, null, null);
+INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 15, 6, null, null);
+INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 16, 7, null, null);
+INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 17, 8, null, null);
+INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 18, 9, null, null);
+
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (715, 784.62, 2, '2015-01-16 09:38:00', '2015-03-27 10:25:00', 2, 2, 'Read this.', false, true, 1, 4, false, true, false, 1, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (716, 3592.5999999999999, 3, '2015-03-03 01:55:00', '2015-03-20 07:43:00', 2, 3, NULL, false, false, 2, 4, false, false, false, 2, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (717, 931.73000000000002, 1, '2015-04-02 04:30:00', '2015-01-20 07:32:00', NULL, 5, 'This entry is not OK.', false, false, 2, 3, true, true, false, 3, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (718, 4980.0699999999997, 2, '2015-04-10 04:36:00', '2015-04-02 08:00:00', 2, 4, 'Note the new website.', true, false, 3, 1, true, false, false, 4, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (719, 42182.419999999998, 2, '2015-02-06 06:48:00', '2015-02-04 07:34:00', 2, 5, 'Expert mode turned off.', true, true, 3, 2, true, true, false, 5, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (720, 57.07, 3, '2015-04-25 06:32:00', '2015-05-02 01:05:00', 1, 1, 'Not sure if this is correct.', true, false, 4, 3, false, true, false, 6, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (721, 8.25, 1, '2015-01-09 04:05:00', '2015-04-25 07:24:00', 2, 4, NULL, true, true, 5, 1, true, true, false, 7, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (722, 79993.460000000006, 1, '2015-01-07 02:38:00', '2015-01-04 00:45:00', 3, 4, NULL, false, false, 6, 1, false, true, true, 8, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (723, 6.3899999999999997, 3, '2015-03-28 09:40:00', '2015-03-18 08:48:00', 2, 1, NULL, false, true, 3, 4, false, false, false, 9, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (724, 2862, 2, '2015-01-25 04:03:00', '2015-01-26 09:32:00', 2, 4, NULL, true, true, 3, 2, true, true, false, 10, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (725, 0.12, 1, '2015-01-03 01:19:00', '2015-01-11 01:27:00', 2, 3, 'No longer in use.', true, false, 1, 4, false, false, true, 1, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (726, 251.27000000000001, 1, '2015-03-14 10:13:00', '2015-04-12 03:21:00', 3, 3, 'Find more on the website.', false, false, 7, 4, false, true, true, 2, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (727, 36.439999999999998, 3, '2015-04-23 03:30:00', '2015-02-21 07:58:00', 3, 3, 'Expert mode turned on.', false, true, 8, 2, true, true, false, 3, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (728, 8988.8899999999994, 2, '2015-04-15 00:05:00', '2015-01-04 06:19:00', NULL, 5, 'Find more on the website.', false, true, 4, 4, true, false, true, 4, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (729, 869.37, 3, '2015-01-13 07:44:00', '2015-03-29 04:57:00', 2, 4, NULL, true, true, 4, 1, true, true, true, 5, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (730, 6148.3599999999997, 3, '2015-01-03 00:23:00', '2015-04-17 02:38:00', 2, 1, 'We must investigate this.', false, false, 4, 2, false, false, false, 6, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (731, 0.029999999999999999, 1, '2015-01-19 01:31:00', '2015-03-26 02:07:00', 3, 2, NULL, true, true, 8, 4, true, false, true, 7, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (732, 91705.679999999993, 3, '2015-01-15 07:11:00', '2015-03-20 10:19:00', 3, 1, NULL, true, false, 8, 4, false, true, false, 8, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (733, 6.2999999999999998, 3, '2015-01-11 09:50:00', '2015-04-15 05:06:00', 1, 1, 'Please note the new website.', false, false, 8, 2, true, true, false, 9, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (734, 9045.9799999999996, 1, '2015-03-18 05:30:00', '2015-03-08 06:41:00', 2, 1, 'Note', true, true, 5, 4, true, true, true, 9, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (735, 91.640000000000001, 3, '2015-01-28 07:53:00', '2015-04-18 01:42:00', NULL, 1, NULL, false, true, 5, 1, true, true, true, 8, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (736, 320.82999999999998, 1, '2015-04-14 08:24:00', '2015-02-03 07:00:00', 1, 2, 'Find more on the website.', true, true, 5, 4, true, false, true, 2, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (737, 7745.79, 2, '2015-02-12 03:25:00', '2015-03-02 02:31:00', 2, 1, 'Single mode turned off.', true, false, 6, 2, false, false, true, 3, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (738, 8.1899999999999995, 1, '2015-03-23 09:02:00', '2015-02-22 07:43:00', 3, 1, 'This entry is not OK.', true, true, 7, 1, false, false, true, 4, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (739, 3.6899999999999999, 2, '2015-03-22 09:17:00', '2015-03-06 01:24:00', 2, 4, NULL, true, false, 7, 1, false, false, false, 6, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (740, 818.23000000000002, 1, '2015-01-18 08:33:00', '2015-02-14 07:36:00', 2, 4, 'Test this.', false, true, 3, 4, true, false, false, 1, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (741, 3023.9899999999998, 3, '2015-04-06 09:30:00', '2015-03-08 06:09:00', 3, 1, 'Called 26 times.', true, false, 3, 3, false, false, false, 2, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (742, 90995.889999999999, 2, '2015-03-18 09:46:00', '2015-01-07 07:22:00', 2, 2, NULL, true, true, 3, 2, false, false, true, 6, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (743, 316.35000000000002, 1, '2015-02-25 02:09:00', '2015-02-03 03:28:00', 3, 2, 'Unable to contact.', false, true, 9, 1, false, false, false, 6, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (744, 3.3799999999999999, 2, '2015-04-24 01:06:00', '2015-04-12 06:22:00', 3, 3, 'Single mode turned on.', true, true, 8, 1, false, true, false, 2, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (745, 2069.75, 1, '2015-02-09 08:15:00', '2015-01-18 04:03:00', 2, 3, NULL, true, false, 1, 2, false, true, true, 2, NULL, NULL);
+INSERT INTO taxi_order (id, price, payment, booking_time, order_time, music_style, status, comment, male, smoke, driver_car_id, car_category, animal_transport, wifi, conditioner, contacts_id, route_id, service_option_id)
+VALUES (746, 89.730000000000004, 2, '2015-01-19 04:11:00', '2015-04-06 02:11:00', 2, 4, 'Just a note.', false, false, 8, 1, true, false, true, 3, NULL, NULL);
+
+
+
 ---------------------------------------
 -- REPORT SYSTEM ----------------------
 ---------------------------------------
