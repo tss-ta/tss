@@ -212,7 +212,7 @@ public class TaxiOrderBean implements SessionBean {
                 taxiOrder.setStatus(Status.COMPLETED);
                 orderDAO.update(taxiOrder);
             }
-        } catch (NoSuchEntity e) {
+        } catch (NoSuchEntityException e) {
             e.printStackTrace();
         } finally {
 
