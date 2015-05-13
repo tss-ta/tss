@@ -4,6 +4,7 @@ import com.netcracker.ejb.DriverLocal;
 import com.netcracker.ejb.PageCalculatorBeanLocal;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.Pager;
+import com.netcracker.router.HttpMethod;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
@@ -52,29 +53,32 @@ public class ViewDriverRoute {
         return new ActionResponse(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
     }
 
-    @Action(action = "search")
+    @Action(action = "search", httpMethod = HttpMethod.POST)
     public ActionResponse getSearchedDriversPage(HttpServletRequest request) {
         Integer page = parsePageNumberFromRequest(request);
+
         String searchWord = request.getParameter(RequestParameter.SEARCH_WORD.getValue());
         DriverLocal driverBean;
         PageCalculatorBeanLocal pageCalculatorBean;
+
         if(page >= MIN_PAGE_NUMBER && searchWordExistAndNotEmpty(searchWord)) {
-            searchWord = searchWord.toUpperCase();
+
             driverBean = BeansLocator.getInstance().getDriverBean();
             pageCalculatorBean = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+
             List<Driver> drivers = driverBean
                     .searchDriversByName(searchWord, page, DEFAULT_PAGE_SIZE);
-            Pager pager = pageCalculatorBean.createSearchCarPager(page, DEFAULT_PAGE_SIZE, searchWord);
+            request.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
+
+            Pager pager = pageCalculatorBean.createSearchDriverPager(page, DEFAULT_PAGE_SIZE, searchWord);
             request.setAttribute(RequestAttribute.PAGER.getName(), pager);
+
             PagerLink pagerLink = new PagerLink();
             pagerLink.addParameter(MENU_PARAMETER_NAME, MENU_PARAMETER_VALUE);
             pagerLink.addParameter(ACTION_PARAMETER_NAME, SEARCH_DRIVERS_ACTION_PARAMETER_VALUE);
             pagerLink.addParameter(RequestParameter.SEARCH_WORD.getValue(), searchWord);
-
-            request.setAttribute(RequestAttribute.PAGER.getName(),
-                    pageCalculatorBean.createCarPager(page, DEFAULT_PAGE_SIZE));
             request.setAttribute(RequestAttribute.PAGER_LINK.getName(), pagerLink);
-            request.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
+
         }
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
         return new ActionResponse(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
