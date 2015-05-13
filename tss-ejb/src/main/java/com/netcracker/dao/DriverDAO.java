@@ -26,6 +26,12 @@ public class DriverDAO extends GenericDAO<Driver> {
         return query.getResultList();
     }
 
+    public Long countSearchedByNameResults(String name) {
+        Query query = em.createQuery("SELECT COUNT(d.id) FROM Driver d WHERE d.username like :username");
+        query.setParameter("username", "%" + name + "%");
+        return (Long) query.getSingleResult();
+    }
+
     public Driver getDriverByToken(Integer token) {
         Query query = em.createNamedQuery("Driver.searchDriverByToken");
         query.setParameter("token", token);
