@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.1.Final</version>
+			<version>4.3.5.Final</version>
 		</dependency>
 
 		<!-- Java Validation API -->
@@ -84,12 +84,12 @@
 			<version>1.4.7</version>
 		</dependency>
 
-        <!-- Excel lib -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.11</version>
-        </dependency>
+		<!-- Excel lib -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.11</version>
+		</dependency>
 
         <!-- Jackson -->
         <dependency>
@@ -98,7 +98,7 @@
             <version>1.9.2</version>
         </dependency>
 
-        <!-- Test dependencies -->
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -115,7 +115,58 @@
 			<version>1.7.2</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<version>1.1.8.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian</groupId>
+			<artifactId>arquillian-bom</artifactId>
+			<version>1.1.4.Final</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+
+
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>arquillian-jbossas-managed</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.bom</groupId>
+					<artifactId>jboss-javaee-6.0-with-all</artifactId>
+					<version>1.0.7.CR10</version>
+					<type>pom</type>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.arquillian.core</groupId>
+					<artifactId>arquillian-core-api</artifactId>
+					<version>1.1.4.Final</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.as</groupId>
+					<artifactId>jboss-as-arquillian-container-managed</artifactId>
+					<version>7.2.0.Final</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.arquillian.protocol</groupId>
+					<artifactId>arquillian-protocol-servlet</artifactId>
+					<version>1.1.8.Final</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.msc</groupId>
+					<artifactId>jboss-msc</artifactId>
+					<version>1.2.4.Final</version>
+				</dependency>
+
+
+			</dependencies>
+		</profile>
+	</profiles>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>

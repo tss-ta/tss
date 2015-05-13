@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -20,6 +22,8 @@ public class Role implements Serializable {
     private Integer id;
 
     @Column(name = "rolename")
+    @NotNull
+    @Size(min = 1, max = 40)
     private String rolename;
 
     public Role() {

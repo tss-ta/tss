@@ -45,10 +45,10 @@
                         <div class="form-group">
                             <td class="col-md-3">${tariff.tariffName}</td>
                             <td class="col-md-offset-1 col-md-2">
-                                <input class="form-control" type="number" name="add" value="${tariff.plusCoef}">
+                                <input class="form-control" type="number" name="add" value="${tariff.plusCoef}" step ="0.001">
                             </td>
                             <td class="col-md-offset-1 col-md-2">
-                                <input class="form-control" type="number" name="mult" value="${tariff.multipleCoef}">
+                                <input class="form-control" type="number" name="mult" value="${tariff.multipleCoef}"  min="0" max="100000" step ="0.000001">
                             </td>
                             <td class="col-md-offset-1 col-md-2">
                                 <input type="submit" class="btn btn-default" value="save">

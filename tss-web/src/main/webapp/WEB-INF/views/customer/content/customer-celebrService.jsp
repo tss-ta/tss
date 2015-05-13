@@ -25,18 +25,34 @@
 				<%@ include file="../../partials/from_pers_addr.jspf"%>
 				<div class="form-group">
 					<label class="col-sm-6 col-sm-6 control-label">How many
-						drivers?</label>
+						cars?</label>
 					<div class="col-sm-6">
-						<input type="text" class="form-control" id="driversAmountId"
-							name="driversAmount" placeholder="Insert amount here" />
+						<input type="number" class="form-control" id="driversAmountId"
+							name="driversAmount" placeholder="Insert cars amount here" />
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+						<div id="alert_drivers_amount"></div>
+>>>>>>> develop
+=======
+						<div id="alert_drivers_amount"></div>
+>>>>>>> develop
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-6 col-sm-6 control-label">How long
 						would you celebrate?</label>
 					<div class="col-sm-6">
-						<input type="text" class="form-control" id="duration"
-							name="duration" placeholder="Insert duration here" />
+						<input type="number" class="form-control" id="duration"
+							name="duration" placeholder="Insert duration in hours here" />
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+						<div id="alert_duration"></div>
+>>>>>>> develop
+=======
+						<div id="alert_duration"></div>
+>>>>>>> develop
 					</div>
 				</div>
 				<%@ include file="../../partials/price.jspf"%>
@@ -110,20 +126,46 @@
 </script>
 
 <script>
+	var driversAmountInput = $('#driversAmountId');
+	driversAmountInput.keyup(function() {
+		var alertDriversAmount = $('#alert_drivers_amount');
+		if(driversAmountInput.val() < 5) {
+			alertDriversAmount.empty();
+			alertDriversAmount.append('<h5 style="color: red">Cars amount should be more than 5</h5>');
+		} else {
+			alertDriversAmount.empty();
+		}
+
+
+	});
+
+	var durationInput = $('#duration');
+	durationInput.keyup(function() {
+		var alertDuration = $('#alert_duration');
+
+		if(durationInput.val() < 8) {
+			alertDuration.empty();
+			alertDuration.append('<h5 style="color: red">Duration should be more than 8 hours</h5>');
+		} else {
+			alertDuration.empty();
+		}
+	});
+
 	$('#update_price').click(function() {
 		$.ajax({
-		//      type : "GET",
-		//      url : "http://localhost:8080/price",
-		//      data : {
-		//        fromAddr : $("#fromAddr").val(),
-		//        toAddr : $("#toAddr").val(),
-		//        ordertime : $("#ordertime").val()
-		//      },
-		//      dataType : "text"
-		//    }).done(function(res) {
-		//      $('#price_field').val(res);
-		//    }).fail(function(jqXHR, textStatus, errorThrown) {
-		//      alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+			type : "POST",
+			url : "/price",
+			data : {
+				service: "celebration",
+				ordertime : $("#ordertime").val(),
+				driversAmount: $('#driversAmountId').val(),
+				duration: $('#duration').val()
+			},
+			dataType : "text"
+		}).done(function(res) {
+			$('#price_field').val(res);
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert("AJAX call failed: " + textStatus + ", " + errorThrown);
 		});
 	});
 </script>

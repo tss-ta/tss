@@ -3,6 +3,7 @@ package com.netcracker.ejb;
 
 
 import com.netcracker.dto.GroupDTO;
+import com.netcracker.entity.Group;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.Roles;
 
@@ -28,4 +29,7 @@ public interface GroupBeanLocal extends EJBLocalObject {
 
     Pager getPager(Integer pageNumber, Integer pageSize, String namePart);
 
+    boolean isGroupContainsRole(Group group, Roles role);
+
+    Group getGroup(int id);
 }

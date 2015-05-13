@@ -92,7 +92,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             }
             if ("".equals(req.getParameter("price"))) {
                 price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(req),taxiOrder);
+                        DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
             } else {
                 price = Double.parseDouble(req.getParameter("price"));
             }

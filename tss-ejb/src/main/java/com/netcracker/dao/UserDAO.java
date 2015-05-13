@@ -1,12 +1,14 @@
 package com.netcracker.dao;
 
-import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
-import javax.persistence.NoResultException;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
 import java.util.List;
+
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -16,9 +18,9 @@ import javax.persistence.TypedQuery;
 */
 public class UserDAO extends GenericDAO<User> {
 
-    public UserDAO() {
-        super();
-    }
+//    public UserDAO() {
+//        super();
+//    }
 
     /**
      *
@@ -67,13 +69,13 @@ public class UserDAO extends GenericDAO<User> {
         return query.getResultList();
     }
 
-    public Long countByRolename(String rolename) {
+    public int countByRolename(String rolename) {
         Query query = em.createQuery("SELECT COUNT(u) FROM User u JOIN u.roles ur JOIN u.groups g JOIN g.roles gr WHERE (ur.rolename = :userRolename) OR (gr.rolename = :groupRolename)");
 //        Query query = em.createQuery("SELECT COUNT(u.id) FROM User u");
         query.setParameter("userRolename", rolename);
         query.setParameter("groupRolename", rolename);
 //        query.setParameter("rolename", rolename);
-        return ((Long) query.getSingleResult());
+        return ((Long) query.getSingleResult()).intValue();
 
     }
 
@@ -95,8 +97,17 @@ public class UserDAO extends GenericDAO<User> {
         query.setParameter("email", "%" + email.toLowerCase() + "%");
         return ((Long) query.getSingleResult()).intValue();
     }
+//
+//
+//    public void deleteUser(User user) {
+//        Query query = em.createQuery("delete User where id = :userId");
+//        query.setParameter("userId", user.getId());
+//        query.executeUpdate();
+//    }
 
     public boolean isOpen() {
         return em.isOpen();
     }
+
+	
 }

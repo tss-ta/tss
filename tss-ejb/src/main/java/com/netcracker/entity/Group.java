@@ -2,6 +2,8 @@ package com.netcracker.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +26,8 @@ public class Group implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Size(min = 1, max = 100, message = "Group name is too short or long")
+    @NotNull
     @Column(name = "name", columnDefinition = "bpchar")
     private String name;
 

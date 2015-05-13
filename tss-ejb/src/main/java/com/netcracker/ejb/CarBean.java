@@ -1,6 +1,7 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dao.CarDao;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.dto.CarDTO;
 import com.netcracker.entity.Car;
 
@@ -8,6 +9,7 @@ import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
+
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
@@ -106,7 +108,7 @@ public class CarBean implements SessionBean {
             try {
                 car = carDao.get(id);
             }
-            catch (NoResultException e) {
+            catch (NoResultException | NoSuchEntityException e) {
                 car = null;
             }
         } finally {

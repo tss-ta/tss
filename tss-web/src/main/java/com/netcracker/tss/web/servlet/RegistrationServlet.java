@@ -5,13 +5,13 @@
  */
 package com.netcracker.tss.web.servlet;
 
-import com.netcracker.ejb.RegistrationBeanLocal;
-import com.netcracker.ejb.RegistrationBeanLocalHome;
-import com.netcracker.ejb.TaxiOrderBean;
-import com.netcracker.entity.Address;
-import com.netcracker.entity.TaxiOrder;
+import com.netcracker.ejb.*;
+import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Category;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,11 +23,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.netcracker.util.BeansLocator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- *
  * @author Виктор
+ * @author maks
  */
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/RegistrationServlet"})
 public class RegistrationServlet extends HttpServlet {
@@ -36,43 +38,89 @@ public class RegistrationServlet extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        try {
+
+
         String userName = request.getParameter("userName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirPassword");
-       
+        Integer driverToken = null;
+        if (!"".equals(request.getParameter("token")) && (request.getParameter("token") != null)) {
+            driverToken = Integer.valueOf(request.getParameter("token"));
+        }
+        
+
         if (password.equals(confirmPassword)) {
-            RegistrationBeanLocal rb = getRegistrationBean(request);
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             password = encoder.encode(password);
+
+            RegistrationBeanLocal rb = BeansLocator.getInstance().getBean(RegistrationBeanLocal.class);
+
+            if (driverToken != null) {
+                Driver driver = createDriverWithSpecifiedParameters(request);
+                driver.setUsername(userName);
+                driver.setPasswordHash(password);
+                driver.setToken(driverToken);
+
+                ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+                String errorMessage = validatorBean.validate(driver);
+
+                if(errorMessage == null) {
+                    rb.registrateDriver(driver);
+                    response.sendRedirect("/driver");
+                    return;
+                } else {
+                    request.setAttribute("errorMessage", "Can't register driver account! Call to company hot line to solve problem!");
+                    request.getRequestDispatcher("/signup.jsp").forward(request,response);
+                }
+            }
+
             User user = new User(userName, email, password);
             if (!rb.isUserExist(user)) {
                 rb.registrate(user);
                 response.sendRedirect("/customer");
-            } else {
-                response.sendRedirect("/signup.jsp");
+
             }
         } else {
-            response.sendRedirect("/signup.jsp");
+                response.sendRedirect("/signup.jsp");
+            }
+        } catch (InvalidEntityException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("/signup.jsp").forward(request,response);
         }
 
     }
 
+    private Driver createDriverWithSpecifiedParameters(HttpServletRequest req) {
+        return new Driver(Category.valueOf(req.getParameter("category")),
+                isOn(req.getParameter("available")),
+                isOn(req.getParameter("ismale")),
+                isOn(req.getParameter("smokes")));
+    }
+
+
+    private boolean isOn(String checkBoxText) {
+        return "on".equals(checkBoxText);
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -83,10 +131,10 @@ public class RegistrationServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -104,22 +152,5 @@ public class RegistrationServlet extends HttpServlet {
         return "registration";
     }// </editor-fold>
 
-    private RegistrationBeanLocal getRegistrationBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            RegistrationBeanLocalHome regBeanLocalHome = (RegistrationBeanLocalHome) context.lookup("java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
-            return regBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
-            throw new RuntimeException("Internal server error!" + 
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");// maybe have to create custom exception?
-        } catch (ClassCastException ex){
-                        Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
-            throw new RuntimeException("Internal server error!" + 
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
-        }
-    }
+
 }

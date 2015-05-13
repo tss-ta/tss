@@ -80,6 +80,7 @@ CREATE TABLE driver
   is_male boolean,
   smokes boolean,
   car_id integer,
+  token integer,
   CONSTRAINT pk_driv_id PRIMARY KEY (driver_id),
   CONSTRAINT fk_user FOREIGN KEY (driver_id)
   REFERENCES tss_user (id) MATCH SIMPLE
@@ -245,7 +246,6 @@ CREATE TABLE taxi_order
       REFERENCES route (route_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-
 
 CREATE TABLE service
 (

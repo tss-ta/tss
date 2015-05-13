@@ -3,16 +3,19 @@ package com.netcracker.ejb;
 import com.netcracker.dto.GroupDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.util.BeansLocator;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -23,6 +26,22 @@ import javax.persistence.NoResultException;
  */
 public class GroupBean implements SessionBean {
 
+    public Group getGroup(int id) {
+        GroupDAO dao = null;
+
+        try {
+            dao = new GroupDAO();
+            Group group = dao.get(id);
+            return group;
+        } catch (NoSuchEntityException noSuchEntity) {
+            throw new IllegalArgumentException("Can't find group with id = " + id); //or another Exception??
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
     public void addGroup(String groupName, List<Roles> roles) {
         GroupDAO groupDAO = null;
         RoleDAO roleDAO = null;
@@ -31,9 +50,11 @@ public class GroupBean implements SessionBean {
             roleDAO = new RoleDAO();
 
             if (isGroupPersist(groupName, groupDAO)) {
-                throw new IllegalArgumentException("Group with name " + groupName + " is already exist");
+                throw new InvalidEntityException("Group with name " + groupName + " is already exist");
             }
             List<Role> roleList = toRoleList(roles, roleDAO);
+            Group group  = new Group(groupName, roleList);
+            validate(group);
             groupDAO.persist(new Group(groupName, roleList));
         } finally {
             if (roleDAO != null) {
@@ -42,6 +63,14 @@ public class GroupBean implements SessionBean {
             if (groupDAO != null) {
                 groupDAO.close();
             }
+        }
+    }
+
+    private void validate (Group group){
+        ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+        String message = validatorBean.validate(group);
+        if (message != null){
+            throw new InvalidEntityException(message);
         }
     }
 
@@ -56,15 +85,14 @@ public class GroupBean implements SessionBean {
             groupDAO = new GroupDAO();
             roleDAO = new RoleDAO();
             Group group = groupDAO.get(groupId);
-
-//            if (group == null) { //isPersist
-//                throw new IllegalArgumentException("Group with id " + groupId
-//                        + " doesn't exist");
-//            }
             group.setName(groupName);
             group.setRoles(toRoleList(roles, roleDAO));
+            validate(group);
             groupDAO.update(group);
-        } finally {
+        } catch (NoSuchEntityException e) {
+            throw new IllegalArgumentException("Can't edit this group! \n Group with id = " + groupId + " doesn't exist");
+//			throw new InvalidEntityException("Can't edit this group! Try again later! \n Group with id = " + groupId + " doesn't exist");
+		} finally {
             if (roleDAO != null) {
                 roleDAO.close();
             }
@@ -92,9 +120,6 @@ public class GroupBean implements SessionBean {
         while (rolesIterator.hasNext()) {
             String rolename = rolesIterator.next().toString();
             Role role = roleDAO.findByRolename(rolename);
-//            if (role == null) {
-//                throw new IllegalArgumentException("Role with name " + rolename + " doesn't exist");
-//            }
             roleList.add(role);
         }
         return roleList;
@@ -114,15 +139,16 @@ public class GroupBean implements SessionBean {
         }
     }
 
-    private boolean isGroupPersist(int groupId, GroupDAO dao) {
+    public boolean isGroupContainsRole(Group group, Roles role) {
+        RoleDAO roleDAO = null;
         try {
-            if (dao.get(groupId) != null) {
-                return true;
-            } else {
-                return false;
+            roleDAO = new RoleDAO();
+            Role roleEntity = roleDAO.findByRolename(role.toString());
+            return group.getRoles().contains(roleEntity);
+        } finally {
+            if (roleDAO != null) {
+                roleDAO.close();
             }
-        } catch (IllegalArgumentException e) {
-            return false;
         }
     }
 

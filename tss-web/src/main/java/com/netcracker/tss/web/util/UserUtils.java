@@ -7,14 +7,18 @@ import com.netcracker.dao.UserDAO;
 import com.netcracker.entity.User;
 
 public class UserUtils {
-	
-	public static User findCurrentUser() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder
-				.getContext().getAuthentication().getPrincipal();
-		UserDAO userDao = new UserDAO();
-		User user = userDao.getByEmail(userDetails.getUsername());
-		userDao.close();
-		return user;
-	}
 
+    public static User findCurrentUser() {
+        UserDetails userDetails;
+        try {
+            userDetails = (UserDetails) SecurityContextHolder
+                    .getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            return null;
+        }
+        UserDAO userDao = new UserDAO();
+        User user = userDao.getByEmail(userDetails.getUsername());
+        userDao.close();
+        return user;
+    }
 }

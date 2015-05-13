@@ -5,6 +5,7 @@
 package com.netcracker.ejb;
 
 import com.netcracker.entity.Address;
+import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import java.util.List;
@@ -16,6 +17,6 @@ import javax.ejb.EJBLocalObject;
  */
 public interface ConveyCorpServiceBeanLocal  extends EJBLocalObject  {
     
-     public Integer addCorpService(User user, List<Address> addFrom,
+     public Integer addCorpService(User user,List<Route> routes, List<Address> addFrom,
 			Address addTo, TaxiOrder taxiOrder);
 }
