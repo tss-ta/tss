@@ -5,8 +5,7 @@
  */
 package com.netcracker.tss.web.servlet;
 
-import com.netcracker.ejb.RegistrationBeanLocal;
-import com.netcracker.ejb.RegistrationBeanLocalHome;
+import com.netcracker.ejb.*;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Category;
@@ -46,46 +45,57 @@ public class RegistrationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         try {
-            String userName = request.getParameter("userName");
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String confirmPassword = request.getParameter("confirPassword");
-            Integer driverToken = null;
-            if (!"".equals(request.getParameter("token")) && (request.getParameter("token") != null)) {
-                driverToken = Integer.valueOf(request.getParameter("token"));
-            }
 
 
-            if (password.equals(confirmPassword)) {
-                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-                password = encoder.encode(password);
+        String userName = request.getParameter("userName");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirPassword");
+        Integer driverToken = null;
+        if (!"".equals(request.getParameter("token")) && (request.getParameter("token") != null)) {
+            driverToken = Integer.valueOf(request.getParameter("token"));
+        }
+        
 
-                RegistrationBeanLocal rb = BeansLocator.getInstance().getBean(RegistrationBeanLocal.class);//!!
+        if (password.equals(confirmPassword)) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            password = encoder.encode(password);
 
-                if (driverToken != null) {
-                    Driver driver = createDriverWithSpecifiedParameters(request);
-                    driver.setUsername(userName);
-                    driver.setPasswordHash(password);
-                    driver.setToken(driverToken);
+            RegistrationBeanLocal rb = BeansLocator.getInstance().getBean(RegistrationBeanLocal.class);
 
+            if (driverToken != null) {
+                Driver driver = createDriverWithSpecifiedParameters(request);
+                driver.setUsername(userName);
+                driver.setPasswordHash(password);
+                driver.setToken(driverToken);
+
+                ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+                String errorMessage = validatorBean.validate(driver);
+
+                if(errorMessage == null) {
                     rb.registrateDriver(driver);
                     response.sendRedirect("/driver");
                     return;
+                } else {
+                    request.setAttribute("errorMessage", "Can't register driver account! Call to company hot line to solve problem!");
+                    request.getRequestDispatcher("/signup.jsp").forward(request,response);
                 }
+            }
 
-                User user = new User(userName, email, password);
-                if (!rb.isUserExist(user)) {
-                    rb.registrate(user);
-                    response.sendRedirect("/customer");
-                }
-            } else {
+            User user = new User(userName, email, password);
+            if (!rb.isUserExist(user)) {
+                rb.registrate(user);
+                response.sendRedirect("/customer");
+
+            }
+        } else {
                 response.sendRedirect("/signup.jsp");
             }
         } catch (InvalidEntityException e) {
             request.setAttribute("errorMessage", e.getMessage());
             request.getRequestDispatcher("/signup.jsp").forward(request,response);
-//            response.sendRedirect("/signup.jsp?errorMessage=" + e.getMessage());
         }
 
     }

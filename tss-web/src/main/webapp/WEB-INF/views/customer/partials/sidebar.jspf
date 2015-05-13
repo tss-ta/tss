@@ -20,6 +20,12 @@
 		<c:set var="activeOrders" scope="request"
 			value="${'class=\"active\"'}" />
 	</c:when>
+        <c:when test="${pageType == 'soberService'}">
+		<c:set var="activeSoberService" scope="request"
+			value="${'class=\"active\"'}" />
+		<c:set var="activeOrders" scope="request"
+			value="${'class=\"active\"'}" />
+	</c:when>
 	<c:when test="${pageType == 'mmgService'}">
 		<c:set var="activemmgService" scope="request"
 			value="${'class=\"active\"'}" />
@@ -58,6 +64,10 @@
 			<li><a href="/customer/cceServicePage" ${activeCceService}>
 					<span class="icon-container"><i class="fa fa-user"></i></span> <span
 					class="icon-label">Convey corp</span>
+			</a></li>
+                        <li><a href="/customer/soberServicePage" ${activeSoberService}>
+					<span class="icon-container"><i class="fa fa-user"></i></span> <span
+					class="icon-label">Sober driver</span>
 			</a></li>
 			<li><a href="/customer/mmgServicePage" ${activemmgService}>
 					<span class="icon-container"><i class="fa fa-user"></i></span> <span

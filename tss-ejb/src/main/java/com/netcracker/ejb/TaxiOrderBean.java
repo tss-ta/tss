@@ -119,7 +119,6 @@ public class TaxiOrderBean implements SessionBean {
         return contacts;
     }
 
-
     public TaxiOrder getOrderById(int id) {
         TaxiOrderDAO dao = null;
         TaxiOrder taxiOrder = null;
@@ -149,6 +148,26 @@ public class TaxiOrderBean implements SessionBean {
             }
         }
     }
+    
+    
+    public int countOrdersByStatus(User user, Status status) {
+        TaxiOrderDAO dao = null;
+        ContactsDAO daoC = null;
+        int orderCount = 0;
+        try {
+            dao = new TaxiOrderDAO();
+            daoC = new ContactsDAO();
+            orderCount = dao.countOrdersWithStatus(daoC.getByEmail(user.getEmail()), status.getId());
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+            if (daoC != null) {
+                daoC.close();
+            }
+        }
+        return orderCount;
+    }
 
     public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
             int pageSize, User user, Status status) {
@@ -176,10 +195,6 @@ public class TaxiOrderBean implements SessionBean {
             int pageSize, User user) {
         return getTaxiOrderHistory(pageNumber, pageSize, user, null);
     }
-
-
-
-
     public void updateTaxiOrder(TaxiOrder taxiOrder) {
         TaxiOrderDAO taxiOrderDAO = null;
         try {
@@ -191,7 +206,6 @@ public class TaxiOrderBean implements SessionBean {
             }
         }
     }
-
 
     public void editTaxiOrderCustomer(int orderId, Address addFrom,
             Address addTo, Date orderTime, float distance, double price) {

@@ -33,7 +33,6 @@ public class GenericDAO<T> {
 	@PersistenceContext
 	protected EntityManager em;
 
-
 	private static String entityLookup = "java:jboss/EntityManagerFactory";
 
 

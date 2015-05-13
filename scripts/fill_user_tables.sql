@@ -353,18 +353,6 @@ VALUES
   ('per_hour', 20, 1.1);
 
 
----------------------------------------
--- REPORT SYSTEM ----------------------
----------------------------------------
-
-<<<<<<< HEAD
-
----------------------------------------
--- REPORT SYSTEM ----------------------
----------------------------------------
-
-=======
->>>>>>> develop
 INSERT INTO report_info (id, name, description, select_query) values
 (DEFAULT, 'Count all Cars', 'This report count all cars in system', 'SELECT COUNT(id) FROM car');
 INSERT INTO report_info (id, name, description, select_query) values

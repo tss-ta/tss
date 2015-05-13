@@ -107,7 +107,7 @@ public class CustomerMMGServiceServlet extends HttpServlet {
             }
             if ("".equals(request.getParameter("price"))) {
                 price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request),taxiOrder);
+                        DateParser.parseDate(request), taxiOrder, UserUtils.findCurrentUser());
             } else {
                 price = Double.parseDouble(request.getParameter("price"));
             }

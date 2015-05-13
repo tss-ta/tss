@@ -13,6 +13,8 @@ import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
+import com.netcracker.util.BeansLocator;
+
 import java.rmi.RemoteException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;

@@ -19,6 +19,8 @@ import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Roles;
+import com.netcracker.entity.helper.Status;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.DateParser;
@@ -28,7 +30,9 @@ import com.netcracker.util.BeansLocator;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,16 +101,29 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             redirectToEdit(request, response);
             return;
         }
-        if (ACTION_DELETE_TAXI_ORDER.equals(action)) {
-            taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
-            TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
-            taxiOrderBeanLocal.refuseTaxiOrder(taxiOrderId);
-            request.setAttribute("taxiOrderId", taxiOrderId);
-            request.setAttribute("pageContent", "content/refuse.jsp");
-            request.getRequestDispatcher(
-                    "/WEB-INF/views/customer/customer-template.jsp").
-                    forward(request, response);
 
+        if (ACTION_DELETE_TAXI_ORDER.equals(action)) {
+            TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+            taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
+            taxiOrderBeanLocal.refuseTaxiOrder(taxiOrderId);
+            User user = UserUtils.findCurrentUser();
+            if (taxiOrderBeanLocal.countOrdersByStatus(user, Status.REFUSED) >= 3) {
+                UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
+                List<Roles> rs = new ArrayList<>();
+                rs.add(Roles.BANNED);
+                userBeanLocal.editRoles(user.getId(), rs);
+                request.setAttribute("pageContent", "content/banned.jsp");
+                request.getRequestDispatcher(
+                        "/WEB-INF/views/customer/customer-template.jsp").
+                        forward(request, response);
+
+            } else {
+                request.setAttribute("taxiOrderId", taxiOrderId);
+                request.setAttribute("pageContent", "content/refuse.jsp");
+                request.getRequestDispatcher(
+                        "/WEB-INF/views/customer/customer-template.jsp").
+                        forward(request, response);
+            }
         }
 
     }
@@ -149,7 +166,9 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             }
             if ("".equals(request.getParameter("price"))) {
                 price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request), (TaxiOrder) request.getSession().getAttribute("taxiOrder"));
+                        DateParser.parseDate(request),
+                        (TaxiOrder) request.getSession().getAttribute("taxiOrder"),
+                        UserUtils.findCurrentUser());
             } else {
                 price = Double.parseDouble(request.getParameter("price"));
             }

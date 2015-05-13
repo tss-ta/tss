@@ -48,9 +48,18 @@ public class ViewDriverRoute {
                     pageCalculatorBeanLocal.createPager(Driver.class, page, DEFAULT_PAGE_SIZE));
             req.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
         }
+        ActionResponse actResp = new ActionResponse();
+
+        String errorMessage = req.getParameter("errorMsg");
+        if(errorMessage != null) {
+            actResp.setErrorMessage(errorMessage);
+        }
+
 
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
-        return new ActionResponse(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
+        actResp.setPageContent(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
+
+        return actResp;
     }
 
     @Action(action = "search", httpMethod = HttpMethod.POST)
@@ -79,7 +88,10 @@ public class ViewDriverRoute {
             pagerLink.addParameter(RequestParameter.SEARCH_WORD.getValue(), searchWord);
             request.setAttribute(RequestAttribute.PAGER_LINK.getName(), pagerLink);
 
+        } else {
+            return getAllDriversPage(request);
         }
+
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
         return new ActionResponse(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
     }

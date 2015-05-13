@@ -1,10 +1,7 @@
 package com.netcracker.tss.web.route.admin.driver;
 
 
-import com.netcracker.dao.*;
 import com.netcracker.ejb.*;
-
-
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.Category;
 import com.netcracker.router.HttpMethod;
@@ -16,16 +13,11 @@ import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.TokenGenerator;
-import org.springframework.context.annotation.Bean;
-import com.netcracker.tss.web.util.PagerLink;
-import com.netcracker.tss.web.util.RequestAttribute;
-import com.netcracker.util.BeansLocator;
-import com.netcracker.util.TokenGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.List;
+
 
 /**
  * @author Illia Rudenko
@@ -59,12 +51,18 @@ public class CreateAndEditDriverRoute {
         Driver driver = null;
         Integer token = TokenGenerator.generate();
 
+        ActionResponse actResp = new ActionResponse();
+
         if(driverEmail != null) {
             driver = new Driver(driverEmail, token);
-            BeansLocator.getInstance().getDriverBean().addDriver(driver);
-        }
+            String errorMessage = validateDriver(driver);
 
-        ActionResponse actResp = new ActionResponse();
+            if(errorMessage == null) {
+                BeansLocator.getInstance().getDriverBean().addDriver(driver);
+            } else {
+                actResp.setErrorMessage(errorMessage);
+            }
+        }
 
         if(driver != null) {
             MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
@@ -81,21 +79,27 @@ public class CreateAndEditDriverRoute {
     }
 
 
-
     @Action(action = "editdriver", httpMethod = HttpMethod.POST)
 
     public ActionResponse editDriver(HttpServletRequest req) throws ServletException, IOException {
         DriverLocal driverLocal = BeansLocator.getInstance().getDriverBean();
         Driver driver = driverLocal.getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
 
+        ViewDriverRoute viewDriverRoute = new ViewDriverRoute();
         if(driver != null) {
-            driverLocal.editDriver(updateDriverFromRequest(driver, req));
+            driver = updateDriverFromRequest(driver, req);
+            ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+            String errorMessage = validatorBean.validate(driver);
+
+            if(errorMessage != null) {
+                req.setAttribute("errorMsg", errorMessage);
+                return viewDriverRoute.getAllDriversPage(req);
+            } else {
+                driverLocal.editDriver(driver);
+            }
         }
 
-
-        List<Driver> drivers = driverLocal.getDriverPage(1, 10);
-        req.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
-        return new ViewDriverRoute().getAllDriversPage(req);
+        return viewDriverRoute.getAllDriversPage(req);
 
     }
 
@@ -111,5 +115,10 @@ public class CreateAndEditDriverRoute {
 
     private boolean isOn (String checkBoxText){
         return "on".equals(checkBoxText);
+    }
+
+    private String validateDriver(Driver driver) {
+        ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+        return validatorBean.validate(driver);
     }
 }

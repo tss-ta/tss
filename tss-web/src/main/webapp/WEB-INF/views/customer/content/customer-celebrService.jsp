@@ -30,6 +30,10 @@
 						<input type="number" class="form-control" id="driversAmountId"
 							name="driversAmount" placeholder="Insert cars amount here" />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+						<div id="alert_drivers_amount"></div>
+>>>>>>> develop
 =======
 						<div id="alert_drivers_amount"></div>
 >>>>>>> develop
@@ -42,6 +46,10 @@
 						<input type="number" class="form-control" id="duration"
 							name="duration" placeholder="Insert duration in hours here" />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+						<div id="alert_duration"></div>
+>>>>>>> develop
 =======
 						<div id="alert_duration"></div>
 >>>>>>> develop

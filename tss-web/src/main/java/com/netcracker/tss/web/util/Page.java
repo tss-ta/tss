@@ -33,7 +33,6 @@ public enum Page {
     INCORRECT_ID_CONTENT("", "content/incorrect-id.jsp"),
     CUSTOMER_CELEBRATION_SERVICE_CONTENT("celebrService", "customer/content/customer-celebrService.jsp");
 
-
     public static final String ROOT_PATH_PREFIX = "/WEB-INF/views/";
 
     private String type;

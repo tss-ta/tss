@@ -137,4 +137,12 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
         Long count = (Long) query.getSingleResult();
         return count.intValue();
     }
+
+    public int countOrdersWithStatus(Contacts userContacts, Integer status) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts) AND (t.status = :status) ");
+        query.setParameter("contacts", userContacts);
+        query.setParameter("status", status);
+        Long count =  (Long) query.getSingleResult();
+        return count.intValue();
+    }
 }
