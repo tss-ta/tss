@@ -85,20 +85,21 @@ public class CreateAndEditDriverRoute {
         DriverLocal driverLocal = BeansLocator.getInstance().getDriverBean();
         Driver driver = driverLocal.getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
 
+        ViewDriverRoute viewDriverRoute = new ViewDriverRoute();
         if(driver != null) {
             driver = updateDriverFromRequest(driver, req);
             ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
             String errorMessage = validatorBean.validate(driver);
 
-            ViewDriverRoute viewDriverRoute = new ViewDriverRoute();
             if(errorMessage != null) {
-                return viewDriverRoute.getAllDriversPage(req, errorMessage);
+                req.setAttribute("errorMsg", errorMessage);
+                return viewDriverRoute.getAllDriversPage(req);
             } else {
                 driverLocal.editDriver(driver);
             }
         }
 
-        return new ViewDriverRoute().getAllDriversPage(req, null);
+        return viewDriverRoute.getAllDriversPage(req);
     }
 
     private Driver updateDriverFromRequest(Driver driver, HttpServletRequest req) throws ServletException, IOException {

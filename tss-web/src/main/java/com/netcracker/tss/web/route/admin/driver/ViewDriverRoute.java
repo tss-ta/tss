@@ -30,7 +30,7 @@ public class ViewDriverRoute {
     private static final String SEARCH_DRIVERS_ACTION_PARAMETER_VALUE = "search";
 
     @Action(action = "all")
-    public ActionResponse getAllDriversPage(HttpServletRequest req, String message) {
+    public ActionResponse getAllDriversPage(HttpServletRequest req) {
         Integer page = parsePageNumberFromRequest(req);
 
         if(page >= MIN_PAGE_NUMBER) {
@@ -50,8 +50,9 @@ public class ViewDriverRoute {
         }
         ActionResponse actResp = new ActionResponse();
 
-        if(message != null) {
-            actResp.setErrorMessage(message);
+        String errorMessage = req.getParameter("errorMsg");
+        if(errorMessage != null) {
+            actResp.setErrorMessage(errorMessage);
         }
 
 
@@ -87,7 +88,10 @@ public class ViewDriverRoute {
             pagerLink.addParameter(RequestParameter.SEARCH_WORD.getValue(), searchWord);
             request.setAttribute(RequestAttribute.PAGER_LINK.getName(), pagerLink);
 
+        } else {
+            return getAllDriversPage(request);
         }
+
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_DRIVERS_CONTENT.getType());
         return new ActionResponse(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
     }

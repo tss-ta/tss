@@ -8,6 +8,7 @@ package com.netcracker.tss.web.servlet;
 import com.netcracker.ejb.RegistrationBeanLocal;
 import com.netcracker.ejb.RegistrationBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBean;
+import com.netcracker.ejb.ValidatorBeanLocal;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.TaxiOrder;
@@ -25,6 +26,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.netcracker.util.BeansLocator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -67,9 +70,16 @@ public class RegistrationServlet extends HttpServlet {
                 driver.setPasswordHash(password);
                 driver.setToken(driverToken);
 
-                rb.registrateDriver(driver);
-                response.sendRedirect("/driver");
-                return;
+                ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+                String errorMessage = validatorBean.validate(driver);
+
+                if(errorMessage == null) {
+                    rb.registrateDriver(driver);
+                    response.sendRedirect("/driver");
+                    return;
+                } else {
+                    response.sendRedirect("/signup.jsp");
+                }
             }
 
             User user = new User(userName, email, password);
