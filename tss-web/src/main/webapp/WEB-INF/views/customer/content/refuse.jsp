@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-lg-9 main-chart">
         <div class="text-center">
-            <h1>Taxi was redused!</h1>
+            <h1>Taxi was refused!</h1>
         </div>
         <div class="row mt bottom_line">
             <div class="col-lg-12">

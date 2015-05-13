@@ -149,6 +149,26 @@ public class TaxiOrderBean implements SessionBean {
             }
         }
     }
+    
+    
+    public int countOrdersByStatus(User user, Status status) {
+        TaxiOrderDAO dao = null;
+        ContactsDAO daoC = null;
+        int orderCount = 0;
+        try {
+            dao = new TaxiOrderDAO();
+            daoC = new ContactsDAO();
+            orderCount = dao.countOrdersWithStatus(daoC.getByEmail(user.getEmail()), status.getId());
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+            if (daoC != null) {
+                daoC.close();
+            }
+        }
+        return orderCount;
+    }
 
     public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
             int pageSize, User user, Status status) {
