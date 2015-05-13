@@ -7,6 +7,7 @@ package com.netcracker.ejb;
 
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Driver;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
@@ -33,6 +34,8 @@ public interface TaxiOrderBeanLocal extends EJBLocalObject {
     public TaxiOrder getOrderById(int id);
 
     public TaxiOrderHistory getOrderForEdit(TaxiOrder order);
+    
+    public boolean checkDriverEligibility(TaxiOrder order, Driver driver);
 
     public void editTaxiOrderCustomer(int orderId, Address addFrom, Address addTo, Date orderTime, float distance, double price);
 

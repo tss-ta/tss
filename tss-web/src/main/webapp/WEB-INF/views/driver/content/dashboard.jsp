@@ -34,7 +34,7 @@
 									<td>${list.toAddr}</td>
 									<td><c:if test="${(list.status==0) || (list.status==1)}">
 											<a
-												href="/driver/assign?taxiOrderId=${list.getId()}">Assign</a>
+												href="/driver/todetails?taxiOrderId=${list.getId()}">View Details</a>
 										</c:if>
 										<c:if test="${(list.status==2)}">
 											<a

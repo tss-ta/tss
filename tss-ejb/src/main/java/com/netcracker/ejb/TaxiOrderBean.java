@@ -13,6 +13,7 @@ import com.netcracker.dao.UserDAO;
 import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Driver;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.helper.Status;
@@ -86,6 +87,13 @@ public class TaxiOrderBean implements SessionBean {
 
     }
 
+    public boolean checkDriverEligibility(TaxiOrder order, Driver driver){
+
+    	
+    	
+    	return true; 
+    }
+    
     public Contacts createContacts(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User can't be null");
