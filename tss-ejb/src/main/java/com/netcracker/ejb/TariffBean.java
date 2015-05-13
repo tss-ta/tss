@@ -49,7 +49,7 @@ public class TariffBean implements SessionBean {
         TariffDAO dao = null;
         try {
             dao = new TariffDAO();
-            return dao.findPageOrderedByName(pageNumber, paginationStep); //maybe should clone or convert to DTO?
+            return dao.findPageOrderedByName(pageNumber, paginationStep); //maybe should clone or convert to dto?
         } finally {
             if (dao != null) {
                 dao.close();

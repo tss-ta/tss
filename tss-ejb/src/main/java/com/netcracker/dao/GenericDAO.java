@@ -2,6 +2,8 @@ package com.netcracker.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,6 +15,10 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.netcracker.dao.exceptions.NoSuchEntity;
+<<<<<<< HEAD
+=======
+import com.netcracker.util.GlobalVariables;
+>>>>>>> develop
 
 /**
  *
@@ -29,7 +35,9 @@ public class GenericDAO<T> {
 	@PersistenceContext
 	protected EntityManager em;
 
+
 	private static String entityLookup = "java:jboss/EntityManagerFactory";
+
 
 	public GenericDAO() {
 		em = createEntityManager();
@@ -103,18 +111,18 @@ public class GenericDAO<T> {
 		em.close();
 	}
 
-	public EntityManager createEntityManager() {
-		Context initCtx;
-		try {
-			initCtx = new InitialContext();
-			EntityManagerFactory emf = (EntityManagerFactory) initCtx
-					.lookup(entityLookup);
-			em = emf.createEntityManager();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-		return em;
-	}
+    public EntityManager createEntityManager() {
+        Context initCtx;
+        try {
+            initCtx = new InitialContext();
+            EntityManagerFactory emf = (EntityManagerFactory) initCtx
+                    .lookup(GlobalVariables.entityLookup);
+            em = emf.createEntityManager();
+        } catch (NamingException e) {
+            Logger.getLogger(GenericDAO.class.getName()).log(Level.SEVERE, "can't find EntityManager", e);
+        }
+        return em;
+    }
 
 	private void validateEntityOnNull(T entity) {
 		if (entity == null) {
@@ -123,7 +131,7 @@ public class GenericDAO<T> {
 	}
 
 	public void updateEntityManager(String entityLookup) {
-		this.entityLookup = entityLookup;		
+		GlobalVariables.entityLookup = entityLookup;
 		em = createEntityManager();
 	}
 

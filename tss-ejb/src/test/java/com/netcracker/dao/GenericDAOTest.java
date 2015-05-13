@@ -31,6 +31,10 @@ import com.netcracker.entity.Role;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.DriverCar;
+<<<<<<< HEAD
+=======
+import com.netcracker.util.GlobalVariables;
+>>>>>>> develop
 
 @RunWith(Arquillian.class)
 public class GenericDAOTest {
@@ -67,6 +71,10 @@ public class GenericDAOTest {
 				.addPackage(DriverCar.class.getPackage())
 				.addPackage("com.google.common.base")
 				.addPackage(NoSuchEntity.class.getPackage())
+<<<<<<< HEAD
+=======
+				.addClass(GlobalVariables.class)
+>>>>>>> develop
 				.addAsResource("persistence.xml", "META-INF/persistence.xml");
 	}
 

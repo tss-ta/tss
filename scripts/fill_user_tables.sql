@@ -23,6 +23,42 @@ INSERT INTO tss_user VALUES
   (DEFAULT, 'Monica', 'monica.harmonica@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
   (DEFAULT, 'Izya', 'iz@ya.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Abbey', 'abbey@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Abigail', 'abigail@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Abram', 'abram@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Octavio', 'octavio@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Talon', 'talon@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Tania', 'tania@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Tarik', 'tarik@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Kai', 'kai@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Kelly', 'kelly@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Kenny', 'kenny@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Kent', 'kent@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Sal', 'sal@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Sally', 'sally@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Samir', 'samir@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Lisa', 'lisa@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Bart', 'bart@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'Homer', 'homer@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+INSERT INTO tss_user VALUES
+  (DEFAULT, 'March', 'march@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 
 
 INSERT INTO tss_group VALUES
@@ -72,6 +108,42 @@ INSERT INTO car VALUES
 
 INSERT INTO driver VALUES
   (8, 1, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (12, 0, FALSE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (13, 2, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (14, 1, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (15, 0, FALSE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (16, 2, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (17, 2, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (18, 1, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (19, 1, TRUE, FALSE, FALSE);
+INSERT INTO driver VALUES
+  (20, 0, FALSE, FALSE, FALSE);
+INSERT INTO driver VALUES
+  (21, 2, TRUE, TRUE, TRUE);
+INSERT INTO driver VALUES
+  (22, 2, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (23, 1, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (24, 1, TRUE, FALSE, FALSE);
+INSERT INTO driver VALUES
+  (25, 0, FALSE, FALSE, FALSE);
+INSERT INTO driver VALUES
+  (26, 2, TRUE, TRUE, TRUE);
+INSERT INTO driver VALUES
+  (27, 1, TRUE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (28, 0, FALSE, TRUE, FALSE);
+INSERT INTO driver VALUES
+  (29, 2, TRUE, TRUE, FALSE);
 
 
 -- INSERT INTO driver_car VALUES
@@ -115,6 +187,42 @@ INSERT INTO tss_user_role VALUES
   (10, 1);
 INSERT INTO tss_user_role VALUES
   (11, 4);
+INSERT INTO tss_user_role VALUES
+  (12, 2);
+INSERT INTO tss_user_role VALUES
+  (13, 2);
+INSERT INTO tss_user_role VALUES
+  (14, 2);
+INSERT INTO tss_user_role VALUES
+  (15, 2);
+INSERT INTO tss_user_role VALUES
+  (16, 2);
+INSERT INTO tss_user_role VALUES
+  (17, 2);
+INSERT INTO tss_user_role VALUES
+  (18, 2);
+INSERT INTO tss_user_role VALUES
+  (19, 2);
+INSERT INTO tss_user_role VALUES
+  (20, 2);
+INSERT INTO tss_user_role VALUES
+  (21, 2);
+INSERT INTO tss_user_role VALUES
+  (22, 2);
+INSERT INTO tss_user_role VALUES
+  (23, 2);
+INSERT INTO tss_user_role VALUES
+  (24, 2);
+INSERT INTO tss_user_role VALUES
+  (25, 2);
+INSERT INTO tss_user_role VALUES
+  (26, 2);
+INSERT INTO tss_user_role VALUES
+  (27, 2);
+INSERT INTO tss_user_role VALUES
+  (28, 2);
+INSERT INTO tss_user_role VALUES
+  (29, 2);
 
 INSERT INTO tss_group_role VALUES
   (1, 2);
@@ -235,12 +343,28 @@ INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef)
 VALUES
   ('per_km', 5, 1);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('per_car', 100, 1.2);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('per_hour', 20, 1.1);
 
 
 ---------------------------------------
 -- REPORT SYSTEM ----------------------
 ---------------------------------------
 
+<<<<<<< HEAD
+
+---------------------------------------
+-- REPORT SYSTEM ----------------------
+---------------------------------------
+
+=======
+>>>>>>> develop
 INSERT INTO report_info (id, name, description, select_query) values
 (DEFAULT, 'Count all Cars', 'This report count all cars in system', 'SELECT COUNT(id) FROM car');
 INSERT INTO report_info (id, name, description, select_query) values

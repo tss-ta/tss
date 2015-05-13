@@ -53,14 +53,16 @@ public class UserBean implements SessionBean {
                 roles.add(Roles.BANNED);
                 user.setRoles(toRoleList(roles, roleDAO));
                 userDAO.update(user);
-                notifyAboutBan(user.getEmail());//!!!!!!!!!!
-//                notifyAboutBan("maksbrunarskiy@gmail.com");//!!!!!!!!!!
+//                notifyAboutBan(user.getEmail());//!!!!!!!!!!
+                notifyAboutBan("maksbrunarskiy@gmail.com");//!!!!!!!!!!
+
             } else {
                 user.setRoles(toRoleList(roles, roleDAO));
                 userDAO.update(user);
             }
         } catch (NoSuchEntity e) {
 			throw new IllegalArgumentException("User with id = " + userId + " does not exist");
+//			throw new InvalidEntityException("User with id = " + userId + " does not exist");
 		} finally {
             if (roleDAO != null) {
                 roleDAO.close();
@@ -106,7 +108,6 @@ public class UserBean implements SessionBean {
         } catch (NoSuchEntity e) {
             throw new IllegalArgumentException("Can't find user with id = " + userId);
              //       + " or group with id " + groupId
-
 		} finally {
             if (userDAO != null) {
                 userDAO.close();

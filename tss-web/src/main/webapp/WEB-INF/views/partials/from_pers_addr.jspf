@@ -6,7 +6,8 @@
 					name="pers_addr" id="pers_addr">
 					<option></option>
 					<c:forEach items="${personal_addr}" var="list" varStatus="loop">
-						<option value="${list.addr}">${list.addr}</option>
+						<c:set var="personal_address" value="${list.addr}"/>
+						<option value="${personal_address}">${personal_address}</option>
 					</c:forEach>
 				</select>
 			</c:if>

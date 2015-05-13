@@ -8,10 +8,12 @@ package com.netcracker.ejb;
 import com.netcracker.dao.TariffDAO;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.TaxiOrder;
+
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -23,6 +25,8 @@ import javax.ejb.SessionContext;
 public class PriceBean implements SessionBean {
 
     public double calculatePrice(float distance, Date orderTime, TaxiOrder taxiOrder) {
+    	if (distance<0)
+    		throw new IllegalArgumentException("distance must be > 0");
         double orderPrice = 0;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(orderTime);
@@ -88,6 +92,31 @@ public class PriceBean implements SessionBean {
             }
         }
 
+        return orderPrice;
+    }
+
+    public float calculateCelebrationServicePrice(int carsAmount, int duration, Date orderTime) {
+        float orderPrice = 0;
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(orderTime);
+        Tariff tariff;
+
+        TariffDAO tariffDAO = new TariffDAO();
+        if (((calendar.get(Calendar.HOUR_OF_DAY) >= 22) && (calendar.get(Calendar.HOUR_OF_DAY) <= 24))
+                || ((calendar.get(Calendar.HOUR_OF_DAY) >= 0) && (calendar.get(Calendar.HOUR_OF_DAY) <= 7))) {
+            tariff = tariffDAO.findByTariffName("night");
+            orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+        }
+        if ((calendar.get(Calendar.HOUR_OF_DAY) >= 9) && (calendar.get(Calendar.HOUR_OF_DAY) <= 11)) {
+            tariff = tariffDAO.findByTariffName("rush_hour");
+            orderPrice = (orderPrice + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+        }
+
+        tariff = tariffDAO.findByTariffName("per_car");
+        orderPrice = orderPrice + carsAmount * ((1 + tariff.getPlusCoef()) * tariff.getMultipleCoef());
+
+        tariff = tariffDAO.findByTariffName("per_hour");
+        orderPrice = orderPrice + duration * ((1 + tariff.getPlusCoef()) * tariff.getMultipleCoef());
         return orderPrice;
     }
 

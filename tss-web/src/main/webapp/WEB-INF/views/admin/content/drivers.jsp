@@ -18,12 +18,12 @@
                             <a href="/admin?menu=drivers&action=add" class="btn btn-default">New Driver</a>
                         </div>
                         <div class="col-md-offset-7 col-md-4">
-                            <form action="/admin/driver?menu=drivers&action=search" method="post" >
+                            <form action="/admin?menu=driver&action=search&page=1" method="post" >
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="search" placeholder="Driver name" value="${param.search}">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                            </span>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                    </span>
                                 </div>
                             </form>
                         </div>

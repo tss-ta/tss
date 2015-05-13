@@ -1,11 +1,13 @@
 package com.netcracker.exceptions;
 
+
 import javax.ejb.EJBException;
 
 /**
  * Created by maks on 11.05.15.
  */
 public class InvalidEntityException extends EJBException {
+
 
     public InvalidEntityException () {
         super("Entity class have some invalid fields");
@@ -22,5 +24,10 @@ public class InvalidEntityException extends EJBException {
     public InvalidEntityException (String message, Exception cause) {
         super(message, cause);
     }
+
+    public InvalidEntityException (Throwable cause) {
+        super("Entity class have some invalid fields", cause);
+    }
+
 
 }

@@ -14,6 +14,7 @@ import javax.ejb.EJBLocalHome;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -69,16 +70,19 @@ public class BeansLocator {
         UserBeanLocalHome customerBeanLocalHome = (UserBeanLocalHome) lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
         return customerBeanLocalHome.create();
     }
+
     @Deprecated
     public CarBeanLocal getCarBean() {
         CarBeanLocalHome carBeanLocalHome = (CarBeanLocalHome) lookup("java:app/tss-ejb/CarBean!com.netcracker.ejb.CarBeanLocalHome");
         return carBeanLocalHome.create();
     }
+
     @Deprecated
     public TariffBeanLocal getTariffBean() {
         TariffBeanLocalHome tariffBeanLocalHome = (TariffBeanLocalHome) lookup("java:app/tss-ejb/TariffBean!com.netcracker.ejb.TariffBeanLocalHome");
         return tariffBeanLocalHome.create();
     }
+
     @Deprecated
     public DriverLocal getDriverBean() {
         DriverLocalHome driverLocalHome = (DriverLocalHome) lookup("java:app/tss-ejb/DriverBean!com.netcracker.ejb.DriverLocalHome");
@@ -89,5 +93,10 @@ public class BeansLocator {
 //        ReportsBeanLocalHome reportsBeanLocalHome = (ReportsBeanLocalHome) lookup("java:app/tss-ejb/ReportsBean!com.netcracker.ejb.ReportsBeanLocalHome");
 //        return reportsBeanLocalHome.create();
 //    }
+    @Deprecated
+    private TaxiOrderBeanLocal getTaxiOrderBean() {
+        TaxiOrderBeanLocalHome taxiOrderBeanLocalHome = (TaxiOrderBeanLocalHome) lookup("java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome");
+        return taxiOrderBeanLocalHome.create();
 
+    }
 }

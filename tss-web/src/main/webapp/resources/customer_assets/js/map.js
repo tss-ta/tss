@@ -58,10 +58,14 @@ function placeFromMarker(location) {
 	// codeLatLngFrom(location);
 	$("#fromc").val(location);
 	fromCoord = location;
+         var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/from.png",
+            new google.maps.Size(32, 32),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(16, 32));
 	markerFrom = new google.maps.Marker({
 		position : location,
 		map : map,
-		title : 'From '
+		icon: pinImage,
 	});
 	$("#fromAddrMessage").text("");
 	google.maps.event.addListener(markerFrom, 'click', function(event) {
@@ -92,10 +96,14 @@ function placeToMarker(location) {
 	// codeLatLngTo(location);
 	$("#toc").val(location);
 	toCoord = location;
+         var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/to.png",
+            new google.maps.Size(32, 32),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(16, 32));
 	markerTo = new google.maps.Marker({
 		position : location,
 		map : map,
-		title : 'To '
+		icon: pinImage,
 	});
 	$("#toAddrMessage").text("");
 	google.maps.event.addListener(markerTo, 'click', function(event) {

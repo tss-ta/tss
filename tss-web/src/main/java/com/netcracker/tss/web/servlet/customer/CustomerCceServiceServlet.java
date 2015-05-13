@@ -31,6 +31,8 @@ import com.netcracker.ejb.ConveyCorpServiceBeanLocal;
 import com.netcracker.ejb.ConveyCorpServiceBeanLocalHome;
 import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
+import com.netcracker.ejb.PriceBeanLocal;
+import com.netcracker.ejb.PriceBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
@@ -75,21 +77,46 @@ public class CustomerCceServiceServlet extends HttpServlet {
 			resp.sendRedirect("/customer/cceServicePage");
 		} else {
 			User user = findCurrentUser();
+                        PriceBeanLocal priceBean = getPriceBean(req);
 			ConveyCorpServiceBeanLocal taxiConveyCorpServiceBeanLocal = getConveyCorpServiceBean(req);
                         String[] fromListAddr= req.getParameterValues("fromList");
                         if(fromListAddr!=null&&fromListAddr.length>0){
+                             float distance = 0;
+                             float currentdistance = 0;
+                             double price = 0;
+                        String toAddr=req.getParameter("toAddr");
+		        Address addTo = toAddress( toAddr, req);
                         List<Address> addFrom=new ArrayList<Address>();
+                        List<Route> routes=new ArrayList<>();
+                        MapBeanLocal mapBean = getMapBean(req);
                         for(String fa:fromListAddr){
-                           addFrom.add(toAddress(req.getParameter("fromAddr"), req));
+                           addFrom.add(toAddress(fa, req));
+                           Route r=new Route(user.getUsername() + " Route");
+                           try{
+                           currentdistance = mapBean.calculateDistance(fa,toAddr);
+                           distance=distance+currentdistance;
+                           } catch (JSONException | IOException e) {
+                            // TODO Auto-generated catch block
+                           e.printStackTrace();
+                           }
+                           r.setDistance(currentdistance);
+                           routes.add(r);
                         }
-                         String toAddr=req.getParameter("toAddr");
-			Address addTo = toAddress( toAddr, req);
-			TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
+                        TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
 			taxiOrder.setBookingTime(new Date());
 			Date orderTime = DateParser.parseDate(req);
 			orderTime.setYear(new Date().getYear());
 			taxiOrder.setOrderTime(orderTime);
-			Integer latestTOId =taxiConveyCorpServiceBeanLocal.addCorpService(user, addFrom, addTo,taxiOrder); 
+                        
+                        if ("".equals(req.getParameter("price"))) {
+                           price = priceBean.calculatePrice(distance,
+                        DateParser.parseDate(req),taxiOrder);
+                       } else {
+                         price = Double.parseDouble(req.getParameter("price"));
+                        }
+			taxiOrder.setPrice(price);
+                        
+			Integer latestTOId =taxiConveyCorpServiceBeanLocal.addCorpService(user, routes, addFrom, addTo,taxiOrder); 
 		        req.setAttribute("taxiOrderId", latestTOId);
 		        req.setAttribute("pageContent", "content/confirmation.jsp");
 			req.getRequestDispatcher(
@@ -204,5 +231,19 @@ public class CustomerCceServiceServlet extends HttpServlet {
 																	// exception?
 		}
 	}
+        private PriceBeanLocal getPriceBean(HttpServletRequest req) {
+        Context context;
+        try {
+            context = new InitialContext();
+            PriceBeanLocalHome priceBeanLocalHome = (PriceBeanLocalHome) context
+                    .lookup("java:app/tss-ejb/PriceBean!com.netcracker.ejb.PriceBeanLocalHome");
+            return priceBeanLocalHome.create();
+        } catch (NamingException ex) {
+            throw new RuntimeException("Internal server error!");// maybe have
+            // to create
+            // custom
+            // exception?
+        }
+    }
 
 }

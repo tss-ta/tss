@@ -90,7 +90,7 @@
 	$('#update_price').click(function() {
 		$.ajax({
 			type : "GET",
-			url : "http://localhost:8080/price",
+			url : "/price",
 			data : {
 				fromAddr : $("#fromAddr").val(),
 				toAddr : $("#toAddr").val(),
