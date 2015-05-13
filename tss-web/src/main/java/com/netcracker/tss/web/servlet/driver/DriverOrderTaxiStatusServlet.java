@@ -5,8 +5,7 @@
  */
 package com.netcracker.tss.web.servlet.driver;
 
-import com.netcracker.dao.TaxiOrderDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.entity.TaxiOrder;
 import static com.netcracker.tss.web.servlet.customer.CustomerOrderTaxiEditDeleteServlet.ACTION_EDIT_TAXI_ORDER;
