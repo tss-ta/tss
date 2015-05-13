@@ -27,6 +27,7 @@ import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.Page;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.tss.web.util.UserUtils;
+import com.netcracker.util.BeansLocator;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -92,14 +93,25 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         if (ACTION_EDIT_TAXI_ORDER.equals(action)) {
             taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
             TaxiOrder taxiOrder = null;
-			try {
-				taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
-			} catch (NoSuchEntity e) {
-				e.printStackTrace();
-			}
+            try {
+                taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
+            } catch (NoSuchEntity e) {
+                e.printStackTrace();
+            }
             request.getSession().setAttribute("taxiOrder", taxiOrder);
             redirectToEdit(request, response);
             return;
+        }
+        if (ACTION_DELETE_TAXI_ORDER.equals(action)) {
+            taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
+            TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+            taxiOrderBeanLocal.refuseTaxiOrder(taxiOrderId);
+            request.setAttribute("taxiOrderId", taxiOrderId);
+            request.setAttribute("pageContent", "content/refuse.jsp");
+            request.getRequestDispatcher(
+                    "/WEB-INF/views/customer/customer-template.jsp").
+                    forward(request, response);
+
         }
 
     }
