@@ -113,6 +113,17 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
                     forward(request, response);
 
         }
+        if (ACTION_DELETE_TAXI_ORDER.equals(action)) {
+            taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
+            TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+            taxiOrderBeanLocal.refuseTaxiOrder(taxiOrderId);
+            request.setAttribute("taxiOrderId", taxiOrderId);
+            request.setAttribute("pageContent", "content/refuse.jsp");
+            request.getRequestDispatcher(
+                    "/WEB-INF/views/customer/customer-template.jsp").
+                    forward(request, response);
+
+        }
 
     }
 
@@ -164,7 +175,7 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
                     addFrom, addTo, orderTime, distance, price);
             request.setAttribute("taxiOrderId", taxiOrderId);
-            request.setAttribute("pageContent", "content/confirmation.jsp");
+            request.setAttribute("pageContent", "content/confirmation-updated.jsp");
             request.getRequestDispatcher(
                     "/WEB-INF/views/customer/customer-template.jsp").forward(
                             request, response);
