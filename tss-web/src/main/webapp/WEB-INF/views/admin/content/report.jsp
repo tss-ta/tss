@@ -22,7 +22,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-4 col-xs-4">
-                    <a href="" id="download" download="${report.info.name}.xlsx" data-id="" class="btn btn-default"><i class="fa fa-file-excel-o"></i> Download Excel</a>
+                    <a href="/admin/report/download?id=${report.info.id}" id="download" class="btn btn-default"><i class="fa fa-file-excel-o"></i> Download Excel</a>
                 </div>
             </div>
         </div>
@@ -36,17 +36,17 @@
         <div class="col-md-offset-1 col-md-10">
             <table class="table table-hover table-bordered">
                 <thead class="tablehead text-center">
-                    <c:forEach begin="1" end="${report.data.columnAmount}" var="index">
-                        <td>${report.data.getColumnName(index)}</td>
+                    <c:forEach begin="1" end="${report.data.columnAmount()}" var="index">
+                        <td>${report.data.columnName(index)}</td>
                     </c:forEach>
                 </thead>
 
                 <tbody>
                     <c:forEach items="${report.data.rows}" var="row">
                         <tr class="text-center">
-                            <c:forEach begin="1" end="${row.columnAmount}" var="columnIndex">
-                                <c:set var="rowColumn" value="${row.getColumnData(columnIndex)}" />
-                                <td class="hidden-sm hidden-xs">
+                            <c:forEach begin="1" end="${row.columnAmount()}" var="columnIndex">
+                                <c:set var="rowColumn" value="${row.columnData(columnIndex)}" />
+                                <td>
                                     <c:choose>
                                         <c:when test="${rowColumn.type eq 'INTEGER'}">
                                             ${rowColumn.intValue}
@@ -93,7 +93,7 @@
     </div>
 </c:if>
 
-<script src="/resources/js/report/jszip.min.js"></script>
-<script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
-<script src="/resources/js/report/xlsx.js"></script>
-<script src="/resources/js/report/excel-dowloader.js"></script>
+<%--<script src="/resources/js/report/jszip.min.js"></script>--%>
+<%--<script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>--%>
+<%--<script src="/resources/js/report/xlsx.js"></script>--%>
+<%--<script src="/resources/js/report/excel-dowloader.js"></script>--%>

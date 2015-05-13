@@ -109,7 +109,32 @@ public class ReportsBean implements SessionBean {
             infoDAO = new ReportInfoDAO();
             reportInfo = infoDAO.get(id);
             if (reportInfo.isCountable()) {
+                System.out.println("-------------1");
                 reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), pageNumber, reportInfo.getPageSize());
+            } else {
+                System.out.println("-------------2");
+                reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+            }
+            report = new Report(reportInfo, reportData);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+        return report;
+    }
+
+    public Report getBigReport(int id) {
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        ReportInfoDAO infoDAO = null;
+        ReportInfo reportInfo;
+        ReportData reportData;
+        Report report;
+        try {
+            infoDAO = new ReportInfoDAO();
+            reportInfo = infoDAO.get(id);
+            if (reportInfo.isCountable()) {
+                reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), 1, reportInfo.getExportSize());
             } else {
                 reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
             }

@@ -1,5 +1,6 @@
 package com.netcracker.report.container;
 
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -9,11 +10,12 @@ import java.util.Set;
  */
 
 public class RowData {
+
     private Map<Integer, MultipurposeValue> row = new HashMap<>();
 
     public RowData(){}
 
-    public MultipurposeValue getColumnData(Integer number) {
+    public MultipurposeValue columnData(Integer number) {
         return row.get(number);
     }
 
@@ -21,12 +23,24 @@ public class RowData {
         row.put(number, data);
     }
 
-    public int getColumnAmount() {
+    public int columnAmount() {
         return row.size();
     }
 
-    public Set<Integer> getAllColumnNumbers() {
+    public Set<Integer> allColumnNumbers() {
         return row.keySet();
+    }
+
+    public Map<Integer, MultipurposeValue> getRow() {
+        return row;
+    }
+
+    public void setRow(Map<Integer, MultipurposeValue> row) {
+        this.row = row;
+    }
+
+    public MultipurposeValue getColumn(Integer index) {
+        return row.get(index);
     }
 
     @Override

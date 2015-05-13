@@ -66,9 +66,9 @@ public class ReportDataDAO {
 //            ResultSetMetaData metaData = resultSet.getMetaData();
 //            System.out.println("==================================");
 //            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                System.out.println("column name: " + metaData.getColumnName(i));
+//                System.out.println("column name: " + metaData.columnName(i));
 //                System.out.println("column type: " + metaData.getColumnTypeName(i));
-//                System.out.println("column type index: " + metaData.getColumnType(i));
+//                System.out.println("column type index: " + metaData.columnType(i));
 //            }
 
         } catch (SQLException e) {
@@ -85,7 +85,7 @@ public class ReportDataDAO {
         while (resultSet.next()) {
             reportData.addRow(createRowData(resultSet, reportData));
         }
-//        System.out.println(reportData.getRowsAmount());
+//        System.out.println(reportData.rowsAmount());
 //        System.out.println("ReportData:");
 //        System.out.println(reportData);
     }
@@ -93,15 +93,10 @@ public class ReportDataDAO {
     private RowData createRowData(ResultSet resultSet, ReportData reportData) throws SQLException {
         RowData rowData = new RowData();
         MultipurposeValue multiValue;
-        for (int index = 1; index <= reportData.getColumnAmount(); index++) {
-            System.out.println("index=" + index);
-            System.out.println("colType=" + reportData.getColumnType(index));
-            multiValue = mapper.getDataFromColumn(resultSet, index, reportData.getColumnType(index));
+        for (int index = 1; index <= reportData.columnAmount(); index++) {
+            multiValue = mapper.getDataFromColumn(resultSet, index, reportData.columnType(index));
             rowData.addColumn(index, multiValue);
         }
-//        System.out.println("====================================");
-//        System.out.println(rowData);
-//        System.out.println("====================================");
         return rowData;
     }
 
@@ -143,6 +138,29 @@ public class ReportDataDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(LIMIT_POSITION, pageSize);
             statement.setInt(OFFSET_POSITION, (pageNumber - 1) * pageSize);
+            resultSet = statement.executeQuery();
+            initializeReportMetaData(reportData, resultSet.getMetaData());
+            generateDataFromResultSet(reportData, resultSet);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
+        return reportData;
+    }
+
+    public ReportData createSizedReportData(String query, Integer maxSize) {
+        Connection connection = null;
+        ReportData reportData = new ReportData();
+        ResultSet resultSet;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(LIMIT_POSITION, maxSize);
+            statement.setInt(OFFSET_POSITION, 0);
             resultSet = statement.executeQuery();
             initializeReportMetaData(reportData, resultSet.getMetaData());
             generateDataFromResultSet(reportData, resultSet);

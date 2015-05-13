@@ -10,7 +10,7 @@ SELECT cc.name AS "Category", count(txo.car_category) AS "Orders Amount"
 
 
 -------------------------------------------------------
--- Popular Driver Category -------------------------------
+-- Popular Driver Category ----------------------------
 -------------------------------------------------------
 SELECT dct.name AS "Category", count(d.category) AS "Orders Amount"
   FROM driver AS d
@@ -22,3 +22,68 @@ SELECT dct.name AS "Category", count(d.category) AS "Orders Amount"
 		ON dct.id = d.category
 	GROUP BY d.category, dct.name
 	ORDER BY count(d.category) DESC;
+
+
+-------------------------------------------------------
+-- Popular Car Options By User ------------------------
+-------------------------------------------------------
+SELECT t.email AS "User Email", t."Option Name", t."Select Amount"
+	FROM (
+		SELECT c.email, 'Animal Transport' AS "Option Name", sum(animal_transport::int) AS "Orders with option"
+			FROM taxi_order
+			JOIN contacts AS c
+				ON c.id = contacts_id
+			GROUP BY c.email
+		UNION
+		SELECT c.email, 'WI-FI' AS "Option Name", sum(wifi::int) AS "Orders with option"
+			FROM taxi_order
+			JOIN contacts AS c
+				ON c.id = contacts_id
+			GROUP BY c.email
+		UNION
+		SELECT c.email, 'Conditioner' AS "Option Name", sum(conditioner::int) AS "Orders with option"
+		FROM taxi_order
+		JOIN contacts AS c
+				ON c.id = contacts_id
+			GROUP BY c.email
+	) AS t
+	ORDER BY t.email, t."Orders with option" DESC LIMIT ? OFFSET ?;
+
+-- Count Query ----------------------------------------
+
+SELECT count(t."Option Name")
+	FROM (
+		SELECT c.email, 'Animal Transport' AS "Option Name", sum(animal_transport::int) AS "Orders with option"
+			FROM taxi_order
+			JOIN contacts AS c
+				ON c.id = contacts_id
+			GROUP BY c.email
+		UNION
+		SELECT c.email, 'WI-FI' AS "Option Name", sum(wifi::int) AS "Orders with option"
+			FROM taxi_order
+			JOIN contacts AS c
+				ON c.id = contacts_id
+			GROUP BY c.email
+		UNION
+		SELECT c.email, 'Conditioner' AS "Option Name", sum(conditioner::int) AS "Orders with option"
+		FROM taxi_order
+		JOIN contacts AS c
+				ON c.id = contacts_id
+			GROUP BY c.email
+	) AS t;
+
+-------------------------------------------------------
+-- Popular Car Options --------------------------------
+-------------------------------------------------------
+SELECT *
+	FROM (
+		SELECT 'Animal Transport' AS "Option Name", sum(animal_transport::int) AS "Select Amount"
+			FROM taxi_order
+		UNION
+		SELECT 'WI-FI' AS "Option Name", sum(wifi::int) AS "Select Amount"
+			FROM taxi_order
+		UNION
+		SELECT 'Conditioner' AS "Option Name", sum(conditioner::int) AS "Select Amount"
+		FROM taxi_order
+	) AS T
+	ORDER BY "Select Amount" DESC;

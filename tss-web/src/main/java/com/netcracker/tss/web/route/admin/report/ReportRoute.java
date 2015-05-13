@@ -1,12 +1,11 @@
 package com.netcracker.tss.web.route.admin.report;
 
 import com.netcracker.dao.ReportDataDAO;
-import com.netcracker.ejb.CarBeanLocal;
 import com.netcracker.ejb.PageCalculatorBeanLocal;
 import com.netcracker.ejb.ReportsBeanLocal;
-import com.netcracker.entity.Car;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.report.Report;
+import com.netcracker.router.ContentType;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
@@ -41,11 +40,30 @@ public class ReportRoute {
             reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
             Report report = reportsBean.getReport(id, page);
             request.setAttribute(RequestAttribute.REPORT.getName(), report);
-            request.setAttribute(RequestAttribute.PAGER.getName(),
-                    reportsBean.getReportPager(report.getInfo(), page));
-            request.setAttribute(RequestAttribute.PAGER_LINK.getName(), createPagerLinkForViewAction(id));
+            if(report.getInfo().isCountable()) {
+                request.setAttribute(RequestAttribute.PAGER.getName(),
+                        reportsBean.getReportPager(report.getInfo(), page));
+                request.setAttribute(RequestAttribute.PAGER_LINK.getName(), createPagerLinkForViewAction(id));
+            }
             response.setPageContent(Page.ADMIN_REPORT_CONTENT.getAbsolutePath());
             request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORT_CONTENT.getType());
+        } else {
+            response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
+        }
+        return response;
+    }
+
+    @Action(action = "json", responseContentType = ContentType.JSON)
+    public ActionResponse getReportJson(HttpServletRequest request) {
+        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
+        Integer page = parsePageNumberFromRequest(request);
+        ActionResponse response = new ActionResponse();
+        ReportsBeanLocal reportsBean;
+        if (id != null) {
+            reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+            Report report = reportsBean.getReport(id, page);
+            response.setModel(report);
+
         } else {
             response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
         }

@@ -12,15 +12,15 @@ public class ReportData {
     private Map<Integer, ColumnMetaData> columnMetaDataMap = new HashMap<>();
     private List<RowData> rows = new ArrayList<>();
 
-    public int getColumnAmount() {
+    public int columnAmount() {
         return columnMetaDataMap.size();
     }
 
-    public String getColumnName(Integer index) {
+    public String columnName(Integer index) {
         return columnMetaDataMap.get(index).getName();
     }
 
-    public DataType getColumnType(Integer index) {
+    public DataType columnType(Integer index) {
         return columnMetaDataMap.get(index).getType();
     }
 
@@ -28,7 +28,7 @@ public class ReportData {
         columnMetaDataMap.put(index, new ColumnMetaData(name, type));
     }
 
-    public Set<Integer> getAllColumnIndeces() {
+    public Set<Integer> allColumnIndeces() {
         return columnMetaDataMap.keySet();
     }
 
@@ -40,11 +40,11 @@ public class ReportData {
         rows.add(data);
     }
 
-    public RowData getRow(int index) {
+    public RowData findRow(int index) {
         return rows.get(index);
     }
 
-    public int getRowsAmount() {
+    public int rowsAmount() {
         return rows.size();
     }
 

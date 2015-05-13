@@ -344,5 +344,6 @@ select_query text,
 count_query text,
 countable boolean,
 page_size integer,
+export_size integer,
 CONSTRAINT report_id_pk PRIMARY KEY (id)
 );

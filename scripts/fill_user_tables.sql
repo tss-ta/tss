@@ -251,10 +251,27 @@ INSERT INTO car_category (id, name) VALUES (3, 'Business');
 INSERT INTO car_category (id, name) VALUES (4, 'Cargo');
 
 
-INSERT INTO report_info (id, name, description, db_query) values
-(DEFAULT, 'Count all Cars', 'This report count all cars in system', 'SELECT COUNT(id) FROM car');
-INSERT INTO report_info (id, name, description, db_query) values
-(DEFAULT, 'Count all Users', 'This report count all users in system', 'SELECT COUNT(id) FROM tss_user');
-INSERT INTO report_info (id, name, description, db_query) values
-(DEFAULT, 'Count all Taxi Orders', 'This report count all Taxi Orders in system', 'SELECT COUNT(id) FROM taxi_order');
-
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+(DEFAULT,
+'The most popular Car category',
+'This report shows all popular Car category in Taxi Service System',
+'SELECT cc.name AS "Category", count(txo.car_category) AS "Orders Amount" FROM taxi_order AS txo JOIN car_category AS cc ON txo.car_category = cc.id GROUP BY txo.car_category, cc.name ORDER BY count(txo.car_category) DESC;',
+null, false, 0, 1000);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+(DEFAULT,
+'The most popular Driver category',
+'This report shows all popular Driver category in Taxi Service System',
+'SELECT dct.name AS "Category", count(d.category) AS "Orders Amount" FROM driver AS d JOIN driver_car AS dc	ON d.driver_id = dc.driver_id JOIN taxi_order AS o ON dc.id = o.driver_car_id JOIN driver_category AS dct ON dct.id = d.category GROUP BY d.category, dct.name ORDER BY count(d.category) DESC',
+null, false, 0, 1000);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+(DEFAULT,
+'The most popular Car options',
+'This report shows all popular Car options in Taxi Service System',
+'SELECT * FROM (SELECT ''Animal Transport'' AS "Option Name", sum(animal_transport::int) AS "Orders with this option"	FROM taxi_order	UNION	SELECT ''WI-FI'' AS "Option Name", sum(wifi::int) AS "Orders with this option" FROM taxi_order	UNION	SELECT ''Conditioner'' AS "Option Name", sum(conditioner::int) AS "Orders with this option" FROM taxi_order) AS T ORDER BY "Orders with this option" DESC',
+null, false, 0, 1000);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+(DEFAULT,'The most popular Car options by User',
+'This report shows all popular Car options by each User in Taxi Service System',
+'SELECT t.email AS "User Email", t."Option Name", t."Orders with option"	FROM (SELECT c.email, ''Animal Transport'' AS "Option Name", sum(animal_transport::int) AS "Orders with option"	FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email UNION	SELECT c.email, ''WI-FI'' AS "Option Name", sum(wifi::int) AS "Orders with option" FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email UNION	SELECT c.email, ''Conditioner'' AS "Option Name", sum(conditioner::int) AS "Orders with option"	FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email) AS t ORDER BY t.email, t."Orders with option" DESC LIMIT ? OFFSET ?',
+'SELECT count(t."Option Name") FROM (SELECT c.email, ''Animal Transport'' AS "Option Name", sum(animal_transport::int) AS "Orders with option"	FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email UNION	SELECT c.email, ''WI-FI'' AS "Option Name", sum(wifi::int) AS "Orders with option" FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email UNION	SELECT c.email, ''Conditioner'' AS "Option Name", sum(conditioner::int) AS "Orders with option" FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email) AS t',
+true, 15, 1000);

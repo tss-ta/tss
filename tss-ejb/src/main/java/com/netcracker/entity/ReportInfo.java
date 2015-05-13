@@ -29,6 +29,9 @@ public class ReportInfo {
     @Column(name = "page_size")
     private Integer pageSize;
 
+    @Column(name = "export_size")
+    private Integer exportSize;
+
     public ReportInfo() {}
 
     public Integer getId() {
@@ -87,6 +90,14 @@ public class ReportInfo {
         this.pageSize = pageSize;
     }
 
+    public Integer getExportSize() {
+        return exportSize;
+    }
+
+    public void setExportSize(Integer exportSize) {
+        this.exportSize = exportSize;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,6 +108,7 @@ public class ReportInfo {
         if (countable != that.countable) return false;
         if (countQuery != null ? !countQuery.equals(that.countQuery) : that.countQuery != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (exportSize != null ? !exportSize.equals(that.exportSize) : that.exportSize != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (pageSize != null ? !pageSize.equals(that.pageSize) : that.pageSize != null) return false;
@@ -114,6 +126,7 @@ public class ReportInfo {
         result = 31 * result + (selectQuery != null ? selectQuery.hashCode() : 0);
         result = 31 * result + (countQuery != null ? countQuery.hashCode() : 0);
         result = 31 * result + (pageSize != null ? pageSize.hashCode() : 0);
+        result = 31 * result + (exportSize != null ? exportSize.hashCode() : 0);
         return result;
     }
 
@@ -127,6 +140,7 @@ public class ReportInfo {
         sb.append(", selectQuery='").append(selectQuery).append('\'');
         sb.append(", countQuery='").append(countQuery).append('\'');
         sb.append(", pageSize=").append(pageSize);
+        sb.append(", exportSize=").append(exportSize);
         sb.append('}');
         return sb.toString();
     }

@@ -2,6 +2,9 @@
 package com.netcracker.util;
 
 import com.netcracker.entity.TaxiOrder;
+import com.netcracker.report.Report;
+import com.netcracker.report.container.MultipurposeValue;
+import com.netcracker.report.container.RowData;
 import com.netcracker.util.reports.ReportsRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -16,16 +19,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 /**
  * @author maks
  */
 public class ExcelExport {
+
+    private static final int HEADER_ROW_NUMBER = 0;
+    private static final int HEADER_START_CELL_NUMBER = 0;
+    private static final int TITLE_ROW_NUMBER = 2;
+    private static final int DATA_ROW_NUMBER = 3;
+    private static final int TITLE_START_CELL_NUMBER = 0;
+    private static final int DATA_START_CELL_NUMBER = 0;
+    private static final int DB_FIRST_COLUMN_INDEX = 1;
 
     public File exportReportRows(int allOrders, List<ReportsRow> rows) throws IOException {
         return exportReportRows("TSS report", allOrders, rows);
@@ -71,6 +79,88 @@ public class ExcelExport {
             workbook.write(out);
             return f;
         }
+    }
+
+    public File createExcelReport(Report report) {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet(report.getInfo().getName());
+        File file = newFile();
+
+        createHeader(sheet, report.getInfo().getDescription());
+        createBody(sheet, report);
+
+        writeWorkBook(workbook, file);
+
+        return file;
+    }
+
+    private void writeWorkBook(HSSFWorkbook workbook, File file) {
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            workbook.write(out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private File newFile() {
+        File file = createNewFile();
+        try {
+            if (file.exists()) {
+                file.delete();
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    private void createBody(HSSFSheet sheet, Report report) {
+        createBodyTitle(sheet, report);
+        createBodyData(sheet, report);
+    }
+
+    public void createBodyTitle(HSSFSheet sheet, Report report) {
+        Row title = sheet.createRow(TITLE_ROW_NUMBER);
+        for (int i = DB_FIRST_COLUMN_INDEX; i <= report.getData().columnAmount(); i++) {
+            title.createCell(DATA_START_CELL_NUMBER + i).setCellValue(report.getData().columnName(i));
+        }
+    }
+
+    public void createBodyData(HSSFSheet sheet, Report report) {
+        Row row;
+        int dataRowNumber = DATA_ROW_NUMBER;
+        for (RowData rowData : report.getData().getRows()) {
+            row = sheet.createRow(dataRowNumber);
+            for (int i = DB_FIRST_COLUMN_INDEX; i <= rowData.columnAmount(); i++) {
+                setCellValue(row.createCell(DATA_START_CELL_NUMBER + i), rowData.getColumn(i));
+            }
+            dataRowNumber++;
+        }
+    }
+
+    private void setCellValue(Cell cell, MultipurposeValue column) {
+        switch (column.getType()) {
+            case STRING: cell.setCellValue(column.getStringValue());
+                break;
+            case INTEGER: cell.setCellValue(column.getIntValue());
+                break;
+            case LONG: cell.setCellValue(column.getLongValue());
+                break;
+            case DOUBLE: cell.setCellValue(column.getDoubleValue());
+                break;
+            case BOOLEAN: cell.setCellValue(column.isBooleanValue());
+                break;
+            case TIMESTAMP: cell.setCellValue(column.getTimestampValue());
+                break;
+        }
+    }
+
+    private void createHeader(HSSFSheet sheet, String description) {
+        Row row = sheet.createRow(HEADER_ROW_NUMBER);
+        row.createCell(HEADER_START_CELL_NUMBER).setCellValue(description);
     }
 
     private void writeReportsRows(String header, int allOrders, Sheet sheet, List<ReportsRow> reportsRows) {

@@ -1,17 +1,16 @@
 package com.netcracker.router.servlet;
 
-import com.netcracker.router.AnnotationRouter;
-import com.netcracker.router.ContentType;
-import com.netcracker.router.HttpMethod;
-import com.netcracker.router.Router;
+import com.netcracker.router.*;
 import com.netcracker.router.container.ActionResponse;
 import com.netcracker.router.container.ActionMetaData;
 import com.netcracker.router.exception.ActionNotFoundException;
 import com.netcracker.router.exception.HttpMethodNotAllowedException;
+import com.netcracker.router.exception.RouterActionInvocationAxception;
 import com.netcracker.router.util.LoggerUtil;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * @author Kyrylo Berehovyi
@@ -146,5 +146,13 @@ public class RouterServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         resp.setContentType(ContentType.JSON.getHeader());
         mapper.writeValue(resp.getWriter(), actionResponse.getModel());
+//          ObjectMapper mapper = new ObjectMapper();
+
+//          SimpleModule module = new SimpleModule();
+//          module.addSerializer(MultipurposeValue.class, new MultipurposeValueSerializer());
+//          mapper.registerModule(module);
+
+//          String serialized = mapper.writeValueAsString(actionResponse.getModel());
+//        mapper.writeValue(resp.getWriter(), actionResponse.getModel());
     }
 }
