@@ -38,6 +38,10 @@ public interface TaxiOrderBeanLocal extends EJBLocalObject {
             int pageSize, User user, Status status);
 
     public Contacts createContacts(User user);
-    
+
     public void updateTaxiOrder(TaxiOrder taxiOrder);
+
+    public void refuseTaxiOrder(int orderId);
+
+    public int countOrdersByStatus(User user, Status status);
 }

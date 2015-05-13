@@ -37,14 +37,17 @@
                                     <td>${list.routeId.pathContent}</td>
                                     <td>${list.fromAddr}</td>
                                     <td>${list.toAddr}</td>
-                                    <td><c:if test="${list.status!=5}">
-                                            <a
-                                                href="/customer/edit?action=editTaxiOrder&taxiOrderId=${list.getId()}">edit</a>
-                                        </c:if></td>
-                                    <td><c:if test="${list.status!=5}">
-                                            <a
-                                                href="/customer/edit?action=deleteTaxiOrder&taxiOrderId=${list.getId()}">X</a>
-                                        </c:if></td>
+                                    <c:if test="${list.status==0}">
+                                        <td><c:if test="${list.status!=5}">
+                                                <a
+                                                    href="/customer/edit?action=editTaxiOrder&taxiOrderId=${list.getId()}">edit</a>
+                                            </c:if></td>
+                                        <td><c:if test="${list.status!=5}">
+                                                <a
+                                                    href="/customer/edit?action=deleteTaxiOrder&taxiOrderId=${list.getId()}">X</a>
+                                            </c:if></td>
+                                        </c:if>
+
                                 </tr>
                             </c:forEach>
                         </tbody>
