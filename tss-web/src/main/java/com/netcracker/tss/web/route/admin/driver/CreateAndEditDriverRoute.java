@@ -2,6 +2,7 @@ package com.netcracker.tss.web.route.admin.driver;
 
 import com.netcracker.ejb.DriverLocal;
 import com.netcracker.ejb.MailerBeanLocal;
+import com.netcracker.ejb.PageCalculatorBeanLocal;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.Category;
 import com.netcracker.router.HttpMethod;
@@ -9,6 +10,7 @@ import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
 import com.netcracker.tss.web.util.Page;
+import com.netcracker.tss.web.util.PagerLink;
 import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.TokenGenerator;
@@ -71,7 +73,7 @@ public class CreateAndEditDriverRoute {
         return actResp;
     }
 
-    @Action(action = "editdriver")
+    @Action(action = "editdriver", httpMethod = HttpMethod.POST)
     public ActionResponse editDriver(HttpServletRequest req) throws ServletException, IOException {
         DriverLocal driverLocal = BeansLocator.getInstance().getDriverBean();
         Driver driver = driverLocal.getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
@@ -80,10 +82,7 @@ public class CreateAndEditDriverRoute {
             driverLocal.editDriver(updateDriverFromRequest(driver, req));
         }
 
-        List<Driver> drivers = driverLocal.getDriverPage(1, 10);
-        req.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
-
-        return new ActionResponse(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
+        return new ViewDriverRoute().getAllDriversPage(req);
     }
 
     private Driver updateDriverFromRequest(Driver driver, HttpServletRequest req) throws ServletException, IOException {

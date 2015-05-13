@@ -43,7 +43,7 @@
         </a>
     </li>
     <li>
-        <a href="/admin/driver" ${activeDrivers}>
+        <a href="/admin?menu=driver&action=all" ${activeDrivers}>
             <span class="icon-container"><i class="fa fa-user"></i></span>
             <span class="icon-label">Drivers</span>
         </a>
