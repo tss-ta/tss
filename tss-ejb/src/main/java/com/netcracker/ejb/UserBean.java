@@ -49,8 +49,8 @@ public class UserBean implements SessionBean {
                 roles.add(Roles.BANNED);
                 user.setRoles(toRoleList(roles, roleDAO));
                 userDAO.update(user);
-//                notifyAboutBan(user.getEmail());//!!!!!!!!!!
-                notifyAboutBan("maksbrunarskiy@gmail.com");//!!!!!!!!!!
+                notifyAboutBan(user.getEmail());//!!!!!!!!!!
+//                notifyAboutBan("maksbrunarskiy@gmail.com");//!!!!!!!!!!
 
             } else {
                 user.setRoles(toRoleList(roles, roleDAO));
