@@ -13,6 +13,7 @@ import com.netcracker.entity.Driver;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Category;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -25,11 +26,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.netcracker.util.BeansLocator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
  * @author Виктор
+ * @author maks
  */
 @WebServlet(name = "RegistrationServlet", urlPatterns = {"/RegistrationServlet"})
 public class RegistrationServlet extends HttpServlet {
@@ -45,40 +49,44 @@ public class RegistrationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String userName = request.getParameter("userName");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirPassword");
-        Integer driverToken = Integer.valueOf(request.getParameter("token"));
+        try {
+            String userName = request.getParameter("userName");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String confirmPassword = request.getParameter("confirPassword");
+            Integer driverToken = Integer.valueOf(request.getParameter("token"));
 
 
-        if (password.equals(confirmPassword)) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            password = encoder.encode(password);
+            if (password.equals(confirmPassword)) {
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                password = encoder.encode(password);
 
-            RegistrationBeanLocal rb = getRegistrationBean(request);
+                RegistrationBeanLocal rb = BeansLocator.getInstance().getBean(RegistrationBeanLocal.class);//!!
 
-            if(driverToken != null) {
-                Driver driver = createDriverWithSpecifiedParameters(request);
-                driver.setUsername(userName);
-                driver.setPasswordHash(password);
-                driver.setToken(driverToken);
+                if (driverToken != null) {
+                    Driver driver = createDriverWithSpecifiedParameters(request);
+                    driver.setUsername(userName);
+                    driver.setPasswordHash(password);
+                    driver.setToken(driverToken);
 
-                rb.registrateDriver(driver);
-                response.sendRedirect("/driver");
-                return;
-            }
+                    rb.registrateDriver(driver);
+                    response.sendRedirect("/driver");
+                    return;
+                }
 
 
-            User user = new User(userName, email, password);
-            if (!rb.isUserExist(user)) {
-                rb.registrate(user);
-                response.sendRedirect("/customer");
+                User user = new User(userName, email, password);
+                if (!rb.isUserExist(user)) {
+                    rb.registrate(user);
+                    response.sendRedirect("/customer");
+                } else {
+                    response.sendRedirect("/signup.jsp");
+                }
             } else {
                 response.sendRedirect("/signup.jsp");
             }
-        } else {
-            response.sendRedirect("/signup.jsp");
+        } catch (InvalidEntityException e){
+
         }
 
     }
@@ -133,22 +141,4 @@ public class RegistrationServlet extends HttpServlet {
         return "registration";
     }// </editor-fold>
 
-    private RegistrationBeanLocal getRegistrationBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            RegistrationBeanLocalHome regBeanLocalHome = (RegistrationBeanLocalHome) context.lookup("java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
-            return regBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
-            throw new RuntimeException("Internal server error!" + 
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");// maybe have to create custom exception?
-        } catch (ClassCastException ex){
-                        Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome", ex);
-            throw new RuntimeException("Internal server error!" + 
-                    "Can't find groupBeanLocalHome with name java:app/tss-ejb/RegistrationBean!com.netcracker.ejb.RegistrationBeanLocalHome");
-        }
-    }
 }

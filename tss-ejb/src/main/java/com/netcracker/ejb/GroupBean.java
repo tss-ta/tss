@@ -26,6 +26,22 @@ import javax.persistence.NoResultException;
  */
 public class GroupBean implements SessionBean {
 
+    public Group getGroup(int id) {
+        GroupDAO dao = null;
+
+        try {
+            dao = new GroupDAO();
+            Group group = dao.get(id);
+            return group;
+        } catch (NoSuchEntity noSuchEntity) {
+            throw new IllegalArgumentException("Can't find group with id = " + id); //or another Exception??
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
     public void addGroup(String groupName, List<Roles> roles) {
         GroupDAO groupDAO = null;
         RoleDAO roleDAO = null;
@@ -123,15 +139,16 @@ public class GroupBean implements SessionBean {
         }
     }
 
-    private boolean isGroupPersist(int groupId, GroupDAO dao) {
+    public boolean isGroupContainsRole(Group group, Roles role) {
+        RoleDAO roleDAO = null;
         try {
-            if (dao.get(groupId) != null) {
-                return true;
-            } else {
-                return false;
+            roleDAO = new RoleDAO();
+            Role roleEntity = roleDAO.findByRolename(role.toString());
+            return group.getRoles().contains(roleEntity);
+        } finally {
+            if (roleDAO != null) {
+                roleDAO.close();
             }
-        } catch (IllegalArgumentException | NoSuchEntity e) {
-            return false;
         }
     }
 
