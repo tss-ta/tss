@@ -164,7 +164,7 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
                     addFrom, addTo, orderTime, distance, price);
             request.setAttribute("taxiOrderId", taxiOrderId);
-            request.setAttribute("pageContent", "content/confirmation.jsp");
+            request.setAttribute("pageContent", "content/confirmation-updated.jsp");
             request.getRequestDispatcher(
                     "/WEB-INF/views/customer/customer-template.jsp").forward(
                             request, response);
