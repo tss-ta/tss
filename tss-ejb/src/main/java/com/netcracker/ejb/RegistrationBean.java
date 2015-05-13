@@ -4,7 +4,7 @@ import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.DriverDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 
 import com.netcracker.entity.helper.Roles;
 import com.netcracker.exceptions.InvalidEntityException;
@@ -47,7 +47,7 @@ public class RegistrationBean implements SessionBean {
         }
     }
 
-    public void registrateDriver(Driver driver) throws NoSuchEntity {
+    public void registrateDriver(Driver driver) throws NoSuchEntityException {
         DriverDAO driverDAO = null;
         RoleDAO roleDAO = null;
         ContactsDAO contactsDAO = null;

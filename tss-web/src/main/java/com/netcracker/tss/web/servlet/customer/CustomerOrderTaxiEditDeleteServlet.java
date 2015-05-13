@@ -7,7 +7,7 @@ package com.netcracker.tss.web.servlet.customer;
 
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.PriceBeanLocal;
@@ -17,20 +17,15 @@ import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
 import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.Address;
-import com.netcracker.entity.Driver;
-import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.DateParser;
-import com.netcracker.tss.web.util.Page;
-import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.tss.web.util.UserUtils;
 import com.netcracker.util.BeansLocator;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -93,19 +88,11 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         if (ACTION_EDIT_TAXI_ORDER.equals(action)) {
             taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
             TaxiOrder taxiOrder = null;
-<<<<<<< HEAD
-			try {
-				taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
-			} catch (NoSuchEntity e) {
-				e.printStackTrace();
-			}
-=======
             try {
                 taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
-            } catch (NoSuchEntity e) {
+            } catch (NoSuchEntityException e) {
                 e.printStackTrace();
             }
->>>>>>> develop
             request.getSession().setAttribute("taxiOrder", taxiOrder);
             redirectToEdit(request, response);
             return;

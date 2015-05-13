@@ -3,7 +3,7 @@ package com.netcracker.ejb;
 import com.netcracker.dto.GroupDTO;
 import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Group;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.helper.Pager;
@@ -33,7 +33,7 @@ public class GroupBean implements SessionBean {
             dao = new GroupDAO();
             Group group = dao.get(id);
             return group;
-        } catch (NoSuchEntity noSuchEntity) {
+        } catch (NoSuchEntityException noSuchEntity) {
             throw new IllegalArgumentException("Can't find group with id = " + id); //or another Exception??
         } finally {
             if (dao != null) {
@@ -89,7 +89,7 @@ public class GroupBean implements SessionBean {
             group.setRoles(toRoleList(roles, roleDAO));
             validate(group);
             groupDAO.update(group);
-        } catch (NoSuchEntity e) {
+        } catch (NoSuchEntityException e) {
             throw new IllegalArgumentException("Can't edit this group! \n Group with id = " + groupId + " doesn't exist");
 //			throw new InvalidEntityException("Can't edit this group! Try again later! \n Group with id = " + groupId + " doesn't exist");
 		} finally {

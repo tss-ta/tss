@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.util.GlobalVariables;
 
 
@@ -52,12 +52,12 @@ public class GenericDAO<T> {
 		this.em = em;
 	}
 
-	public T get(int id) throws NoSuchEntity {
+	public T get(int id) throws NoSuchEntityException {
 		T t = em.find(entityClass, id);
 		if (t != null)
 			return t;
 		else
-			throw new NoSuchEntity();
+			throw new NoSuchEntityException();
 	}
 
 	@Deprecated

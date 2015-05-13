@@ -2,7 +2,7 @@ package com.netcracker.ejb;
 
 
 import com.netcracker.dao.TariffDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.exceptions.InvalidEntityException;
@@ -36,7 +36,7 @@ public class TariffBean implements SessionBean {
             tariff.setMultipleCoef(multCoef);
             validate(tariff);
             tariffDAO.update(tariff);
-        } catch (NoSuchEntity e) {
+        } catch (NoSuchEntityException e) {
             throw new IllegalArgumentException("Can't edit this tariff! \n Tariff with id = " + tariffId + " doesn't exist");
 		} finally {
             if (tariffDAO != null) {

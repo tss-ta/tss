@@ -2,10 +2,9 @@ package com.netcracker.ejb;
 
 import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dto.UserDTO;
-import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Group;
@@ -14,7 +13,6 @@ import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
-import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.util.BeansLocator;
 
 import java.io.IOException;
@@ -22,7 +20,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.json.JSONException;
 
@@ -30,7 +27,6 @@ import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
-import javax.validation.ConstraintViolation;
 
 /**
  *
@@ -60,7 +56,7 @@ public class UserBean implements SessionBean {
                 user.setRoles(toRoleList(roles, roleDAO));
                 userDAO.update(user);
             }
-        } catch (NoSuchEntity e) {
+        } catch (NoSuchEntityException e) {
 			throw new IllegalArgumentException("User with id = " + userId + " does not exist");
 //			throw new InvalidEntityException("User with id = " + userId + " does not exist");
 		} finally {
@@ -105,7 +101,7 @@ public class UserBean implements SessionBean {
                 }
                 return true;
             }
-        } catch (NoSuchEntity e) {
+        } catch (NoSuchEntityException e) {
             throw new IllegalArgumentException("Can't find user with id = " + userId);
              //       + " or group with id " + groupId
 		} finally {
@@ -193,7 +189,7 @@ public class UserBean implements SessionBean {
             } else {
                 return false;
             }
-        } catch (NoSuchEntity e) {
+        } catch (NoSuchEntityException e) {
             throw new IllegalArgumentException("Can't find user with id = " + userId);
 //                     + " or group with id " + groupId);
 		} finally {
@@ -212,7 +208,7 @@ public class UserBean implements SessionBean {
             User userFromDB = null;
             try {
                 userFromDB = userDAO.get(userId);
-            } catch (NoResultException | NoSuchEntity nre) {
+            } catch (NoResultException | NoSuchEntityException nre) {
                 throw new IllegalArgumentException("User with id = " + userId + " is not exist", nre);
             }
             try {

@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.dto.CarDTO;
 import com.netcracker.ejb.TariffBean;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
@@ -59,7 +59,7 @@ public class TaxiOrderBeanTest {
 				.addPackage(Tariff.class.getPackage())
 				.addPackage(DriverCar.class.getPackage())
 				.addPackage("com.google.common.base")
-				.addPackage(NoSuchEntity.class.getPackage())
+				.addPackage(NoSuchEntityException.class.getPackage())
 				.addPackage(BeansLocator.class.getPackage())
 				.addPackage(Report.class.getPackage())
 				.addPackage(CarDTO.class.getPackage())

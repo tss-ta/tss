@@ -1,7 +1,7 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dao.CarDao;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.dto.CarDTO;
 import com.netcracker.entity.Car;
 
@@ -108,7 +108,7 @@ public class CarBean implements SessionBean {
             try {
                 car = carDao.get(id);
             }
-            catch (NoResultException | NoSuchEntity e) {
+            catch (NoResultException | NoSuchEntityException e) {
                 car = null;
             }
         } finally {
