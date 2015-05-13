@@ -117,13 +117,13 @@ public class ReportsBean implements SessionBean {
             infoDAO = new ReportInfoDAO();
             reportInfo = infoDAO.get(id);
             if (reportInfo.isCountable()) {
-                System.out.println("-------------1");
                 reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), pageNumber, reportInfo.getPageSize());
             } else {
-                System.out.println("-------------2");
                 reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
             }
             report = new Report(reportInfo, reportData);
+        }  catch (NoSuchEntityException e) {
+            e.printStackTrace();
         } finally {
             if (infoDAO != null) {
                 infoDAO.close();
@@ -137,7 +137,7 @@ public class ReportsBean implements SessionBean {
         ReportInfoDAO infoDAO = null;
         ReportInfo reportInfo;
         ReportData reportData;
-        Report report;
+        Report report = null;
         try {
             infoDAO = new ReportInfoDAO();
             reportInfo = infoDAO.get(id);
