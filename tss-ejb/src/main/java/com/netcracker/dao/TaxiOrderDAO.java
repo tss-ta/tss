@@ -25,6 +25,22 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     public TaxiOrderDAO() {
     }
 
+    public List<TaxiOrder> getActiveTaxiOrders(int pageNumber, int pageSize) {
+        if (pageNumber <= 0) {
+            throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
+        }
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Argument 'pageSize' <= 0");
+        }
+        TypedQuery<TaxiOrder> tq = em.createQuery(
+                "SELECT t FROM TaxiOrder t ORDER BY t.bookingTime DESC", TaxiOrder.class);
+        //tq.setParameter("contactsId", contacts);
+        tq.setFirstResult((pageNumber - 1) * pageSize);
+        tq.setMaxResults(pageSize);
+        List<TaxiOrder> taxiOrders = tq.getResultList();
+        return taxiOrders;
+    }
+    
     public List<TaxiOrder> getTaxiOrderHistory(int pageNumber, int pageSize, Contacts contacts) {
         if (pageNumber <= 0) {
             throw new IllegalArgumentException("Argument 'pageNumber' <= 0");

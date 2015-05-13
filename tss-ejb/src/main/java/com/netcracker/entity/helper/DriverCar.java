@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "driver_car")
 @NamedQueries({
-    @NamedQuery(name = "DriverCar.findByDriverId", query = "from DriverCar a \n"
+    @NamedQuery(name = "DriverCar.findByDriverId", query = "select a from DriverCar a \n"
             + "where a.assignedTime in (\n"
             + "    select max(b.assignedTime) \n"
             + "    from DriverCar b \n"

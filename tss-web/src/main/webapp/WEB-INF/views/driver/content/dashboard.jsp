@@ -16,35 +16,35 @@
 					<table class="table table-bordered table-striped table-condensed">
 						<thead>
 							<tr>
-								<th>Price</th>
 								<th>Booking Time</th>
 								<th>Order Time</th>
 								<th>Status</th>
-								<th>Driver</th>
-								<th>Route</th>
 								<th>From Address</th>
 								<th>To Address</th>
+								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach items="${history}" var="list">
 								<tr>
-									<td class="numeric">${list.price}</td>
 									<td>${list.bookingTime}</td>
 									<td>${list.orderTime}</td>
 									<td>${list.strStatus}</td>
-									<td>${list.driverCarId}</td>
-									<td>${list.routeId.pathContent}</td>
 									<td>${list.fromAddr}</td>
 									<td>${list.toAddr}</td>
-									<td><c:if test="${list.status!=5}">
+									<td><c:if test="${(list.status==0) || (list.status==1)}">
 											<a
-												href="/customer/edit?action=editTaxiOrder&taxiOrderId=${list.getId()}">edit</a>
-										</c:if></td>
-									<td><c:if test="${list.status!=5}">
+												href="/driver/assign?taxiOrderId=${list.getId()}">Assign</a>
+										</c:if>
+										<c:if test="${(list.status==2)}">
 											<a
-												href="/customer/edit?action=deleteTaxiOrder&taxiOrderId=${list.getId()}">X</a>
-										</c:if></td>
+												href="/driver/inprogress?taxiOrderId=${list.getId()}">Set In Progress</a>
+										</c:if>
+										<c:if test="${(list.status==4)}">
+											<a
+												href="/driver/complete?taxiOrderId=${list.getId()}">Set Completed</a>
+										</c:if>
+										</td>
 								</tr>
 							</c:forEach>
 						</tbody>

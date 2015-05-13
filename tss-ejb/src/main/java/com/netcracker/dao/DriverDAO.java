@@ -4,7 +4,10 @@ import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Category;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +20,7 @@ public class DriverDAO extends GenericDAO<Driver> {
     public DriverDAO() {
         super();
     }
-
+    
     public List<Driver> searchByName(String name, int pageNumber, int paginationStep) {
         Query query = em.createNamedQuery("Driver.searchDriverByName");
         query.setParameter("drivername", "%" + name + "%");
@@ -38,6 +41,18 @@ public class DriverDAO extends GenericDAO<Driver> {
         return (Driver) query.getSingleResult();
     }
 
+    /**
+    *
+    * @param email
+    * @return
+    * @throws NoResultException - if user with this email doesn't exist
+    */
+    public Driver getByEmail(String email) {
+    	TypedQuery<Driver> query = em.createNamedQuery("Driver.findByEmail", Driver.class);
+    	query.setParameter("email", email.toLowerCase());
+    	return query.getSingleResult();
+    }
+    
     public void createDriverFromUser(Category category,
                                      boolean available,
                                      boolean isMale,
