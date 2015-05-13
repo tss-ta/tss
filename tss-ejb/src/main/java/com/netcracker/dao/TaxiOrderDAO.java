@@ -10,6 +10,7 @@ import com.netcracker.entity.TaxiOrder;
 import java.util.Date;
 import com.netcracker.entity.helper.Status;
 import com.netcracker.entity.helper.CarCategory;
+import com.netcracker.entity.helper.DriverCar;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
@@ -23,6 +24,24 @@ import javax.persistence.TypedQuery;
 public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
 
     public TaxiOrderDAO() {
+    }
+
+    public List<TaxiOrder> getTaxiOrderHistoryDriver(int pageNumber, int pageSize, DriverCar driverCar) {
+        if (pageNumber <= 0) {
+            throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
+        }
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Argument 'pageSize' <= 0");
+        }
+        TypedQuery<TaxiOrder> tq = em.createQuery(
+                "SELECT t FROM TaxiOrder t WHERE t.driverCarId = :driverCarId OR t.status = :status OR t.status = :status1 ORDER BY t.bookingTime DESC", TaxiOrder.class);
+        tq.setParameter("driverCarId", driverCar);
+        tq.setParameter("status", Status.QUEUED.getId());
+        tq.setParameter("status1", Status.UPDATED.getId());
+        tq.setFirstResult((pageNumber - 1) * pageSize);
+        tq.setMaxResults(pageSize);
+        List<TaxiOrder> taxiOrders = tq.getResultList();
+        return taxiOrders;
     }
 
     public List<TaxiOrder> getTaxiOrderHistory(int pageNumber, int pageSize, Contacts contacts) {
@@ -142,7 +161,7 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
         Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.contactsId = :contacts) AND (t.status = :status) ");
         query.setParameter("contacts", userContacts);
         query.setParameter("status", status);
-        Long count =  (Long) query.getSingleResult();
+        Long count = (Long) query.getSingleResult();
         return count.intValue();
     }
 }

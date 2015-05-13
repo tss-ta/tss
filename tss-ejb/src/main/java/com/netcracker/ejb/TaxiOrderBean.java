@@ -7,6 +7,7 @@ package com.netcracker.ejb;
 
 import com.netcracker.dao.AddressDAO;
 import com.netcracker.dao.ContactsDAO;
+import com.netcracker.dao.DriverCarDAO;
 import com.netcracker.dao.RouteDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
@@ -17,6 +18,7 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.helper.Status;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.DriverCar;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 
 import java.io.IOException;
@@ -149,8 +151,7 @@ public class TaxiOrderBean implements SessionBean {
             }
         }
     }
-    
-    
+
     public int countOrdersByStatus(User user, Status status) {
         TaxiOrderDAO dao = null;
         ContactsDAO daoC = null;
@@ -168,6 +169,55 @@ public class TaxiOrderBean implements SessionBean {
             }
         }
         return orderCount;
+    }
+
+    public List<TaxiOrderHistory> getTaxiOrderDriver(Integer pageNumber,
+            int pageSize, User user) {
+        TaxiOrderDAO dao = null;
+        DriverCarDAO daoC = null;
+        List<TaxiOrder> orders = null;
+        try {
+            dao = new TaxiOrderDAO();
+            daoC = new DriverCarDAO();
+            orders = dao.getTaxiOrderHistoryDriver(pageNumber, pageSize,
+                    daoC.getByDriverId(user.getId()));
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+            if (daoC != null) {
+                daoC.close();
+            }
+        }
+        List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
+        return taxiOrderHistory;
+    }
+
+    public void setNextStatus(int taxiOrderId, User user) {
+        TaxiOrderDAO orderDAO = null;
+        TaxiOrder taxiOrder = null;
+        DriverCarDAO daoC = null;
+        try {
+            orderDAO = new TaxiOrderDAO();
+            daoC = new DriverCarDAO();
+            taxiOrder = orderDAO.get(taxiOrderId);
+            int status = taxiOrder.getStatus();
+            if (status == Status.QUEUED.getId()) {
+                taxiOrder.setDriverCarId(daoC.getByDriverId(user.getId()));
+                taxiOrder.setStatus(Status.ASSIGNED);
+                orderDAO.update(taxiOrder);
+            } else if (status == Status.ASSIGNED.getId()) {
+                taxiOrder.setStatus(Status.IN_PROGRESS);
+                orderDAO.update(taxiOrder);
+            } else if (status == Status.IN_PROGRESS.getId()) {
+                taxiOrder.setStatus(Status.COMPLETED);
+                orderDAO.update(taxiOrder);
+            }
+        } catch (NoSuchEntity e) {
+            e.printStackTrace();
+        } finally {
+
+        }
     }
 
     public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,
