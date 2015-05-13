@@ -25,9 +25,5 @@ public class InvalidEntityException extends EJBException {
         super(message, cause);
     }
 
-    public InvalidEntityException (Throwable cause) {
-        super("Entity class have some invalid fields", cause);
-    }
-
 
 }

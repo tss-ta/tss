@@ -5,25 +5,19 @@ import com.netcracker.dao.DriverDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.dao.exceptions.NoSuchEntity;
-<<<<<<< HEAD
-import com.netcracker.entity.*;
+
 import com.netcracker.entity.helper.Roles;
 import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.util.BeansLocator;
-
-=======
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
->>>>>>> develop
 import java.rmi.RemoteException;
-import java.util.Set;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import javax.persistence.NoResultException;
-import javax.validation.ConstraintViolation;
 
 /**
  *

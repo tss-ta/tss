@@ -15,10 +15,8 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.netcracker.dao.exceptions.NoSuchEntity;
-<<<<<<< HEAD
-=======
 import com.netcracker.util.GlobalVariables;
->>>>>>> develop
+
 
 /**
  *
