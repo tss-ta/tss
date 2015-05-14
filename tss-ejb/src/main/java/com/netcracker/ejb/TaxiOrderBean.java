@@ -205,6 +205,10 @@ public class TaxiOrderBean implements SessionBean {
                 taxiOrder.setDriverCarId(daoC.getByDriverId(user.getId()));
                 taxiOrder.setStatus(Status.ASSIGNED);
                 orderDAO.update(taxiOrder);
+            } else if (status == Status.UPDATED.getId()) {
+                taxiOrder.setDriverCarId(daoC.getByDriverId(user.getId()));
+                taxiOrder.setStatus(Status.ASSIGNED);
+                orderDAO.update(taxiOrder);
             } else if (status == Status.ASSIGNED.getId()) {
                 taxiOrder.setStatus(Status.IN_PROGRESS);
                 orderDAO.update(taxiOrder);
@@ -245,6 +249,7 @@ public class TaxiOrderBean implements SessionBean {
             int pageSize, User user) {
         return getTaxiOrderHistory(pageNumber, pageSize, user, null);
     }
+
     public void updateTaxiOrder(TaxiOrder taxiOrder) {
         TaxiOrderDAO taxiOrderDAO = null;
         try {
