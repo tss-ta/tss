@@ -288,12 +288,12 @@ public class TaxiOrderBean implements SessionBean {
         }
     }
 
-    public List<TaxiOrderHistory> getActiveTaxiOrders(int pageNumber, int pageSize) {
+    public List<TaxiOrderHistory> getActiveTaxiOrders(int pageNumber, int pageSize, Driver driver) {
         TaxiOrderDAO dao = null;
         List<TaxiOrder> orders = null;
         try {
             dao = new TaxiOrderDAO();
-            orders = dao.getActiveTaxiOrders(pageNumber, pageSize);
+            orders = dao.getActiveTaxiOrders(pageNumber, pageSize, driver.getId());
         } finally {
             if (dao != null) {
                 dao.close();
@@ -301,6 +301,21 @@ public class TaxiOrderBean implements SessionBean {
         }
         List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
         return taxiOrderHistory;
+    }
+
+    public List<TaxiOrderHistory> getCompletedTaxiOrders(int pageNumber, int pageSize, Driver driver) {
+    	TaxiOrderDAO dao = null;
+    	List<TaxiOrder> orders = null;
+    	try {
+    		dao = new TaxiOrderDAO();
+    		orders = dao.getCompletedTaxiOrders(pageNumber, pageSize, driver.getId());
+    	} finally {
+    		if (dao != null) {
+    			dao.close();
+    		}
+    	}
+    	List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
+    	return taxiOrderHistory;
     }
     
     public List<TaxiOrderHistory> getTaxiOrderHistory(Integer pageNumber,

@@ -39,8 +39,8 @@ import com.netcracker.tss.web.util.UserUtils;
  * Created by Vitalii Chekaliuk
  */
 
-@WebServlet(urlPatterns = "/driver/dashboard")
-public class DriverActiveTaxiOrdersDashboardServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/driver/history")
+public class DriverTaxiOrdersHistoryServlet extends HttpServlet {
 
 	private static final int pageSize = 10;
 
@@ -56,13 +56,13 @@ public class DriverActiveTaxiOrdersDashboardServlet extends HttpServlet {
                             req, resp);
             return;
         }
-        
+		
 		Integer pageNumber = updatePageNumber(req);
 		getServletContext().setAttribute("pageNumber", pageNumber);
 		List<TaxiOrderHistory> list = getHistory(pageNumber, req, driver);
 		req.setAttribute("history", list);
-		req.setAttribute("pageType", "dashboard");
-		req.setAttribute("pageContent", "content/dashboard.jsp");
+		req.setAttribute("pageType", "history");
+		req.setAttribute("pageContent", "content/history.jsp");
 		req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
 				.forward(req, resp);
 	}
@@ -70,7 +70,7 @@ public class DriverActiveTaxiOrdersDashboardServlet extends HttpServlet {
 	private List<TaxiOrderHistory> getHistory(Integer pageNumber,
 			HttpServletRequest req, Driver driver) {
 		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
-		List<TaxiOrderHistory> list = taxiOrderBeanLocal.getActiveTaxiOrders(pageNumber, pageSize, driver);
+		List<TaxiOrderHistory> list = taxiOrderBeanLocal.getCompletedTaxiOrders(pageNumber, pageSize, driver);
 		if (list.size() == 0 && pageNumber>1) {
 			pageNumber--;
 			getServletContext().setAttribute("pageNumber", pageNumber);

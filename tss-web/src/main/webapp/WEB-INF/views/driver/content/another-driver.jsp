@@ -1,0 +1,20 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
+<div class="row">
+    <div class="col-lg-9 main-chart">
+        <div class="text-center">
+            <h1>Can't change order state!</h1>
+        </div>
+        <div class="row mt bottom_line">
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <h3>Current user is not the driver conducting Taxi Order with id <b style="color:crimson">${taxiOrderId}</b></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

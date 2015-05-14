@@ -28,7 +28,9 @@ public interface TaxiOrderBeanLocal extends EJBLocalObject {
 
     public void addTaxiOrder(User user, Route route, Address addFrom, Address addTo, TaxiOrder taxiOrder);
 
-    public List<TaxiOrderHistory> getActiveTaxiOrders(int pageNumber, int pageSize);
+    public List<TaxiOrderHistory> getActiveTaxiOrders(int pageNumber, int pageSize, Driver driver);
+    
+    public List<TaxiOrderHistory> getCompletedTaxiOrders(int pageNumber, int pageSize, Driver driver);
     
     public List<TaxiOrderHistory> getTaxiOrderHistory(int pageNumber, int pageSize, User user);
 

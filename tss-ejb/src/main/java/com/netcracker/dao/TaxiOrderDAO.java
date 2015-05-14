@@ -19,13 +19,14 @@ import javax.persistence.TypedQuery;
  *
  * @author Виктор
  * @author maks
+ * @author Vitalii Chekaliuk
  */
 public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
 
     public TaxiOrderDAO() {
     }
 
-    public List<TaxiOrder> getActiveTaxiOrders(int pageNumber, int pageSize) {
+    public List<TaxiOrder> getActiveTaxiOrders(int pageNumber, int pageSize, int driverId) {
         if (pageNumber <= 0) {
             throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
         }
@@ -33,8 +34,25 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
             throw new IllegalArgumentException("Argument 'pageSize' <= 0");
         }
         TypedQuery<TaxiOrder> tq = em.createQuery(
-                "SELECT t FROM TaxiOrder t ORDER BY t.bookingTime DESC", TaxiOrder.class);
-        //tq.setParameter("contactsId", contacts);
+               // "SELECT t FROM TaxiOrder t WHERE (t.status = 0) OR (t.status = 1) OR (((t.status = 2) OR (t.status = 4)) AND (t.driverCarId.driverId = :driverId)) ORDER BY t.status DESC, t.bookingTime ASC", TaxiOrder.class);
+        		  "SELECT t FROM TaxiOrder t WHERE (t.status = 0) OR (t.status = 1) OR (t.status = 2) OR (t.status = 4) ORDER BY t.status DESC, t.bookingTime ASC", TaxiOrder.class);
+       // tq.setParameter("driverId", driverId);
+        tq.setFirstResult((pageNumber - 1) * pageSize);
+        tq.setMaxResults(pageSize);
+        List<TaxiOrder> taxiOrders = tq.getResultList();
+        return taxiOrders;
+    }
+    
+    public List<TaxiOrder> getCompletedTaxiOrders(int pageNumber, int pageSize, int driverId) {
+        if (pageNumber <= 0) {
+            throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
+        }
+        if (pageSize <= 0) {
+            throw new IllegalArgumentException("Argument 'pageSize' <= 0");
+        }
+        TypedQuery<TaxiOrder> tq = em.createQuery(
+                "SELECT t FROM TaxiOrder t WHERE (t.status = 5) AND (t.driverCarId.driverId = :driverId) ORDER BY t.bookingTime DESC", TaxiOrder.class);
+        tq.setParameter("driverId", driverId);
         tq.setFirstResult((pageNumber - 1) * pageSize);
         tq.setMaxResults(pageSize);
         List<TaxiOrder> taxiOrders = tq.getResultList();

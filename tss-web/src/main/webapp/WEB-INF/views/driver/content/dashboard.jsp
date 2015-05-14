@@ -32,19 +32,22 @@
 									<td>${list.strStatus}</td>
 									<td>${list.fromAddr}</td>
 									<td>${list.toAddr}</td>
-									<td><c:if test="${(list.status==0) || (list.status==1)}">
-											<a
-												href="/driver/todetails?taxiOrderId=${list.getId()}">View Details</a>
-										</c:if>
-										<c:if test="${(list.status==2)}">
-											<a
-												href="/driver/inprogress?taxiOrderId=${list.getId()}">Set In Progress</a>
-										</c:if>
-										<c:if test="${(list.status==4)}">
-											<a
-												href="/driver/complete?taxiOrderId=${list.getId()}">Set Completed</a>
-										</c:if>
-										</td>
+									<td class="col-md-1"><c:if test="${(list.status==0) || (list.status==1)}">
+											<form action="/driver/todetails" method="get">
+												<input type="hidden" name="taxiOrderId" value="${list.getId()}">
+												<button type="submit" class="btn btn-default">View Details</button>
+											</form>
+										</c:if> <c:if test="${(list.status==2)}">
+											<form action="/driver/inprogress" method="post">
+												<input type="hidden" name="taxiOrderId" value="${list.getId()}">
+												<button type="submit" class="btn btn-default">Set In Progress</button>
+											</form>
+										</c:if> <c:if test="${(list.status==4)}">
+											<form action="/driver/completed" method="post">
+												<input type="hidden" name="taxiOrderId" value="${list.getId()}">
+												<button type="submit" class="btn btn-default">Set Completed</button>
+											</form>
+										</c:if></td>
 								</tr>
 							</c:forEach>
 						</tbody>
