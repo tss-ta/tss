@@ -26,4 +26,9 @@ public interface DriverLocal extends EJBLocalObject {
     public void assignCar(Integer driverId, Integer carId);
 
     public void unassignCar(Integer driverId, Integer carId);
+
+    Driver getDriver(String email);
+
+    Driver getDriverByToken(int token);
+
 }

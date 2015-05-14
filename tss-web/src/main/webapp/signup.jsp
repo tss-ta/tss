@@ -58,15 +58,20 @@
                 <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" maxlength="40" required><br/>
                 <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
                 <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass(); return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
-                <div class="row row-fix">
-                    <div class="col-md-2">
-                        <button id="driver_token_id" type="button"><i class="fa fa-plus-square-o fa-2x"></i></button>
-                    </div>
-                    <div id="token_name" class="col-md-8">
-                        <h4 class="form-sign-heading">For Driver Register</h4>
-                    </div>
-                </div>
-                <div id="div_for_token"></div>
+                <%--<div class="row row-fix">--%>
+                    <%--<div class="col-md-2">--%>
+                        <%--<button id="driver_token_id" type="button"><i class="fa fa-plus-square-o fa-2x"></i></button>--%>
+                    <%--</div>--%>
+                    <%--<div id="token_name" class="col-md-8">--%>
+                        <%--<h4 class="form-sign-heading">For Driver Register</h4>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <%--<div id="div_for_token"></div>--%>
+
+                <c:if test="${param.token != null}">
+                    diverrrrr
+                </c:if>
+
 
                 <span id="confirmMessage" class="confirmMessage"></span>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Registrate</button>
@@ -74,28 +79,28 @@
         </div> <!-- /container -->
         <%@ include file="WEB-INF/views/partials/footer.jspf" %>
 
-    <script>
-        $('#driver_token_id').click(function() {
-            $('#driver_token_id').remove();
-            $('#token_name').remove();
-            $('#inputEmail').remove();
-            var div_for_token = $('#div_for_token');
-            div_for_token.append('<input class="form-control" type="number" name="token" placeholder="Input your token here">');
-            div_for_token.append('<br/>');
-            var select = '<label for="inputCategory"><h4 class="form-sign-heading">Choose category  </h4></label>' +
-                            '<select id="inputCategory" name="category">' +
-                                '<option value="B">B</option>' +
-                                '<option value="C">C</option>' +
-                                '<option value="D">D</option>' +
-                            '</select>';
-            div_for_token.append(select);
-            var checkbox = '<div class="checkbox">' +
-                                '<label class="checkbox"><input id="availableChkBox" type="checkbox" name="available" >available</label>' +
-                                '<label class="checkbox"><input id="isMaleChkBox" type="checkbox" name="ismale">is male</label>' +
-                                '<label class="checkbox"><input id="smokesChkBox" type="checkbox" name="smokes">smokes</label>' +
-                           '</div>';
-            div_for_token.append(checkbox);
-        });
-    </script>
+    <%--<script>--%>
+        <%--$('#driver_token_id').click(function() {--%>
+            <%--$('#driver_token_id').remove();--%>
+            <%--$('#token_name').remove();--%>
+            <%--$('#inputEmail').remove();--%>
+            <%--var div_for_token = $('#div_for_token');--%>
+            <%--div_for_token.append('<input class="form-control" type="number" name="token" placeholder="Input your token here">');--%>
+            <%--div_for_token.append('<br/>');--%>
+            <%--var select = '<label for="inputCategory"><h4 class="form-sign-heading">Choose category  </h4></label>' +--%>
+                            <%--'<select id="inputCategory" name="category">' +--%>
+                                <%--'<option value="B">B</option>' +--%>
+                                <%--'<option value="C">C</option>' +--%>
+                                <%--'<option value="D">D</option>' +--%>
+                            <%--'</select>';--%>
+            <%--div_for_token.append(select);--%>
+            <%--var checkbox = '<div class="checkbox">' +--%>
+                                <%--'<label class="checkbox"><input id="availableChkBox" type="checkbox" name="available" >available</label>' +--%>
+                                <%--'<label class="checkbox"><input id="isMaleChkBox" type="checkbox" name="ismale">is male</label>' +--%>
+                                <%--'<label class="checkbox"><input id="smokesChkBox" type="checkbox" name="smokes">smokes</label>' +--%>
+                           <%--'</div>';--%>
+            <%--div_for_token.append(checkbox);--%>
+        <%--});--%>
+    <%--</script>--%>
     </body>
 </html>

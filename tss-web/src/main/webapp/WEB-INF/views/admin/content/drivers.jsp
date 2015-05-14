@@ -15,7 +15,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="col-md-1">
-                            <a href="/admin?menu=drivers&action=add" class="btn btn-default">New Driver</a>
+                            <a href="/admin?menu=drivers&action=add" class="btn btn-default">Invite Driver <i class="fa fa-user"></i></a>
                         </div>
                         <div class="col-md-offset-7 col-md-4">
                             <form action="/admin?menu=driver&action=search&page=1" method="post" >
@@ -74,7 +74,7 @@
                         </c:if>
                     </td>
                     <td>${driver.getCar().getLicPlate()}</td>
-                    <td><a href="/admin/driver?action=editdriver&driverid=${driver.getId()}">edit</a></td>
+                    <td><a href="/admin/driver?action=editdriver&driverid=${driver.getId()}" class="btn btn-default">edit</a></td>
                     <%--<td><a href="/admin/driver?action=deletedriver&driverid=${driver.getId()}">X</a></td>--%>
                 </tr>
             </c:forEach>
