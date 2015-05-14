@@ -5,6 +5,7 @@
  */
 package com.netcracker.tss.web.servlet;
 
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.ejb.*;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
@@ -71,33 +72,23 @@ public class RegistrationServlet extends HttpServlet {
                 driver.setPasswordHash(password);
                 driver.setToken(driverToken);
 
-                ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
-                String errorMessage = validatorBean.validate(driver);
-
-                if(errorMessage == null) {
-                    rb.registrateDriver(driver);
-                    response.sendRedirect("/driver");
-                    return;
-                } else {
-                    request.setAttribute("errorMessage", "Can't register driver account! Call to company hot line to solve problem!");
-                    request.getRequestDispatcher("/signup.jsp").forward(request,response);
-                }
+                rb.registrateDriver(driver);
+                response.sendRedirect("/driver");
+                return;
             }
 
             User user = new User(userName, email, password);
             if (!rb.isUserExist(user)) {
                 rb.registrate(user);
                 response.sendRedirect("/customer");
-
             }
         } else {
-                response.sendRedirect("/signup.jsp");
-            }
+            response.sendRedirect("/signup.jsp");
+        }
         } catch (InvalidEntityException e) {
             request.setAttribute("errorMessage", e.getMessage());
             request.getRequestDispatcher("/signup.jsp").forward(request,response);
         }
-
     }
 
     private Driver createDriverWithSpecifiedParameters(HttpServletRequest req) {

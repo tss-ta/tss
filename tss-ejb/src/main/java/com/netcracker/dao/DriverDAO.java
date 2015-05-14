@@ -4,6 +4,7 @@ import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Category;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Map;
@@ -33,22 +34,14 @@ public class DriverDAO extends GenericDAO<Driver> {
     }
 
     public Driver getDriverByToken(Integer token) {
-        Query query = em.createNamedQuery("Driver.searchDriverByToken");
-        query.setParameter("token", token);
-        return (Driver) query.getSingleResult();
-    }
+        try {
+            Query query = em.createNamedQuery("Driver.searchDriverByToken");
+            query.setParameter("token", token);
 
-    public void createDriverFromUser(Category category,
-                                     boolean available,
-                                     boolean isMale,
-                                     boolean smokes,
-                                     int userId) {
-        Query query = em.createNamedQuery("Driver.createDriverFromUser");
-        query.setParameter("category", category);
-        query.setParameter("available", available);
-        query.setParameter("isMale", isMale);
-        query.setParameter("smokes", smokes);
-        query.setParameter("driverId", userId);
-        query.executeUpdate();
+            return (Driver) query.getSingleResult();
+        } catch (NoResultException ex) {
+
+        }
+        return null;
     }
 }

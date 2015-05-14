@@ -49,7 +49,7 @@ public class RegistrationBean implements SessionBean {
         }
     }
 
-    public void registrateDriver(Driver driver) throws NoSuchEntityException {
+    public void registrateDriver(Driver driver) {
         DriverDAO driverDAO = null;
         RoleDAO roleDAO = null;
         ContactsDAO contactsDAO = null;
@@ -67,7 +67,7 @@ public class RegistrationBean implements SessionBean {
                 foundDriver.setMale(driver.isMale());
                 foundDriver.setSmokes(driver.isSmokes());
 
-//TODO validate
+                validate(driver);
 
                 roleDAO = new RoleDAO();
                 Role role = roleDAO.findByRolename("DRIVER");//by name or ID?
@@ -77,10 +77,9 @@ public class RegistrationBean implements SessionBean {
 
                 contactsDAO = new ContactsDAO();
                 contactsDAO.persist(new Contacts(foundDriver));
+            } else {
+                throw new InvalidEntityException("Can't register driver! There is no such a token registered!");
             }
-//            else {
-//                throw new InvalidEntityException("Can't register driver! There is no driver with such a token in database.");
-//            }
         } finally {
             if(driverDAO != null) {
                 driverDAO.close();
@@ -121,6 +120,24 @@ public class RegistrationBean implements SessionBean {
             }
         }
     }
+
+//    public boolean hasToken(Driver driver) {
+//        DriverDAO dao = null;
+//        try {
+//            dao = new DriverDAO();
+//            Driver userFromDB = dao.getDriverByToken(driver.getToken());
+//            if (userFromDB != null) {
+//                return true;
+//            }
+//            return false;
+//        } catch (NoResultException e) {
+//            return false;
+//        } finally {
+//            if (dao != null) {
+//                dao.close();
+//            }
+//        }
+//    }
 
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {
