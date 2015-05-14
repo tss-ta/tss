@@ -115,26 +115,31 @@
                                             </c:when>
                                         </c:choose>
                                     </td>
-                                    <td class="hidden-sm hidden-xs">
-                                        <c:if test="${list.status != 5}">
-                                            <a href="/driver/status?action=changeStatus&order_id=${list.id}" class="btn btn-default">
-                                                <c:choose>
-                                                    <c:when test="${list.status+2 == 2}">
-                                                        ASSIGNED
-                                                    </c:when>
-                                                    <c:when test="${list.status+2 == 4}">
-                                                        IN_PROGRESS 
-                                                    </c:when>
-                                                    <c:when test="${list.status+1 == 5}">
-                                                        COMPLETED
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        Other
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </a>
+                                    <c:if test="${list.status != 5}">
+                                        <c:if test="${list.status != 3}">
+                                            <td class="hidden-sm hidden-xs">
+                                                <a href="/driver/status?action=changeStatus&order_id=${list.id}" class="btn btn-default">
+                                                    <c:choose>
+                                                        <c:when test="${list.status+1 == 2}">
+                                                            ASSIGNED
+                                                        </c:when>
+                                                        <c:when test="${list.status+2 == 2}">
+                                                            ASSIGNED
+                                                        </c:when>
+                                                        <c:when test="${list.status+2 == 4}">
+                                                            IN_PROGRESS 
+                                                        </c:when>
+                                                        <c:when test="${list.status+1 == 5}">
+                                                            COMPLETED
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            Other
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </a>
+                                            </td>
                                         </c:if>
-                                    </td>
+                                    </c:if>
                                 </c:forEach>
                         </tbody>
                     </table>
