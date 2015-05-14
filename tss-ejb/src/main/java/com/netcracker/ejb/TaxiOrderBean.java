@@ -6,16 +6,20 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dao.AddressDAO;
+import com.netcracker.dao.CarDao;
 import com.netcracker.dao.ContactsDAO;
+import com.netcracker.dao.DriverCarDAO;
 import com.netcracker.dao.RouteDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.dao.exceptions.NoSuchEntity;
 import com.netcracker.entity.Address;
+import com.netcracker.entity.Car;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
+import com.netcracker.entity.helper.DriverCar;
 import com.netcracker.entity.helper.Status;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.TaxiOrderHistory;
@@ -87,9 +91,135 @@ public class TaxiOrderBean implements SessionBean {
 
     }
 
-    public boolean checkDriverEligibility(TaxiOrder order, Driver driver){
+    public boolean checkDriverEligibility(TaxiOrder order, Driver driver, Integer carId) {
 
+    	Car car = null;
+		try {
+			car = new CarDao().get(carId);
+		} catch (NoSuchEntity e) {
+			return false;
+		}
     	
+    	if (!driver.isAvailable() || !car.getAvailable()) {
+    		return false;
+    	}
+    	
+    	if (order.getAnimalTransport() && (!car.getAnimalable())) {
+    		return false;
+    	}
+    	
+    	if (order.getConditioner()&& (!car.getConditioner())) {
+    		return false;
+    	}
+    	
+    	if (order.getWifi() && (!car.getWifi())) {
+    		return false;
+    	}
+    	
+    	if (order.getCarCategory() != car.getCategory()) {
+    		return false;
+    	}
+    	
+    	if ((order.getMale() != null) && (order.getMale() != driver.isMale())) {
+    		return false;
+    	}
+    	
+    	if (!order.getSmoke() && driver.isSmokes()) {
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+    public boolean assignTaxiOrder(int taxiOrderId, Driver driver) {
+
+    	DriverCarDAO drCarDao = new DriverCarDAO();
+    	DriverCar driverCar = drCarDao.getCurrentCar(driver.getId());
+    	if (driverCar == null) {
+    		return false;
+    	}
+    	
+    	TaxiOrder taxiOrder = getOrderById(taxiOrderId);
+   
+    	if (!checkDriverEligibility(taxiOrder, driver, driverCar.getCarId())) {
+    		return false;
+    	}
+    	
+        taxiOrder.setStatus(Status.ASSIGNED);
+        taxiOrder.setDriverCarId(driverCar);
+        TaxiOrderDAO dao = null;
+        try {
+            dao = new TaxiOrderDAO();
+            dao.update(taxiOrder);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    	
+    	return true; 
+    }
+    
+    public boolean setInProgressTaxiOrder(int taxiOrderId, Driver driver) {
+
+    	TaxiOrder taxiOrder = getOrderById(taxiOrderId);
+    	
+    	if (taxiOrder.getStatus() != Status.ASSIGNED.getId()) {
+    		return false;
+    	}
+    	
+    	DriverCar driverCar = taxiOrder.getDriverCarId();
+    	
+    	if (driverCar == null) {
+    		return false;
+    	}
+    	
+    	if (driverCar.getDriverId() != driver.getId()) {
+    		return false;
+    	}
+   
+        taxiOrder.setStatus(Status.IN_PROGRESS);
+        TaxiOrderDAO dao = null;
+        try {
+            dao = new TaxiOrderDAO();
+            dao.update(taxiOrder);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    	
+    	return true; 
+    }
+    
+    public boolean setCompletedTaxiOrder(int taxiOrderId, Driver driver) {
+
+    	TaxiOrder taxiOrder = getOrderById(taxiOrderId);
+    	
+    	if (taxiOrder.getStatus() != Status.IN_PROGRESS.getId()) {
+    		return false;
+    	}
+    	
+    	DriverCar driverCar = taxiOrder.getDriverCarId();
+    	
+    	if (driverCar == null) {
+    		return false;
+    	}
+    	
+    	if (driverCar.getDriverId() != driver.getId()) {
+    		return false;
+    	}
+   
+        taxiOrder.setStatus(Status.COMPLETED);
+        TaxiOrderDAO dao = null;
+        try {
+            dao = new TaxiOrderDAO();
+            dao.update(taxiOrder);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
     	
     	return true; 
     }

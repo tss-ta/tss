@@ -92,12 +92,19 @@ public class DriverTaxiOrderDetailsServlet extends HttpServlet {
     	response.setCharacterEncoding("UTF-8");
         DateFormat format = new SimpleDateFormat("HH:mm, dd MM yyyy",
                 Locale.ENGLISH);
-        int taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
+        int taxiOrderId = 0;
         TaxiOrder taxiOrder = null;
+        
         try {
+        	taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
             taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
-        } catch (NoSuchEntity e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            request.setAttribute("taxiOrderId", taxiOrderId);
+            request.setAttribute("pageContent", "content/no-such-order.jsp");
+            request.getRequestDispatcher(
+                    "/WEB-INF/views/driver/driver-template.jsp").forward(
+                            request, response);
+            return;
         }
         
         taxiOrder = getTaxiOrderBean(request).getOrderById(taxiOrderId);

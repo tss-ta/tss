@@ -92,30 +92,45 @@ public class DriverAcceptTaxiOrderServlet extends HttpServlet {
        
         request.setCharacterEncoding("UTF-8");
 
-           // taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
-             //       addFrom, addTo, orderTime, distance, price);
-        int taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
+        
+        int taxiOrderId = 0;
         TaxiOrder taxiOrder = null;
         
-        System.out.println(taxiOrderId);
         try {
+        	taxiOrderId = Integer.parseInt(request.getParameter(TAXI_ORDER_ID));
             taxiOrder = new TaxiOrderDAO().get(taxiOrderId);
-        } catch (NoSuchEntity e) {
+        } catch (Exception e) {
             request.setAttribute("taxiOrderId", taxiOrderId);
             request.setAttribute("pageContent", "content/no-such-order.jsp");
             request.getRequestDispatcher(
                     "/WEB-INF/views/driver/driver-template.jsp").forward(
                             request, response);
+            return;
         }
-    	
-            TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
-            request.getSession().removeAttribute("taxiOrder");
-         //   taxiOrderBeanLocal.assingTaxiOrder(taxiOrderId, driver);
+        
+        Driver driver = findDriver();
+        if (driver == null) {
+            request.setAttribute("pageContent", "content/no-such-driver.jsp");
+            request.getRequestDispatcher(
+                    "/WEB-INF/views/driver/driver-template.jsp").forward(
+                            request, response);
+            return;
+        }
+
+        TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
+        if (taxiOrderBeanLocal.assignTaxiOrder(taxiOrderId, driver)) {
             request.setAttribute("taxiOrderId", taxiOrderId);
             request.setAttribute("pageContent", "content/confirmation-accepted.jsp");
             request.getRequestDispatcher(
                     "/WEB-INF/views/driver/driver-template.jsp").forward(
                             request, response);
+        } else {
+            request.setAttribute("taxiOrderId", taxiOrderId);
+            request.setAttribute("pageContent", "content/driver-not-eligible.jsp");
+            request.getRequestDispatcher(
+                    "/WEB-INF/views/driver/driver-template.jsp").forward(
+                            request, response);
+        }
     }
 
     private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {

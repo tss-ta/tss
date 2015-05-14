@@ -50,7 +50,13 @@ public class DriverDAO extends GenericDAO<Driver> {
     public Driver getByEmail(String email) {
     	TypedQuery<Driver> query = em.createNamedQuery("Driver.findByEmail", Driver.class);
     	query.setParameter("email", email.toLowerCase());
-    	return query.getSingleResult();
+    	List<Driver> results = query.getResultList();
+    	Driver driver = null;
+    	if (!results.isEmpty()) {
+    		driver = results.get(0);
+    	}
+    	
+    	return driver;
     }
     
     public void createDriverFromUser(Category category,

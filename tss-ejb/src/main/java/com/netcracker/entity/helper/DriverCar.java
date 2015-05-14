@@ -7,16 +7,24 @@ import java.util.Objects;
 
 /**
  * @author Illia Rudenko
+ * author Vitalii Chekaliuk
  */
 @Entity
 @Table(name = "driver_car")
 @NamedQueries({
-    @NamedQuery(name = "DriverCar.findByDriverId", query = "select a from DriverCar a \n"
-            + "where a.assignedTime in (\n"
-            + "    select max(b.assignedTime) \n"
-            + "    from DriverCar b \n"
-            + "    where b.driverId= :driver_id"
-            + ")")})
+	@NamedQuery(name = "DriverCar.findByDriverId", query = "select a from DriverCar a \n"
+			+ "where a.assignedTime in (\n"
+			+ "    select max(b.assignedTime) \n"
+			+ "    from DriverCar b \n"
+			+ "    where b.driverId= :driver_id"
+			+ ")"),
+	@NamedQuery(name = "DriverCar.findCurrentCar", query = "select a from DriverCar a \n"
+			+ "where a.assignedTime in (\n"
+			+ "    select max(b.assignedTime) \n"
+			+ "    from DriverCar b \n"
+			+ "    where b.driverId= :driver_id"
+			+ ") and a.unassignedTime is null")            
+})
 public class DriverCar implements Serializable {
 
     @Id
