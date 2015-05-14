@@ -109,7 +109,7 @@ public class CustomerCceServiceServlet extends HttpServlet {
                 taxiOrder.setOrderTime(orderTime);
 
                 if ("".equals(req.getParameter("price"))) {
-                    price = priceBean.calculatePrice(distance,
+                    price = priceBean.calculatePriceForCceService(distance,
                             DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
                 } else {
                     price = Double.parseDouble(req.getParameter("price"));
@@ -185,7 +185,7 @@ public class CustomerCceServiceServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName())
                     .log(Level.SEVERE,
-                            "Can't find ConveyCorpServiceBean with name java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.ConveyCorpServiceBeanLocalHome ",
+                            "Can't find ConveyCorpServiceBean with name java:app/tss-ejb/ConveyCorpServiceBean!com.netcracker.ejb.ConveyCorpServiceBeanLocalHome ",
                             ex);
             throw new RuntimeException("Internal server error!");// maybe have
             // to create
@@ -204,7 +204,7 @@ public class CustomerCceServiceServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName())
                     .log(Level.SEVERE,
-                            "Can't find taxiOrderBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
+                            "Can't find taxiMapBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
                             ex);
             throw new RuntimeException("Internal server error!");// maybe have
             // to create
