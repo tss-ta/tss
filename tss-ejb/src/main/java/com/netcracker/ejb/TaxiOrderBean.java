@@ -171,7 +171,7 @@ public class TaxiOrderBean implements SessionBean {
     }
 
     public List<TaxiOrderHistory> getTaxiOrderDriver(Integer pageNumber,
-            int pageSize, User user) {
+            int pageSize, User user, Status status) {
         TaxiOrderDAO dao = null;
         DriverCarDAO daoC = null;
         List<TaxiOrder> orders = null;
@@ -179,7 +179,7 @@ public class TaxiOrderBean implements SessionBean {
             dao = new TaxiOrderDAO();
             daoC = new DriverCarDAO();
             orders = dao.getTaxiOrderHistoryDriver(pageNumber, pageSize,
-                    daoC.getByDriverId(user.getId()));
+                    daoC.getByDriverId(user.getId()),status);
         } finally {
             if (dao != null) {
                 dao.close();

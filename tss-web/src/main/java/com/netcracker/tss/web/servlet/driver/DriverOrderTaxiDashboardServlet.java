@@ -15,35 +15,57 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.netcracker.dao.UserDAO;
-import com.netcracker.ejb.MapBeanLocal;
-import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
-import com.netcracker.entity.Address;
-import com.netcracker.entity.TaxiOrder;
-import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Status;
+
+import com.netcracker.entity.helper.StatusDriver;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.UserUtils;
+import com.netcracker.util.BeansLocator;
 
-/**
- * Created by Vitalii Chekaliuk
- */
 @WebServlet(urlPatterns = "/driver/dashboard")
 public class DriverOrderTaxiDashboardServlet extends HttpServlet {
 
+    public static final String CHANGE_STATUS = "changeStatus";
+    public static final String ORDER_ID = "order_id";
     private static final int pageSize = 10;
+    public static String statusSt = null;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String action = req.getParameter("action");
         Integer pageNumber = updatePageNumber(req);
         getServletContext().setAttribute("pageNumber", pageNumber);
-        List<TaxiOrderHistory> list = getHistory(pageNumber, req);
+        List<TaxiOrderHistory> list;
+        if (statusSt != null) {
+            if (CHANGE_STATUS.equals(action)) {
+                int taxiOrderId = Integer.parseInt(req.getParameter(ORDER_ID));
+                TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+                taxiOrderBeanLocal.setNextStatus(taxiOrderId, UserUtils.findCurrentUser());
+                list = getHistory(pageNumber, req, Status.getStatusByName(statusSt));
+                req.setAttribute("status_enum", StatusDriver.getDriverStatus());
+                req.setAttribute("param", statusSt);
+                req.setAttribute("history", list);
+                req.setAttribute("pageType", "dashboard");
+                req.setAttribute("pageContent", "content/dashboard.jsp");
+                req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
+                        .forward(req, resp);
+                return;
+            }
+        }
+        if (!"filterByStatus".equals(req.getParameter("action"))) {
+            list = getHistory(pageNumber, req, Status.IN_PROGRESS);
+            req.setAttribute("status_enum", StatusDriver.getDriverStatus());
+            req.setAttribute("param", StatusDriver.IN_PROGRESS.getName());
+        } else {
+            statusSt = req.getParameter("status");
+            list = getHistory(pageNumber, req, Status.getStatusByName(statusSt));
+            req.setAttribute("status_enum", StatusDriver.getDriverStatus());
+            req.setAttribute("param", statusSt);
+        }
         req.setAttribute("history", list);
         req.setAttribute("pageType", "dashboard");
         req.setAttribute("pageContent", "content/dashboard.jsp");
@@ -51,11 +73,15 @@ public class DriverOrderTaxiDashboardServlet extends HttpServlet {
                 .forward(req, resp);
     }
 
+    private void changeStatusRedirect() {
+
+    }
+
     private List<TaxiOrderHistory> getHistory(Integer pageNumber,
-            HttpServletRequest req) {
+            HttpServletRequest req, Status status) {
         TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
         List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderDriver(
-                pageNumber, pageSize, UserUtils.findCurrentUser());
+                pageNumber, pageSize, UserUtils.findCurrentUser(), status);
 
         if (list.size() == 0 && pageNumber > 1) {
             pageNumber--;

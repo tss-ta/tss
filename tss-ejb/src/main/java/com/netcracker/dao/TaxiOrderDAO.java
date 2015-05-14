@@ -26,22 +26,32 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     public TaxiOrderDAO() {
     }
 
-    public List<TaxiOrder> getTaxiOrderHistoryDriver(int pageNumber, int pageSize, DriverCar driverCar) {
+    public List<TaxiOrder> getTaxiOrderHistoryDriver(int pageNumber, int pageSize, DriverCar driverCar, Status status) {
         if (pageNumber <= 0) {
             throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
         }
         if (pageSize <= 0) {
             throw new IllegalArgumentException("Argument 'pageSize' <= 0");
         }
-        TypedQuery<TaxiOrder> tq = em.createQuery(
-                "SELECT t FROM TaxiOrder t WHERE t.driverCarId = :driverCarId OR t.status = :status OR t.status = :status1 ORDER BY t.bookingTime DESC", TaxiOrder.class);
-        tq.setParameter("driverCarId", driverCar);
-        tq.setParameter("status", Status.QUEUED.getId());
-        tq.setParameter("status1", Status.UPDATED.getId());
-        tq.setFirstResult((pageNumber - 1) * pageSize);
-        tq.setMaxResults(pageSize);
-        List<TaxiOrder> taxiOrders = tq.getResultList();
-        return taxiOrders;
+        TypedQuery<TaxiOrder> tq;
+        if (status != Status.QUEUED) {
+            tq = em.createQuery(
+                    "SELECT t FROM TaxiOrder t WHERE t.driverCarId = :driverCarId AND t.status = :status ORDER BY t.orderTime DESC", TaxiOrder.class);
+            tq.setParameter("driverCarId", driverCar);
+            tq.setParameter("status", status.getId());
+            tq.setFirstResult((pageNumber - 1) * pageSize);
+            tq.setMaxResults(pageSize);
+            List<TaxiOrder> taxiOrders = tq.getResultList();
+            return taxiOrders;
+        }else{
+            tq = em.createQuery(
+                    "SELECT t FROM TaxiOrder t WHERE t.status = :status ORDER BY t.orderTime DESC", TaxiOrder.class);
+            tq.setParameter("status", status.getId());
+            tq.setFirstResult((pageNumber - 1) * pageSize);
+            tq.setMaxResults(pageSize);
+            List<TaxiOrder> taxiOrders = tq.getResultList();
+            return taxiOrders;
+        }
     }
 
     public List<TaxiOrder> getTaxiOrderHistory(int pageNumber, int pageSize, Contacts contacts) {

@@ -46,7 +46,7 @@ public interface TaxiOrderBeanLocal extends EJBLocalObject {
     public int countOrdersByStatus(User user, Status status);
 
     public List<TaxiOrderHistory> getTaxiOrderDriver(Integer pageNumber,
-            int pageSize, User user);
+            int pageSize, User user, Status status);
 
     public void setNextStatus(int taxiOrderId, User user);
 }
