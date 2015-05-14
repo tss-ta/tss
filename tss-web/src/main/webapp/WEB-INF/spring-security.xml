@@ -41,6 +41,7 @@
         <intercept-url pattern="/customer/**" access="hasRole('CUSTOMER')" />
         <intercept-url pattern="/signin.jsp**" access="isAnonymous()" />
         <intercept-url pattern="/signup.jsp**" access="isAnonymous()" />
+        <intercept-url pattern="/driver-registration*" access="isAnonymous()" />
 
         <!-- access denied page -->
         <access-denied-handler error-page="/403.jsp" />
