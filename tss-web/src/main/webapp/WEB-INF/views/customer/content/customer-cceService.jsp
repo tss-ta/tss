@@ -138,3 +138,31 @@ function beforeSave() {
     });
 }	
 </script>
+<script>
+	$('#update_price').click(function() {
+             $('#fromList option').each(function() {
+        this.selected = true;
+    });
+		$.ajax({
+			type : "GET",
+			url : "/priceCceService",
+			data : {
+                                fromList : $("#fromList").val(),
+				toAddr : $("#toAddr").val(),
+				ordertime : $("#ordertime").val(),
+				addOptions : $("#addOptions").val(),
+				carType : $("#carType").val()
+			},
+			dataType : "text",
+		}).done(function(res) {
+			$('#price_field').val(res);
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+		});
+                
+                 $('#fromList option').each(function() {
+        this.selected = false;
+    });
+	});
+        
+</script>

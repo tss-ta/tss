@@ -93,12 +93,12 @@ public class CustomerSoberServiceServlet extends HttpServlet {
 			orderTime.setYear(new Date().getYear());
 			taxiOrder.setOrderTime(orderTime);
                         
-                        if ("".equals(req.getParameter("price"))) {
+                        //if ("".equals(req.getParameter("price"))) {
                            price = priceBean.calculatePriceForSoberService(distance,
                         DateParser.parseDate(req),taxiOrder, UserUtils.findCurrentUser());
-                       } else {
-                         price = Double.parseDouble(req.getParameter("price"));
-                        }
+//                       } else {
+//                         price = Double.parseDouble(req.getParameter("price"));
+//                        }
 			taxiOrder.setPrice(price);
                         
 			Integer latestTOId =taxiSoberServiceBeanLocal.addSoberService(user, r, addFrom, addTo,taxiOrder); 
