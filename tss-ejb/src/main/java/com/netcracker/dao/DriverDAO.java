@@ -6,6 +6,7 @@ import com.netcracker.entity.helper.Category;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,12 @@ public class DriverDAO extends GenericDAO<Driver> {
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
         return query.getResultList();
+    }
+
+    public Driver findByEmail(String email) {
+        TypedQuery<Driver> query = em.createNamedQuery("User.findByEmail", Driver.class);
+        query.setParameter("email", email);
+        return query.getSingleResult();
     }
 
     public Long countSearchedByNameResults(String name) {

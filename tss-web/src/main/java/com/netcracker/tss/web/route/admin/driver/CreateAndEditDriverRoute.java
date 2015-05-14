@@ -11,6 +11,7 @@ import com.netcracker.router.container.ActionResponse;
 import com.netcracker.tss.web.util.Page;
 
 import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.tss.web.util.ServletUtils;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.TokenGenerator;
 
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 /**
  * @author Illia Rudenko
+ * @author maks
  */
 
 @ActionRoute(menu = "drivers")
@@ -66,10 +68,11 @@ public class CreateAndEditDriverRoute {
 
         if(driver != null) {
             MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
-            mailerBean.sendToken(driverEmail, token);
-            actResp.setSuccessMessage("Token was successfully sent");
+            String signUpURL = ServletUtils.getBaseUrl(req) + "/driver-registration?token=" + token;
+            mailerBean.sendDriverInvite(driverEmail, signUpURL);
+            actResp.setSuccessMessage("Invite was successfully sent");
         } else {
-            actResp.setErrorMessage("Error while sending token");
+            actResp.setErrorMessage("Error was occurred while sending invite");
         }
 
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_SEND_TOKEN_CONTENT.getType());
