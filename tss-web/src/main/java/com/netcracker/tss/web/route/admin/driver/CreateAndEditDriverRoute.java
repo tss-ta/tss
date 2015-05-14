@@ -68,7 +68,7 @@ public class CreateAndEditDriverRoute {
 
         if(driver != null) {
             MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
-            String signUpURL = ServletUtils.getBaseUrl(req) + "/driver-registration?token=" + token;
+            String signUpURL = ServletUtils.getBaseUrl(req) + "/RegistrationServlet?token=" + token;
             mailerBean.sendDriverInvite(driverEmail, signUpURL);
             actResp.setSuccessMessage("Invite was successfully sent");
         } else {
