@@ -135,6 +135,40 @@ public class PriceBean implements SessionBean {
         return orderPrice;
     }
 
+     public double calculatePriceForSoberService(float distance, Date orderTime, TaxiOrder taxiOrder, User user) {
+         double price=0;
+         price=calculatePrice(distance, orderTime, taxiOrder, user);
+        TariffDAO tariffDAO = null;
+        Tariff tariff = null;
+        try{
+         tariffDAO = new TariffDAO();
+         tariff = tariffDAO.findByTariffName("sober");   
+          price = (price + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+        }finally {
+            if (tariffDAO != null) {
+                tariffDAO.close();
+            }
+        }
+         return price;
+     }
+     
+      public double calculatePriceForCceService(float distance, Date orderTime, TaxiOrder taxiOrder, User user) {
+         double price=0;
+         price=calculatePrice(distance, orderTime, taxiOrder, user);
+        TariffDAO tariffDAO = null;
+        Tariff tariff = null;
+        try{
+         tariffDAO = new TariffDAO();
+         tariff = tariffDAO.findByTariffName("convey");   
+          price = (price + tariff.getPlusCoef()) * tariff.getMultipleCoef();
+        }finally {
+            if (tariffDAO != null) {
+                tariffDAO.close();
+            }
+        }
+         return price;
+     }
+    
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {
     }

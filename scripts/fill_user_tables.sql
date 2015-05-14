@@ -335,6 +335,10 @@ INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef) 
 VALUES
 ('convey', 0, 0.9);
+INSERT INTO tariff 
+(tariff_name, plus_coef, multiple_coef) 
+VALUES
+('sober', 0, 0.9);
 INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef)
 VALUES

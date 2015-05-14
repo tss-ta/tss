@@ -50,7 +50,6 @@
 			</div>
                         <div class="col-md-6">
 				<img src="/resources/customer_assets/img/from.png" width="32" height="32" alt="from"/>from
-                                <img src="/resources/customer_assets/img/from_in_list.png" width="32" height="32" alt="from in list"/>from selected in list
                                 <img src="/resources/customer_assets/img/to.png" width="32" height="32" alt="to"/>to
 			</div>
 			<div class="col-lg-12">
@@ -80,7 +79,7 @@
 </script>
 
 <script type="text/javascript"
-	src="/resources/customer_assets/js/map_cce.js">
+	src="/resources/customer_assets/js/map.js">
 	
 </script>
 
@@ -121,18 +120,21 @@
 	});
 </script>
 <script>
-	//function removeSelectedFromList() {
-	//	$("#fromList :selected").remove();
-	//}
-	//function addToList() {
-	//	$("#fromList").append(
-	//			$('<option value=' + $('#fromAddr').val() + '>'
-	//					+ $('#fromAddr').val() + '</option>'));
-	//	id++;
-	//}
-	//function beforeSave() {
-	//	$('#fromList option').each(function() {
-	//		this.selected = true;
-	//	});
-	//}
+ function  addToList() {
+add($('#fromAddr').val());
+} 
+function  add(address) {
+    var o = new Option(address, address);
+$(o).html(address);
+$("#fromList").append(o);
+} 
+function removeSelectedFromList() {
+    $("#fromList :selected").remove();
+}
+
+function beforeSave() {
+    $('#fromList option').each(function() {
+        this.selected = true;
+    });
+}	
 </script>
