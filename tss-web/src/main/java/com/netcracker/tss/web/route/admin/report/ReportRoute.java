@@ -70,12 +70,11 @@ public class ReportRoute {
         return response;
     }
 
-    @Action(action = "test")
-    public ActionResponse getTest(HttpServletRequest request) {
+    @Action(action = "add")
+    public ActionResponse viewAddPage(HttpServletRequest request) {
         ActionResponse response = new ActionResponse();
-        ReportDataDAO dao = new ReportDataDAO();
-        dao.createReportData("select * from test");
-        response.setPageContent(Page.ADMIN_REPORT_INFO_CONTENT.getAbsolutePath());
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
+        response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
         return response;
     }
 
