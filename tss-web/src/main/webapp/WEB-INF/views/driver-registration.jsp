@@ -53,8 +53,8 @@
 
     <form class="form-sign" action="RegistrationServlet" method="post" autocomplete="off">
         <h2 class="form-sign-heading">Register please</h2>
-        <%--<h5 class="form-sign-error-msg">${requestScope.errorMessage}</h5>--%>
-        <h5 class="form-sign-heading">${requestScope.errorMessage}</h5>
+        <h5 class="form-sign-error-msg">${requestScope.errorMessage}</h5>
+        <%--<h5 class="form-sign-heading">${requestScope.errorMessage}</h5>--%>
         <input type="email" readonly id="inputEmail" name="email" class="form-control" value="${requestScope.email}" maxlength="40" required><br/>
         <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name" maxlength="40" required autofocus><br/>
         <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
@@ -84,5 +84,27 @@
 </div> <!-- /container -->
 <%@ include file="/WEB-INF/views/partials/footer.jspf" %>
 
+<script src="/resources/js/jquery-1.11.2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        if(true) { //TODO get error message
+            printErrorMessage();
+        }
+    });
+    function printErrorMessage() {
+        $(".form-sign-error-msg").css("visibility", "visible");
+//                $("input").addClass("error");
+    };
+    function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++) {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam) {
+                return sParameterName[1];
+            }
+        }
+    };
+</script>
 </body>
 </html>

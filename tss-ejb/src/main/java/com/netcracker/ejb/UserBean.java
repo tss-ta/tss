@@ -52,9 +52,14 @@ public class UserBean implements SessionBean {
                 notifyAboutBan(user.getEmail());//!!!!!!!!!!
 //                notifyAboutBan("maksbrunarskiy@gmail.com");//!!!!!!!!!!
 
-            } else {
-                user.setRoles(toRoleList(roles, roleDAO));
-                userDAO.update(user);
+            }
+//            else if (roles.contains(Roles.DRIVER)) {
+//
+//            }
+            else {
+                    user.setRoles(toRoleList(roles, roleDAO));
+                    userDAO.update(user);
+
             }
         } catch (NoSuchEntityException e) {
 			throw new IllegalArgumentException("User with id = " + userId + " does not exist");

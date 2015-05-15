@@ -29,9 +29,8 @@ public class Users {
     @Action(action = "view")
     public ActionResponse getUsersView(HttpServletRequest request) {
         Integer page = parsePageNumberFromRequest(request);
-//            if(page >= MIN_PAGE_NUMBER) {
         UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-        Roles role = roleToEnum(request.getParameter("role"));
+        Roles role = Roles.valueOf(request.getParameter("role"));
         request.setAttribute("rolesEnum", Roles.getUserRoles());
 
         PagerLink pagerLink = new PagerLink();
@@ -50,7 +49,7 @@ public class Users {
 
     @Action(action = "add-role")
     public ActionResponse redirectToAddRole(HttpServletRequest request) {
-        request.setAttribute("rolesEnum", Roles.getUserRoles());
+        request.setAttribute("rolesEnum", Roles.getSubroles(Roles.valueOf(request.getParameter("role"))));
         return new ActionResponse(Page.ADMIN_ADD_ROLES_CONTENT.getAbsolutePath());
     }
 
@@ -60,7 +59,7 @@ public class Users {
         String email = request.getParameter("email");
         UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
         request.setAttribute("rolesEnum", Roles.getUserRoles());
-        Roles role = roleToEnum(request.getParameter("role"));
+        Roles role = Roles.valueOf(request.getParameter("role"));
         PagerLink pagerLink = new PagerLink();
         pagerLink.addParameter(MENU_PARAMETER_NAME, MENU_PARAMETER_VALUE);
         pagerLink.addParameter(ACTION_PARAMETER_NAME, "search");
@@ -90,17 +89,18 @@ public class Users {
         }
     }
 
-    private Roles roleToEnum(String roleName) {
-        try {
-            if (roleName == null) {
-                return Roles.ADMIN;
-            } else {
-                return Roles.valueOf(roleName);
-            }
-        } catch (IllegalArgumentException e) {
-            return Roles.ADMIN;
-        }
-    }
+//    private Roles roleToEnum(String roleName) {
+//        try {
+//            if (roleName == null) {
+//                return Roles.CUSTOMER;
+//            } else {
+//                return Roles.valueOf(roleName);
+//            }
+//        } catch (IllegalArgumentException e) {
+//            return Roles.CUSTOMER;
+//        }
+//    }
+
 
     private boolean isOn(String checkBoxText) {
         return "on".equals(checkBoxText);

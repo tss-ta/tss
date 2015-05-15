@@ -69,14 +69,15 @@ INSERT INTO tss_group VALUES
   (DEFAULT , 'black_list');
 
 
-INSERT INTO tss_role VALUES
-  (1, 'ADMIN');
-INSERT INTO tss_role VALUES
-  (2, 'DRIVER');
-INSERT INTO tss_role VALUES
-  (3, 'CUSTOMER');
-INSERT INTO tss_role VALUES
-  (4, 'BANNED');
+INSERT INTO tss_role (id, rolename) VALUES (1, 'ADMIN');
+INSERT INTO tss_role (id, rolename) VALUES (2, 'DRIVER');
+INSERT INTO tss_role (id, rolename) VALUES (3, 'CUSTOMER');
+INSERT INTO tss_role (id, rolename) VALUES (4, 'BANNED');
+INSERT INTO tss_role (id, rolename) VALUES (5, 'READ_ONLY');
+INSERT INTO tss_role (id, rolename) VALUES (6, 'PRIVILEGED');
+INSERT INTO tss_role (id, rolename) VALUES (7, 'MAJOR_ADMIN');
+INSERT INTO tss_role (id, rolename) VALUES (8, 'REGULAR_CUSTOMER');
+INSERT INTO tss_role (id, rolename) VALUES (9, 'RELIABLE_DRIVER');
 
 
 INSERT INTO car VALUES

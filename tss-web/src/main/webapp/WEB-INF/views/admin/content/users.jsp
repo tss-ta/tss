@@ -99,12 +99,10 @@
                                     <%--</a>--%>
                                 </c:if>
                                 <c:if test="${not forAssignee}">
-                                    <a href="/admin?menu=users&action=add-role&email=${user.email}&id=${user.id}" class="btn btn-default">
+                                    <a href="/admin?menu=users&action=add-role&email=${user.email}&id=${user.id}&role=${param.role}" class="btn btn-default">
                                         Change roles
                                     </a>
                                 </c:if>
-
-
                             </td>
                         </tr>
                     </c:forEach>
