@@ -21,9 +21,9 @@ public enum Roles {
 
     /**
      *
-     * @return Array of all Roles that can have user
+     * @return Array of main Roles that can have user
      */
-    public static Roles[] getUserRoles (){
+    public static Roles[] getMainUserRoles(){
         Roles [] roles = {CUSTOMER, ADMIN, DRIVER, BANNED};
         return roles;
     }

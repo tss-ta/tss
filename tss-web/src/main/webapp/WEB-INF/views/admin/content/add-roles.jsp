@@ -21,6 +21,7 @@
                     <input type="hidden" name="id" value="${param.id}">
                     <input type="hidden" name="menu" value="users">
                     <input type="hidden" name="action" value="add-roles">
+                    <input type="hidden" name="role" value="${param.role}">
                     <div class="form-group">
                         <div class="col-sm-offset-5 col-sm-3">
                             <button type="submit" class="btn btn-default"> Ok </button>

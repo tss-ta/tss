@@ -13,13 +13,12 @@ import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.util.BeansLocator;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.json.JSONException;
 
@@ -34,6 +33,14 @@ import javax.persistence.NoResultException;
  */
 public class UserBean implements SessionBean {
 
+    /**
+     * Edit user list of Roles
+     * @param userId - user id
+     * @param roles - List of Roles
+     *
+     * @throws java.lang.IllegalArgumentException - if userId less than zero or can't find user with this id
+     * @throws com.netcracker.exceptions.InvalidEntityException - if List of Roles have illegal Roles for this user
+     */
     public void editRoles(int userId, List<Roles> roles) {
         if (userId < 0) {
             throw new IllegalArgumentException("Id can't be less than zero");
@@ -44,26 +51,27 @@ public class UserBean implements SessionBean {
             userDAO = new UserDAO();
             roleDAO = new RoleDAO();
             User user = userDAO.get(userId);
+            String errorMessage = validateUserRoles(user, roles, roleDAO);
+            if (errorMessage != null){
+                throw  new InvalidEntityException(errorMessage);
+            }
             if (roles.contains(Roles.BANNED)) {
-                roles.clear();
-                roles.add(Roles.BANNED);
                 user.setRoles(toRoleList(roles, roleDAO));
                 userDAO.update(user);
-                notifyAboutBan(user.getEmail());//!!!!!!!!!!
-//                notifyAboutBan("maksbrunarskiy@gmail.com");//!!!!!!!!!!
-
+                notifyAboutBan(user.getEmail());
+//                notifyAboutBan("maksbrunarskiy@gmail.com");
             }
-//            else if (roles.contains(Roles.DRIVER)) {
-//
-//            }
             else {
-                    user.setRoles(toRoleList(roles, roleDAO));
-                    userDAO.update(user);
+                Roles currentMainUserRole = getMainUserRole(user, roleDAO);
+                if (!currentMainUserRole.equals(Roles.BANNED)) {
+                    roles.add(getMainUserRole(user, roleDAO));
+                }
+                user.setRoles(toRoleList(roles, roleDAO));
+                userDAO.update(user);
 
             }
         } catch (NoSuchEntityException e) {
 			throw new IllegalArgumentException("User with id = " + userId + " does not exist");
-//			throw new InvalidEntityException("User with id = " + userId + " does not exist");
 		} finally {
             if (roleDAO != null) {
                 roleDAO.close();
@@ -74,15 +82,42 @@ public class UserBean implements SessionBean {
         }
     }
 
+    private Roles getMainUserRole (User user, RoleDAO roleDAO){
+        List<Roles> currentUserRoles = toEnumRolesList(user.getRoles());
+        for (Roles permanentRole : Roles.getMainUserRoles()){
+            if (currentUserRoles.contains(permanentRole)){
+                return permanentRole;
+            }
+        }
+        return Roles.BANNED;
+    }
+
+    private String validateUserRoles (User user, List<Roles> roles, RoleDAO roleDAO) {
+        List<Roles> rolesCopy = new ArrayList<>(roles);
+        if (roles.size() > 1 && roles.contains(Roles.BANNED)) {
+            return "BANNED user can't have another roles";
+        }
+        Roles currentRole = getMainUserRole(user, roleDAO);
+        Roles [] allowableSubroles = Roles.getSubroles(currentRole);
+        rolesCopy.removeAll(Arrays.asList(allowableSubroles));
+        if (!rolesCopy.isEmpty()){
+            return "User with main role " + currentRole.getFormattedName()
+                    + " can't have those subroles " + Arrays.toString(rolesCopy.toArray()) ;
+
+        }
+        return null;
+    }
+
+
     private void notifyAboutBan(String email) {
         MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
         mailerBean.sendEmail(email, "Taxi Service System notify", "Sorry, but yours account in Taxi Service System was banned!");
     }
 
     /**
-     *
-     * @param userId
-     * @param groupId
+     * Add user to group
+     * @param userId - id of user
+     * @param groupId - id of group
      * @return false if this list was already contained the specified element
      */
     public boolean addToGroup(int userId, int groupId) {
@@ -108,7 +143,6 @@ public class UserBean implements SessionBean {
             }
         } catch (NoSuchEntityException e) {
             throw new IllegalArgumentException("Can't find user with id = " + userId);
-             //       + " or group with id " + groupId
 		} finally {
             if (userDAO != null) {
                 userDAO.close();
@@ -116,12 +150,25 @@ public class UserBean implements SessionBean {
         }
     }
 
+    /**
+     *
+     * @param pageNumber - number of page
+     * @param pageSize - amount of rows in one page
+     * @return Pager for all users
+     */
 
     public Pager getPager(Integer pageNumber, Integer pageSize) {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         return pageCalculator.createPager(User.class, pageNumber, pageSize);
     }
 
+    /**
+     *
+     * @param pageNumber - number of page
+     * @param pageSize - amount of rows in one page
+     * @param role - user role
+     * @return Pager for all users with specified role
+     */
     public Pager getPager(Integer pageNumber, Integer pageSize, Roles role) {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         UserDAO userDAO = null;
@@ -196,7 +243,6 @@ public class UserBean implements SessionBean {
             }
         } catch (NoSuchEntityException e) {
             throw new IllegalArgumentException("Can't find user with id = " + userId);
-//                     + " or group with id " + groupId);
 		} finally {
             if (userDAO != null) {
                 userDAO.close();
