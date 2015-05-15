@@ -1,5 +1,6 @@
 package com.netcracker.tss.web.servlet.driver;
 
+import com.netcracker.dao.exceptions.DriverAssignCarException;
 import com.netcracker.dao.exceptions.DriverOrderCountException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.UserUtils;
 import com.netcracker.util.BeansLocator;
+import javax.persistence.NoResultException;
 
 @WebServlet(urlPatterns = "/driver/dashboard")
 public class DriverOrderTaxiDashboardServlet extends HttpServlet {
@@ -41,53 +43,59 @@ public class DriverOrderTaxiDashboardServlet extends HttpServlet {
         Integer pageNumber = updatePageNumber(req);
         getServletContext().setAttribute("pageNumber", pageNumber);
         List<TaxiOrderHistory> list;
-        if (statusSt != null) {
-            if (CHANGE_STATUS.equals(action)) {
-                int taxiOrderId = Integer.parseInt(req.getParameter(ORDER_ID));
-                TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
-                try {
-                    taxiOrderBeanLocal.setNextStatus(taxiOrderId, UserUtils.findCurrentUser());
-                } catch (DriverOrderCountException e) {
-                    req.setAttribute("pageType", "dashboard");
-                    req.setAttribute("pageContent", "content/orderInProgressMessage.jsp");
-                    req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
-                            .forward(req, resp);
+        try {
+            if (statusSt != null) {
+                if (CHANGE_STATUS.equals(action)) {
+                    int taxiOrderId = Integer.parseInt(req.getParameter(ORDER_ID));
+                    TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+                    try {
+                        taxiOrderBeanLocal.setNextStatus(taxiOrderId, UserUtils.findCurrentUser());
+                    } catch (DriverOrderCountException e) {
+                        req.setAttribute("pageType", "dashboard");
+                        req.setAttribute("pageContent", "content/orderInProgressMessage.jsp");
+                        req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
+                                .forward(req, resp);
+                        return;
+                    }
+                    redirect(pageNumber, req, resp, statusSt);
                     return;
                 }
-                list = getHistory(pageNumber, req, Status.getStatusByName(statusSt));
-                req.setAttribute("status_enum", StatusDriver.getDriverStatus());
-                req.setAttribute("param", statusSt);
-                req.setAttribute("history", list);
-                req.setAttribute("pageType", "dashboard");
-                req.setAttribute("pageContent", "content/dashboard.jsp");
-                req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
-                        .forward(req, resp);
-                return;
             }
+            if (!"filterByStatus".equals(req.getParameter("action"))) {
+                redirect(pageNumber, req, resp, Status.IN_PROGRESS.toString());
+            } else {
+                statusSt = req.getParameter("status");
+                redirect(pageNumber, req, resp, statusSt);
+            }
+           
+        } catch (DriverAssignCarException e) {
+            req.setAttribute("pageType", "dashboard");
+            req.setAttribute("pageContent", "content/noassignedcar.jsp");
+            req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
+                    .forward(req, resp);
         }
-        if (!"filterByStatus".equals(req.getParameter("action"))) {
-            list = getHistory(pageNumber, req, Status.IN_PROGRESS);
-            req.setAttribute("status_enum", StatusDriver.getDriverStatus());
-            req.setAttribute("param", StatusDriver.IN_PROGRESS.getName());
-        } else {
-            statusSt = req.getParameter("status");
-            list = getHistory(pageNumber, req, Status.getStatusByName(statusSt));
-            req.setAttribute("status_enum", StatusDriver.getDriverStatus());
-            req.setAttribute("param", statusSt);
-        }
-        req.setAttribute("history", list);
-        req.setAttribute("pageType", "dashboard");
-        req.setAttribute("pageContent", "content/dashboard.jsp");
-        req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
-                .forward(req, resp);
     }
 
-    private void changeStatusRedirect() {
+    private void redirect(int pageNumber, HttpServletRequest request, HttpServletResponse response, String status) throws DriverAssignCarException {
+        List<TaxiOrderHistory> list = getHistory(pageNumber, request, Status.getStatusByName(status));
+        request.setAttribute("status_enum", StatusDriver.getDriverStatus());
+        request.setAttribute("param", status);
+        request.setAttribute("history", list);
+        request.setAttribute("pageType", "dashboard");
+        request.setAttribute("pageContent", "content/dashboard.jsp");
+        try {
+            request.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
+                    .forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(DriverOrderTaxiDashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DriverOrderTaxiDashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
     private List<TaxiOrderHistory> getHistory(Integer pageNumber,
-            HttpServletRequest req, Status status) {
+            HttpServletRequest req, Status status) throws DriverAssignCarException {
         TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
         List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderDriver(
                 pageNumber, pageSize, UserUtils.findCurrentUser(), status);

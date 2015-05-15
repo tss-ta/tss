@@ -11,6 +11,7 @@ import com.netcracker.dao.DriverCarDAO;
 import com.netcracker.dao.RouteDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.dao.exceptions.DriverAssignCarException;
 import com.netcracker.dao.exceptions.DriverOrderCountException;
 import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Address;
@@ -172,15 +173,19 @@ public class TaxiOrderBean implements SessionBean {
     }
 
     public List<TaxiOrderHistory> getTaxiOrderDriver(Integer pageNumber,
-            int pageSize, User user, Status status) {
+            int pageSize, User user, Status status) throws DriverAssignCarException {
         TaxiOrderDAO dao = null;
         DriverCarDAO daoC = null;
         List<TaxiOrder> orders = null;
         try {
             dao = new TaxiOrderDAO();
             daoC = new DriverCarDAO();
+            if(!daoC.isExist(user.getId())){
+                throw new DriverAssignCarException("no assigned car");
+            }
+            DriverCar driverCar = daoC.getByDriverId(user.getId());
             orders = dao.getTaxiOrderHistoryDriver(pageNumber, pageSize,
-                    daoC.getByDriverId(user.getId()), status);
+                    driverCar, status);
         } finally {
             if (dao != null) {
                 dao.close();
@@ -193,7 +198,7 @@ public class TaxiOrderBean implements SessionBean {
         return taxiOrderHistory;
     }
 
-    public void setNextStatus(int taxiOrderId, User user) throws DriverOrderCountException{
+    public void setNextStatus(int taxiOrderId, User user) throws DriverOrderCountException {
         TaxiOrderDAO orderDAO = null;
         TaxiOrder taxiOrder = null;
         DriverCarDAO daoC = null;
