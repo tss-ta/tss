@@ -1,10 +1,6 @@
 package com.netcracker.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @author Kyrylo Berehovyi
@@ -15,6 +11,8 @@ import javax.persistence.Id;
 public class ReportInfo {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
     private Integer id;
     private String name;
     private String description;

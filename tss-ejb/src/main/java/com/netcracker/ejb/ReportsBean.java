@@ -93,6 +93,18 @@ public class ReportsBean implements SessionBean {
         return counter;
     }
 
+    public void createReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.persist(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+    }
+
     public List<ReportInfo> getPageOfReportsInfo(int pageNumber, int pageSize) {
         ReportInfoDAO infoDAO = null;
         List<ReportInfo> reportInfoList;

@@ -6,6 +6,7 @@ import com.netcracker.ejb.ReportsBeanLocal;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.report.Report;
 import com.netcracker.router.ContentType;
+import com.netcracker.router.HttpMethod;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
@@ -76,6 +77,32 @@ public class ReportRoute {
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
         return response;
+    }
+
+    @Action(action = "add", httpMethod = HttpMethod.POST)
+    public ActionResponse createReport(HttpServletRequest request) {
+        ActionResponse response = new ActionResponse();
+        ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+        ReportInfo reportInfo = createReportInfoFromRequest(request);
+        reportsBean.createReportInfo(reportInfo);
+        response.setSuccessMessage("Report was successfully created.");
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
+        response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
+        return response;
+    }
+
+    private ReportInfo createReportInfoFromRequest(HttpServletRequest request) {
+        ReportInfo reportInfo = new ReportInfo();
+        reportInfo.setName(request.getParameter("name"));
+        reportInfo.setDescription(request.getParameter("description"));
+        reportInfo.setSelectQuery(request.getParameter("selectQuery"));
+        reportInfo.setExportSize(RequestParameterParser.parseInteger(request, "exportSize"));
+        reportInfo.setCountable(RequestParameterParser.parseBoolean(request, "countable"));
+        if (reportInfo.isCountable()) {
+            reportInfo.setCountQuery(request.getParameter("countQuery"));
+            reportInfo.setPageSize(RequestParameterParser.parseInteger(request, "pageSize"));
+        }
+        return reportInfo;
     }
 
     @Action(action = "all")

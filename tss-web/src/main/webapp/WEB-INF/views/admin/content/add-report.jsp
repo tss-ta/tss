@@ -13,7 +13,7 @@
                 <h1>Edit Report</h1>
             </c:if>
             <c:if test="${empty car}">
-                <h1>Add Report</h1>
+                <h1>Create new Report</h1>
             </c:if>
 
         </div>
@@ -31,13 +31,13 @@
                         <br/>
                         <label for="name" class="col-md-3 control-label">Name:</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="name" placeholder="Report name..." name="license" autofocus>
+                            <input type="text" class="form-control" id="name" placeholder="Report name" name="name" autofocus>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-md-3 control-label">Description:</label>
                         <div class="col-md-9">
-                            <textarea class="form-control" id="description" rows="5" placeholder="Report description..."></textarea>
+                            <textarea class="form-control" id="description" rows="5" placeholder="Report description" name="description"></textarea>
                         </div>
                     </div>
 
@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <label for="selectQuery" class="col-md-3 control-label">Select Query:</label>
                         <div class="col-md-9">
-                            <textarea class="form-control" id="selectQuery" rows="5" placeholder="SELECT column FROM table..."></textarea>
+                            <textarea class="form-control" id="selectQuery" rows="5" placeholder="SELECT column FROM table LIMIT ? OFFSET ?" name="selectQuery"></textarea>
                         </div>
                     </div>
 
@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <label for="exportSize" class="col-md-3 control-label">Max export size:</label>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" id="exportSize" placeholder="1000"/>
+                            <input type="number" class="form-control" id="exportSize" placeholder="1000" name="exportSize"/>
                         </div>
                     </div>
 
@@ -65,7 +65,7 @@
                         <div class="col-sm-offset-3 col-sm-8">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ${available} name="countable" id="countable"> Countable
+                                    <input type="checkbox" id="countable" name="countable" /> Paginable
                                 </label>
                             </div>
                         </div>
@@ -75,14 +75,29 @@
                         <div class="form-group">
                             <label for="countQuery" class="col-md-3 control-label">Count Query:</label>
                             <div class="col-md-9">
-                                <textarea class="form-control" id="countQuery" rows="5" placeholder="SELECT count(column) FROM table..."></textarea>
+                                <textarea class="form-control" id="countQuery" rows="5" placeholder="SELECT count(column) FROM table" name="countQuery"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="pageSize" class="col-md-3 control-label">Page size:</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control" id="pageSize" placeholder="15"/>
+                                <input type="number" class="form-control" id="pageSize" placeholder="15" name="pageSize"/>
                             </div>
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <div class="form-group">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-default">
+                                <c:if test="${empty car}">
+                                    Create
+                                </c:if>
+                                <c:if test="${not empty car}">
+                                    Apply
+                                </c:if>
+                            </button>
                         </div>
                     </div>
 
