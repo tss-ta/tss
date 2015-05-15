@@ -7,6 +7,19 @@
         <div class="text-center">
             <h1>Dashboard</h1>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action = "/driver/dashboard" class="text-left">
+                    <label class="col-sm-2 col-sm-2 control-label">
+                        Order Status:</label><select class="selectpicker" name ="status" onchange="this.form.submit()" >
+                        <c:forEach var = "status" items = "${status_enum}">
+                            <option ${status.getName() == requestScope.param ? 'selected="selected"' : ''}> ${status.getName()} </option>
+                        </c:forEach>
+                    </select>
+                    <input type="hidden" name="action" value="filterByStatus">
+                </form>
+            </div>
+        </div>
         <div class="row mt bottom_line">
             <div class="col-lg-12">
                 <h4>
@@ -118,19 +131,19 @@
                                     <c:if test="${list.status != 5}">
                                         <c:if test="${list.status != 3}">
                                             <td class="hidden-sm hidden-xs">
-                                                <a href="/driver/status?action=changeStatus&order_id=${list.id}" class="btn btn-default">
+                                                <a href="/driver/dashboard?action=changeStatus&order_id=${list.id}" class="btn btn-default">
                                                     <c:choose>
                                                         <c:when test="${list.status+1 == 2}">
-                                                            ASSIGNED
+                                                           TO ASSIGNED
                                                         </c:when>
                                                         <c:when test="${list.status+2 == 2}">
-                                                            ASSIGNED
+                                                           TO ASSIGNED
                                                         </c:when>
                                                         <c:when test="${list.status+2 == 4}">
-                                                            IN_PROGRESS 
+                                                           TO IN_PROGRESS 
                                                         </c:when>
                                                         <c:when test="${list.status+1 == 5}">
-                                                            COMPLETED
+                                                           TO COMPLETED
                                                         </c:when>
                                                         <c:otherwise>
                                                             Other
