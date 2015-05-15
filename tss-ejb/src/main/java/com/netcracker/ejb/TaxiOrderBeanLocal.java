@@ -5,6 +5,7 @@
  */
 package com.netcracker.ejb;
 
+import com.netcracker.dao.exceptions.DriverOrderCountException;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Route;
@@ -48,5 +49,5 @@ public interface TaxiOrderBeanLocal extends EJBLocalObject {
     public List<TaxiOrderHistory> getTaxiOrderDriver(Integer pageNumber,
             int pageSize, User user, Status status);
 
-    public void setNextStatus(int taxiOrderId, User user);
+    public void setNextStatus(int taxiOrderId, User user) throws DriverOrderCountException;
 }

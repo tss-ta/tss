@@ -43,7 +43,7 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
             tq.setMaxResults(pageSize);
             List<TaxiOrder> taxiOrders = tq.getResultList();
             return taxiOrders;
-        }else{
+        } else {
             tq = em.createQuery(
                     "SELECT t FROM TaxiOrder t WHERE t.status = :status ORDER BY t.orderTime DESC", TaxiOrder.class);
             tq.setParameter("status", status.getId());
@@ -52,6 +52,14 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
             List<TaxiOrder> taxiOrders = tq.getResultList();
             return taxiOrders;
         }
+    }
+
+    public int countOrdersWithDriverStatus(DriverCar driverCar, Integer status) {
+        Query query = em.createQuery("SELECT COUNT(t) FROM TaxiOrder t WHERE (t.driverCarId = :driverCarId) AND (t.status = :status) ");
+        query.setParameter("driverCarId", driverCar);
+        query.setParameter("status", status);
+        Long count = (Long) query.getSingleResult();
+        return count.intValue();
     }
 
     public List<TaxiOrder> getTaxiOrderHistory(int pageNumber, int pageSize, Contacts contacts) {

@@ -11,6 +11,7 @@ import com.netcracker.dao.DriverCarDAO;
 import com.netcracker.dao.RouteDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.dao.exceptions.DriverOrderCountException;
 import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
@@ -179,7 +180,7 @@ public class TaxiOrderBean implements SessionBean {
             dao = new TaxiOrderDAO();
             daoC = new DriverCarDAO();
             orders = dao.getTaxiOrderHistoryDriver(pageNumber, pageSize,
-                    daoC.getByDriverId(user.getId()),status);
+                    daoC.getByDriverId(user.getId()), status);
         } finally {
             if (dao != null) {
                 dao.close();
@@ -192,7 +193,7 @@ public class TaxiOrderBean implements SessionBean {
         return taxiOrderHistory;
     }
 
-    public void setNextStatus(int taxiOrderId, User user) {
+    public void setNextStatus(int taxiOrderId, User user) throws DriverOrderCountException{
         TaxiOrderDAO orderDAO = null;
         TaxiOrder taxiOrder = null;
         DriverCarDAO daoC = null;
@@ -201,15 +202,19 @@ public class TaxiOrderBean implements SessionBean {
             daoC = new DriverCarDAO();
             taxiOrder = orderDAO.get(taxiOrderId);
             int status = taxiOrder.getStatus();
+            DriverCar driverCarId = daoC.getByDriverId(user.getId());
             if (status == Status.QUEUED.getId()) {
-                taxiOrder.setDriverCarId(daoC.getByDriverId(user.getId()));
+                taxiOrder.setDriverCarId(driverCarId);
                 taxiOrder.setStatus(Status.ASSIGNED);
                 orderDAO.update(taxiOrder);
             } else if (status == Status.UPDATED.getId()) {
-                taxiOrder.setDriverCarId(daoC.getByDriverId(user.getId()));
+                taxiOrder.setDriverCarId(driverCarId);
                 taxiOrder.setStatus(Status.ASSIGNED);
                 orderDAO.update(taxiOrder);
             } else if (status == Status.ASSIGNED.getId()) {
+                if (orderDAO.countOrdersWithDriverStatus(driverCarId, Status.IN_PROGRESS.getId()) >= 1) {
+                    throw new DriverOrderCountException("Driver can have only one order in progress");
+                }
                 taxiOrder.setStatus(Status.IN_PROGRESS);
                 orderDAO.update(taxiOrder);
             } else if (status == Status.IN_PROGRESS.getId()) {
@@ -219,7 +224,12 @@ public class TaxiOrderBean implements SessionBean {
         } catch (NoSuchEntityException e) {
             e.printStackTrace();
         } finally {
-
+            if (orderDAO != null) {
+                orderDAO.close();
+            }
+            if (daoC != null) {
+                daoC.close();
+            }
         }
     }
 

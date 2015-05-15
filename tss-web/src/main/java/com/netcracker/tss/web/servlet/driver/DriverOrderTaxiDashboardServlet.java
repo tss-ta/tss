@@ -1,5 +1,6 @@
 package com.netcracker.tss.web.servlet.driver;
 
+import com.netcracker.dao.exceptions.DriverOrderCountException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,15 @@ public class DriverOrderTaxiDashboardServlet extends HttpServlet {
             if (CHANGE_STATUS.equals(action)) {
                 int taxiOrderId = Integer.parseInt(req.getParameter(ORDER_ID));
                 TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
-                taxiOrderBeanLocal.setNextStatus(taxiOrderId, UserUtils.findCurrentUser());
+                try {
+                    taxiOrderBeanLocal.setNextStatus(taxiOrderId, UserUtils.findCurrentUser());
+                } catch (DriverOrderCountException e) {
+                    req.setAttribute("pageType", "dashboard");
+                    req.setAttribute("pageContent", "content/orderInProgressMessage.jsp");
+                    req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
+                            .forward(req, resp);
+                    return;
+                }
                 list = getHistory(pageNumber, req, Status.getStatusByName(statusSt));
                 req.setAttribute("status_enum", StatusDriver.getDriverStatus());
                 req.setAttribute("param", statusSt);
