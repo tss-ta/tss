@@ -20,14 +20,5 @@ public class DriverCarDAO extends GenericDAO<DriverCar> {
         return drvCars.getSingleResult();
     }
 
-    public boolean isExist(Integer driverId) {
-        try {
-            TypedQuery<DriverCar> drvCars = em.createNamedQuery("DriverCar.findByDriverId", DriverCar.class);
-            drvCars.setParameter("driver_id", driverId);
-            drvCars.getSingleResult();
-            return true;
-        } catch (NoResultException e) {
-            return false;
-        }
-    }
+
 }
