@@ -72,7 +72,7 @@
 </script>
 
 <script type="text/javascript"
-	src="/resources/customer_assets/js/map.js">
+	src="/resources/customer_assets/js/map_celebration.js">
 	
 </script>
 
