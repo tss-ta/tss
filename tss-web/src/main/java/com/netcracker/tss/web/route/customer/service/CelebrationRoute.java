@@ -1,48 +1,59 @@
-package com.netcracker.tss.web.servlet.customer;
+package com.netcracker.tss.web.route.customer.service;
 
 import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.UserDAO;
-import com.netcracker.ejb.CelebrationServiceBeanLocal;
-import com.netcracker.ejb.MapBeanLocal;
-import com.netcracker.ejb.PriceBeanLocal;
-import com.netcracker.ejb.TaxiOrderBeanLocal;
+import com.netcracker.ejb.*;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.CarCategory;
-import com.netcracker.entity.helper.Category;
+import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Status;
+import com.netcracker.router.HttpMethod;
+import com.netcracker.router.annotation.Action;
+import com.netcracker.router.annotation.ActionRoute;
+import com.netcracker.router.container.ActionResponse;
 import com.netcracker.tss.web.util.DateParser;
+import com.netcracker.tss.web.util.Page;
+import com.netcracker.tss.web.util.RequestAttribute;
 import com.netcracker.tss.web.util.UserUtils;
 import com.netcracker.util.BeansLocator;
 import org.json.JSONException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.NoResultException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Illia Rudenko
  */
-@Deprecated
-@WebServlet(urlPatterns = "/customer/selebrService")
-public class CustomerCelebrationServiceServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(">>> Hello!");
+@ActionRoute(menu = "celebration")
+public class CelebrationRoute {
+
+    public static final String ATTRIBUTE_TAXI_ORDER = "taxiOrder";
+    public static final String ATTRIBUTE_TAXI_ORDER_ID = "taxiOrderId";
+
+    public static final String ATTRIBUTE_PERSONAL_ADDRESS = "personal_addr";
+
+
+    @Action(action = "addCelebration", httpMethod = HttpMethod.GET)
+    public ActionResponse getCelebrationPage(HttpServletRequest req) {
+        req.getSession().removeAttribute(ATTRIBUTE_TAXI_ORDER);
+
+        req.setAttribute(ATTRIBUTE_PERSONAL_ADDRESS, getPersonalAddresses());
+        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.CUSTOMER_CELEBRATION_SERVICE_CONTENT.getType());
+        ActionResponse actResp = new ActionResponse();
+        actResp.setPageContent(Page.CUSTOMER_CELEBRATION_SERVICE_CONTENT.getAbsolutePath());
+
+        return actResp;
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Action(action = "addCelebration", httpMethod = HttpMethod.POST)
+    public ActionResponse addCelebration(HttpServletRequest req) {
         CelebrationServiceBeanLocal celBean = BeansLocator.getInstance().getBean(CelebrationServiceBeanLocal.class);
 
         String driversAmountStr = req.getParameter("driversAmount");
@@ -50,11 +61,11 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
         String fromAddress = req.getParameter("fromAddr");
         String priceStr = req.getParameter("price");
 
-
+        ActionResponse actResp = new ActionResponse();
 
         if(checkParameter(driversAmountStr) &&
-           checkParameter(durationStr) &&
-           checkParameter(fromAddress)) {
+                checkParameter(durationStr) &&
+                checkParameter(fromAddress)) {
             Date orderTime = DateParser.parseDate(req);
             Integer driversAmount = Integer.parseInt(driversAmountStr);
             Integer duration = Integer.parseInt(durationStr);
@@ -66,7 +77,7 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
             taxiOrder.setPayment(0);
             taxiOrder.setCarCategory(CarCategory.BUSINESS.getId());
 
-            User user = findCurrentUser();
+            User user = UserUtils.findCurrentUser();
 
             double servicePrice;
             if(checkParameter(priceStr)) {
@@ -87,42 +98,23 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
                     duration);
 
             int latestTOId = BeansLocator.getInstance()
-                                         .getBean(TaxiOrderBeanLocal.class)
-                                         .getTaxiOrderHistory(1, 1, user)
-                                         .get(0).getId();
-            req.setAttribute("taxiOrderId", latestTOId);
-            req.setAttribute("pageContent", "content/confirmation.jsp");
-            req.getRequestDispatcher(
-                    "/WEB-INF/views/customer/customer-template.jsp").forward(
-                    req, resp);
+                    .getBean(TaxiOrderBeanLocal.class)
+                    .getTaxiOrderHistory(1, 1, user)
+                    .get(0).getId();
 
+
+            req.setAttribute(ATTRIBUTE_TAXI_ORDER_ID, latestTOId);
+            actResp.setPageContent(Page.TAXI_ORDER_CONFIRMATION_CONTENT.getAbsolutePath());
         } else {
-            req.setAttribute("errorMessage", "Please, fill all mandatory fields!");
-            resp.sendRedirect("/customer/celebrServicePage");
+            actResp.setErrorMessage("Please, fill all mandatory fields!");
+            req.getSession().removeAttribute(ATTRIBUTE_TAXI_ORDER);
+
+            req.setAttribute(ATTRIBUTE_PERSONAL_ADDRESS, getPersonalAddresses());
+            req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.CUSTOMER_CELEBRATION_SERVICE_CONTENT.getType());
+            actResp.setPageContent(Page.CUSTOMER_CELEBRATION_SERVICE_CONTENT.getAbsolutePath());
         }
 
-
-    }
-
-
-    private Address toAddress(String addr) {
-        MapBeanLocal mapBeanLocal = BeansLocator.getInstance().getBean(MapBeanLocal.class);
-        double[] from = { 0, 0 };
-        try {
-            from = mapBeanLocal.geocodeAddress(addr);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-        return new Address((float) from[1], (float) from[0]);
-    }
-
-    private User findCurrentUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder
-                .getContext().getAuthentication().getPrincipal();
-        UserDAO userDao = new UserDAO();
-        User user = userDao.getByEmail(userDetails.getUsername());
-        userDao.close();
-        return user;
+        return actResp;
     }
 
     private Contacts createContacts(User user) {
@@ -155,6 +147,18 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
         return contacts;
     }
 
+    private Address toAddress(String addr) {
+        MapBeanLocal mapBeanLocal = BeansLocator.getInstance().getBean(MapBeanLocal.class);
+        double[] from = { 0, 0 };
+        try {
+            from = mapBeanLocal.geocodeAddress(addr);
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        return new Address((float) from[1], (float) from[0]);
+    }
+
+
     private boolean checkParameter(String parameter) {
         return parameter != null && !"".equals(parameter);
     }
@@ -162,4 +166,10 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
     private double roundToHundredth(double d) {
         return Math.rint(d * 100.0) / 100.0;
     }
+
+    private List<PersonalAddress> getPersonalAddresses() {
+        UserBeanLocal userBeanLocal = BeansLocator.getInstance().getUserBean();
+        return userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser());
+    }
+
 }

@@ -73,7 +73,7 @@
 					<span class="icon-container"><i class="fa fa-user"></i></span> <span
 					class="icon-label">Meet My Guest</span>
 			</a></li>
-			<li><a href="/customer/celebrServicePage" ${activeCelebrService}>
+			<li><a href="/customers?menu=celebration&action=addCelebration" ${activeCelebrService}>
 					<span class="icon-container"><i class="fa fa-user"></i></span> <span
 					class="icon-label">Celebration</span>
 			</a></li>
