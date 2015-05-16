@@ -5,6 +5,9 @@
 		<div class="text-center">
 			<h1>Celebration Service</h1>
 		</div>
+		<div>
+			<h3 style="color:red">${errorMessage}</h3>
+		</div>
 	</div>
 </div>
 <br>

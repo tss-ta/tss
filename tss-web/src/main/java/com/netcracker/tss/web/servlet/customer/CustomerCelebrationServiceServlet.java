@@ -47,19 +47,35 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
         User user = findCurrentUser();
         taxiOrder.setContactsId(createContacts(user));
 
-        celBean.addCelebrationService(taxiOrder,
-                                      toAddress(req.getParameter("fromAddr")),
-                                      null,
-                                      Integer.parseInt(req.getParameter("driversAmount")),
-                                      Integer.parseInt(req.getParameter("duration")));
 
-        int latestTOId = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class).getTaxiOrderHistory(1, 1, user)
-                .get(0).getId();
-        req.setAttribute("taxiOrderId", latestTOId);
-        req.setAttribute("pageContent", "content/confirmation.jsp");
-        req.getRequestDispatcher(
-                "/WEB-INF/views/customer/customer-template.jsp").forward(
-                req, resp);
+        String driversAmountStr = req.getParameter("driversAmount");
+        String durationStr = req.getParameter("duration");
+        String fromAddress = req.getParameter("fromAddr");
+
+        if(checkParameter(driversAmountStr) &&
+           checkParameter(durationStr) &&
+           checkParameter(fromAddress)) {
+
+            celBean.addCelebrationService(taxiOrder,
+                    toAddress(fromAddress),
+                    null,
+                    Integer.parseInt(driversAmountStr),
+                    Integer.parseInt(durationStr));
+
+            int latestTOId = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class).getTaxiOrderHistory(1, 1, user)
+                    .get(0).getId();
+            req.setAttribute("taxiOrderId", latestTOId);
+            req.setAttribute("pageContent", "content/confirmation.jsp");
+            req.getRequestDispatcher(
+                    "/WEB-INF/views/customer/customer-template.jsp").forward(
+                    req, resp);
+
+        } else {
+            req.setAttribute("errorMessage", "Please, fill all mandatory fields!");
+            resp.sendRedirect("/customer/celebrServicePage");
+        }
+
+
     }
 
 
@@ -111,5 +127,9 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
             }
         }
         return contacts;
+    }
+
+    private boolean checkParameter(String parameter) {
+        return parameter != null && !"".equals(parameter);
     }
 }
