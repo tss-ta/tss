@@ -29,9 +29,13 @@ public class DriverDAO extends GenericDAO<Driver> {
     }
 
     public Driver findByEmail(String email) {
-        TypedQuery<Driver> query = em.createNamedQuery("User.findByEmail", Driver.class);
+        TypedQuery<Driver> query = em.createNamedQuery("Driver.findDriverByEmail", Driver.class);
         query.setParameter("email", email);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     public Long countSearchedByNameResults(String name) {

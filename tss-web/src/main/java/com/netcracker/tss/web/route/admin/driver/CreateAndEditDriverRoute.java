@@ -50,30 +50,40 @@ public class CreateAndEditDriverRoute {
     public ActionResponse sendTokenToDriverEmail(HttpServletRequest req) throws ServletException, IOException {
 
         String driverEmail = req.getParameter(PARAMETER_DRIVER_EMAIL);
-        Driver driver = null;
+        Driver driver;
         Integer token = TokenGenerator.generate();
 
         ActionResponse actResp = new ActionResponse();
 
-        if(driverEmail != null) {
-            driver = new Driver(driverEmail, token);
-            String errorMessage = validateDriver(driver);
+        if(driverEmail != null && !"".equals(driverEmail)) {
+            driverEmail = driverEmail.toLowerCase();
+            Driver checkedDriver;
 
-            if(errorMessage == null) {
-                BeansLocator.getInstance().getDriverBean().addDriver(driver);
+            checkedDriver = BeansLocator.getInstance().getDriverBean().getDriver(driverEmail);
+
+            if(checkedDriver == null) {
+                driver = new Driver(driverEmail, token);
+                String errorMessage = validateDriver(driver);
+
+                if(errorMessage == null) {
+                    BeansLocator.getInstance().getDriverBean().addDriver(driver);
+                } else {
+                    actResp.setErrorMessage(errorMessage);
+                }
+
+                MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
+                String signUpURL = ServletUtils.getBaseUrl(req) + "/RegistrationServlet?token=" + token;
+                mailerBean.sendDriverInvite(driverEmail, signUpURL);
+                actResp.setSuccessMessage("Invite was successfully sent");
             } else {
-                actResp.setErrorMessage(errorMessage);
+                req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_SEND_TOKEN_CONTENT.getType());
+                actResp.setErrorMessage("System already contains user with such an email!");
+                actResp.setPageContent(Page.ADMIN_SEND_TOKEN_CONTENT.getAbsolutePath());
+                return actResp;
             }
         }
 
-        if(driver != null) {
-            MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
-            String signUpURL = ServletUtils.getBaseUrl(req) + "/RegistrationServlet?token=" + token;
-            mailerBean.sendDriverInvite(driverEmail, signUpURL);
-            actResp.setSuccessMessage("Invite was successfully sent");
-        } else {
-            actResp.setErrorMessage("Error was occurred while sending invite");
-        }
+
 
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_SEND_TOKEN_CONTENT.getType());
         actResp.setPageContent(Page.ADMIN_SEND_TOKEN_CONTENT.getAbsolutePath());

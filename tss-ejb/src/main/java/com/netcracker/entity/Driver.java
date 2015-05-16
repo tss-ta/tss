@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name = "Driver.searchDriverByName", query = "SELECT d FROM Driver d WHERE d.username like :drivername"),
     @NamedQuery(name = "Driver.searchDriverByToken", query = "SELECT d FROM Driver d WHERE d.token = :token"),
+    @NamedQuery(name = "Driver.findDriverByEmail", query = "SELECT d FROM Driver d WHERE d.email = :email"),
 })
 public class Driver extends User {
 
