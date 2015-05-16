@@ -25,14 +25,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.tss.web.util.RequestParameter;
+import com.netcracker.tss.web.util.RequestParameterParser;
 import com.netcracker.util.BeansLocator;
+import org.omg.CORBA.Request;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author Виктор
  * @author maks
  */
-@WebServlet(name = "RegistrationServlet", urlPatterns = {"/RegistrationServlet"})
+@WebServlet(name = "RegistrationServlet", urlPatterns = {"/RegistrationServlet", "/driver-registration"})
 public class RegistrationServlet extends HttpServlet {
 
     /**
@@ -54,10 +58,10 @@ public class RegistrationServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirPassword");
-        Integer driverToken = null;
-        if (!"".equals(request.getParameter("token")) && (request.getParameter("token") != null)) {
-            driverToken = Integer.valueOf(request.getParameter("token"));
-        }
+        Integer driverToken = RequestParameterParser.parseInteger(request , "token");
+//        if (!"".equals(request.getParameter("token")) && (request.getParameter("token") != null)) {
+//            driverToken = Integer.valueOf(request.getParameter("token"));
+//        }
         
 
         if (password.equals(confirmPassword)) {
@@ -103,7 +107,7 @@ public class RegistrationServlet extends HttpServlet {
         return "on".equals(checkBoxText);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -116,7 +120,18 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
+        try {
+            Integer driverToken = RequestParameterParser.parseInteger(request, "token");
+            if (driverToken != null) {
+                DriverLocal driverBean = BeansLocator.getInstance().getDriverBean();
+                Driver driver = driverBean.getDriverByToken(driverToken);
+                request.setAttribute("email", driver.getEmail());
+                request.getRequestDispatcher("/WEB-INF/views/driver-registration.jsp").forward(request, response);
+            }
+        } catch (InvalidEntityException e){
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/views/driver-registration.jsp").forward(request, response);
+        }
     }
 
     /**

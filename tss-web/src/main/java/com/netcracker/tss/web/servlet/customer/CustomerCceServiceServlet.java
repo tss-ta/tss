@@ -108,12 +108,12 @@ public class CustomerCceServiceServlet extends HttpServlet {
                 orderTime.setYear(new Date().getYear());
                 taxiOrder.setOrderTime(orderTime);
 
-                if ("".equals(req.getParameter("price"))) {
+                //if ("".equals(req.getParameter("price"))) {
                     price = priceBean.calculatePriceForCceService(distance,
                             DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
-                } else {
-                    price = Double.parseDouble(req.getParameter("price"));
-                }
+//                } else {
+//                    price = Double.parseDouble(req.getParameter("price"));
+//                }
                 taxiOrder.setPrice(price);
 
                 Integer latestTOId = taxiConveyCorpServiceBeanLocal.addCorpService(user, routes, addFrom, addTo, taxiOrder);

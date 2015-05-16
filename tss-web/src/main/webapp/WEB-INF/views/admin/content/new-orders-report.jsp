@@ -14,11 +14,11 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-1">
-                    <a href="/admin/report" class="btn btn-default"> Back </a>
+                    <a href="/admin?menu=report&action=all" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Back</a>
                 </div>
                 <div class="col-md-1">
                     <a href="/admin/report?action=new-orders-excel&begin=${param.begin}&end=${param.end}" class="btn btn-default">
-                        Export to excel file <i class="fa fa-download"></i>
+                        <i class="fa fa-download"></i> Excel
                     </a>
                 </div>
             </div>

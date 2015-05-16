@@ -37,7 +37,7 @@
         </a>
     </li>
     <li>
-        <a href="/admin?menu=users&action=view" ${activeCustomers}>
+        <a href="/admin?role=CUSTOMER&action=view&menu=users" ${activeCustomers}>
             <span class="icon-container"><i class="fa fa-child"></i></span>
             <span class="icon-label">Users</span>
         </a>

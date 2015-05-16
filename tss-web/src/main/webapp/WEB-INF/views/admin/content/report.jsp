@@ -21,8 +21,11 @@
     <div class="col-md-offset-1 col-md-10">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-4 col-xs-4">
-                    <a href="/admin/report/download?id=${report.info.id}" id="download" class="btn btn-default"><i class="fa fa-file-excel-o"></i> Download Excel</a>
+                <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-0 col-xs-4">
+                    <a href="/admin?menu=report&action=all" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Back</a>
+                </div>
+                <div class="col-md-offset-1 col-md-1 col-sm-offset-2 col-sm-2 col-xs-offset-0 col-xs-4">
+                    <a href="/admin/report/download?id=${report.info.id}" id="download" class="btn btn-default"><i class="fa fa-download"></i> Excel</a>
                 </div>
             </div>
         </div>
@@ -83,7 +86,7 @@
         </div>
     </div>
 </c:if>
-<c:if test="${empty report.data}">
+<c:if test="${empty report.data.rows}">
     <div class="row row-fix">
         <div class="col-md-offset-1 col-md-10">
             <div class="text-center">

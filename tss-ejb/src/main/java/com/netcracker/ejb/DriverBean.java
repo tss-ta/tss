@@ -12,6 +12,7 @@ import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import javax.persistence.NoResultException;
 
 import java.util.Calendar;
 import java.util.List;
@@ -37,9 +38,34 @@ public class DriverBean implements SessionBean {
 		return driver;
 	}
 
+    public Driver getDriver(String email) {
+        DriverDAO drDao = new DriverDAO();
+        Driver driver = null;
+        try {
+            driver = drDao.findByEmail(email);
+        } catch (NoResultException e) {
+            e.printStackTrace();//!!!!!!!!!!
+        }
+        drDao.close();
+        return driver;
+    }
+
+    public Driver getDriverByToken(int token) {
+        DriverDAO drDao = new DriverDAO();
+        Driver driver = null;
+        try {
+            driver = drDao.getDriverByToken(token);
+        } catch (NoResultException e) {
+            e.printStackTrace();//!!!!!!!!!!
+        }
+        drDao.close();
+        return driver;
+    }
 
 
-	public void addDriver(Driver driver) {
+
+
+    public void addDriver(Driver driver) {
 		DriverDAO drDao = null;
 		try {
 			drDao = new DriverDAO();

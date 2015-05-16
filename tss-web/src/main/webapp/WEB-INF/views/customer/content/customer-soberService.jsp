@@ -99,4 +99,23 @@
 		firstDOW : 1
 	});
 </script>
-
+<script>
+	$('#update_price').click(function() {
+		$.ajax({
+			type : "GET",
+			url : "/priceSoberService",
+			data : {
+				fromAddr : $("#fromAddr").val(),
+				toAddr : $("#toAddr").val(),
+				ordertime : $("#ordertime").val(),
+				addOptions : $("#addOptions").val(),
+				carType : $("#carType").val()
+			},
+			dataType : "text",
+		}).done(function(res) {
+			$('#price_field').val(res);
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+		});
+	});
+</script>
