@@ -44,9 +44,11 @@ public class DriverBean implements SessionBean {
         try {
             driver = drDao.findByEmail(email);
         } catch (NoResultException e) {
-            e.printStackTrace();//!!!!!!!!!!
-        }
-        drDao.close();
+            //NOP
+        } finally {
+			drDao.close();
+		}
+
         return driver;
     }
 
