@@ -47,4 +47,6 @@ public interface ReportsBeanLocal extends EJBLocalObject {
     void createReportInfo(ReportInfo reportInfo);
 
     void updateReportInfo(ReportInfo reportInfo);
+
+    void deleteReportInfo(ReportInfo reportInfo);
 }

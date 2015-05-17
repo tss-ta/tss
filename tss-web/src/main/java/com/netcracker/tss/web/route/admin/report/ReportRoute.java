@@ -30,6 +30,7 @@ public class ReportRoute {
     private static final int DEFAULT_PAGE_SIZE = 15;
     public static final String REPORT_SUCCESS_CREATE_MESSAGE = "New report was successfully created.";
     public static final String REPORT_SUCCESS_UPDATE_MESSAGE = "Report was successfully updated.";
+    public static final String ALL_REPORTS_URI = "/admin?menu=report&action=all";
 
     @Action(action = "view")
     public ActionResponse getReport(HttpServletRequest request) {
@@ -143,6 +144,28 @@ public class ReportRoute {
         request.setAttribute(RequestAttribute.REPORT_INFO.getName(), reportInfo);
         request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_EDIT_TYPE.getName());
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
+        return response;
+    }
+
+    @Action(action = "delete")
+    public ActionResponse deleteReport(HttpServletRequest request) {
+        ActionResponse response = new ActionResponse();
+        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
+        ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+        ReportInfo reportInfo;
+
+        if (id == null) {
+            return createIncorrectIdResponse(response);
+        }
+
+        reportInfo = reportsBean.getReportInfoById(id);
+
+        if (reportInfo == null) {
+            return createIncorrectIdResponse(response);
+        }
+
+        reportsBean.deleteReportInfo(reportInfo);
+        response.setRedirectURI(ALL_REPORTS_URI);
         return response;
     }
 

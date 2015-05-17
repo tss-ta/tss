@@ -68,6 +68,18 @@ public class ReportsBean implements SessionBean {
         return report;
     }
 
+    public void deleteReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.delete(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+    }
+
     public int countReports(ReportInfo info) {
         ReportDataDAO dataDAO = new ReportDataDAO();
         Long counter = dataDAO.countResults(info.getCountQuery());

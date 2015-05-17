@@ -32,21 +32,41 @@
         <div class="panel panel-default">
             <div class="panel-body text-center">
                 <%--<div class="col-md-offset-0 col-md-2 col-sm-offset-0 col-sm-2 col-xs-offset-0 col-xs-4">--%>
-                    <a href="/admin?menu=report&action=all" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Back</a>
+                    <a href="/admin?menu=report&action=all" class="btn btn-default"><i class="fa fa-reply"></i> Back</a>
                 <%--</div>--%>
                 <%--<div class="col-md-offset-0 col-md-2 col-sm-offset-0 col-sm-2 col-xs-offset-0 col-xs-4">--%>
                     <a href="/admin/report/download?id=${report.info.id}" id="download" class="btn btn-default"><i class="fa fa-download"></i> Excel</a>
                 <%--</div>--%>
                 <%--<div class="col-md-offset-0 col-md-2 col-sm-offset-0 col-sm-2 col-xs-offset-0 col-xs-4">--%>
                     <a href="/admin?menu=report&action=edit&id=${report.info.id}" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
-                    <a href="/admin?menu=report&action=delete&id=${report.info.id}" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</a>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#delModal">
+                        <i class="fa fa-trash-o"></i> Delete
+                    </button>
+                    <%--<a href="/admin?menu=report&action=delete&id=${report.info.id}" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</a>--%>
                 <%--</div>--%>
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Delete Modal -->
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="delModalLabel">Delete Report</h4>
+            </div>
+            <div class="modal-body text-center">
+                <p>Are you sure you want to delete "<b>${report.info.name}</b>" report?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="/admin?menu=report&action=delete&id=${report.info.id}" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <c:if test="${not empty report.data}">
     <div class="row row-fix">

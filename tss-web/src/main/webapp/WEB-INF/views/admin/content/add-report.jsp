@@ -11,11 +11,13 @@
         <c:set var="pageTitle" value="Edit Report" />
         <c:set var="buttonName" value="Apply" />
         <c:set var="formAction" value="&action=edit" />
+        <c:set var="backButton" value="/admin?menu=report&action=view&id=${reportInfo.id}" />
     </c:when>
     <c:when test="${formType eq 'create'}">
         <c:set var="pageTitle" value="Create new Report" />
         <c:set var="buttonName" value="Create" />
         <c:set var="formAction" value="&action=add" />
+        <c:set var="backButton" value="/admin?menu=report&action=all" />
     </c:when>
 </c:choose>
 
@@ -103,6 +105,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12 text-center">
+                            <a href="${backButton}" class="btn btn-default">Cancel</a>
                             <button type="submit" class="btn btn-default">${buttonName}</button>
                         </div>
                     </div>
