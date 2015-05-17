@@ -97,7 +97,6 @@ public class CreateAndEditDriverRoute {
 
         ViewDriverRoute viewDriverRoute = new ViewDriverRoute();
         if(driver != null) {
-            driver.setToken(null);
             driver = updateDriverFromRequest(driver, req);
             ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
             String errorMessage = validatorBean.validate(driver);

@@ -66,6 +66,7 @@ public class RegistrationBean implements SessionBean {
                 foundDriver.setAvailable(driver.isAvailable());
                 foundDriver.setMale(driver.isMale());
                 foundDriver.setSmokes(driver.isSmokes());
+                foundDriver.setToken(null);
 
                 validate(driver);
 

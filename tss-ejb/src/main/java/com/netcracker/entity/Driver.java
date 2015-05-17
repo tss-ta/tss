@@ -4,7 +4,6 @@ import com.netcracker.entity.helper.Category;
 import java.util.Objects;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author Illia Rudenko
