@@ -1,9 +1,7 @@
 <%--
-  Created by IntelliJ IDEA.
   User: maks
   Date: 14.05.15
   Time: 12:13
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -21,7 +19,7 @@
     <title>Taxi Service System Sign In</title>
 
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"
-          media="all" />
+          media="all"/>
     <link href='http://fonts.googleapis.com/css?family=Raleway'
           rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/responsiveslides.css">
@@ -44,8 +42,7 @@
 </head>
 
 <body>
-<script src="/resources/js/jquery-1.11.2.min.js"></script>
-<script src="/resources/js/bootstrap.min.js"></script>
+
 
 <%@ include file="/WEB-INF/views/partials/non-dasboard-header.jspf" %>
 
@@ -54,57 +51,53 @@
     <form class="form-sign" action="RegistrationServlet" method="post" autocomplete="off">
         <h2 class="form-sign-heading">Register please</h2>
         <h5 class="form-sign-error-msg">${requestScope.errorMessage}</h5>
-        <%--<h5 class="form-sign-heading">${requestScope.errorMessage}</h5>--%>
-        <input type="email" readonly id="inputEmail" name="email" class="form-control" value="${requestScope.email}" maxlength="40" required><br/>
-        <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name" maxlength="40" required autofocus><br/>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" maxlength="60" required><br/>
-        <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass(); return false;" class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
+
+        <div class="control-group">
+            <input type="email" readonly id="inputEmail" name="email" class="form-control" value="${requestScope.email}"
+                   maxlength="40" required><br/>
+            <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name"
+                   maxlength="40" required autofocus><br/>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                   maxlength="60" required><br/>
+            <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass(); return false;"
+                   class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
 
 
+            <label for="inputCategory">
+                <h4 class="form-sign-heading">Choose category </h4>
+            </label>
+            <select id="inputCategory" name="category">
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+            </select>
 
-        <label for="inputCategory">
-            <h4 class="form-sign-heading">Choose category   </h4>
-        </label>
-        <select id="inputCategory" name="category">
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-        </select>
+            <div class="checkbox">
+                <label class="checkbox"><input id="availableChkBox" type="checkbox" name="available">available</label>
+                <label class="checkbox"><input id="isMaleChkBox" type="checkbox" name="ismale">is male</label>
+                <label class="checkbox"><input id="smokesChkBox" type="checkbox" name="smokes">smokes</label>
+            </div>
 
-        <div class="checkbox">
-            <label class="checkbox"><input id="availableChkBox" type="checkbox" name="available" >available</label>
-            <label class="checkbox"><input id="isMaleChkBox" type="checkbox" name="ismale">is male</label>
-            <label class="checkbox"><input id="smokesChkBox" type="checkbox" name="smokes">smokes</label>
+            <input type="hidden" name="token" value="${param.token}">
+            <span id="confirmMessage" class="confirmMessage"></span>
+
+            <p class="help-block form-sign-error-msg"></p>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
         </div>
-
-        <input type="hidden" name="token" value="${param.token}" >
-        <span id="confirmMessage" class="confirmMessage"></span>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Registrate</button>
     </form>
-</div> <!-- /container -->
+</div>
+<!-- /container -->
 <%@ include file="/WEB-INF/views/partials/footer.jspf" %>
 
+<script src="/resources/js/bootstrap.min.js"></script>
 <script src="/resources/js/jquery-1.11.2.min.js"></script>
+<script src="/resources/js/jqBootstrapValidation.js"></script>
 <script>
-    $(document).ready(function() {
-        if(true) { //TODO get error message
-            printErrorMessage();
-        }
-    });
-    function printErrorMessage() {
+    $(function () {
+        $("input").not("[type=submit]").jqBootstrapValidation();
         $(".form-sign-error-msg").css("visibility", "visible");
-//                $("input").addClass("error");
-    };
-    function getUrlParameter(sParam) {
-        var sPageURL = window.location.search.substring(1);
-        var sURLVariables = sPageURL.split('&');
-        for (var i = 0; i < sURLVariables.length; i++) {
-            var sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] == sParam) {
-                return sParameterName[1];
-            }
-        }
-    };
+    });
 </script>
 </body>
 </html>
