@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.tss.web.servlet.customer;
 
 import java.io.IOException;
@@ -17,11 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.netcracker.ejb.TaxiOrderBeanLocal;
-import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
 import com.netcracker.ejb.UserBeanLocalHome;
-import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.UserUtils;
 
@@ -54,13 +47,12 @@ public class CustomerCceServicePageServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName())
                     .log(Level.SEVERE,
-                            "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
-                            ex);
+                    "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
+                    ex);
             throw new RuntimeException("Internal server error!");// maybe have
             // to create
             // custom
             // exception?
         }
     }
-
 }

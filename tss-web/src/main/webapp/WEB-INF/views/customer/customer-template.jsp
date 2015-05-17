@@ -36,6 +36,28 @@
 		<div id="page-content-wrapper">
 			<div class="container-fluid">
 				<%@ include file="partials/customer-header.jspf"%>
+
+				<c:if test="${not empty errorMessage}">
+					<div class="row row-fix">
+						<div class="col-md-offset-1 col-md-10">
+							<div class="alert alert-danger alert-dismissible text-center" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="fa fa-exclamation"></i> ${errorMessage}
+							</div>
+						</div>
+					</div>
+				</c:if>
+
+				<c:if test="${not empty successMessage}">
+					<div class="row row-fix">
+						<div class="col-md-offset-1 col-md-10">
+							<div class="alert alert-success alert-dismissible text-center" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="fa fa-exclamation"></i> ${successMessage}
+							</div>
+						</div>
+					</div>
+				</c:if>
 			</div>
 			<jsp:include page="${pageContent}" />
 

@@ -2,7 +2,7 @@
 
 -- password is 'pass'
 INSERT INTO tss_user VALUES
-  (DEFAULT, 'Pass', 'pass', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
+  (DEFAULT, 'Pass', 'i@i.ua', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
   (DEFAULT, 'Adam', 'adam.sandler@gmail.com', '$2a$10$xmN7pxqh6RzT3Lv25Epj9e1tZp0r997ZBImK7UWGWzrCPXC9PJFpq');
 INSERT INTO tss_user VALUES
@@ -69,14 +69,15 @@ INSERT INTO tss_group VALUES
   (DEFAULT , 'black_list');
 
 
-INSERT INTO tss_role VALUES
-  (1, 'ADMIN');
-INSERT INTO tss_role VALUES
-  (2, 'DRIVER');
-INSERT INTO tss_role VALUES
-  (3, 'CUSTOMER');
-INSERT INTO tss_role VALUES
-  (4, 'BANNED');
+INSERT INTO tss_role (id, rolename) VALUES (1, 'ADMIN');
+INSERT INTO tss_role (id, rolename) VALUES (2, 'DRIVER');
+INSERT INTO tss_role (id, rolename) VALUES (3, 'CUSTOMER');
+INSERT INTO tss_role (id, rolename) VALUES (4, 'BANNED');
+INSERT INTO tss_role (id, rolename) VALUES (5, 'READ_ONLY');
+INSERT INTO tss_role (id, rolename) VALUES (6, 'PRIVILEGED');
+INSERT INTO tss_role (id, rolename) VALUES (7, 'MAJOR_ADMIN');
+INSERT INTO tss_role (id, rolename) VALUES (8, 'REGULAR_CUSTOMER');
+INSERT INTO tss_role (id, rolename) VALUES (9, 'RELIABLE_DRIVER');
 
 
 INSERT INTO car VALUES

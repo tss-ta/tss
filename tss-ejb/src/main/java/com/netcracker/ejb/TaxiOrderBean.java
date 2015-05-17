@@ -8,6 +8,7 @@ package com.netcracker.ejb;
 import com.netcracker.dao.AddressDAO;
 import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.DriverCarDAO;
+import com.netcracker.dao.DriverDAO;
 import com.netcracker.dao.RouteDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.UserDAO;
@@ -176,11 +177,13 @@ public class TaxiOrderBean implements SessionBean {
             int pageSize, User user, Status status) throws DriverAssignCarException {
         TaxiOrderDAO dao = null;
         DriverCarDAO daoC = null;
+        DriverDAO driverDAO = null;
         List<TaxiOrder> orders = null;
         try {
             dao = new TaxiOrderDAO();
             daoC = new DriverCarDAO();
-            if(!daoC.isExist(user.getId())){
+            driverDAO = new DriverDAO();
+            if (new DriverBean().getDriver(user.getId()).getCar() == null) {
                 throw new DriverAssignCarException("no assigned car");
             }
             DriverCar driverCar = daoC.getByDriverId(user.getId());
@@ -192,6 +195,9 @@ public class TaxiOrderBean implements SessionBean {
             }
             if (daoC != null) {
                 daoC.close();
+            }
+            if (driverDAO != null) {
+                driverDAO.close();
             }
         }
         List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);

@@ -4,13 +4,17 @@ import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.UserDAO;
 import com.netcracker.ejb.CelebrationServiceBeanLocal;
 import com.netcracker.ejb.MapBeanLocal;
+import com.netcracker.ejb.PriceBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.entity.helper.CarCategory;
+import com.netcracker.entity.helper.Category;
 import com.netcracker.entity.helper.Status;
 import com.netcracker.tss.web.util.DateParser;
+import com.netcracker.tss.web.util.UserUtils;
 import com.netcracker.util.BeansLocator;
 import org.json.JSONException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +32,7 @@ import java.util.Date;
 /**
  * @author Illia Rudenko
  */
+@Deprecated
 @WebServlet(urlPatterns = "/customer/selebrService")
 public class CustomerCelebrationServiceServlet extends HttpServlet {
 
@@ -40,26 +45,63 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CelebrationServiceBeanLocal celBean = BeansLocator.getInstance().getBean(CelebrationServiceBeanLocal.class);
 
-        TaxiOrder taxiOrder = new TaxiOrder();
-        taxiOrder.setStatus(Status.QUEUED);
-        taxiOrder.setBookingTime(new Date());
-        taxiOrder.setOrderTime(DateParser.parseDate(req));
-        User user = findCurrentUser();
-        taxiOrder.setContactsId(createContacts(user));
+        String driversAmountStr = req.getParameter("driversAmount");
+        String durationStr = req.getParameter("duration");
+        String fromAddress = req.getParameter("fromAddr");
+        String priceStr = req.getParameter("price");
 
-        celBean.addCelebrationService(taxiOrder,
-                                      toAddress(req.getParameter("fromAddr")),
-                                      null,
-                                      Integer.parseInt(req.getParameter("driversAmount")),
-                                      Integer.parseInt(req.getParameter("duration")));
 
-        int latestTOId = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class).getTaxiOrderHistory(1, 1, user)
-                .get(0).getId();
-        req.setAttribute("taxiOrderId", latestTOId);
-        req.setAttribute("pageContent", "content/confirmation.jsp");
-        req.getRequestDispatcher(
-                "/WEB-INF/views/customer/customer-template.jsp").forward(
-                req, resp);
+
+        if(checkParameter(driversAmountStr) &&
+           checkParameter(durationStr) &&
+           checkParameter(fromAddress)) {
+            Date orderTime = DateParser.parseDate(req);
+            Integer driversAmount = Integer.parseInt(driversAmountStr);
+            Integer duration = Integer.parseInt(durationStr);
+
+            TaxiOrder taxiOrder = new TaxiOrder();
+            taxiOrder.setStatus(Status.QUEUED);
+            taxiOrder.setBookingTime(new Date());
+            taxiOrder.setOrderTime(orderTime);
+            taxiOrder.setPayment(0);
+            taxiOrder.setCarCategory(CarCategory.BUSINESS.getId());
+
+            User user = findCurrentUser();
+
+            double servicePrice;
+            if(checkParameter(priceStr)) {
+                servicePrice = Double.parseDouble(priceStr);
+            } else {
+                PriceBeanLocal priceBean = BeansLocator.getInstance().getBean(PriceBeanLocal.class);
+                servicePrice = priceBean.calculateCelebrationServicePrice(driversAmount, duration,
+                        orderTime, user);
+            }
+
+            taxiOrder.setPrice(roundToHundredth(servicePrice));
+            taxiOrder.setContactsId(createContacts(user));
+
+            celBean.addCelebrationService(taxiOrder,
+                    toAddress(fromAddress),
+                    null,
+                    driversAmount,
+                    duration);
+
+            int latestTOId = BeansLocator.getInstance()
+                                         .getBean(TaxiOrderBeanLocal.class)
+                                         .getTaxiOrderHistory(1, 1, user)
+                                         .get(0).getId();
+            req.setAttribute("taxiOrderId", latestTOId);
+            req.setAttribute("pageContent", "content/confirmation.jsp");
+            req.getRequestDispatcher(
+                    "/WEB-INF/views/customer/customer-template.jsp").forward(
+                    req, resp);
+
+        } else {
+            req.setAttribute("errorMessage", "Please, fill all mandatory fields!");
+            resp.sendRedirect("/customer/celebrServicePage");
+        }
+
+
     }
 
 
@@ -111,5 +153,13 @@ public class CustomerCelebrationServiceServlet extends HttpServlet {
             }
         }
         return contacts;
+    }
+
+    private boolean checkParameter(String parameter) {
+        return parameter != null && !"".equals(parameter);
+    }
+
+    private double roundToHundredth(double d) {
+        return Math.rint(d * 100.0) / 100.0;
     }
 }

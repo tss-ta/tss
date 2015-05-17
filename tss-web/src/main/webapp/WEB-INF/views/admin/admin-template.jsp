@@ -1,5 +1,5 @@
 <%--
-  User: happy
+  User: happy, maks
   Date: 25/04/2015
   Time: 17:05
 --%>
@@ -25,6 +25,8 @@
         <script src="/resources/js/jquery-1.11.2.min.js"></script>
         <script src="/resources/js/bootstrap.min.js"></script>
         <script src="/resources/js/validator.js"></script>
+
+        <script src="/resources/js/jqBootstrapValidation.js"></script>
 
         <div id="wrapper">
 
@@ -66,6 +68,12 @@
             </div>
         </div>
 
+        <script>
+            $(function () {
+                $("input").not("[type=submit]").jqBootstrapValidation();
+                //     $(".form-sign-error-msg").css("visibility", "visible");
+            });
+        </script>
         <!-- Custom javascript for password confirmation -->
         <%--<script type="text/javascript" src="/resources/js/confirmPassword.js"></script>--%>
 

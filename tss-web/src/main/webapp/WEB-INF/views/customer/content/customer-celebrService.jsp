@@ -10,7 +10,7 @@
 <br>
 &nbsp;
 <br>
-<form id="submit_id" action="/customer/selebrService"
+<form id="submit_id" action="/customers"
 	class="form-horizontal style-form" method="post">
 	<div class="row mt bottom_line">
 		<div class="form-group">
@@ -50,6 +50,8 @@
 		<div class="col-lg-12">
 			<!-- /col-lg-12 -->
 			<div class="col-lg-12 text-center">
+				<input type="hidden" name="menu" value="celebration">
+				<input type="hidden" name="action" value="addCelebration">
 				<button class="btn btn-success btn-lg btn-block" type="submit">Order
 					Now</button>
 			</div>
@@ -70,7 +72,7 @@
 </script>
 
 <script type="text/javascript"
-	src="/resources/customer_assets/js/map.js">
+	src="/resources/customer_assets/js/map_celebration.js">
 	
 </script>
 

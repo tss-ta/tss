@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.netcracker.entity;
 
 import java.io.Serializable;
@@ -48,7 +44,9 @@ public class Tariff implements Serializable {
     @Column(name = "tariff_name")
     private String tariffName;
 
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Max(value=(long)1E10)
+    @Min(value=(long)-1E10)
+    // if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "plus_coef")
     @NotNull
     private Float plusCoef;

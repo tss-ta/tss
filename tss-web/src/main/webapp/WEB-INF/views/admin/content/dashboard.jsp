@@ -18,7 +18,7 @@
         <div class="col-md-offset-1 col-md-4 text-center">
             <div class="panel panel-default custom-panel">
                 <div class="panel-body">
-                    <a href="/admin?menu=users&action=view"><i class="fa fa-child fa-5x"></i></a>
+                    <a href="/admin?role=CUSTOMER&action=view&menu=users"><i class="fa fa-child fa-5x"></i></a>
                 </div>
                 <div class="panel-footer">
                     CUSTOMERS: ${customers}
@@ -28,7 +28,7 @@
         <div class="col-md-offset-2 col-md-4 text-center">
             <div class="panel panel-default custom-panel">
                 <div class="panel-body">
-                    <a href="/admin?menu=report&action=all"><i class="fa fa-line-chart fa-5x"></i></a>
+                    <a href="/admin/report?begin=00%3A00%2C+01+01+2015&end=&action=new-orders-per-period"><i class="fa fa-fax fa-5x"></i></a>
                 </div>
                 <div class="panel-footer">
                     ORDERS: ${orders}
