@@ -1,11 +1,9 @@
 package com.netcracker.tss.web.route.admin.report;
 
-import com.netcracker.dao.ReportDataDAO;
 import com.netcracker.ejb.PageCalculatorBeanLocal;
 import com.netcracker.ejb.ReportsBeanLocal;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.report.Report;
-import com.netcracker.router.ContentType;
 import com.netcracker.router.HttpMethod;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
@@ -30,77 +28,138 @@ public class ReportRoute {
     private static final String ALL_REPORTS_ACTION_PARAMETER_VALUE = "all";
     private static final String VIEW_REPORT_ACTION_PARAMETER_VALUE = "view";
     private static final int DEFAULT_PAGE_SIZE = 15;
+    public static final String REPORT_SUCCESS_CREATE_MESSAGE = "New report was successfully created.";
+    public static final String REPORT_SUCCESS_UPDATE_MESSAGE = "Report was successfully updated.";
 
     @Action(action = "view")
     public ActionResponse getReport(HttpServletRequest request) {
         Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
         Integer page = parsePageNumberFromRequest(request);
         ActionResponse response = new ActionResponse();
-        ReportsBeanLocal reportsBean;
-        if (id != null) {
-            reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-            Report report = reportsBean.getReport(id, page);
-            request.setAttribute(RequestAttribute.REPORT.getName(), report);
-            if(report.getInfo().isCountable()) {
-                request.setAttribute(RequestAttribute.PAGER.getName(),
-                        reportsBean.getReportPager(report.getInfo(), page));
-                request.setAttribute(RequestAttribute.PAGER_LINK.getName(), createPagerLinkForViewAction(id));
-            }
-            response.setPageContent(Page.ADMIN_REPORT_CONTENT.getAbsolutePath());
-            request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORT_CONTENT.getType());
-        } else {
-            response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
+        ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+
+        if (id == null) {
+            return createIncorrectIdResponse(response);
         }
+
+        Report report = reportsBean.getReport(id, page);
+
+        if (report == null) {
+            return createIncorrectIdResponse(response);
+        }
+
+        request.setAttribute(RequestAttribute.REPORT.getName(), report);
+
+        if(report.getInfo().isCountable()) {
+            request.setAttribute(RequestAttribute.PAGER.getName(), reportsBean.getReportPager(report.getInfo(), page));
+            request.setAttribute(RequestAttribute.PAGER_LINK.getName(), createPagerLinkForViewAction(id));
+        }
+
+        response.setPageContent(Page.ADMIN_REPORT_CONTENT.getAbsolutePath());
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORT_CONTENT.getType());
         return response;
     }
 
-    @Action(action = "json", responseContentType = ContentType.JSON)
-    public ActionResponse getReportJson(HttpServletRequest request) {
-        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
-        Integer page = parsePageNumberFromRequest(request);
-        ActionResponse response = new ActionResponse();
-        ReportsBeanLocal reportsBean;
-        if (id != null) {
-            reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-            Report report = reportsBean.getReport(id, page);
-            response.setModel(report);
-
-        } else {
-            response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
-        }
+    private ActionResponse createIncorrectIdResponse(ActionResponse response) {
+        response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
         return response;
     }
+
+//    @Action(action = "json", responseContentType = ContentType.JSON)
+//    public ActionResponse getReportJson(HttpServletRequest request) {
+//        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
+//        Integer page = parsePageNumberFromRequest(request);
+//        ActionResponse response = new ActionResponse();
+//        ReportsBeanLocal reportsBean;
+//        if (id != null) {
+//            reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+//            Report report = reportsBean.getReport(id, page);
+//            response.setModel(report);
+//
+//        } else {
+//            response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
+//        }
+//        return response;
+//    }
 
     @Action(action = "add")
     public ActionResponse viewAddPage(HttpServletRequest request) {
         ActionResponse response = new ActionResponse();
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
+        request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_CREATE_TYPE.getName());
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
         return response;
     }
 
     @Action(action = "add", httpMethod = HttpMethod.POST)
-    public ActionResponse createReport(HttpServletRequest request) {
+    public ActionResponse createReportInfo(HttpServletRequest request) {
         ActionResponse response = new ActionResponse();
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         ReportInfo reportInfo = createReportInfoFromRequest(request);
         reportsBean.createReportInfo(reportInfo);
-        response.setSuccessMessage("Report was successfully created.");
+        response.setSuccessMessage(REPORT_SUCCESS_CREATE_MESSAGE);
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
         return response;
     }
 
+    @Action(action = "edit")
+    public ActionResponse viewEditPage(HttpServletRequest request) {
+        ActionResponse response = new ActionResponse();
+        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
+        ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+        ReportInfo reportInfo;
+
+        if (id == null) {
+            return createIncorrectIdResponse(response);
+        }
+
+        reportInfo = reportsBean.getReportInfoById(id);
+
+        if (reportInfo == null) {
+            return createIncorrectIdResponse(response);
+        }
+
+        response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
+        request.setAttribute(RequestAttribute.REPORT_INFO.getName(), reportInfo);
+        request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_EDIT_TYPE.getName());
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
+        return response;
+    }
+
+    @Action(action = "edit", httpMethod = HttpMethod.POST)
+    public ActionResponse edirReportInfo(HttpServletRequest request) {
+        ActionResponse response = new ActionResponse();
+        ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+        ReportInfo reportInfo = createReportInfoFromRequest(request);
+
+        if (reportInfo.getId() == null) {
+            return createIncorrectIdResponse(response);
+        }
+
+        reportsBean.updateReportInfo(reportInfo);
+        response.setSuccessMessage(REPORT_SUCCESS_UPDATE_MESSAGE);
+        response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
+        request.setAttribute(RequestAttribute.REPORT_INFO.getName(), reportInfo);
+        request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_EDIT_TYPE.getName());
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
+        return response;
+    }
+
     private ReportInfo createReportInfoFromRequest(HttpServletRequest request) {
         ReportInfo reportInfo = new ReportInfo();
-        reportInfo.setName(request.getParameter("name"));
-        reportInfo.setDescription(request.getParameter("description"));
-        reportInfo.setSelectQuery(request.getParameter("selectQuery"));
-        reportInfo.setExportSize(RequestParameterParser.parseInteger(request, "exportSize"));
-        reportInfo.setCountable(RequestParameterParser.parseBoolean(request, "countable"));
+        reportInfo.setId(RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue()));
+        reportInfo.setName(request.getParameter(RequestParameter.REPORT_NAME.getValue()));
+        reportInfo.setDescription(request.getParameter(RequestParameter.REPORT_DESCRIPTION.getValue()));
+        reportInfo.setSelectQuery(request.getParameter(RequestParameter.REPORT_SELECT_QUERY.getValue()));
+        reportInfo.setCountable(RequestParameterParser.parseBoolean(request,
+                RequestParameter.REPORT_COUNTABLE.getValue()));
         if (reportInfo.isCountable()) {
-            reportInfo.setCountQuery(request.getParameter("countQuery"));
-            reportInfo.setPageSize(RequestParameterParser.parseInteger(request, "pageSize"));
+            reportInfo.setCountQuery(request.getParameter(RequestParameter.REPORT_COUNT_QUERY.getValue()));
+            reportInfo.setExportSize(RequestParameterParser.parseInteger(request,
+                    RequestParameter.REPORT_EXPORT_SIZE.getValue()));
+            reportInfo.setPageSize(RequestParameterParser.parseInteger(request,
+                    RequestParameter.REPORT_PAGE_SIZE.getValue()));
         }
         return reportInfo;
     }

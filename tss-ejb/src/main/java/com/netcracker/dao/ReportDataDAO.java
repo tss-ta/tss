@@ -21,6 +21,7 @@ public class ReportDataDAO {
     private static final int FIRST_COLUMN = 1;
     private static final int LIMIT_POSITION = 1;
     private static final int OFFSET_POSITION = 2;
+    public static final String DATA_SOURCE = "java:jboss/datasources/PostgreSQLDS";
 
     private DataSource dataSource = getDataSource();
     private ResultSetTypeMapper mapper = new ResultSetTypeMapper();
@@ -60,17 +61,6 @@ public class ReportDataDAO {
             resultSet = connection.prepareStatement(query).executeQuery();
             initializeReportMetaData(reportData, resultSet.getMetaData());
             generateDataFromResultSet(reportData, resultSet);
-
-//            resultSet = connection.prepareStatement("select count(id) from car").executeQuery();
-//
-//            ResultSetMetaData metaData = resultSet.getMetaData();
-//            System.out.println("==================================");
-//            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                System.out.println("column name: " + metaData.columnName(i));
-//                System.out.println("column type: " + metaData.getColumnTypeName(i));
-//                System.out.println("column type index: " + metaData.columnType(i));
-//            }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -85,9 +75,6 @@ public class ReportDataDAO {
         while (resultSet.next()) {
             reportData.addRow(createRowData(resultSet, reportData));
         }
-//        System.out.println(reportData.rowsAmount());
-//        System.out.println("ReportData:");
-//        System.out.println(reportData);
     }
 
     private RowData createRowData(ResultSet resultSet, ReportData reportData) throws SQLException {
@@ -122,7 +109,7 @@ public class ReportDataDAO {
         try {
             initCtx = new InitialContext();
             dataSource = (DataSource) initCtx
-                    .lookup("java:jboss/datasources/PostgreSQLDS");
+                    .lookup(DATA_SOURCE);
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -141,7 +128,6 @@ public class ReportDataDAO {
             resultSet = statement.executeQuery();
             initializeReportMetaData(reportData, resultSet.getMetaData());
             generateDataFromResultSet(reportData, resultSet);
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

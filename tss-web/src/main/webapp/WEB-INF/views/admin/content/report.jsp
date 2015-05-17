@@ -38,7 +38,8 @@
                     <a href="/admin/report/download?id=${report.info.id}" id="download" class="btn btn-default"><i class="fa fa-download"></i> Excel</a>
                 <%--</div>--%>
                 <%--<div class="col-md-offset-0 col-md-2 col-sm-offset-0 col-sm-2 col-xs-offset-0 col-xs-4">--%>
-                    <a href="/admin?menu=report&action=all&id=${report.info.id}" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
+                    <a href="/admin?menu=report&action=edit&id=${report.info.id}" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
+                    <a href="/admin?menu=report&action=delete&id=${report.info.id}" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</a>
                 <%--</div>--%>
             </div>
         </div>

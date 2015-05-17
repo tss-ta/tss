@@ -16,7 +16,10 @@ public enum RequestAttribute {
     PAGE_TITLE("pageTitle"),
     REPORT("report"),
     REPORT_LIST("reportList"),
-    REPORT_INFO("reportInfo");
+    REPORT_INFO("reportInfo"),
+    FORM_TYPE("formType"),
+    FORM_EDIT_TYPE("edit"),
+    FORM_CREATE_TYPE("create");
 
     private String name;
 

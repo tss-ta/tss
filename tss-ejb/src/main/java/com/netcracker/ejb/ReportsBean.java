@@ -105,6 +105,18 @@ public class ReportsBean implements SessionBean {
         }
     }
 
+    public void updateReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.update(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+    }
+
     public List<ReportInfo> getPageOfReportsInfo(int pageNumber, int pageSize) {
         ReportInfoDAO infoDAO = null;
         List<ReportInfo> reportInfoList;
@@ -135,7 +147,7 @@ public class ReportsBean implements SessionBean {
             }
             report = new Report(reportInfo, reportData);
         }  catch (NoSuchEntityException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             if (infoDAO != null) {
                 infoDAO.close();
