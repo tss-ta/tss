@@ -110,6 +110,9 @@
                             <button type="submit" class="btn btn-default" id="next"
                                     name="next">Next</button>
                         </div>
+
+                        <input type="hidden" name="status" value="${requestScope.param}">
+                        <input type="hidden" name="action" value="filterByStatus">
                     </form>
                 </div>
             </div>

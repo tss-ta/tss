@@ -10,10 +10,13 @@
 
 <div class="row">
     <div class="col-lg-9 main-chart">
-        <div class="text-center">
-            <h1>Sorry, the car is not signed on you. Please, do not hesitate to contact the administrator</h1>
+        <div class="row row-fix">
+            <div class="col-md-offset-1 col-md-10">
+                <div class="text-center">
+                    <h1>Sorry, the car is not signed on you. Please, do not hesitate to contact the administrator</h1>
+                </div>
+            </div> 
         </div>
-
     </div>
 </div>
 

@@ -11,7 +11,7 @@ package com.netcracker.entity.helper;
  */
 public enum StatusDriver {
 
-    QUEUED("QUEUED"), ASSIGNED("ASSIGNED"), IN_PROGRESS("IN_PROGRESS"), COMPLETED("COMPLETED");
+    QUEUED("QUEUED"), ASSIGNED("ASSIGNED"), IN_PROGRESS("IN_PROGRESS");
 
     private final String statusDriverName;
 
@@ -24,7 +24,7 @@ public enum StatusDriver {
     }
 
     public static StatusDriver[] getDriverStatus() {
-        StatusDriver[] status = {StatusDriver.QUEUED, StatusDriver.ASSIGNED, StatusDriver.IN_PROGRESS, StatusDriver.COMPLETED};
+        StatusDriver[] status = {StatusDriver.QUEUED, StatusDriver.ASSIGNED, StatusDriver.IN_PROGRESS};
         return status;
     }
 }
