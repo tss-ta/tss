@@ -67,19 +67,16 @@ public class CreateAndEditDriverRoute {
 
                 if(errorMessage == null) {
                     BeansLocator.getInstance().getDriverBean().addDriver(driver);
+                    MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
+                    String signUpURL = ServletUtils.getBaseUrl(req) + "/RegistrationServlet?token=" + token;
+                    mailerBean.sendDriverInvite(driverEmail, signUpURL);
+                    actResp.setSuccessMessage("Invite was successfully sent");
                 } else {
                     actResp.setErrorMessage(errorMessage);
                 }
 
-                MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
-                String signUpURL = ServletUtils.getBaseUrl(req) + "/RegistrationServlet?token=" + token;
-                mailerBean.sendDriverInvite(driverEmail, signUpURL);
-                actResp.setSuccessMessage("Invite was successfully sent");
             } else {
-                req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_SEND_TOKEN_CONTENT.getType());
                 actResp.setErrorMessage("System already contains user with such an email!");
-                actResp.setPageContent(Page.ADMIN_SEND_TOKEN_CONTENT.getAbsolutePath());
-                return actResp;
             }
         }
 
