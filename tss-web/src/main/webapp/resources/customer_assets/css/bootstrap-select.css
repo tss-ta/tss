@@ -11,8 +11,7 @@
   /*IE9 and below*/
 }
 .bootstrap-select > .btn {
-  width: 100%;
-  padding-right: 25px;
+  width: 90%;
 }
 .error .bootstrap-select .btn {
   border: 1px solid #b94a48;
