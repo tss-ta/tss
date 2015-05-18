@@ -32,6 +32,7 @@ public enum Page {
     ERROR_500_CONTENT("", "admin/content/500.jsp"),
     ERROR_404_CONTENT("", "content/404.jsp"),
     INCORRECT_ID_CONTENT("", "content/incorrect-id.jsp"),
+    INCORRECT_ROLE_CONTENT("", "content/incorrect-role.jsp"),
 
     CUSTOMER_CELEBRATION_SERVICE_CONTENT("celebrService", "customer/content/customer-celebrService.jsp"),
     CUSTOMER_TEMPLATE_CONTENT("", "customer/customer-template.jsp"),

@@ -30,6 +30,15 @@ public enum Roles {
 
     /**
      *
+     * @return Array of all Roles that can have user
+     */
+    public static Roles[] getAllUserRoles(){
+        Roles [] roles = {CUSTOMER, ADMIN, DRIVER, BANNED, REGULAR_CUSTOMER, MAJOR_ADMIN, RELIABLE_DRIVER};
+        return roles;
+    }
+
+    /**
+     *
      * @return Array of Roles that can be attached to main user role
      */
     public static Roles[] getSubroles (Roles role){
