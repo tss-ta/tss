@@ -19,10 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by Kyrylo Berehovyi on 25/04/2015.
- *
- * @author maks
- */
+* Created by Kyrylo Berehovyi on 25/04/2015.
+*
+* @author maks
+*/
 @Deprecated
 @WebServlet(urlPatterns = "/admin/group")
 public class AdminGroupServlet extends HttpServlet {

@@ -56,7 +56,7 @@
                 <input type="email" data-validation-email-message="Incorrect email address"
                    class="form-control" id="input_email" placeholder="Email" name="email"
                    minlength="5" data-validation-minlength-message="Incorrect email address"
-                   maxlength="40"
+                   maxlength="40" required
                    data-validation-maxlength-message="Incorrect email address. It's too long" autofocus/>
                 <br/>
                 <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required minlength="1" maxlength="60"><br/>

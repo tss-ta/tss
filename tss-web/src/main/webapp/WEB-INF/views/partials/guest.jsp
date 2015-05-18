@@ -46,12 +46,12 @@
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript"
 	src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
-	
+
 </script>
 
 <script type="text/javascript"
 	src="/resources/customer_assets/js/map.js">
-	
+
 </script>
 
 <script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>

@@ -7,7 +7,7 @@
 	<c:when test="${pageType == 'orderpage'}">
 		<c:set var="activeOrders" scope="request"
 			value="${'class=\"active\"'}" />
-				<c:set var="activeOrdersPage" scope="request"
+		<c:set var="activeOrdersPage" scope="request"
 			value="${'class=\"active\"'}" />
 	</c:when>
 	<c:when test="${pageType == 'history'}">
@@ -20,7 +20,7 @@
 		<c:set var="activeOrders" scope="request"
 			value="${'class=\"active\"'}" />
 	</c:when>
-        <c:when test="${pageType == 'soberService'}">
+	<c:when test="${pageType == 'soberService'}">
 		<c:set var="activeSoberService" scope="request"
 			value="${'class=\"active\"'}" />
 		<c:set var="activeOrders" scope="request"
@@ -42,9 +42,10 @@
 
 <!--sidebar start-->
 <ul class="sidebar-nav">
-	<li class="sidebar-brand"><a href="/">Taxi Service</a></li>
+	<li class="sidebar-brand sidebar-brand-high"><a href="/">Taxi Service</a></li>
+	<li class="sidebar-brand sidebar-brand-mini"><a href="/">TS</a></li>
 
-	<div class="text-center">
+	<div class="text-center sidebar-brand-high">
 		<a href="/customer"><img
 			src="/resources/customer_assets/img/ui-sam.jpg" class="img-circle"
 			width="60"></a> <BR>&nbsp;<BR>
@@ -59,13 +60,12 @@
 		<ul class="dropdown-menu sidebar-nav2">
 			<li><a href="/customer/orderpage" ${activeOrdersPage}><span
 					class="icon-container"><i class="fa fa-user"></i></span> <span
-					class="icon-label">Order Taxi</span>
-			</a></li>
+					class="icon-label">Order Taxi</span> </a></li>
 			<li><a href="/customer/cceServicePage" ${activeCceService}>
 					<span class="icon-container"><i class="fa fa-user"></i></span> <span
 					class="icon-label">Convey corp</span>
 			</a></li>
-                        <li><a href="/customer/soberServicePage" ${activeSoberService}>
+			<li><a href="/customer/soberServicePage" ${activeSoberService}>
 					<span class="icon-container"><i class="fa fa-user"></i></span> <span
 					class="icon-label">Sober driver</span>
 			</a></li>
@@ -73,9 +73,9 @@
 					<span class="icon-container"><i class="fa fa-user"></i></span> <span
 					class="icon-label">Meet My Guest</span>
 			</a></li>
-			<li><a href="/customers?menu=celebration&action=addCelebration" ${activeCelebrService}>
-					<span class="icon-container"><i class="fa fa-user"></i></span> <span
-					class="icon-label">Celebration</span>
+			<li><a href="/customers?menu=celebration&action=addCelebration"
+				${activeCelebrService}> <span class="icon-container"><i
+						class="fa fa-user"></i></span> <span class="icon-label">Celebration</span>
 			</a></li>
 		</ul></li>
 	<li><a href="/customer/history" ${activeHistory}> <span
