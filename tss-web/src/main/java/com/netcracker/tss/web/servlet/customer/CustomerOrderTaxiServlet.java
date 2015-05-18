@@ -88,12 +88,8 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
                 distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
                         req.getParameter("toAddr"));
 
-            if ("".equals(req.getParameter("price"))) {
-                price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
-            } else {
-                price = Double.parseDouble(req.getParameter("price"));
-            }
+            price = priceBean.calculatePrice(distance,
+                    DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
             Date orderTime = DateParser.parseDate(req);
             taxiOrder.setOrderTime(orderTime);
             taxiOrder.setPrice(price);

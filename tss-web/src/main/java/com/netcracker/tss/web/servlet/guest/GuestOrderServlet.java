@@ -60,12 +60,10 @@ public class GuestOrderServlet extends HttpServlet {
             MapBeanLocal mapBean = getMapBean(req);
             distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
                     req.getParameter("toAddr"));
-        if ("".equals(req.getParameter("price"))) {
-            price = priceBean.calculatePrice(distance,
-                    DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
-        } else {
-            price = Double.parseDouble(req.getParameter("price"));
-        }
+
+
+        price = priceBean.calculatePrice(distance,
+                DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
         taxiOrder.setBookingTime(new Date());
         Date orderTime = DateParser.parseDate(req);
         taxiOrder.setOrderTime(orderTime);
@@ -101,7 +99,6 @@ public class GuestOrderServlet extends HttpServlet {
     private MapBeanLocal getMapBean(HttpServletRequest req) {
         return BeansLocator.getInstance().getBean(MapBeanLocal.class);
     }
-
 
     private PriceBeanLocal getPriceBean(HttpServletRequest req) {
         return BeansLocator.getInstance().getBean(PriceBeanLocal.class);
