@@ -64,14 +64,11 @@ body {
 	width: 0;
 	height: 100%;
 	margin-left: -180px;
-	overflow-y: auto;
-	overflow-x: hidden;
 	background: #111111;
 	-webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
 	-o-transition: all 0.5s ease;
 	transition: all 0.5s ease;
-	overflow-x: hidden;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -84,7 +81,6 @@ body {
 	padding: 0;
 	min-height: 100%;
 	margin-bottom: 0;
-	overflow-x: auto;
 }
 
 #wrapper.toggled #page-content-wrapper {
