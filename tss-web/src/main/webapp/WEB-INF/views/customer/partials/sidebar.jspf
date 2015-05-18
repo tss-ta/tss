@@ -50,13 +50,15 @@
 			src="/resources/customer_assets/img/ui-sam.jpg" class="img-circle"
 			width="60"></a> <BR>&nbsp;<BR>
 	</div>
-	<li><a href="/customer" ${activeDashboard}> <span
-			class="icon-container"><i class="fa fa-tachometer"></i></span> <span
-			class="icon-label">Dashboard</span>
+	<li><a href="/customer" ${activeDashboard}>
+        <span class="icon-container"><i class="fa fa-tachometer"></i></span>
+        <span class="icon-label">Dashboard</span>
 	</a></li>
-	<li class="dropdown-submenu"><a tabindex="-1"
-		href="/customer/orderpage" ${activeOrders}><span
-			class="icon-container"><i class="fa fa-user"></i></span>Order Taxi</a>
+	<li class="dropdown dropdown-submenu"><a tabindex="-1"
+		href="/customer/orderpage" ${activeOrders}>
+        <span class="icon-container"><i class="fa fa-user"></i></span>
+        <span class="icon-label">Order Taxi</span>
+        </a>
 		<ul class="dropdown-menu sidebar-nav2">
 			<li><a href="/customer/orderpage" ${activeOrdersPage}><span
 					class="icon-container"><i class="fa fa-user"></i></span> <span

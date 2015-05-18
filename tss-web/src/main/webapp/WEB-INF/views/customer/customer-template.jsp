@@ -174,6 +174,12 @@
 		})
 	</script>
 
-
+    <script src="/resources/js/jqBootstrapValidation.js"></script>
+    <script>
+        $(function () {
+            $("input").not("[type=submit]").jqBootstrapValidation();
+            //     $(".form-sign-error-msg").css("visibility", "visible");
+        });
+    </script>
 </body>
 </html>

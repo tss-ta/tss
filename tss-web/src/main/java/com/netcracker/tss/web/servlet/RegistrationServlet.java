@@ -39,46 +39,37 @@ public class RegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            String userName = request.getParameter("userName");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String confirmPassword = request.getParameter("confirPassword");
+            Integer driverToken = RequestParameterParser.parseInteger(request, "token");
 
+            if (password.equals(confirmPassword)) {
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                password = encoder.encode(password);
 
-        String userName = request.getParameter("userName");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirPassword");
-        Integer driverToken = RequestParameterParser.parseInteger(request , "token");
-//        if (!"".equals(request.getParameter("token")) && (request.getParameter("token") != null)) {
-//            driverToken = Integer.valueOf(request.getParameter("token"));
-//        }
-        
+                RegistrationBeanLocal rb = BeansLocator.getInstance().getBean(RegistrationBeanLocal.class);
 
-        if (password.equals(confirmPassword)) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            password = encoder.encode(password);
+                if (driverToken != null) {
+                    Driver driver = createDriverWithSpecifiedParameters(request);
+                    driver.setUsername(userName);
+                    driver.setPasswordHash(password);
+                    driver.setToken(driverToken);
 
-            RegistrationBeanLocal rb = BeansLocator.getInstance().getBean(RegistrationBeanLocal.class);
-
-            if (driverToken != null) {
-                Driver driver = createDriverWithSpecifiedParameters(request);
-                driver.setUsername(userName);
-                driver.setPasswordHash(password);
-                driver.setToken(driverToken);
-
-                rb.registrateDriver(driver);
-                response.sendRedirect("/driver");
-                return;
-            }
-
-            User user = new User(userName, email, password);
-            if (!rb.isUserExist(user)) {
+                    rb.registrateDriver(driver);
+                    response.sendRedirect("/driver");
+                    return;
+                }
+                User user = new User(userName, email, password);
                 rb.registrate(user);
                 response.sendRedirect("/customer");
+            } else {
+                response.sendRedirect("/signup.jsp");
             }
-        } else {
-            response.sendRedirect("/signup.jsp");
-        }
         } catch (InvalidEntityException e) {
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("/signup.jsp").forward(request,response);
+            request.getRequestDispatcher("/signup.jsp").forward(request, response);
         }
     }
 
@@ -93,7 +84,6 @@ public class RegistrationServlet extends HttpServlet {
     private boolean isOn(String checkBoxText) {
         return "on".equals(checkBoxText);
     }
-
 
 
     /**
@@ -115,7 +105,7 @@ public class RegistrationServlet extends HttpServlet {
                 request.setAttribute("email", driver.getEmail());
                 request.getRequestDispatcher("/WEB-INF/views/driver-registration.jsp").forward(request, response);
             }
-        } catch (InvalidEntityException e){
+        } catch (InvalidEntityException e) {
             request.setAttribute("errorMessage", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/driver-registration.jsp").forward(request, response);
         }
