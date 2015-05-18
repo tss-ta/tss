@@ -24,6 +24,7 @@
 				<%@ include file="to_addr.jspf"%>
 				<%@ include file="price.jspf"%>
 			</div>
+			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-6">
 				<br>&nbsp;<br>
 				<%@ include file="map.jspf"%>
@@ -44,34 +45,34 @@
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript"
-        src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
-
+	src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
+	
 </script>
 
 <script type="text/javascript"
-        src="/resources/customer_assets/js/map.js">
-
+	src="/resources/customer_assets/js/map.js">
+	
 </script>
 
 <script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
 <script>
-    $(function() {
-        window.onload = function() {
-            initialize();
-            showonmap();
-        }
-    });
-    //custom select box
-    $(function() {
-        $('select.styled').customSelect();
-    });
+	$(function() {
+		window.onload = function() {
+			initialize();
+			showonmap();
+		}
+	});
+	//custom select box
+	$(function() {
+		$('select.styled').customSelect();
+	});
 </script>
 
 <script>
-    AnyTime.picker("ordertime", {
-        format : "%H:%i, %d %m %Y",
-        firstDOW : 1
-    });
+	AnyTime.picker("ordertime", {
+		format : "%H:%i, %d %m %Y",
+		firstDOW : 1
+	});
 </script>
 
 <script>

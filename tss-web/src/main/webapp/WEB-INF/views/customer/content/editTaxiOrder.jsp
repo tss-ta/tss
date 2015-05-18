@@ -30,7 +30,7 @@
 				<%@ include file="../../partials/to_pers_addr.jspf"%>
 				<%@ include file="../../partials/price.jspf"%>
 			</div>
-
+			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-6">
 				<%@ include file="../../partials/map.jspf"%>
 			</div>
