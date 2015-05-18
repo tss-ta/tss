@@ -327,6 +327,10 @@ VALUES
 INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef)
 VALUES
+('sober', 100, 1.03);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
 ('meet_guest', 100, 1.03);
 INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef)
@@ -340,7 +344,14 @@ INSERT INTO tariff
 (tariff_name, plus_coef, multiple_coef)
 VALUES
   ('per_km', 5, 1);
-
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('per_hour', 20, 1);
+INSERT INTO tariff
+(tariff_name, plus_coef, multiple_coef)
+VALUES
+  ('per_car', 20, 1);
 
 INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 19, 1, null, null);
 INSERT INTO driver_car (id, driver_id, car_id, assign_time, unassign_time) VALUES (DEFAULT, 12, 2, null, null);
