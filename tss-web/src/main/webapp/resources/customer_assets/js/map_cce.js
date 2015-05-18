@@ -1,3 +1,4 @@
+//not used
 var geocoder;
 var markerFrom;
 var fromCoord;
@@ -45,7 +46,6 @@ function geolocationSuccess(position) {
 		removeFromMarker();
 	var location = new google.maps.LatLng(position.coords.latitude,
 			position.coords.longitude);
-	// fromCoord=location;
 	codeLatLngFrom(location);
 	placeFromMarker(location);
 	map.setCenter(location);
@@ -58,7 +58,6 @@ function geolocationFailure(positionError) {
 	alert("Geolocation Error");
 }
 function placeFromMarker(location) {
-	// codeLatLngFrom(location);
 	$("#fromc").val(location);
 	fromCoord = location;
         var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/from.png",
@@ -73,12 +72,8 @@ function placeFromMarker(location) {
 	$("#fromAddrMessage").text("");
 	google.maps.event.addListener(markerFrom, 'click', function(event) {
 		removeFromMarker();
-		// markerFrom.setMap(null);
-		// markerFrom=null;
-		// fromCoord=null;
 		$("#fromc").val("");
 		$("#fromAddr").val("");
-		// removeRoute();
 	});
 }
 function removeFromMarker() {
@@ -96,7 +91,6 @@ function removeToMarker() {
 }
 
 function placeToMarker(location) {
-	// codeLatLngTo(location);
 	$("#toc").val(location);
 	toCoord = location;
         var pinImage = new google.maps.MarkerImage("/resources/customer_assets/img/to.png",
@@ -111,22 +105,16 @@ function placeToMarker(location) {
 	$("#toAddrMessage").text("");
 	google.maps.event.addListener(markerTo, 'click', function(event) {
 		removeToMarker();
-		// markerTo.setMap(null);
-		// markerTo=null;
-		// toCoord=null;
 		$("#toc").val("");
 		$("#toAddr").val("");
-		// removeRoute();
 	});
 }
 function placeMarker(location) {
 	if (markerFrom == null) {
-		// fromCoord=location;
 		codeLatLngFrom(location);
 		placeFromMarker(location);
 	} else {
 		if (markerTo == null) {
-			// toCoord=location;
 			codeLatLngTo(location);
 			placeToMarker(location);
 		}
@@ -134,7 +122,6 @@ function placeMarker(location) {
 	if (fromCoord != null && toCoord != null) {
 		createRoute(fromCoord, toCoord);
 	}
-	// codeLatLng(location);
 }
 
 function codeLatLngFrom(location) {
@@ -166,10 +153,6 @@ function codeLatLngTo(location) {
 }
 function codeAddressFrom() {
 	var address = $("#fromAddr").val();
-	// var address = componeFromAddr();
-	// var address = $("#fromstreet").val()+" ,
-	// "+$("#fromhouse").val()+$("#fromzip").val()+" , Kyiv, Ukraine";
-	// $("#fromAddr").val(address);
 	geocoder.geocode({
 		'address' : address
 	}, function(results, status) {
@@ -182,19 +165,12 @@ function codeAddressFrom() {
 			$("#fromc").val("");
 			fromCoord = null;
 			$("#fromAddrMessage").text("Initial address is not found");
-
-			// alert("Geocode was not successful for the following reason: " +
-			// status);
 		}
 	});
 }
 
 function codeAddressTo() {
 	var address = $("#toAddr").val();
-	// var address =componeToAddr();
-	// var address = $("#tostreet").val()+" ,
-	// "+$("#tohouse").val()+$("#tozip").val()+" , Kyiv, Ukraine";
-	// $("#toAddr").val(address);
 	geocoder.geocode({
 		'address' : address
 	}, function(results, status) {
@@ -328,8 +304,7 @@ function putMarkerFromArrayFrom(address) {
             });
 
             markersArrayFrom.push(newmarker);
-        } else {
-            // alert("Incorrect address assignments");  
+        } else { 
         }
     });
 

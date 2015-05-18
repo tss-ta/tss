@@ -32,6 +32,18 @@
     </div>
 </div>
 
+<div class="row row-fix">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-4 col-xs-4">
+                    <a href="/admin?menu=report&action=add" class="btn btn-default">Add Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <c:if test="${not empty reportList}">
     <div class="row row-fix">
         <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12">

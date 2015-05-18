@@ -43,4 +43,10 @@ public interface ReportsBeanLocal extends EJBLocalObject {
     List<TaxiOrder> getBookedOrders (Date begin, Date end);
 
     Report getBigReport(int id);
+
+    void createReportInfo(ReportInfo reportInfo);
+
+    void updateReportInfo(ReportInfo reportInfo);
+
+    void deleteReportInfo(ReportInfo reportInfo);
 }

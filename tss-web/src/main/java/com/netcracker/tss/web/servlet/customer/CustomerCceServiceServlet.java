@@ -1,15 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.tss.web.servlet.customer;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,8 +25,6 @@ import com.netcracker.ejb.MapBeanLocal;
 import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.PriceBeanLocal;
 import com.netcracker.ejb.PriceBeanLocalHome;
-import com.netcracker.ejb.TaxiOrderBeanLocal;
-import com.netcracker.ejb.TaxiOrderBeanLocalHome;
 import com.netcracker.ejb.UserBeanLocal;
 import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.Address;
@@ -45,10 +35,10 @@ import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.UserUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Map;
 
 /**
  *
@@ -60,7 +50,6 @@ public class CustomerCceServiceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-
     }
 
     @Override
@@ -85,43 +74,39 @@ public class CustomerCceServiceServlet extends HttpServlet {
                 float currentdistance = 0;
                 double price = 0;
                 String toAddr = req.getParameter("toAddr");
-                Address addTo = toAddress(toAddr, req);
-                List<Address> addFrom = new ArrayList<Address>();
-                List<Route> routes = new ArrayList<>();
                 MapBeanLocal mapBean = getMapBean(req);
-                for (String fa : fromListAddr) {
-                    addFrom.add(toAddress(fa, req));
-                    Route r = new Route(user.getUsername() + " Route");
-                    try {
+                try {
+                    Address addTo = toAddress(toAddr, req);
+                    List<Address> addFrom = new ArrayList<Address>();
+                    List<Route> routes = new ArrayList<>();
+                    for (String fa : fromListAddr) {
+                        addFrom.add(toAddress(fa, req));
+                        Route r = new Route(user.getUsername() + " Route");
+
                         currentdistance = mapBean.calculateDistance(fa, toAddr);
                         distance = distance + currentdistance;
-                    } catch (JSONException | IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    r.setDistance(currentdistance);
-                    routes.add(r);
-                }
-                TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
-                taxiOrder.setBookingTime(new Date());
-                Date orderTime = DateParser.parseDate(req);
-                orderTime.setYear(new Date().getYear());
-                taxiOrder.setOrderTime(orderTime);
 
-                //if ("".equals(req.getParameter("price"))) {
+                        r.setDistance(currentdistance);
+                        routes.add(r);
+                    }
+                    TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
+                    taxiOrder.setBookingTime(new Date());
+                    Date orderTime = DateParser.parseDate(req);
+                    orderTime.setYear(new Date().getYear());
+                    taxiOrder.setOrderTime(orderTime);
                     price = priceBean.calculatePriceForCceService(distance,
                             DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
-//                } else {
-//                    price = Double.parseDouble(req.getParameter("price"));
-//                }
-                taxiOrder.setPrice(price);
+                    taxiOrder.setPrice(price);
 
-                Integer latestTOId = taxiConveyCorpServiceBeanLocal.addCorpService(user, routes, addFrom, addTo, taxiOrder);
-                req.setAttribute("taxiOrderId", latestTOId);
-                req.setAttribute("pageContent", "content/confirmation.jsp");
-                req.getRequestDispatcher(
-                        "/WEB-INF/views/customer/customer-template.jsp").forward(
-                                req, resp);
+                    Integer latestTOId = taxiConveyCorpServiceBeanLocal.addCorpService(user, routes, addFrom, addTo, taxiOrder);
+                    req.setAttribute("taxiOrderId", latestTOId);
+                    req.setAttribute("pageContent", "content/confirmation.jsp");
+                    req.getRequestDispatcher(
+                            "/WEB-INF/views/customer/customer-template.jsp").forward(
+                            req, resp);
+                } catch (Exception e) {
+                    resp.sendRedirect("/customer/cceServicePage");
+                }
             } else {
                 resp.sendRedirect("/customer/cceServicePage");
             }
@@ -160,7 +145,7 @@ public class CustomerCceServiceServlet extends HttpServlet {
         try {
             to = mapBeanLocal.geocodeAddress(addr);
         } catch (JSONException | IOException e) {
-            e.printStackTrace();
+            return null;
         }
         return new Address((float) to[1], (float) to[0]);
     }
@@ -185,8 +170,8 @@ public class CustomerCceServiceServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName())
                     .log(Level.SEVERE,
-                            "Can't find ConveyCorpServiceBean with name java:app/tss-ejb/ConveyCorpServiceBean!com.netcracker.ejb.ConveyCorpServiceBeanLocalHome ",
-                            ex);
+                    "Can't find ConveyCorpServiceBean with name java:app/tss-ejb/ConveyCorpServiceBean!com.netcracker.ejb.ConveyCorpServiceBeanLocalHome ",
+                    ex);
             throw new RuntimeException("Internal server error!");// maybe have
             // to create
             // custom
@@ -204,8 +189,8 @@ public class CustomerCceServiceServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName())
                     .log(Level.SEVERE,
-                            "Can't find taxiMapBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
-                            ex);
+                    "Can't find taxiMapBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
+                    ex);
             throw new RuntimeException("Internal server error!");// maybe have
             // to create
             // custom
@@ -223,8 +208,8 @@ public class CustomerCceServiceServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName())
                     .log(Level.SEVERE,
-                            "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
-                            ex);
+                    "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
+                    ex);
             throw new RuntimeException("Internal server error!");// maybe have
             // to create
             // custom
@@ -246,5 +231,4 @@ public class CustomerCceServiceServlet extends HttpServlet {
             // exception?
         }
     }
-
 }

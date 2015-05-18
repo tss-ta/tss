@@ -349,3 +349,11 @@ ul.custom-pager li:last-child a {
 a.list-group-item p {
     color: #777;
 }
+.navbar-custom .navbar-brand, .navbar-custom .navbar-nav > li > a.no-hover:hover {
+    color: #989898;
+}
+
+.hide-position {
+    display: none;
+    visibility: hidden;
+}

@@ -68,6 +68,18 @@ public class ReportsBean implements SessionBean {
         return report;
     }
 
+    public void deleteReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.delete(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+    }
+
     public int countReports(ReportInfo info) {
         ReportDataDAO dataDAO = new ReportDataDAO();
         Long counter = dataDAO.countResults(info.getCountQuery());
@@ -91,6 +103,30 @@ public class ReportsBean implements SessionBean {
             }
         }
         return counter;
+    }
+
+    public void createReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.persist(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+    }
+
+    public void updateReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.update(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
     }
 
     public List<ReportInfo> getPageOfReportsInfo(int pageNumber, int pageSize) {
@@ -123,7 +159,7 @@ public class ReportsBean implements SessionBean {
             }
             report = new Report(reportInfo, reportData);
         }  catch (NoSuchEntityException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             if (infoDAO != null) {
                 infoDAO.close();

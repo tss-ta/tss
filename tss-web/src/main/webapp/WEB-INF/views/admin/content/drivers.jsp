@@ -8,7 +8,7 @@
 <div class="row row-fix">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <h1>Drivers Panel</h1>
+        <h1 class="text-center">Drivers Panel</h1>
 
         <div class="row row-fix">
             <%--<div class="col-md-offset-1 col-md-10">--%>
@@ -20,7 +20,8 @@
                         <div class="col-md-offset-7 col-md-4">
                             <form action="/admin?menu=driver&action=search&page=1" method="post" >
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="search" placeholder="Driver name" value="${param.search}">
+                                    <input type="text" class="form-control" name="search" placeholder="Driver name"
+                                           maxlength="40" value="${param.search}">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                                     </span>

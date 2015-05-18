@@ -43,6 +43,7 @@
 				</div>
 				<%@ include file="../../partials/price.jspf"%>
 			</div>
+			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-6">
 				<%@ include file="../../partials/map.jspf"%>
 			</div>
@@ -50,8 +51,8 @@
 		<div class="col-lg-12">
 			<!-- /col-lg-12 -->
 			<div class="col-lg-12 text-center">
-				<input type="hidden" name="menu" value="celebration">
-				<input type="hidden" name="action" value="addCelebration">
+				<input type="hidden" name="menu" value="celebration"> <input
+					type="hidden" name="action" value="addCelebration">
 				<button class="btn btn-success btn-lg btn-block" type="submit">Order
 					Now</button>
 			</div>
@@ -72,7 +73,7 @@
 </script>
 
 <script type="text/javascript"
-	src="/resources/customer_assets/js/map.js">
+	src="/resources/customer_assets/js/map_celebration.js">
 	
 </script>
 
@@ -115,39 +116,42 @@
 
 <script>
 	var driversAmountInput = $('#driversAmountId');
-	driversAmountInput.keyup(function() {
-		var alertDriversAmount = $('#alert_drivers_amount');
-		if(driversAmountInput.val() < 5) {
-			alertDriversAmount.empty();
-			alertDriversAmount.append('<h5 style="color: red">Cars amount should be more than 5</h5>');
-		} else {
-			alertDriversAmount.empty();
-		}
+	driversAmountInput
+			.keyup(function() {
+				var alertDriversAmount = $('#alert_drivers_amount');
+				if (driversAmountInput.val() < 5) {
+					alertDriversAmount.empty();
+					alertDriversAmount
+							.append('<h5 style="color: red">Cars amount should be more than 5</h5>');
+				} else {
+					alertDriversAmount.empty();
+				}
 
-
-	});
+			});
 
 	var durationInput = $('#duration');
-	durationInput.keyup(function() {
-		var alertDuration = $('#alert_duration');
+	durationInput
+			.keyup(function() {
+				var alertDuration = $('#alert_duration');
 
-		if(durationInput.val() < 8) {
-			alertDuration.empty();
-			alertDuration.append('<h5 style="color: red">Duration should be more than 8 hours</h5>');
-		} else {
-			alertDuration.empty();
-		}
-	});
+				if (durationInput.val() < 8) {
+					alertDuration.empty();
+					alertDuration
+							.append('<h5 style="color: red">Duration should be more than 8 hours</h5>');
+				} else {
+					alertDuration.empty();
+				}
+			});
 
 	$('#update_price').click(function() {
 		$.ajax({
 			type : "POST",
 			url : "/price",
 			data : {
-				service: "celebration",
+				service : "celebration",
 				ordertime : $("#ordertime").val(),
-				driversAmount: $('#driversAmountId').val(),
-				duration: $('#duration').val()
+				driversAmount : $('#driversAmountId').val(),
+				duration : $('#duration').val()
 			},
 			dataType : "text"
 		}).done(function(res) {

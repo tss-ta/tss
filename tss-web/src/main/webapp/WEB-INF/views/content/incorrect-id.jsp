@@ -7,7 +7,13 @@
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
         <div class="text-center">
-            <h1><i class="fa fa-frown-o fa-lg"></i> Incorrect ID value.</h1>
+            <h1>
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-bug fa-stack-1x"></i>
+                  <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                </span>
+                Incorrect <b>ID</b> value
+            </h1>
         </div>
     </div>
 </div>

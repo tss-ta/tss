@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.netcracker.tss.web.servlet.customer;
 
 import com.netcracker.ejb.UserBeanLocal;
@@ -9,7 +5,6 @@ import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.UserUtils;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -28,14 +23,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = "/customer/soberServicePage")
 public class CustomerSoberServicePageServlet extends HttpServlet {
 
-
+    
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.getSession().removeAttribute("taxiOrder");
         UserBeanLocal userBeanLocal = getUserBean(req);
         req.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
-        req.setAttribute("pageContent", "content/customer-soberService.jsp");
+        req.setAttribute("pageContent", "content/customer-soberService.jsp"); 
         req.setAttribute("pageType", "soberService");
         req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
                 .forward(req, resp);
@@ -51,13 +46,12 @@ public class CustomerSoberServicePageServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(AdminGroupServlet.class.getName())
                     .log(Level.SEVERE,
-                            "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
-                            ex);
+                    "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
+                    ex);
             throw new RuntimeException("Internal server error!");// maybe have
             // to create
             // custom
             // exception?
         }
     }
-
 }

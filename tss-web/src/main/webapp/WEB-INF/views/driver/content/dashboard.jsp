@@ -36,12 +36,6 @@
                                 <th>From Address</th>
                                 <th>To Address</th>
                                 <th>Car Category</th>
-                                <th>Wifi</th>
-                                <th>Conditioner</th>
-                                <th>Animal Transport</th>
-                                <th>Smoke</th>
-                                <th>Male</th>
-                                <th>Music Style</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,58 +69,8 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td>
-                                        <c:if test="${list.wifi}">
-                                            <i class="fa fa-wifi fa-lg"></i>
-                                        </c:if>
-                                        <c:if test="${!list.wifi}">
-                                            <i class="fa fa-minus"></i>
-                                        </c:if>
-                                    </td>
                                     <td class="hidden-sm hidden-xs">
-                                        <c:if test="${list.conditioner}">
-                                            <i class="fa fa-check"></i>
-                                        </c:if>
-                                        <c:if test="${!list.conditioner}">
-                                            <i class="fa fa-minus"></i>
-                                        </c:if>
-                                    </td>
-                                    <td class="hidden-sm hidden-xs">
-                                        <c:if test="${list.animalTransport}">
-                                            <i class="fa fa-check"></i>
-                                        </c:if>
-                                        <c:if test="${!list.animalTransport}">
-                                            <i class="fa fa-minus"></i>
-                                        </c:if>
-                                    </td>
-                                    <td class="hidden-sm hidden-xs">
-                                        <c:if test="${list.smoke}">
-                                            <i class="fa fa-check"></i>
-                                        </c:if>
-                                        <c:if test="${!list.smoke}">
-                                            <i class="fa fa-minus"></i>
-                                        </c:if>
-                                    </td>
-                                    <td class="hidden-sm hidden-xs">
-                                        <c:if test="${list.male}">
-                                            <i class="fa fa-check"></i>
-                                        </c:if>
-                                        <c:if test="${!list.male}">
-                                            <i class="fa fa-minus"></i>
-                                        </c:if>
-                                    </td>
-                                    <td class="hidden-sm hidden-xs">
-                                        <c:choose>
-                                            <c:when test="${list.musicStyle == 1}">
-                                                Rock
-                                            </c:when>
-                                            <c:when test="${list.musicStyle == 2}">
-                                                Classic
-                                            </c:when>
-                                            <c:when test="${list.musicStyle == 3}">
-                                                Jazz
-                                            </c:when>
-                                        </c:choose>
+                                        <a href="/driver/dashboard/allinfo?action=viewAll&order_id=${list.id}" class="btn btn-default">View All</a>
                                     </td>
                                     <c:if test="${list.status != 5}">
                                         <c:if test="${list.status != 3}">
@@ -134,16 +78,16 @@
                                                 <a href="/driver/dashboard?action=changeStatus&order_id=${list.id}" class="btn btn-default">
                                                     <c:choose>
                                                         <c:when test="${list.status+1 == 2}">
-                                                           TO ASSIGNED
+                                                            TO ASSIGNED
                                                         </c:when>
                                                         <c:when test="${list.status+2 == 2}">
-                                                           TO ASSIGNED
+                                                            TO ASSIGNED
                                                         </c:when>
                                                         <c:when test="${list.status+2 == 4}">
-                                                           TO IN_PROGRESS 
+                                                            TO IN_PROGRESS 
                                                         </c:when>
                                                         <c:when test="${list.status+1 == 5}">
-                                                           TO COMPLETED
+                                                            TO COMPLETED
                                                         </c:when>
                                                         <c:otherwise>
                                                             Other

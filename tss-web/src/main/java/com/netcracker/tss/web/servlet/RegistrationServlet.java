@@ -1,35 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.netcracker.tss.web.servlet;
 
-import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.ejb.*;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Category;
 import com.netcracker.exceptions.InvalidEntityException;
-import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.netcracker.tss.web.util.RequestAttribute;
-import com.netcracker.tss.web.util.RequestParameter;
+
 import com.netcracker.tss.web.util.RequestParameterParser;
 import com.netcracker.util.BeansLocator;
-import org.omg.CORBA.Request;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
