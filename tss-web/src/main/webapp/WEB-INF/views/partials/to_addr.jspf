@@ -3,6 +3,6 @@
 	<label class="col-sm-2 col-sm-2 control-label">To :</label>
 	<div class="col-sm-6">
 		<input type="text" class="form-control" id="toAddr" name="toAddr"
-			value="${toh.fromAddr}" maxlength="140" />
+			value="${toh.fromAddr}" maxlength="140" required autofocus />
 	</div>
 </div>
