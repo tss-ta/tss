@@ -17,6 +17,7 @@
 
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/resources/css/validator/formValidation.min.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
         <link href="/resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     </head>
@@ -27,6 +28,9 @@
         <script src="/resources/js/validator.js"></script>
 
         <script src="/resources/js/jqBootstrapValidation.js"></script>
+
+        <script src="/resources/js/validator/formValidation.min.js"></script>
+        <script src="/resources/js/validator/framework/bootstrap.min.js"></script>
 
         <div id="wrapper">
 

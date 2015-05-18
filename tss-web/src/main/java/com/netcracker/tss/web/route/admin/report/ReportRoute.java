@@ -100,6 +100,7 @@ public class ReportRoute {
         reportsBean.createReportInfo(reportInfo);
         response.setSuccessMessage(REPORT_SUCCESS_CREATE_MESSAGE);
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
+        request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_CREATE_TYPE.getName());
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
         return response;
     }

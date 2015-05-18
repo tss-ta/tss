@@ -34,7 +34,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
 
-                <form action="/admin?menu=report${formAction}" method="post" class="form-horizontal" data-toggle="validator">
+                <form action="/admin?menu=report${formAction}" method="post" class="form-horizontal" id="reportForm">
                     <input type="hidden" name="id" value="${reportInfo.id}">
                     <div class="form-group">
                         <br/>
@@ -118,11 +118,102 @@
 </div>
 
 <script>
+    $(document).ready(function() {
+        $('#reportForm').formValidation(getOptions(false));
+    });
+
+    function getOptions(enabled) {
+        return {
+            framework: 'bootstrap',
+            icon: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The name is required'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 100,
+                            message: 'The name must be more than 6 and less than 100 characters long'
+                        }
+                    }
+                },
+                selectQuery: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The select query is required'
+                        }
+                    }
+                },
+                countQuery: {
+                    validators: {
+                        notEmpty: {
+                            enabled: enabled,
+                            message: 'The count query is required'
+                        }
+                    }
+                },
+                pageSize: {
+                    validators: {
+                        notEmpty: {
+                            enabled: enabled,
+                            message: 'The page size is required'
+                        },
+                        numeric: {
+                            enabled: enabled,
+                            message: 'The page size must be a number'
+                        },
+                        between: {
+                            enabled: enabled,
+                            min: 1,
+                            max: 100,
+                            message: 'The page size must be between 1 and 100'
+                        }
+                    }
+                },
+                exportSize: {
+                    validators: {
+                        notEmpty: {
+                            enabled: enabled,
+                            message: 'The export size is required'
+                        },
+                        numeric: {
+                            enabled: enabled,
+                            message: 'The export size must be a number'
+                        },
+                        between: {
+                            enabled: enabled,
+                            min: 1,
+                            max: 10000,
+                            message: 'The export size must be between 1 and 10000'
+                        }
+                    }
+                }
+            }
+        };
+    }
+</script>
+<script>
+    function switchPagerFieldValidation(element, enable) {
+        element.formValidation('enableFieldValidators', 'countQuery', enable);
+        element.formValidation('enableFieldValidators', 'pageSize', enable);
+        element.formValidation('enableFieldValidators', 'exportSize', enable);
+//        element.formValidation(getOptions(enable)).formValidation('validate');
+    };
+
     $('#countable').change(function() {
         var switcher = $('.switcher');
+        var form = $('#reportForm');
         if(this.checked == true) {
+            switchPagerFieldValidation(form, true);
             switcher.removeClass('hide-position');
         } else if (this.checked == false) {
+            switchPagerFieldValidation(form, false);
             switcher.addClass('hide-position');
         }
     });
