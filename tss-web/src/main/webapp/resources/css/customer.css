@@ -348,3 +348,6 @@ body {
 	border-bottom: 1px solid #ccc;
 	margin-left: 1em;
 }
+.error-msg{
+    color: #D13030;
+}
