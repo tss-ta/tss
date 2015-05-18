@@ -74,6 +74,7 @@ public class CustomerMMGServiceServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         if (request.getParameter("addFrom") != null) {
             addAddressFrom(request);
             response.sendRedirect("/customer/orderpage");
@@ -105,12 +106,10 @@ public class CustomerMMGServiceServlet extends HttpServlet {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            if ("".equals(request.getParameter("price"))) {
-                price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request), taxiOrder, UserUtils.findCurrentUser());
-            } else {
-                price = Double.parseDouble(request.getParameter("price"));
-            }
+
+            price = priceBean.calculatePrice(distance,
+                    DateParser.parseDate(request), taxiOrder, UserUtils.findCurrentUser());
+
             taxiOrder.setBookingTime(new Date());
             Date orderTime = DateParser.parseDate(request);
             taxiOrder.setOrderTime(orderTime);

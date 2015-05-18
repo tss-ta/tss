@@ -164,14 +164,10 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
             }
-            if ("".equals(request.getParameter("price"))) {
-                price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request),
-                        (TaxiOrder) request.getSession().getAttribute("taxiOrder"),
-                        UserUtils.findCurrentUser());
-            } else {
-                price = Double.parseDouble(request.getParameter("price"));
-            }
+            price = priceBean.calculatePrice(distance,
+                    DateParser.parseDate(request),
+                    (TaxiOrder) request.getSession().getAttribute("taxiOrder"),
+                    UserUtils.findCurrentUser());
             request.getSession().removeAttribute("taxiOrder");
             Date orderTime = DateParser.parseDate(request);
             orderTime.setYear(new Date().getYear());

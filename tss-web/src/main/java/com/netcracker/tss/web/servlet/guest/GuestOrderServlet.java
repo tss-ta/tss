@@ -66,12 +66,8 @@ public class GuestOrderServlet extends HttpServlet {
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-        if ("".equals(req.getParameter("price"))) {
-            price = priceBean.calculatePrice(distance,
-                    DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
-        } else {
-            price = Double.parseDouble(req.getParameter("price"));
-        }
+        price = priceBean.calculatePrice(distance,
+                DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
         taxiOrder.setBookingTime(new Date());
         Date orderTime = DateParser.parseDate(req);
         taxiOrder.setOrderTime(orderTime);
@@ -153,7 +149,6 @@ public class GuestOrderServlet extends HttpServlet {
 //            // exception?
 //        }
 //    }
-
     private PriceBeanLocal getPriceBean(HttpServletRequest req) {
         Context context;
         try {
