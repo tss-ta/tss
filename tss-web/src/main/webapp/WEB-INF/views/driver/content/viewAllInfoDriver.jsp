@@ -72,7 +72,7 @@
                                 <i class="col-sm-2 col-sm-2">Economy</i>  
                             </c:when>
                             <c:when test="${list.carCategory == 2}">
-                                 <i class="col-sm-2 col-sm-2">Business</i>  
+                                <i class="col-sm-2 col-sm-2">Business</i>  
                             </c:when>
                             <c:when test="${list.carCategory == 3}">
                                 <i class="col-sm-2 col-sm-2">Van</i>  
@@ -92,7 +92,7 @@
                                 <i class="col-sm-2 col-sm-2">Cash</i>  
                             </c:when>
                             <c:when test="${list.payment == 2}">
-                                 <i class="col-sm-2 col-sm-2">Mastercard</i>  
+                                <i class="col-sm-2 col-sm-2">Mastercard</i>  
                             </c:when>
                             <c:when test="${list.payment == 3}">
                                 <i class="col-sm-2 col-sm-2">Visa</i>  
@@ -114,7 +114,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">Music type :</label> <c:choose>
                             <c:when test="${list.musicStyle == 1}">
-                              <i class="col-sm-2 col-sm-2">Rock</i>  
+                                <i class="col-sm-2 col-sm-2">Rock</i>  
                             </c:when>
                             <c:when test="${list.musicStyle == 2}">
                                 <i class="col-sm-2 col-sm-2">Classic</i>  
@@ -161,7 +161,30 @@
                 <!-- /col-lg-12 -->
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <button class="btn btn-success btn-lg btn-block"  type="submit">Change Status</button>
+                        <button class="btn btn-info"  OnClick="history.go(-1);">Back</button>
+                        <c:if test="${list.status != 5}">
+                            <c:if test="${list.status != 3}">
+                                <a href="/driver/dashboard?action=changeStatus&order_id=${list.id}" class="btn btn-success">
+                                    <c:choose>
+                                        <c:when test="${list.status+1 == 2}">
+                                            TO ASSIGNED
+                                        </c:when>
+                                        <c:when test="${list.status+2 == 2}">
+                                            TO ASSIGNED
+                                        </c:when>
+                                        <c:when test="${list.status+2 == 4}">
+                                            TO IN_PROGRESS 
+                                        </c:when>
+                                        <c:when test="${list.status+1 == 5}">
+                                            TO COMPLETED
+                                        </c:when>
+                                        <c:otherwise>
+                                            Other
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a>
+                            </c:if>
+                        </c:if>
                     </div>
                 </div>
             </div>
