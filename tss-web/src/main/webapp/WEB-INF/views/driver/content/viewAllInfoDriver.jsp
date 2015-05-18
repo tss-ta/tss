@@ -57,6 +57,7 @@
                 </div>
 
             </div>
+            <div class="clearfix visible-xs-block"></div>
             <div class="col-md-6">
                 <%@ include file="../../partials/map.jspf"%>
             </div>
@@ -200,7 +201,7 @@
 </script>
 
 <script type="text/javascript"
-        src="/resources/customer_assets/js/map.js">
+        src="/resources/customer_assets/js/map_driver.js">
 </script>
 
 
