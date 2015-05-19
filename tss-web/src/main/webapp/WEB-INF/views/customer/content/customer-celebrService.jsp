@@ -108,10 +108,11 @@
 </script>
 
 <script>
-	AnyTime.picker("ordertime", {
-		format : "%H:%i, %d %m %Y",
-		firstDOW : 1
-	});
+AnyTime.picker("ordertime", {
+    format: "%H:%i, %d %m %Y",
+    earliest: new Date(),
+    firstDOW: 1
+});
 </script>
 
 <script>

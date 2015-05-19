@@ -90,6 +90,7 @@
 
 <script>
 	AnyTime.picker("ordertime", {
+		earliest: new Date(),
 		format : "%H:%i, %d %m %Y",
 		firstDOW : 1
 	});
