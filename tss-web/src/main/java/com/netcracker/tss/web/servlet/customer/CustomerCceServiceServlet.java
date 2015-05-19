@@ -109,7 +109,7 @@ public class CustomerCceServiceServlet extends HttpServlet {
                     resp.sendRedirect("/customer/cceServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
                 }
             } else {
-                resp.sendRedirect("/customer/cceServicePage");
+                resp.sendRedirect("/customer/cceServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
             }
         }
     }
