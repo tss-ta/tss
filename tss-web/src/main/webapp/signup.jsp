@@ -65,24 +65,37 @@
 
 
                 <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name"
-                       minlength="1" maxlength="40" required autofocus/>
+                       minlength="1" maxlength="40" required autofocus
+                       data-validation-required-message="Name is required"/>
                 <br/>
                 <input type="email" data-validation-email-message="Incorrect email address"
                        class="form-control" id="input_email" placeholder="Email" name="email"
                        minlength="5" data-validation-minlength-message="Incorrect email address"
                        maxlength="40"
-                       data-validation-maxlength-message="Incorrect email address. It's too long"/>
+                       data-validation-maxlength-message="Incorrect email address. It's too long"
+                       data-validation-required-message="Email is required"/>
                 <br/>
+                <div class="control-group">
                 <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                       maxlength="60" minlength="1" required><br/>
-                <input type="password" id="confirPassword" name="confirPassword"
-                       onkeyup="checkPass(); return false;" class="form-control" placeholder="Confirm Password"
-                       maxlength="60" minlength="1" required>
+                       maxlength="60" minlength="1" required data-validation-required-message="Password is required">
                 <br/>
-                <span id="confirmMessage" class="confirmMessage"></span>
+                    <%--<p class="help-block form-sign-error-msg"></p>--%>
+                </div>
+                <div class="control-group">
+                <input type="password" id="confirPassword" name="confirPassword"
+                       <%--onkeyup="checkPass(); return false;"--%>
+                       class="form-control" placeholder="Confirm Password"
+                       maxlength="60" minlength="1"
+                       required data-validation-match-match="password"
+                       data-validation-match-message="Password do not match"
+                       data-validation-required-message="Password with confirmation is required">
+                <%--<br/>--%>
+                    <p class="help-block form-sign-error-msg"></p>
+                    </div>
+                <%--<span id="confirmMessage" class="confirmMessage"></span>--%>
                 <p class="help-block form-sign-error-msg"></p>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            <button class="btn btn-lg btn-primary btn-block register" type="submit" name="register" id="register">Register</button>
 
         </div>
     </form>

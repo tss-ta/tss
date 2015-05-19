@@ -97,7 +97,7 @@ public class CreateAndEditCarRoute {
             actionResponse.setSuccessMessage("New Car was successfully added.");
             return;
         }
-        actionResponse.setErrorMessage("License plate number is busy.");
+        actionResponse.setErrorMessage("License plate number is already in use.");
     }
 
     private void performEditCar(ActionResponse actionResponse, Car car) {

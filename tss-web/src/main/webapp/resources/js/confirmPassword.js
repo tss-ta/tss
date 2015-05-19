@@ -7,7 +7,7 @@ function checkPass()
     var message = document.getElementById('confirmMessage');
     //Set the colors we will be using ...
     var goodColor = "#66cc66";
-    var badColor = "#ff6666";
+    var badColor = "#D13030";
     //Compare the values in the password field 
     //and the confirmation field
     if(pass1.value == pass2.value){

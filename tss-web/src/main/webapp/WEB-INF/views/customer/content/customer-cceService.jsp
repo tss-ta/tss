@@ -22,7 +22,7 @@
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 col-sm-2 control-label">From list:</label>
-					<div class="col-sm-9">
+					<div class="col-md-9 col-sm-6">
 						<select id="fromList" name="fromList" multiple="multiple"
 							style='width: 30em'>
 						</select>
