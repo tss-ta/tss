@@ -203,7 +203,6 @@
         element.formValidation('enableFieldValidators', 'countQuery', enable);
         element.formValidation('enableFieldValidators', 'pageSize', enable);
         element.formValidation('enableFieldValidators', 'exportSize', enable);
-//        element.formValidation(getOptions(enable)).formValidation('validate');
     };
 
     $('#countable').change(function() {

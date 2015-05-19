@@ -95,7 +95,12 @@
                                             ${rowColumn.doubleValue}
                                         </c:when>
                                         <c:when test="${rowColumn.type eq 'BOOLEAN'}">
-                                            ${rowColumn.booleanValue}
+                                            <c:if test="${rowColumn.booleanValue}">
+                                                <i class="fa fa-check"></i>
+                                            </c:if>
+                                            <c:if test="${not rowColumn.booleanValue}">
+                                                <i class="fa fa-minus"></i>
+                                            </c:if>
                                         </c:when>
                                         <c:when test="${rowColumn.type eq 'TIMESTAMP'}">
                                             ${rowColumn.timestampValue}
