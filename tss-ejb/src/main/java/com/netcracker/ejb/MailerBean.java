@@ -22,6 +22,7 @@ import javax.mail.internet.MimeMessage;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
+import com.netcracker.util.GlobalVariables;
 import com.netcracker.util.PasswordsKeeper;
 
 /**
@@ -36,6 +37,8 @@ public class MailerBean implements SessionBean {
 			.getEmailPassword());
 
 	public void sendEmail(String emailAddress, String title, String msg) {
+		if (!GlobalVariables.isMailerOn)
+			return;
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -84,13 +87,13 @@ public class MailerBean implements SessionBean {
 						+ user.getUsername()
 						+ ". Your Taxi Order (id = "
 						+ to.getId()
-						+ ") status was Refused. We apologise for any inconveniences.");
+						+ ") was Refused. We apologise for any inconveniences.");
 	}
 
-	public void changeToAssigned(User user, TaxiOrder to, Driver driver) {
+	public void changeToAssigned(User user, TaxiOrder to, String driver) {
 		sendEmail(user, "Driver was assigned to your Taxi Order", "Dear, "
 				+ user.getUsername() + ". Driver was assigned to your Taxi Order (id = " + to.getId()
-				+ "). Information about driver: "+ driver.toString());
+				+ "). Information about driver: "+ driver);
 	}
 
 	public void changeToCompleted(User user, TaxiOrder to) {

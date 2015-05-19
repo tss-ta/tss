@@ -72,4 +72,10 @@
             <span class="icon-label">Reports</span>
         </a>
     </li>
+    <li>
+        <a href="/mailer">
+            <span class="icon-container"><i class="fa fa-email"></i></span>
+            <span class="icon-label">Mailer</span>
+        </a>
+    </li>
 </ul>
