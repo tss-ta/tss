@@ -98,7 +98,7 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
                 e.printStackTrace();
             }
             request.getSession().setAttribute("taxiOrder", taxiOrder);
-            redirectToEdit(request, response);
+            redirectToEdit(request, response, null);
             return;
         }
 
@@ -140,49 +140,55 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        if (request.getParameter("addTo") != null) {
-            addAddressTo(request);
-            redirectToEdit(request, response);
-        } else if (request.getParameter("addFrom") != null) {
-            addAddressFrom(request);
-            redirectToEdit(request, response);
-        } else if (request.getParameter("deleteTo") != null
-                || request.getParameter("deleteFrom") != null) {
-            deleteAddress(request);
-            redirectToEdit(request, response);
-        } else {
-            TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
-            Address addFrom = toAddress(request.getParameter("fromAddr"), request);
-            Address addTo = toAddress(request.getParameter("toAddr"), request);
-            PriceBeanLocal priceBean = getPriceBean(request);
-            float distance = 0;
-            double price = 0;
-            try {
-                MapBeanLocal mapBean = getMapBean(request);
-                distance = mapBean.calculateDistance(request.getParameter("fromAddr"),
-                        request.getParameter("toAddr"));
-            } catch (JSONException | IOException e) {
-                e.printStackTrace();
+        try {
+            if (request.getParameter("addTo") != null) {
+                addAddressTo(request);
+                redirectToEdit(request, response, null);
+            } else if (request.getParameter("addFrom") != null) {
+                addAddressFrom(request);
+                redirectToEdit(request, response, null);
+            } else if (request.getParameter("deleteTo") != null
+                    || request.getParameter("deleteFrom") != null) {
+                deleteAddress(request);
+                redirectToEdit(request, response, null);
+            } else {
+                TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
+                Address addFrom = toAddress(request.getParameter("fromAddr"), request);
+                Address addTo = toAddress(request.getParameter("toAddr"), request);
+                PriceBeanLocal priceBean = getPriceBean(request);
+                float distance = 0;
+                double price = 0;
+                try {
+                    MapBeanLocal mapBean = getMapBean(request);
+                    distance = mapBean.calculateDistance(request.getParameter("fromAddr"),
+                            request.getParameter("toAddr"));
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                }
+                price = priceBean.calculatePrice(distance,
+                        DateParser.parseDate(request),
+                        (TaxiOrder) request.getSession().getAttribute("taxiOrder"),
+                        UserUtils.findCurrentUser());
+                request.getSession().removeAttribute("taxiOrder");
+                Date orderTime = DateParser.parseDate(request);
+                orderTime.setYear(new Date().getYear());
+                taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
+                        addFrom, addTo, orderTime, distance, price);
+                request.setAttribute("taxiOrderId", taxiOrderId);
+                request.setAttribute("pageContent", "content/confirmation-updated.jsp");
+                request.getRequestDispatcher(
+                        "/WEB-INF/views/customer/customer-template.jsp").forward(
+                                request, response);
             }
-            price = priceBean.calculatePrice(distance,
-                    DateParser.parseDate(request),
-                    (TaxiOrder) request.getSession().getAttribute("taxiOrder"),
-                    UserUtils.findCurrentUser());
-            request.getSession().removeAttribute("taxiOrder");
-            Date orderTime = DateParser.parseDate(request);
-            orderTime.setYear(new Date().getYear());
-            taxiOrderBeanLocal.editTaxiOrderCustomer(taxiOrderId,
-                    addFrom, addTo, orderTime, distance, price);
-            request.setAttribute("taxiOrderId", taxiOrderId);
-            request.setAttribute("pageContent", "content/confirmation-updated.jsp");
-            request.getRequestDispatcher(
-                    "/WEB-INF/views/customer/customer-template.jsp").forward(
-                            request, response);
-
+        } catch (Exception e) {
+            Logger.getLogger(CustomerSoberServiceServlet.class.getName())
+                    .log(Level.SEVERE, e.getMessage(), e);
+            String error = "Sorry, we can not make this order! Please, check all input parameters ad try again.";
+            redirectToEdit(request, response, error);
         }
     }
 
-    private void redirectToEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void redirectToEdit(HttpServletRequest req, HttpServletResponse resp, String error) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         DateFormat format = new SimpleDateFormat("HH:mm, dd MM yyyy",
@@ -193,6 +199,7 @@ public class CustomerOrderTaxiEditDeleteServlet extends HttpServlet {
         TaxiOrderHistory toh = getTaxiOrderBean(req).getOrderForEdit(taxiOrder);
         req.setAttribute("orderTime", format.format(toh.getOrderTime()));
         req.setAttribute("toh", toh);
+        req.setAttribute("errorMessage", error);
         req.setAttribute("pageContent", "content/editTaxiOrder.jsp");
         req.setAttribute("pageType", "editpage");
         req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
