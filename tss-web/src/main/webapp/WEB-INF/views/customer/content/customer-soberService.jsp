@@ -172,7 +172,7 @@ AnyTime.picker("ordertime", {
         }).done(function(res) {
             $('#price_field').val(res);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert("Address error");
+        	alert("Address Error. Please check your address.");
         });
     });
 </script>
