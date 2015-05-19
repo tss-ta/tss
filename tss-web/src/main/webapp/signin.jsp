@@ -1,5 +1,5 @@
 <%--
-  User: Kyrylo Berehovyi
+  User: Kyrylo Berehovyi, maks
   Date: 19/04/2015
   Time: 21:01
 --%>
@@ -52,9 +52,17 @@
 
         <h2 class="form-sign-heading">Please Sign In</h2>
         <h5 class="form-sign-error-msg">Incorrect Email and/or Password!</h5>
-        <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus maxlength="40"><br/>
-        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required maxlength="60"><br/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <div class="control-group">
+                <input type="email" data-validation-email-message="Incorrect email address"
+                   class="form-control" id="input_email" placeholder="Email" name="email"
+                   minlength="5" data-validation-minlength-message="Incorrect email address"
+                   maxlength="40" required
+                   data-validation-maxlength-message="Incorrect email address. It's too long" autofocus/>
+                <br/>
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required minlength="1" maxlength="60"><br/>
+                <h5 class="help-block form-sign-heading"></h5>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </div>
     </form>
 
 
@@ -62,7 +70,15 @@
 
  <%@ include file="WEB-INF/views/partials/footer.jspf" %>
 
-    <script src="/resources/js/jquery-1.11.2.min.js"></script>
+
+<script src="/resources/js/jquery-1.11.2.min.js"></script>
+<script src="/resources/js/jqBootstrapValidation.js"></script>
+<script>
+    $(function () {
+        $("input").not("[type=submit]").jqBootstrapValidation();
+   //     $(".form-sign-error-msg").css("visibility", "visible");
+    });
+</script>
     <script>
         $(document).ready(function() {
             if(getUrlParameter("error") == "true") {

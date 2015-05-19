@@ -2,6 +2,8 @@ package com.netcracker.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,7 +14,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
+import com.netcracker.util.GlobalVariables;
+
 
 /**
  *
@@ -31,6 +35,7 @@ public class GenericDAO<T> {
 
 	private static String entityLookup = "java:jboss/EntityManagerFactory";
 
+
 	public GenericDAO() {
 		em = createEntityManager();
 		entityClass = (Class<T>) ((ParameterizedType) getClass()
@@ -46,12 +51,12 @@ public class GenericDAO<T> {
 		this.em = em;
 	}
 
-	public T get(int id) throws NoSuchEntity {
+	public T get(int id) throws NoSuchEntityException {
 		T t = em.find(entityClass, id);
 		if (t != null)
 			return t;
 		else
-			throw new NoSuchEntity();
+			throw new NoSuchEntityException();
 	}
 
 	@Deprecated
@@ -103,18 +108,18 @@ public class GenericDAO<T> {
 		em.close();
 	}
 
-	public EntityManager createEntityManager() {
-		Context initCtx;
-		try {
-			initCtx = new InitialContext();
-			EntityManagerFactory emf = (EntityManagerFactory) initCtx
-					.lookup(entityLookup);
-			em = emf.createEntityManager();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-		return em;
-	}
+    public EntityManager createEntityManager() {
+        Context initCtx;
+        try {
+            initCtx = new InitialContext();
+            EntityManagerFactory emf = (EntityManagerFactory) initCtx
+                    .lookup(GlobalVariables.entityLookup);
+            em = emf.createEntityManager();
+        } catch (NamingException e) {
+            Logger.getLogger(GenericDAO.class.getName()).log(Level.SEVERE, "can't find EntityManager", e);
+        }
+        return em;
+    }
 
 	private void validateEntityOnNull(T entity) {
 		if (entity == null) {
@@ -123,7 +128,7 @@ public class GenericDAO<T> {
 	}
 
 	public void updateEntityManager(String entityLookup) {
-		this.entityLookup = entityLookup;		
+		GlobalVariables.entityLookup = entityLookup;
 		em = createEntityManager();
 	}
 

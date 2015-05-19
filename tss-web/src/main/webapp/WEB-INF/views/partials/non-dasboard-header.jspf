@@ -36,7 +36,7 @@
                             <li><a href="/customer">Dashboard</a></li>
                         </c:when>
                         <c:when test="${anonymous}">
-                            <li><a href="/guest">Order NOW!</a></li>
+                            <li><a href="/track">Track Order</a></li>
                             <li><a href="/signin.jsp">Sign In</a></li>
                             <li><a href="/signup.jsp">Sign Up</a></li>
                         </c:when>

@@ -3,16 +3,16 @@ package com.netcracker.ejb;
 import com.netcracker.dao.CarDao;
 import com.netcracker.dao.DriverCarDAO;
 import com.netcracker.dao.DriverDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Car;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.DriverCar;
-import com.netcracker.util.BeansLocator;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import javax.persistence.NoResultException;
 
 import java.util.Calendar;
 import java.util.List;
@@ -31,16 +31,43 @@ public class DriverBean implements SessionBean {
 		Driver driver = null;
 		try {
 			driver = drDao.get(id);
-		} catch (NoSuchEntity e) {
+		} catch (NoSuchEntityException e) {
 			e.printStackTrace();
 		}
 		drDao.close();
 		return driver;
 	}
 
+    public Driver getDriver(String email) {
+        DriverDAO drDao = new DriverDAO();
+        Driver driver = null;
+        try {
+            driver = drDao.findByEmail(email);
+        } catch (NoResultException e) {
+            //NOP
+        } finally {
+			drDao.close();
+		}
+
+        return driver;
+    }
+
+    public Driver getDriverByToken(int token) {
+        DriverDAO drDao = new DriverDAO();
+        Driver driver = null;
+        try {
+            driver = drDao.getDriverByToken(token);
+        } catch (NoResultException e) {
+            e.printStackTrace();//!!!!!!!!!!
+        }
+        drDao.close();
+        return driver;
+    }
 
 
-	public void addDriver(Driver driver) {
+
+
+    public void addDriver(Driver driver) {
 		DriverDAO drDao = null;
 		try {
 			drDao = new DriverDAO();
@@ -63,7 +90,7 @@ public class DriverBean implements SessionBean {
 		try {
 			Driver driver = drDao.get(driverId);
 			drDao.delete(driver);
-		} catch (NoSuchEntity e) {
+		} catch (NoSuchEntityException e) {
 			e.printStackTrace();
 		} finally {
 			drDao.close();
@@ -110,7 +137,7 @@ public class DriverBean implements SessionBean {
 			drCarDao = new DriverCarDAO();
 			drCarDao.persist(new DriverCar(driverId, carId, Calendar
 					.getInstance()));
-		} catch (NoSuchEntity e) {
+		} catch (NoSuchEntityException e) {
 			e.printStackTrace();
 		} finally {
 			if (drDAO != null) {
@@ -146,7 +173,7 @@ public class DriverBean implements SessionBean {
 				drCar.setUnassignedTime(Calendar.getInstance());
 				drCarDao.persist(drCar);
 			}
-		} catch (NoSuchEntity e) {
+		} catch (NoSuchEntityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {

@@ -28,24 +28,32 @@
                         </thead>
                         <tbody>
                             <c:forEach items="${history}" var="list">
-                                <tr>
-                                    <td class="numeric">${list.price}</td>
-                                    <td>${list.bookingTime}</td>
-                                    <td>${list.orderTime}</td>
-                                    <td>${list.strStatus}</td>
-                                    <td>${list.driverCarId}</td>
-                                    <td>${list.routeId.pathContent}</td>
-                                    <td>${list.fromAddr}</td>
-                                    <td>${list.toAddr}</td>
-                                    <td><c:if test="${list.status!=5}">
-                                            <a
-                                                href="/customer/edit?action=editTaxiOrder&taxiOrderId=${list.getId()}">edit</a>
-                                        </c:if></td>
-                                    <td><c:if test="${list.status!=5}">
-                                            <a
-                                                href="/customer/edit?action=deleteTaxiOrder&taxiOrderId=${list.getId()}">X</a>
-                                        </c:if></td>
-                                </tr>
+                                <c:if test="${list.status != 5}">
+                                    <tr>
+                                        <td class="numeric">${list.price}</td>
+                                        <td>${list.bookingTime}</td>
+                                        <td>${list.orderTime}</td>
+                                        <td>${list.strStatus}</td>
+                                        <td> <c:if test="${list.driverCarId != null }">
+                                                DriverCar ${list.driverCarId.drvCarId}
+                                            </c:if>
+                                        </td>
+                                        <td>${list.routeId.pathContent}</td>
+                                        <td>${list.fromAddr}</td>
+                                        <td>${list.toAddr}</td>
+                                        <c:if test="${list.status==0}">
+                                            <td><c:if test="${list.status!=5}">
+                                                    <a
+                                                        href="/customer/edit?action=editTaxiOrder&taxiOrderId=${list.getId()}">edit</a>
+                                                </c:if></td>
+                                            <td><c:if test="${list.status!=5}">
+                                                    <a
+                                                        href="/customer/edit?action=deleteTaxiOrder&taxiOrderId=${list.getId()}">X</a>
+                                                </c:if></td>
+                                            </c:if>
+
+                                    </tr>
+                                </c:if>
                             </c:forEach>
                         </tbody>
                     </table>

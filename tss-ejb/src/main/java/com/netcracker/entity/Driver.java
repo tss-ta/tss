@@ -4,7 +4,6 @@ import com.netcracker.entity.helper.Category;
 import java.util.Objects;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author Illia Rudenko
@@ -15,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name = "Driver.searchDriverByName", query = "SELECT d FROM Driver d WHERE d.username like :drivername"),
     @NamedQuery(name = "Driver.searchDriverByToken", query = "SELECT d FROM Driver d WHERE d.token = :token"),
+    @NamedQuery(name = "Driver.findDriverByEmail", query = "SELECT d FROM Driver d WHERE d.email = :email"),
 })
 public class Driver extends User {
 

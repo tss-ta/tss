@@ -121,7 +121,6 @@ body {
     text-decoration: none;
     color: #fff;
     background-color: #181818;
-    /*border-left: 3px solid #F5C34C;*/
 }
 .sidebar-nav li a.active {
     text-decoration: none;
@@ -348,4 +347,12 @@ ul.custom-pager li:last-child a {
 
 a.list-group-item p {
     color: #777;
+}
+.navbar-custom .navbar-brand, .navbar-custom .navbar-nav > li > a.no-hover:hover {
+    color: #989898;
+}
+
+.hide-position {
+    display: none;
+    visibility: hidden;
 }

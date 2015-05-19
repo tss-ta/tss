@@ -6,8 +6,11 @@
 package com.netcracker.ejb;
 
 
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
+import com.netcracker.exceptions.InvalidEntityException;
+
 import javax.ejb.EJBLocalObject;
 
 

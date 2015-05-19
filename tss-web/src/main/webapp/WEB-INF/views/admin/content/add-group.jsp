@@ -1,9 +1,9 @@
 <%--
-  User: Kyrylo Berehovyi
+  User: Kyrylo Berehovyi, maks
   Date: 27/04/2015
   Time: 02:22
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
@@ -15,7 +15,7 @@
                 <c:otherwise>
                     <h1>Add Group Form</h1>
                 </c:otherwise>
-            </c:choose>           
+            </c:choose>
         </div>
     </div>
 </div>
@@ -24,31 +24,41 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <form action="/admin" method="post" class="form-horizontal">
-                    <div class="form-group">
-                        <label for="name" class="col-md-4 control-label">Group name</label>
+                    <label for="name" class="col-md-4 control-label">Group name</label>
+
+                    <div class="control-group">
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="${param.name}" maxlength="100"x>
+                            <input type="text" class="form-control" id="name" placeholder="Name" name="name"
+                                   value="${param.name}" maxlength="100" minlength="1" required>
+
+                            <p class="help-block"></p>
                         </div>
 
-                    </div>
-                    <%@ include file="../partials/rolescheckboxes.jspf" %>
-                    <c:choose>
-                        <c:when test="${param.action eq 'edit-group'}">
-                            <input type="hidden" name="action" value="edit-group">
-                            <input type="hidden" name="id" value="${param.id}">
-                        </c:when>
-                        <c:otherwise>
-                            <input type="hidden" name="action" value="newgroup">
-                        </c:otherwise>
-                    </c:choose> 
-                    <div class="form-group">
+                        <%@ include file="../partials/rolescheckboxes.jspf" %>
+                        <c:choose>
+                            <c:when test="${param.action eq 'edit-group'}">
+                                <input type="hidden" name="action" value="edit-group">
+                                <input type="hidden" name="id" value="${param.id}">
+                            </c:when>
+                            <c:otherwise>
+                                <input type="hidden" name="action" value="newgroup">
+                            </c:otherwise>
+                        </c:choose>
+                        <input type="hidden" name="menu" value="groups">
+
                         <div class="col-sm-offset-5 col-sm-3">
                             <button type="submit" class="btn btn-default">Add <i class="fa fa-users"></i></button>
                         </div>
                     </div>
-                    <input type="hidden" name="menu" value="groups">
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<%--<script>--%>
+<%--$(function () {--%>
+<%--$("input").not("[type=submit]").jqBootstrapValidation();--%>
+<%--//     $(".form-sign-error-msg").css("visibility", "visible");--%>
+<%--});--%>
+<%--</script>--%>

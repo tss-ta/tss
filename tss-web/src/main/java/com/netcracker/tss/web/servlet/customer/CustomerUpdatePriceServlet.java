@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.netcracker.util.BeansLocator;
 import org.json.JSONException;
 
 import com.netcracker.ejb.MapBeanLocal;
@@ -23,12 +24,13 @@ import com.netcracker.entity.TaxiOrder;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
+import com.netcracker.tss.web.util.UserUtils;
 
 /**
  * Author Stanislav Zabielin
  */
 @WebServlet(name = "PriceServlet",
-urlPatterns = "/price")
+        urlPatterns = "/price")
 public class CustomerUpdatePriceServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -54,10 +56,13 @@ public class CustomerUpdatePriceServlet extends HttpServlet {
         TaxiOrder taxiOrder = (TaxiOrder) request.getSession().getAttribute("taxiOrder");
         if (taxiOrder == null) {
             price = priceBean.calculatePrice(distance,
-                    DateParser.parseDate(request), AdditionalParameters.taxiOrderAddParameters(request));
+                    DateParser.parseDate(request),
+                    AdditionalParameters.taxiOrderAddParameters(request),
+                    UserUtils.findCurrentUser());
         } else {
             price = priceBean.calculatePrice(distance,
-                    DateParser.parseDate(request), taxiOrder);
+                    DateParser.parseDate(request),
+                    taxiOrder, UserUtils.findCurrentUser());
 
         }
         String text = String.valueOf(price);
@@ -83,7 +88,26 @@ public class CustomerUpdatePriceServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        if ("celebration".equals(request.getParameter("service"))) {
+            request.setCharacterEncoding("UTF-8");
+            Integer carsAmount;
+            Integer duration;
+            String carsAmountStr = request.getParameter("driversAmount");
+            String durationStr = request.getParameter("duration");
+
+            carsAmount = (carsAmountStr.equals("")) ? 0 : Integer.valueOf(carsAmountStr);
+            duration = (durationStr.equals("")) ? 0 : Integer.valueOf(durationStr);
+
+            PriceBeanLocal priceBean = BeansLocator.getInstance().getBean(PriceBeanLocal.class);
+            float celebrPrice = priceBean.calculateCelebrationServicePrice(carsAmount, duration,
+                    DateParser.parseDate(request),
+                    UserUtils.findCurrentUser());
+
+            String text = String.valueOf(celebrPrice);
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(text);
+        }
     }
 
     private PriceBeanLocal getPriceBean(HttpServletRequest req) {

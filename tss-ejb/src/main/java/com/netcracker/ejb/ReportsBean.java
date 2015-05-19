@@ -3,7 +3,7 @@ package com.netcracker.ejb;
 import com.netcracker.dao.ReportDataDAO;
 import com.netcracker.dao.ReportInfoDAO;
 import com.netcracker.dao.TaxiOrderDAO;
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
@@ -36,7 +36,7 @@ public class ReportsBean implements SessionBean {
         try {
             dao = new ReportInfoDAO();
             return dao.get(id);
-        } catch (NoSuchEntity e) {
+        } catch (NoSuchEntityException e) {
 			e.printStackTrace();
 		} finally {
             if (dao != null) {
@@ -58,7 +58,7 @@ public class ReportsBean implements SessionBean {
             reportInfo = infoDAO.get(id);
             reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
             report = new Report(reportInfo, reportData);
-        } catch (NoSuchEntity e) {
+        } catch (NoSuchEntityException e) {
 			e.printStackTrace();
 		} finally {
             if (infoDAO != null) {
@@ -66,6 +66,18 @@ public class ReportsBean implements SessionBean {
             }
         }
         return report;
+    }
+
+    public void deleteReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.delete(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
     }
 
     public int countReports(ReportInfo info) {
@@ -91,6 +103,30 @@ public class ReportsBean implements SessionBean {
             }
         }
         return counter;
+    }
+
+    public void createReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.persist(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+    }
+
+    public void updateReportInfo(ReportInfo reportInfo) {
+        ReportInfoDAO infoDAO = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            infoDAO.update(reportInfo);
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
     }
 
     public List<ReportInfo> getPageOfReportsInfo(int pageNumber, int pageSize) {
@@ -122,7 +158,32 @@ public class ReportsBean implements SessionBean {
                 reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
             }
             report = new Report(reportInfo, reportData);
-        } catch (NoSuchEntity e) {
+        }  catch (NoSuchEntityException e) {
+//            e.printStackTrace();
+        } finally {
+            if (infoDAO != null) {
+                infoDAO.close();
+            }
+        }
+        return report;
+    }
+
+    public Report getBigReport(int id) {
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        ReportInfoDAO infoDAO = null;
+        ReportInfo reportInfo;
+        ReportData reportData;
+        Report report = null;
+        try {
+            infoDAO = new ReportInfoDAO();
+            reportInfo = infoDAO.get(id);
+            if (reportInfo.isCountable()) {
+                reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), 1, reportInfo.getExportSize());
+            } else {
+                reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+            }
+            report = new Report(reportInfo, reportData);
+        } catch (NoSuchEntityException e) {
 			e.printStackTrace();
 		} finally {
             if (infoDAO != null) {

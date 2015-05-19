@@ -263,7 +263,7 @@
 			<transaction-type>Container</transaction-type>
 
 			<ejb-local-ref>
-				<ejb-ref-name>ejb/CarBean</ejb-ref-name>
+				<ejb-ref-name>ejb/CounterBean</ejb-ref-name>
 				<ejb-ref-type>Session</ejb-ref-type>
 				<local-home>com.netcracker.ejb.CounterBeanLocalHome</local-home>
 				<local>com.netcracker.ejb.CounterBeanLocal</local>
@@ -335,6 +335,23 @@
 				<ejb-ref-type>Session</ejb-ref-type>
 				<local-home>com.netcracker.ejb.CelebrationServiceBeanLocalHome</local-home>
 				<local>com.netcracker.ejb.CelebrationServiceBeanLocal</local>
+			</ejb-local-ref>
+		</session>
+                <session>
+			<description>An EJB named SoberServiceBean</description>
+			<display-name>SoberServiceBean</display-name>
+			<ejb-name>SoberServiceBean</ejb-name>
+			<local-home>com.netcracker.ejb.SoberServiceBeanLocalHome</local-home>
+			<local>com.netcracker.ejb.SoberServiceBeanLocal</local>
+			<ejb-class>com.netcracker.ejb.SoberServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+
+			<ejb-local-ref>
+				<ejb-ref-name>ejb/SoberServiceBean</ejb-ref-name>
+				<ejb-ref-type>Session</ejb-ref-type>
+				<local-home>com.netcracker.ejb.SoberServiceBeanLocalHome</local-home>
+				<local>com.netcracker.ejb.SoberServiceBeanLocal</local>
 			</ejb-local-ref>
 		</session>
 	</enterprise-beans>

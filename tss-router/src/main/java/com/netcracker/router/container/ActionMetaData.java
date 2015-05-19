@@ -1,18 +1,29 @@
 package com.netcracker.router.container;
 
+import com.netcracker.router.ContentType;
+
 import java.lang.reflect.Method;
 
 /**
  * @author Kyrylo Berehovyi
  */
 
-public class InstanceAndMethod {
+public class ActionMetaData {
     private Object instance;
     private Method method;
+    private ContentType responseContentType;
 
-    public InstanceAndMethod(Object instance, Method method) {
+    public ActionMetaData() {}
+
+    public ActionMetaData(Object instance, Method method) {
         this.instance = instance;
         this.method = method;
+    }
+
+    public ActionMetaData(Object instance, Method method, ContentType responseContentType) {
+        this.instance = instance;
+        this.method = method;
+        this.responseContentType = responseContentType;
     }
 
     public Object getInstance() {
@@ -29,6 +40,14 @@ public class InstanceAndMethod {
 
     public void setMethod(Method method) {
         this.method = method;
+    }
+
+    public ContentType getResponseContentType() {
+        return responseContentType;
+    }
+
+    public void setResponseContentType(ContentType responseContentType) {
+        this.responseContentType = responseContentType;
     }
 
     @Override

@@ -32,10 +32,27 @@
     </div>
 </div>
 
+<div class="row row-fix">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-4 col-xs-4">
+                    <a href="/admin?menu=report&action=add" class="btn btn-default">Add Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <c:if test="${not empty reportList}">
     <div class="row row-fix">
         <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12">
             <div class="list-group custom-list-group">
+                <a href="/admin/report?action=new-orders-report" class="list-group-item">
+                    <h4 class="list-group-item-heading">New orders Report <small>All new orders by specified period</small></h4>
+
+                        <%--<p class="list-group-item-text">${report.description}</p>--%>
+                </a>
                 <c:forEach items="${reportList}" var="report" >
                     <a href="/admin?menu=report&action=view&id=${report.id}" class="list-group-item">
                         <h4 class="list-group-item-heading">${report.name} - <small>${report.description}</small></h4>

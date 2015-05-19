@@ -19,8 +19,6 @@ public enum Status {
 //    public Integer convertToInteger() {
 //        return status;
 //    }
-
-
     private int id;
 
     private static Map<Integer, Status> map = new HashMap<Integer, Status>();
@@ -31,15 +29,31 @@ public enum Status {
         }
     }
 
-    private Status (final int id){
+    private Status(final int id) {
         this.id = id;
     }
 
-    public static Status valueOf(int id){
+    public static Status valueOf(int id) {
         return map.get(id);
     }
 
-    public int getId (){
+    public int getId() {
         return id;
+    }
+
+    public static Status getStatusByName(String name) {
+        if ("QUEUED".equals(name)) {
+            return QUEUED;
+        }
+        if ("ASSIGNED".equals(name)) {
+            return ASSIGNED;
+        }
+        if ("IN_PROGRESS".equals(name)) {
+            return IN_PROGRESS;
+        }
+        if ("COMPLETED".equals(name)) {
+            return COMPLETED;
+        }
+        return null;
     }
 }

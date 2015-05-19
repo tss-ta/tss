@@ -6,11 +6,11 @@ import com.netcracker.router.HttpMethod;
  * @author Kyrylo Berehovyi
  */
 
-public class MetaAction {
+public class ActionInfo {
     private String menu;
     private String action;
     private HttpMethod method;
-    private InstanceAndMethod instanceAndMethod;
+    private ActionMetaData actionMetaData;
 
     public String getMenu() {
         return menu;
@@ -36,12 +36,12 @@ public class MetaAction {
         this.method = method;
     }
 
-    public InstanceAndMethod getInstanceAndMethod() {
-        return instanceAndMethod;
+    public ActionMetaData getActionMetaData() {
+        return actionMetaData;
     }
 
-    public void setInstanceAndMethod(InstanceAndMethod instanceAndMethod) {
-        this.instanceAndMethod = instanceAndMethod;
+    public void setActionMetaData(ActionMetaData actionMetaData) {
+        this.actionMetaData = actionMetaData;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MetaAction {
         sb.append("menu='").append(menu).append('\'');
         sb.append(", action='").append(action).append('\'');
         sb.append(", method=").append(method);
-        sb.append(", instanceAndMethod=").append(instanceAndMethod);
+        sb.append(", instanceAndMethod=").append(actionMetaData);
         sb.append('}');
         return sb.toString();
     }

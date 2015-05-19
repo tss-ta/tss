@@ -2,6 +2,7 @@ package com.netcracker.tss.web.route.admin;
 
 import com.netcracker.ejb.UserBeanLocal;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.router.HttpMethod;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
@@ -28,11 +29,14 @@ public class Users {
 
     @Action(action = "view")
     public ActionResponse getUsersView(HttpServletRequest request) {
+
         Integer page = parsePageNumberFromRequest(request);
-//            if(page >= MIN_PAGE_NUMBER) {
         UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-        Roles role = roleToEnum(request.getParameter("role"));
-        request.setAttribute("rolesEnum", Roles.getUserRoles());
+        Roles role = getRole(request.getParameter("role"));
+        if (role == null){
+            return new ActionResponse(Page.INCORRECT_ROLE_CONTENT.getAbsolutePath());
+        }
+        request.setAttribute("rolesEnum", Roles.getMainUserRoles());
 
         PagerLink pagerLink = new PagerLink();
         pagerLink.addParameter(MENU_PARAMETER_NAME, MENU_PARAMETER_VALUE);
@@ -48,9 +52,29 @@ public class Users {
 
     }
 
+    private Roles getRole (String roleName){
+        try{
+            if (roleName != null){
+                  return Roles.valueOf(roleName);
+            } else {
+                return null;
+            }
+        } catch (Exception e){
+//            if (e.getCause() instanceof IllegalArgumentException){
+                return null;
+//            } else {
+//                throw new
+//            }
+        }
+    }
+
     @Action(action = "add-role")
     public ActionResponse redirectToAddRole(HttpServletRequest request) {
-        request.setAttribute("rolesEnum", Roles.getUserRoles());
+        Roles role = getRole(request.getParameter("role"));
+        if (role == null){
+            return new ActionResponse(Page.INCORRECT_ROLE_CONTENT.getAbsolutePath());
+        }
+        request.setAttribute("rolesEnum", Roles.getSubroles(role));
         return new ActionResponse(Page.ADMIN_ADD_ROLES_CONTENT.getAbsolutePath());
     }
 
@@ -59,8 +83,11 @@ public class Users {
         Integer page = parsePageNumberFromRequest(request);
         String email = request.getParameter("email");
         UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-        request.setAttribute("rolesEnum", Roles.getUserRoles());
-        Roles role = roleToEnum(request.getParameter("role"));
+        request.setAttribute("rolesEnum", Roles.getMainUserRoles());
+        Roles role = getRole(request.getParameter("role"));
+        if (role == null){
+            return new ActionResponse(Page.INCORRECT_ROLE_CONTENT.getAbsolutePath());
+        }
         PagerLink pagerLink = new PagerLink();
         pagerLink.addParameter(MENU_PARAMETER_NAME, MENU_PARAMETER_VALUE);
         pagerLink.addParameter(ACTION_PARAMETER_NAME, "search");
@@ -78,38 +105,38 @@ public class Users {
 
     @Action(action = "add-roles", httpMethod = HttpMethod.POST)
     public ActionResponse getAddRoles(HttpServletRequest request) {
-        UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-        Integer id = RequestParameterParser.parseInteger(request, "id");
-        if (id == null || id < 0){
+        try {
+            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
+            Integer id = RequestParameterParser.parseInteger(request, "id");
+            if (id == null || id < 0) {
+                ActionResponse response = getUsersView(request);
+                response.setErrorMessage("Sorry, some troubles with id parameter was founded! Please try again later!");
+                return response;
+            } else {
+                userBeanLocal.editRoles(id, getSubRoles(request));
+                ActionResponse response = getUsersView(request);
+                response.setSuccessMessage("Roles was successfully added");
+                return response;
+            }
+        } catch (InvalidEntityException e){
             ActionResponse response = getUsersView(request);
-            response.setErrorMessage("Sorry, some troubles with id parameter was founded! Please try again later!");
+            response.setErrorMessage("Can't add this roles! " + e.getMessage() + ".");
             return  response;
-        } else {
-            userBeanLocal.editRoles(id, getRoles(request));
-            return getUsersView(request);
         }
     }
 
-    private Roles roleToEnum(String roleName) {
-        try {
-            if (roleName == null) {
-                return Roles.ADMIN;
-            } else {
-                return Roles.valueOf(roleName);
-            }
-        } catch (IllegalArgumentException e) {
-            return Roles.ADMIN;
-        }
-    }
+
 
     private boolean isOn(String checkBoxText) {
         return "on".equals(checkBoxText);
     }
 
-    private List<Roles> getRoles(HttpServletRequest req) {
+    private List<Roles> getSubRoles(HttpServletRequest request) {
+        Roles mainRole = getRole(request.getParameter("role"));
+
         List<Roles> roles = new ArrayList<>();
-        for (Roles role : Roles.getUserRoles()) {
-            if (isOn(req.getParameter(role.toString()))) {
+        for (Roles role : Roles.getSubroles(mainRole)) {
+            if (isOn(request.getParameter(role.toString()))) {
                 roles.add(role);
             }
         }

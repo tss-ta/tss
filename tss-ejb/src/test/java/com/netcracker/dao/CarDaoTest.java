@@ -21,11 +21,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.netcracker.dao.exceptions.NoSuchEntity;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.ejb.TariffBean;
 import com.netcracker.entity.Car;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.helper.DriverCar;
+import com.netcracker.util.GlobalVariables;
 
 @RunWith(Arquillian.class)
 public class CarDaoTest {
@@ -61,7 +62,8 @@ public class CarDaoTest {
 				.addPackage(Tariff.class.getPackage())
 				.addPackage(DriverCar.class.getPackage())
 				.addPackage("com.google.common.base")
-				.addPackage(NoSuchEntity.class.getPackage())
+				.addPackage(NoSuchEntityException.class.getPackage())
+				.addClass(GlobalVariables.class)
 				.addAsResource("persistence.xml", "META-INF/persistence.xml");
 	}
 

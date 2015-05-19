@@ -36,6 +36,37 @@
         <url-pattern>/admin</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CustomerRouterServlet</servlet-name>
+        <servlet-class>com.netcracker.router.servlet.RouterServlet</servlet-class>
+        <init-param>
+            <param-name>packageToScan</param-name>
+            <param-value>com.netcracker.tss.web.route.customer</param-value>
+        </init-param>
+        <init-param>
+            <param-name>templateView</param-name>
+            <param-value>/WEB-INF/views/customer/customer-template.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>404</param-name>
+            <param-value>/WEB-INF/views/content/404.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>405</param-name>
+            <param-value>/WEB-INF/views/content/405.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>500</param-name>
+            <param-value>/WEB-INF/views/content/500.jsp</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CustomerRouterServlet</servlet-name>
+        <url-pattern>/customers</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
@@ -72,5 +103,10 @@
         <extension>xls</extension>
         <mime-type>application/vnd.ms-excel</mime-type>
     </mime-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/404.jsp</location>
+    </error-page>
 </web-app>
 

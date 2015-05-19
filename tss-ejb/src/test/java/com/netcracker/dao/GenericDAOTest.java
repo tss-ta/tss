@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -19,18 +17,16 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.netcracker.dao.exceptions.NoSuchEntity;
-import com.netcracker.ejb.RegistrationBean;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.ejb.TariffBean;
-import com.netcracker.entity.Role;
 import com.netcracker.entity.Tariff;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.DriverCar;
+import com.netcracker.util.GlobalVariables;
 
 @RunWith(Arquillian.class)
 public class GenericDAOTest {
@@ -66,23 +62,24 @@ public class GenericDAOTest {
 				.addPackage(Tariff.class.getPackage())
 				.addPackage(DriverCar.class.getPackage())
 				.addPackage("com.google.common.base")
-				.addPackage(NoSuchEntity.class.getPackage())
+				.addPackage(NoSuchEntityException.class.getPackage())
+				.addClass(GlobalVariables.class)
 				.addAsResource("persistence.xml", "META-INF/persistence.xml");
 	}
 
 	@Test
-	public void testGetTestUsers() throws NoSuchEntity {
+	public void testGetTestUsers() throws NoSuchEntityException {
 		assertEquals(testUser, userDao.get(testUser.getId()));
 		assertEquals(testUserMarkTwo, userDao.get(testUserMarkTwo.getId()));
 	}
 
-	@Test(expected = NoSuchEntity.class)
-	public void testGetNoSuchUser() throws NoSuchEntity {
+	@Test(expected = NoSuchEntityException.class)
+	public void testGetNoSuchUser() throws NoSuchEntityException {
 		userDao.get(98765);
 	}
 
-	@Test(expected = NoSuchEntity.class)
-	public void testDelete() throws NoSuchEntity {
+	@Test(expected = NoSuchEntityException.class)
+	public void testDelete() throws NoSuchEntityException {
 		delete(testUser);
 		userDao.get(testUser.getId());
 		persist(testUser);
@@ -94,7 +91,7 @@ public class GenericDAOTest {
 	}
 
 	@Test
-	public void testUpdate() throws NoSuchEntity {
+	public void testUpdate() throws NoSuchEntityException {
 		testUser.setUsername("updated");
 		update(testUser);
 		assertEquals(testUser.getUsername(), userDao.get(testUser.getId())

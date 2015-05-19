@@ -4,7 +4,9 @@ import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Category;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 
@@ -26,23 +28,31 @@ public class DriverDAO extends GenericDAO<Driver> {
         return query.getResultList();
     }
 
-    public Driver getDriverByToken(Integer token) {
-        Query query = em.createNamedQuery("Driver.searchDriverByToken");
-        query.setParameter("token", token);
-        return (Driver) query.getSingleResult();
+    public Driver findByEmail(String email) {
+        TypedQuery<Driver> query = em.createNamedQuery("Driver.findDriverByEmail", Driver.class);
+        query.setParameter("email", email);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
-    public void createDriverFromUser(Category category,
-                                     boolean available,
-                                     boolean isMale,
-                                     boolean smokes,
-                                     int userId) {
-        Query query = em.createNamedQuery("Driver.createDriverFromUser");
-        query.setParameter("category", category);
-        query.setParameter("available", available);
-        query.setParameter("isMale", isMale);
-        query.setParameter("smokes", smokes);
-        query.setParameter("driverId", userId);
-        query.executeUpdate();
+    public Long countSearchedByNameResults(String name) {
+        Query query = em.createQuery("SELECT COUNT(d.id) FROM Driver d WHERE d.username like :username");
+        query.setParameter("username", "%" + name + "%");
+        return (Long) query.getSingleResult();
+    }
+
+    public Driver getDriverByToken(Integer token) {
+        try {
+            Query query = em.createNamedQuery("Driver.searchDriverByToken");
+            query.setParameter("token", token);
+
+            return (Driver) query.getSingleResult();
+        } catch (NoResultException ex) {
+
+        }
+        return null;
     }
 }

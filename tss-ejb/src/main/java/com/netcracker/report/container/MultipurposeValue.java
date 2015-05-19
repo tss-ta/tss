@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 /**
  * @author Kyrylo Berehovyi
  */
-
 public class MultipurposeValue {
     private DataType type;
     private String stringValue;

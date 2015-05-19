@@ -21,6 +21,7 @@ public class ReportDataDAO {
     private static final int FIRST_COLUMN = 1;
     private static final int LIMIT_POSITION = 1;
     private static final int OFFSET_POSITION = 2;
+    public static final String DATA_SOURCE = "java:jboss/datasources/PostgreSQLDS";
 
     private DataSource dataSource = getDataSource();
     private ResultSetTypeMapper mapper = new ResultSetTypeMapper();
@@ -60,17 +61,6 @@ public class ReportDataDAO {
             resultSet = connection.prepareStatement(query).executeQuery();
             initializeReportMetaData(reportData, resultSet.getMetaData());
             generateDataFromResultSet(reportData, resultSet);
-
-//            resultSet = connection.prepareStatement("select count(id) from car").executeQuery();
-//
-//            ResultSetMetaData metaData = resultSet.getMetaData();
-//            System.out.println("==================================");
-//            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                System.out.println("column name: " + metaData.getColumnName(i));
-//                System.out.println("column type: " + metaData.getColumnTypeName(i));
-//                System.out.println("column type index: " + metaData.getColumnType(i));
-//            }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -85,23 +75,15 @@ public class ReportDataDAO {
         while (resultSet.next()) {
             reportData.addRow(createRowData(resultSet, reportData));
         }
-//        System.out.println(reportData.getRowsAmount());
-//        System.out.println("ReportData:");
-//        System.out.println(reportData);
     }
 
     private RowData createRowData(ResultSet resultSet, ReportData reportData) throws SQLException {
         RowData rowData = new RowData();
         MultipurposeValue multiValue;
-        for (int index = 1; index <= reportData.getColumnAmount(); index++) {
-            System.out.println("index=" + index);
-            System.out.println("colType=" + reportData.getColumnType(index));
-            multiValue = mapper.getDataFromColumn(resultSet, index, reportData.getColumnType(index));
+        for (int index = 1; index <= reportData.columnAmount(); index++) {
+            multiValue = mapper.getDataFromColumn(resultSet, index, reportData.columnType(index));
             rowData.addColumn(index, multiValue);
         }
-//        System.out.println("====================================");
-//        System.out.println(rowData);
-//        System.out.println("====================================");
         return rowData;
     }
 
@@ -127,7 +109,7 @@ public class ReportDataDAO {
         try {
             initCtx = new InitialContext();
             dataSource = (DataSource) initCtx
-                    .lookup("java:jboss/datasources/PostgreSQLDS");
+                    .lookup(DATA_SOURCE);
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -143,6 +125,28 @@ public class ReportDataDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(LIMIT_POSITION, pageSize);
             statement.setInt(OFFSET_POSITION, (pageNumber - 1) * pageSize);
+            resultSet = statement.executeQuery();
+            initializeReportMetaData(reportData, resultSet.getMetaData());
+            generateDataFromResultSet(reportData, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
+        return reportData;
+    }
+
+    public ReportData createSizedReportData(String query, Integer maxSize) {
+        Connection connection = null;
+        ReportData reportData = new ReportData();
+        ResultSet resultSet;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(LIMIT_POSITION, maxSize);
+            statement.setInt(OFFSET_POSITION, 0);
             resultSet = statement.executeQuery();
             initializeReportMetaData(reportData, resultSet.getMetaData());
             generateDataFromResultSet(reportData, resultSet);

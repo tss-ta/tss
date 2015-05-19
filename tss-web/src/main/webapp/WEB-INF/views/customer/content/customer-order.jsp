@@ -13,7 +13,7 @@
 <form id="submit_id" action="/customer/order"
 	class="form-horizontal style-form" method="post">
 	<div class="row mt bottom_line">
-		<div class="form-group">
+		<div class="control-group">
 			<div class="col-md-6">
 				<div class="col-lg-12">
 					<div class="form-panel">
@@ -27,18 +27,17 @@
 				<%@ include file="../../partials/to_pers_addr.jspf"%>
 				<%@ include file="../../partials/price.jspf"%>
 			</div>
+			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-6">
 				<%@ include file="../../partials/map.jspf"%>
 			</div>
 		</div>
-		<div class="col-lg-12">
-			<%@ include file="../../partials/options_vert.jspf"%>
-			<!-- /col-lg-12 -->
-			<div class="col-lg-12 text-center">
-				<button class="btn btn-success btn-lg btn-block" type="submit">Order
-					Now</button>
-			</div>
-		</div>
+        <div class="col-lg-12">
+            <%@ include file="../../partials/options.jspf"%>
+            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                <button class="btn btn-success btn-lg btn-block col-lg-8 col-sm-8 col-xs-12" type="submit">Order Now</button>
+            </div>
+        </div>
 	</div>
 </form>
 
@@ -91,6 +90,7 @@
 
 <script>
 	AnyTime.picker("ordertime", {
+		earliest: new Date(),
 		format : "%H:%i, %d %m %Y",
 		firstDOW : 1
 	});

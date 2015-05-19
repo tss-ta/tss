@@ -32,7 +32,9 @@ public interface MailerBeanLocal extends EJBLocalObject {
 	public void changeToAssigned(User user, TaxiOrder to, Driver driver);
 	
 	public void changeToCompleted(User user, TaxiOrder to);
-
+    @Deprecated
 	public void sendToken(String emailAddress, Integer token);
+
+    void sendDriverInvite(String email, String signupURL);
 
 }

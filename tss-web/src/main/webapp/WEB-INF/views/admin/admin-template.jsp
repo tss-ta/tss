@@ -1,5 +1,5 @@
 <%--
-  User: happy
+  User: happy, maks
   Date: 25/04/2015
   Time: 17:05
 --%>
@@ -17,6 +17,7 @@
 
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/resources/css/validator/formValidation.min.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">
         <link href="/resources/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     </head>
@@ -25,6 +26,11 @@
         <script src="/resources/js/jquery-1.11.2.min.js"></script>
         <script src="/resources/js/bootstrap.min.js"></script>
         <script src="/resources/js/validator.js"></script>
+
+        <script src="/resources/js/jqBootstrapValidation.js"></script>
+
+        <script src="/resources/js/validator/formValidation.min.js"></script>
+        <script src="/resources/js/validator/framework/bootstrap.min.js"></script>
 
         <div id="wrapper">
 
@@ -66,6 +72,12 @@
             </div>
         </div>
 
+        <script>
+            $(function () {
+                $("input").not("[type=submit]").jqBootstrapValidation();
+                //     $(".form-sign-error-msg").css("visibility", "visible");
+            });
+        </script>
         <!-- Custom javascript for password confirmation -->
         <%--<script type="text/javascript" src="/resources/js/confirmPassword.js"></script>--%>
 

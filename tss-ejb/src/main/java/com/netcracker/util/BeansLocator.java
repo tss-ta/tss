@@ -28,6 +28,8 @@ public class BeansLocator {
     private static BeansLocator locator = null;
     private JndiNameBuilder nameBuilder = new JndiNameBuilder();
 
+    private BeansLocator (){};
+
     public static BeansLocator getInstance() {
         if (locator == null) {
             locator = new BeansLocator();

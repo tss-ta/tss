@@ -1,8 +1,7 @@
 package com.netcracker.tss.web.route.admin.driver;
 
-import com.netcracker.dao.*;
-import com.netcracker.ejb.DriverLocal;
-import com.netcracker.ejb.MailerBeanLocal;
+
+import com.netcracker.ejb.*;
 import com.netcracker.entity.Driver;
 import com.netcracker.entity.helper.Category;
 import com.netcracker.router.HttpMethod;
@@ -10,18 +9,20 @@ import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
 import com.netcracker.tss.web.util.Page;
+
 import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.tss.web.util.ServletUtils;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.TokenGenerator;
-import org.springframework.context.annotation.Bean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.List;
+
 
 /**
  * @author Illia Rudenko
+ * @author maks
  */
 
 @ActionRoute(menu = "drivers")
@@ -49,23 +50,37 @@ public class CreateAndEditDriverRoute {
     public ActionResponse sendTokenToDriverEmail(HttpServletRequest req) throws ServletException, IOException {
 
         String driverEmail = req.getParameter(PARAMETER_DRIVER_EMAIL);
-        Driver driver = null;
+        Driver driver;
         Integer token = TokenGenerator.generate();
-
-        if(driverEmail != null) {
-            driver = new Driver(driverEmail, token);
-            BeansLocator.getInstance().getDriverBean().addDriver(driver);
-        }
 
         ActionResponse actResp = new ActionResponse();
 
-        if(driver != null) {
-            MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
-            mailerBean.sendToken(driverEmail, token);
-            actResp.setSuccessMessage("Token was successfully sent");
-        } else {
-            actResp.setErrorMessage("Error while sending token");
+        if(driverEmail != null && !"".equals(driverEmail)) {
+            driverEmail = driverEmail.toLowerCase();
+            Driver checkedDriver;
+
+            checkedDriver = BeansLocator.getInstance().getDriverBean().getDriver(driverEmail);
+
+            if(checkedDriver == null) {
+                driver = new Driver(driverEmail, token);
+                String errorMessage = validateDriver(driver);
+
+                if(errorMessage == null) {
+                    BeansLocator.getInstance().getDriverBean().addDriver(driver);
+                    MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
+                    String signUpURL = ServletUtils.getBaseUrl(req) + "/RegistrationServlet?token=" + token;
+                    mailerBean.sendDriverInvite(driverEmail, signUpURL);
+                    actResp.setSuccessMessage("Invite was successfully sent");
+                } else {
+                    actResp.setErrorMessage(errorMessage);
+                }
+
+            } else {
+                actResp.setErrorMessage("System already contains user with such an email!");
+            }
         }
+
+
 
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_SEND_TOKEN_CONTENT.getType());
         actResp.setPageContent(Page.ADMIN_SEND_TOKEN_CONTENT.getAbsolutePath());
@@ -73,19 +88,29 @@ public class CreateAndEditDriverRoute {
         return actResp;
     }
 
-    @Action(action = "editdriver")
+
+    @Action(action = "editdriver", httpMethod = HttpMethod.POST)
+
     public ActionResponse editDriver(HttpServletRequest req) throws ServletException, IOException {
         DriverLocal driverLocal = BeansLocator.getInstance().getDriverBean();
         Driver driver = driverLocal.getDriver(Integer.valueOf(req.getParameter(PARAMETER_DRIVER_ID)));
 
+        ViewDriverRoute viewDriverRoute = new ViewDriverRoute();
         if(driver != null) {
-            driverLocal.editDriver(updateDriverFromRequest(driver, req));
+            driver = updateDriverFromRequest(driver, req);
+            ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+            String errorMessage = validatorBean.validate(driver);
+
+            if(errorMessage != null) {
+                req.setAttribute("errorMsg", errorMessage);
+                return viewDriverRoute.getAllDriversPage(req);
+            } else {
+                driverLocal.editDriver(driver);
+            }
         }
 
-        List<Driver> drivers = driverLocal.getDriverPage(1, 10);
-        req.setAttribute(RequestAttribute.DRIVER_LIST.getName(), drivers);
+        return viewDriverRoute.getAllDriversPage(req);
 
-        return new ActionResponse(Page.ADMIN_DRIVERS_CONTENT.getAbsolutePath());
     }
 
     private Driver updateDriverFromRequest(Driver driver, HttpServletRequest req) throws ServletException, IOException {
@@ -100,5 +125,10 @@ public class CreateAndEditDriverRoute {
 
     private boolean isOn (String checkBoxText){
         return "on".equals(checkBoxText);
+    }
+
+    private String validateDriver(Driver driver) {
+        ValidatorBeanLocal validatorBean = BeansLocator.getInstance().getBean(ValidatorBeanLocal.class);
+        return validatorBean.validate(driver);
     }
 }

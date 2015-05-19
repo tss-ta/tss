@@ -5,6 +5,8 @@
  */
 package com.netcracker.ejb;
 
+import com.netcracker.dao.exceptions.DriverAssignCarException;
+import com.netcracker.dao.exceptions.DriverOrderCountException;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Route;
@@ -17,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJBLocalObject;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -38,6 +41,15 @@ public interface TaxiOrderBeanLocal extends EJBLocalObject {
             int pageSize, User user, Status status);
 
     public Contacts createContacts(User user);
-    
+
     public void updateTaxiOrder(TaxiOrder taxiOrder);
+
+    public void refuseTaxiOrder(int orderId);
+
+    public int countOrdersByStatus(User user, Status status);
+
+    public List<TaxiOrderHistory> getTaxiOrderDriver(Integer pageNumber,
+            int pageSize, User user, Status status) throws DriverAssignCarException ;
+
+    public void setNextStatus(int taxiOrderId, User user) throws DriverOrderCountException;
 }

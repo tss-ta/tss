@@ -42,13 +42,15 @@
                     <c:forEach var = "tariff" items = "${requestScope.tariffs}">
                         <tr>
                     <form action="/admin" method="post">
-                        <div class="form-group">
+                        <div class="control-group">
                             <td class="col-md-3">${tariff.tariffName}</td>
                             <td class="col-md-offset-1 col-md-2">
-                                <input class="form-control" type="number" name="add" value="${tariff.plusCoef}">
+                                <input class="form-control" type="number" name="add" value="${tariff.plusCoef}"
+                                       min="-1E10" max="1E10" step ="0.001" required>
                             </td>
                             <td class="col-md-offset-1 col-md-2">
-                                <input class="form-control" type="number" name="mult" value="${tariff.multipleCoef}">
+                                <input class="form-control" type="number" name="mult" value="${tariff.multipleCoef}"
+                                       min="0" max="100000" step ="0.000001" required>
                             </td>
                             <td class="col-md-offset-1 col-md-2">
                                 <input type="submit" class="btn btn-default" value="save">
