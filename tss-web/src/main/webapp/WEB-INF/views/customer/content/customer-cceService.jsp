@@ -31,7 +31,7 @@
 				<div class="form-group">
 					<div class="col-sm-12">
 						<div class="text-center">
-							<input type="button" value="Add to from list"
+							<input type="button" value="Add address to list"
 								onclick="addToList()" class="btn btn-default" /> <input
 								type="button" onclick="removeSelectedFromList()"
 								value="remove selected from list" class="btn btn-default" />
@@ -232,3 +232,31 @@
 		});
 	});
 </script>
+
+<%--<script>--%>
+    <%--$('#toAddr').on('change',(function() {--%>
+        <%--$('#fromList option').each(function() {--%>
+            <%--this.selected = true;--%>
+        <%--});--%>
+        <%--$.ajax({--%>
+            <%--type : "GET",--%>
+            <%--url : "/priceCceService",--%>
+            <%--data : {--%>
+                <%--fromList : $("#fromList").val(),--%>
+                <%--toAddr : transliterate($("#toAddr").val()),--%>
+                <%--ordertime : $("#ordertime").val(),--%>
+                <%--addOptions : $("#addOptions").val(),--%>
+                <%--carType : $("#carType").val()--%>
+            <%--},--%>
+            <%--dataType : "text",--%>
+        <%--}).done(function(res) {--%>
+            <%--$('#price_field').val(res);--%>
+        <%--}).fail(function(jqXHR, textStatus, errorThrown) {--%>
+            <%--alert("Address error");--%>
+        <%--});--%>
+
+        <%--$('#fromList option').each(function() {--%>
+            <%--this.selected = false;--%>
+        <%--});--%>
+    <%--});--%>
+<%--</script>--%>

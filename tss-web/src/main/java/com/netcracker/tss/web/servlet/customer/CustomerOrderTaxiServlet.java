@@ -108,10 +108,11 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            req.setAttribute("pageContent", "incorrect-address.jsp");
-            req.getRequestDispatcher(
-                    "/WEB-INF/views/customer/customer-template.jsp").forward(
-                    req, resp);
+//            req.setAttribute("pageContent", "incorrect-address.jsp");
+//            req.getRequestDispatcher(
+//                    "/WEB-INF/views/customer/customer-template.jsp").forward(
+//                    req, resp);
+            resp.sendRedirect("/customer/orderpage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
         }
     }
 

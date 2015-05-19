@@ -43,6 +43,7 @@ import java.util.List;
 /**
  *
  * @author Lis
+ * @author maks
  */
 @WebServlet(urlPatterns = "/customer/cceService")
 public class CustomerCceServiceServlet extends HttpServlet {
@@ -92,7 +93,7 @@ public class CustomerCceServiceServlet extends HttpServlet {
                     TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
                     taxiOrder.setBookingTime(new Date());
                     Date orderTime = DateParser.parseDate(req);
-                    orderTime.setYear(new Date().getYear());
+                    //orderTime.setYear(new Date().getYear());
                     taxiOrder.setOrderTime(orderTime);
                     price = priceBean.calculatePriceForCceService(distance,
                             DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
@@ -105,7 +106,7 @@ public class CustomerCceServiceServlet extends HttpServlet {
                             "/WEB-INF/views/customer/customer-template.jsp").forward(
                             req, resp);
                 } catch (Exception e) {
-                    resp.sendRedirect("/customer/cceServicePage");
+                    resp.sendRedirect("/customer/cceServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
                 }
             } else {
                 resp.sendRedirect("/customer/cceServicePage");

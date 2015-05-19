@@ -33,6 +33,7 @@ public class CustomerCceServicePageServlet extends HttpServlet {
         req.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
         req.setAttribute("pageContent", "content/customer-cceService.jsp");
         req.setAttribute("pageType", "cceService");
+        req.setAttribute("errorMessage", req.getParameter("err"));
         req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
                 .forward(req, resp);
     }
