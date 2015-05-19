@@ -59,6 +59,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        try {
         if (req.getParameter("addFrom") != null) {
             addAddressFrom(req);
             resp.sendRedirect("/customer/orderpage");
@@ -82,14 +83,11 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             Address addTo = toAddress(req.getParameter("toAddr"), req);
             TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
             taxiOrder.setBookingTime(new Date());
-            try {
+
                 MapBeanLocal mapBean = getMapBean(req);
                 distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
                         req.getParameter("toAddr"));
-            } catch (JSONException | IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+
             price = priceBean.calculatePrice(distance,
                     DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
             Date orderTime = DateParser.parseDate(req);
@@ -104,6 +102,17 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             req.getRequestDispatcher(
                     "/WEB-INF/views/customer/customer-template.jsp").forward(
                             req, resp);
+            }
+        }
+//        catch (JSONException | IOException | ServletException e) {
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+//            req.setAttribute("pageContent", "incorrect-address.jsp");
+//            req.getRequestDispatcher(
+//                    "/WEB-INF/views/customer/customer-template.jsp").forward(
+//                    req, resp);
+            resp.sendRedirect("/customer/orderpage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
         }
     }
 

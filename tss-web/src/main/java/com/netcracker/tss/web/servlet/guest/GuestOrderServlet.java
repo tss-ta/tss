@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,13 +15,8 @@ import com.netcracker.util.BeansLocator;
 import org.json.JSONException;
 
 import com.netcracker.ejb.MapBeanLocal;
-import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.PriceBeanLocal;
-import com.netcracker.ejb.PriceBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
-import com.netcracker.ejb.TaxiOrderBeanLocalHome;
-import com.netcracker.ejb.UserBeanLocal;
-import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
@@ -33,6 +25,10 @@ import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.UserUtils;
 
+/**
+ * Servlet for quick taxi order on home page as guest
+ * @author maks
+ */
 @WebServlet(urlPatterns = "/guest/order")
 public class GuestOrderServlet extends HttpServlet {
 
@@ -46,26 +42,26 @@ public class GuestOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        try {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         User user = new User(name, email);
         TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
         PriceBeanLocal priceBean = getPriceBean(req);
         float distance = 0;
-        double price = 0;
+        double price;
 
         Route route = new Route("Guest Route");
         route.setDistance(distance);
         Address addFrom = toAddress(req.getParameter("fromAddr"), req);
         Address addTo = toAddress(req.getParameter("toAddr"), req);
         TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
-        try {
+
             MapBeanLocal mapBean = getMapBean(req);
             distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
                     req.getParameter("toAddr"));
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+
+
         price = priceBean.calculatePrice(distance,
                 DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
         taxiOrder.setBookingTime(new Date());
@@ -78,6 +74,11 @@ public class GuestOrderServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/customer/guest-confirmation.jsp")
                 .forward(req, resp);
 
+        } catch (Exception e) {
+            // TODO
+            Logger.getLogger(GuestOrderServlet.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            resp.sendRedirect("/incorrect-address.jsp");
+        }
     }
 
     private Address toAddress(String addr, HttpServletRequest req) {
@@ -93,74 +94,13 @@ public class GuestOrderServlet extends HttpServlet {
 
     private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
         return BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
-//        Context context;
-//        try {
-//            context = new InitialContext();
-//            TaxiOrderBeanLocalHome taxiOrderBeanLocalHome = (TaxiOrderBeanLocalHome) context
-//                    .lookup("java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome");
-//            return taxiOrderBeanLocalHome.create();
-//        } catch (NamingException ex) {
-//            Logger.getLogger(AdminGroupServlet.class.getName())
-//                    .log(Level.SEVERE,
-//                            "Can't find taxiOrderBean with name java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome ",
-//                            ex);
-//            throw new RuntimeException("Internal server error!");// maybe have
-//            // to create
-//            // custom
-//            // exception?
-//        }
     }
 
     private MapBeanLocal getMapBean(HttpServletRequest req) {
         return BeansLocator.getInstance().getBean(MapBeanLocal.class);
-//        Context context;
-//        try {
-//            context = new InitialContext();
-//            MapBeanLocalHome mapBeanLocalHome = (MapBeanLocalHome) context
-//                    .lookup("java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome");
-//            return mapBeanLocalHome.create();
-//        } catch (NamingException ex) {
-//            Logger.getLogger(GuestOrderServlet.class.getName())
-//                    .log(Level.SEVERE,
-//                            "Can't find taxiOrderBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
-//                            ex);
-//            throw new RuntimeException("Internal server error!");// maybe have
-//            // to create
-//            // custom
-//            // exception?
-//        }
     }
 
-//    private UserBeanLocal getUserBean(HttpServletRequest req) {
-//        Context context;
-//        try {
-//            context = new InitialContext();
-//            UserBeanLocalHome userBeanLocalHome = (UserBeanLocalHome) context
-//                    .lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
-//            return userBeanLocalHome.create();
-//        } catch (NamingException ex) {
-//            Logger.getLogger(GuestOrderServlet.class.getName())
-//                    .log(Level.SEVERE,
-//                            "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
-//                            ex);
-//            throw new RuntimeException("Internal server error!");// maybe have
-//            // to create
-//            // custom
-//            // exception?
-//        }
-//    }
     private PriceBeanLocal getPriceBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            PriceBeanLocalHome priceBeanLocalHome = (PriceBeanLocalHome) context
-                    .lookup("java:app/tss-ejb/PriceBean!com.netcracker.ejb.PriceBeanLocalHome");
-            return priceBeanLocalHome.create();
-        } catch (NamingException ex) {
-            throw new RuntimeException("Internal server error!");// maybe have
-            // to create
-            // custom
-            // exception?
-        }
+        return BeansLocator.getInstance().getBean(PriceBeanLocal.class);
     }
 }

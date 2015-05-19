@@ -132,7 +132,7 @@
             },
             legend: [
             {type: "text", label: "Special event", badge: "00"},
-            {type: "block", label: "Regular event", }
+            {type: "block", label: "Regular event" }
             ]
             });
             });
@@ -174,6 +174,12 @@
 		})
 	</script>
 
-
+    <script src="/resources/js/jqBootstrapValidation.js"></script>
+    <%--<script>--%>
+        <%--$(function () {--%>
+            <%--$("input").not("[type=submit]").jqBootstrapValidation();--%>
+            <%--//     $(".form-sign-error-msg").css("visibility", "visible");--%>
+        <%--});--%>
+    <%--</script>--%>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <form id="submit_id" action="/customer/cceService"
 	class="form-horizontal style-form" method="post">
 	<div class="row mt bottom_line">
-		<div class="form-group">
+		<div class="control-group">
 			<div class="col-md-6">
 				<div class="col-lg-12">
 					<div class="form-panel">
@@ -31,7 +31,7 @@
 				<div class="form-group">
 					<div class="col-sm-12">
 						<div class="text-center">
-							<input type="button" value="Add to from list"
+							<input type="button" value="Add address to list"
 								onclick="addToList()" class="btn btn-default" /> <input
 								type="button" onclick="removeSelectedFromList()"
 								value="remove selected from list" class="btn btn-default" />
@@ -55,16 +55,13 @@
 					src="/resources/customer_assets/img/to.png" width="32" height="32"
 					alt="to" />to
 			</div>
-			<div class="col-lg-12">
-				<%@ include file="../../partials/options_vert.jspf"%>
-				<!-- /col-lg-12 -->
-				<div class="row">
-					<div class="col-lg-12 text-center">
-						<button class="btn btn-success btn-lg btn-block"
-							onclick="beforeSave()" type="submit">Order Now</button>
-					</div>
-				</div>
-			</div>
+            <div class="col-lg-12">
+                <%@ include file="../../partials/options.jspf"%>
+                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                    <button class="btn btn-success btn-lg btn-block col-lg-8 col-sm-8 col-xs-12"
+                            onclick="beforeSave()" type="submit">Order Now</button>
+                </div>
+            </div>
 		</div>
 	</div>
 </form>
@@ -235,3 +232,31 @@
 		});
 	});
 </script>
+
+<%--<script>--%>
+    <%--$('#toAddr').on('change',(function() {--%>
+        <%--$('#fromList option').each(function() {--%>
+            <%--this.selected = true;--%>
+        <%--});--%>
+        <%--$.ajax({--%>
+            <%--type : "GET",--%>
+            <%--url : "/priceCceService",--%>
+            <%--data : {--%>
+                <%--fromList : $("#fromList").val(),--%>
+                <%--toAddr : transliterate($("#toAddr").val()),--%>
+                <%--ordertime : $("#ordertime").val(),--%>
+                <%--addOptions : $("#addOptions").val(),--%>
+                <%--carType : $("#carType").val()--%>
+            <%--},--%>
+            <%--dataType : "text",--%>
+        <%--}).done(function(res) {--%>
+            <%--$('#price_field').val(res);--%>
+        <%--}).fail(function(jqXHR, textStatus, errorThrown) {--%>
+            <%--alert("Address error");--%>
+        <%--});--%>
+
+        <%--$('#fromList option').each(function() {--%>
+            <%--this.selected = false;--%>
+        <%--});--%>
+    <%--});--%>
+<%--</script>--%>

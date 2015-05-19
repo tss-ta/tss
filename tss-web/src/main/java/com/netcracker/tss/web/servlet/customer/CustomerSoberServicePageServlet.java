@@ -4,6 +4,8 @@ import com.netcracker.ejb.UserBeanLocal;
 import com.netcracker.ejb.UserBeanLocalHome;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.UserUtils;
+import com.netcracker.util.BeansLocator;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Lis
+ * @author maks
  */
 @WebServlet(urlPatterns = "/customer/soberServicePage")
 public class CustomerSoberServicePageServlet extends HttpServlet {
@@ -28,14 +31,17 @@ public class CustomerSoberServicePageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.getSession().removeAttribute("taxiOrder");
-        UserBeanLocal userBeanLocal = getUserBean(req);
+        UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
+                //getUserBean(req);
         req.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
         req.setAttribute("pageContent", "content/customer-soberService.jsp"); 
         req.setAttribute("pageType", "soberService");
+        req.setAttribute("errorMessage", req.getParameter("err"));
         req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
                 .forward(req, resp);
     }
 
+    @Deprecated
     private UserBeanLocal getUserBean(HttpServletRequest req) {
         Context context;
         try {

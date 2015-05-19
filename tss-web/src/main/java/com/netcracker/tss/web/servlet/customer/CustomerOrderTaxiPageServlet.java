@@ -30,15 +30,16 @@ public class CustomerOrderTaxiPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().removeAttribute("taxiOrder");
-        UserBeanLocal userBeanLocal = getUserBean(req);
+        UserBeanLocal userBeanLocal = getUserBean();
         req.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
         req.setAttribute("pageContent", "content/customer-order.jsp");
         req.setAttribute("pageType", "orderpage");
+        req.setAttribute("errorMessage", req.getParameter("err"));
         req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
                 .forward(req, resp);
     }
 
-    private UserBeanLocal getUserBean(HttpServletRequest req) {
+    private UserBeanLocal getUserBean() {
         Context context;
         try {
             context = new InitialContext();

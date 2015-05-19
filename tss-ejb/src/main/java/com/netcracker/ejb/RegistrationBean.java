@@ -28,6 +28,12 @@ import javax.persistence.NoResultException;
  */
 public class RegistrationBean implements SessionBean {
 
+    /**
+     *  Register new customer-user
+     * @param user - user entity-class that need to be register
+     *             @throws com.netcracker.exceptions.InvalidEntityException - if user that have the same email is
+     *             already registered or User entity-class have some incorrect fields
+     */
     public void registrate(User user) {
         UserDAO userDAO = null;
         ContactsDAO contactsDAO = null;
@@ -36,6 +42,10 @@ public class RegistrationBean implements SessionBean {
             user.addRole(role);
             userDAO = new UserDAO();
             validate(user);
+            if (isUserExist(user)){
+                throw new InvalidEntityException("User with email " + user.getEmail()
+                        + " is already registered!");
+            }
             userDAO.persist(user);
             contactsDAO = new ContactsDAO();
             contactsDAO.persist(new Contacts(userDAO.getByEmail(user.getEmail())));
@@ -121,24 +131,6 @@ public class RegistrationBean implements SessionBean {
             }
         }
     }
-
-//    public boolean hasToken(Driver driver) {
-//        DriverDAO dao = null;
-//        try {
-//            dao = new DriverDAO();
-//            Driver userFromDB = dao.getDriverByToken(driver.getToken());
-//            if (userFromDB != null) {
-//                return true;
-//            }
-//            return false;
-//        } catch (NoResultException e) {
-//            return false;
-//        } finally {
-//            if (dao != null) {
-//                dao.close();
-//            }
-//        }
-//    }
 
     @Override
     public void setSessionContext(SessionContext ctx) throws EJBException, RemoteException {

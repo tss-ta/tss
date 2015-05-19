@@ -17,41 +17,41 @@
 &nbsp;
 <br>
 <form id="submit_id" action="/customer/meetMyGuest"
-      class="form-horizontal style-form" method="post">
-    <div class="row mt bottom_line">
-        <div class="form-group">
-            <div class="col-md-6">
-                <div class="col-lg-12">
-                    <div class="form-panel">
-                        <%@ include file="../../partials/order_time_buttons.jspf"%>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Guest Name</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="name" name="guestName" required autofocus>
-                    </div>
-                </div>
-                <%@ include file="../../partials/from_addr.jspf"%>
-                <%@ include file="../../partials/from_pers_addr.jspf"%>
-                <%@ include file="../../partials/to_addr.jspf"%>
-                <%@ include file="../../partials/to_pers_addr.jspf"%>
-                <%@ include file="../../partials/price.jspf"%>
-            </div>
-            <div class="clearfix visible-xs-block"></div>
-            <div class="col-md-6">
-                <%@ include file="../../partials/map.jspf"%>
-            </div>
-        </div>
+	class="form-horizontal style-form" method="post">
+	<div class="row mt bottom_line">
+		<div class="control-group">
+			<div class="col-md-6">
+				<div class="col-lg-12">
+					<div class="form-panel">
+						<%@ include file="../../partials/order_time_buttons.jspf"%>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 col-sm-2 control-label">Guest Name</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="name" name="guestName" maxlength="60" minLength="2" required autofocus>
+					</div>
+				</div>
+				<%@ include file="../../partials/from_addr.jspf"%>
+				<%@ include file="../../partials/from_pers_addr.jspf"%>
+				<%@ include file="../../partials/to_addr.jspf"%>
+				<%@ include file="../../partials/to_pers_addr.jspf"%>
+				<%@ include file="../../partials/price.jspf"%>
+			</div>
+			<div class="clearfix visible-xs-block"></div>
+			<div class="col-md-6">
+				<%@ include file="../../partials/map.jspf"%>
+			</div>
+		</div>
+
         <div class="col-lg-12">
-            <%@ include file="../../partials/options_vert.jspf"%>
-            <!-- /col-lg-12 -->
-            <div class="col-lg-12 text-center">
-                <button class="btn btn-success btn-lg btn-block" type="submit">Order
-                    Now</button>
+            <%@ include file="../../partials/options.jspf"%>
+            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                <button class="btn btn-success btn-lg btn-block col-lg-8 col-sm-8 col-xs-12" type="submit">Order Now</button>
             </div>
         </div>
-    </div>
+		</div>
+	</div>
 </form>
 
 
@@ -197,7 +197,7 @@
                 addOptions: $("#addOptions").val(),
                 carType: $("#carType").val()
             },
-            dataType: "text",
+            dataType: "text"
         }).done(function (res) {
             $('#price_field').val(res);
         }).fail(function (jqXHR, textStatus, errorThrown) {
