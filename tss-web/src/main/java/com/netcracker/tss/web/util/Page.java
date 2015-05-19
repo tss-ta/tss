@@ -29,6 +29,7 @@ public enum Page {
     ADMIN_CAR_OPTIONS_REPORTS_CONTENT("reports", "admin/content/car-options-report.jsp"),
     ADMIN_NEW_ORDERS_REPORTS_CONTENT("reports", "admin/content/new-orders-report.jsp"),
     ADMIN_CHOOSE_USER_REPORTS_CONTENT("reports", "admin/content/choose-customer.jsp"),
+    ADMIN_MAILER("mailer", "admin/content/mailer.jsp"),
     ERROR_500_CONTENT("", "admin/content/500.jsp"),
     ERROR_404_CONTENT("", "content/404.jsp"),
     INCORRECT_ID_CONTENT("", "content/incorrect-id.jsp"),

@@ -19,7 +19,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.netcracker.entity.Driver;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.util.GlobalVariables;
@@ -37,7 +36,7 @@ public class MailerBean implements SessionBean {
 			.getEmailPassword());
 
 	public void sendEmail(String emailAddress, String title, String msg) {
-		if (!GlobalVariables.isMailerOn)
+		if (!GlobalVariables.MAILER_STATE.get())
 			return;
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");

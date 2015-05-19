@@ -2,7 +2,6 @@ package com.netcracker.tss.web.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +16,10 @@ public class MailerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		GlobalVariables.isMailerOn = !GlobalVariables.isMailerOn;
-		resp.sendRedirect("/admin?menu=dashboard&action=view");
+		if (GlobalVariables.MAILER_STATE.get()) {
+            resp.sendRedirect("/admin?menu=dashboard&action=view");
+        }
+
 	}
 
 }

@@ -25,6 +25,9 @@
     <c:when test="${pageType == 'reports'}">
         <c:set var="activeReports" scope="request" value="${'class=\"active\"'}"/>
     </c:when>
+    <c:when test="${pageType == 'mailer'}">
+        <c:set var="activeMailer" scope="request" value="${'class=\"active\"'}"/>
+    </c:when>
 </c:choose>
 
 <ul class="sidebar-nav">
@@ -73,8 +76,8 @@
         </a>
     </li>
     <li>
-        <a href="/mailer">
-            <span class="icon-container"><i class="fa fa-email"></i></span>
+        <a href="/admin?menu=mailer&action=state"  ${activeMailer}>
+            <span class="icon-container"><i class="fa fa-envelope-o"></i></span>
             <span class="icon-label">Mailer</span>
         </a>
     </li>

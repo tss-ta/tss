@@ -19,7 +19,8 @@ public enum RequestAttribute {
     REPORT_INFO("reportInfo"),
     FORM_TYPE("formType"),
     FORM_EDIT_TYPE("edit"),
-    FORM_CREATE_TYPE("create");
+    FORM_CREATE_TYPE("create"),
+    MAILER_STATE("mailerState");
 
     private String name;
 
