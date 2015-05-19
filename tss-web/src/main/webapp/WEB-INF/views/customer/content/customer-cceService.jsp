@@ -21,10 +21,11 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 col-sm-2 control-label">From list:</label>
-					<div class="col-md-9 col-sm-6">
+					<label class="col-md-2 control-label">From list:</label>
+					<div class="col-sm-12 col-md-12 col-lg-10">
 						<select id="fromList" name="fromList" multiple="multiple"
-							style='width: 30em'>
+							style='width: 28em'
+                                >
 						</select>
 					</div>
 				</div>
@@ -233,31 +234,3 @@ AnyTime.picker("ordertime", {
 		});
 	});
 </script>
-
-<%--<script>--%>
-    <%--$('#toAddr').on('change',(function() {--%>
-        <%--$('#fromList option').each(function() {--%>
-            <%--this.selected = true;--%>
-        <%--});--%>
-        <%--$.ajax({--%>
-            <%--type : "GET",--%>
-            <%--url : "/priceCceService",--%>
-            <%--data : {--%>
-                <%--fromList : $("#fromList").val(),--%>
-                <%--toAddr : transliterate($("#toAddr").val()),--%>
-                <%--ordertime : $("#ordertime").val(),--%>
-                <%--addOptions : $("#addOptions").val(),--%>
-                <%--carType : $("#carType").val()--%>
-            <%--},--%>
-            <%--dataType : "text",--%>
-        <%--}).done(function(res) {--%>
-            <%--$('#price_field').val(res);--%>
-        <%--}).fail(function(jqXHR, textStatus, errorThrown) {--%>
-            <%--alert("Address error");--%>
-        <%--});--%>
-
-        <%--$('#fromList option').each(function() {--%>
-            <%--this.selected = false;--%>
-        <%--});--%>
-    <%--});--%>
-<%--</script>--%>
