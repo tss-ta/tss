@@ -54,7 +54,7 @@
 
 
     <form class="form-sign form-horizontal" action="RegistrationServlet" method="post" autocomplete="off">
-        <h2 class="form-sign-heading">Register please</h2>
+        <h2 class="form-sign-heading">Please Sign Up</h2>
         <h5 class="form-sign-error-msg">${requestScope.errorMessage}</h5>
 
         <%-- Delete Chrome autocomplete --%>
@@ -95,7 +95,7 @@
                 <%--<span id="confirmMessage" class="confirmMessage"></span>--%>
                 <p class="help-block form-sign-error-msg"></p>
             </div>
-            <button class="btn btn-lg btn-primary btn-block register" type="submit" name="register" id="register">Register</button>
+            <button class="btn btn-lg btn-primary btn-block register" type="submit" name="register" id="register">Sign Up</button>
 
         </div>
     </form>
