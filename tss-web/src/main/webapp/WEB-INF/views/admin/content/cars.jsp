@@ -56,12 +56,12 @@
                     <tr class="text-center">
                         <td><a class="custom-link" href="/admin?menu=car&action=view&id=${car.id}">${car.getLicPlate()}</a></td>
                         <td class="hidden-sm hidden-xs">
-                            <c:choose>
+                           <c:choose>
                                 <c:when test="${car.category == 1}">
-                                    Business
+                                    Economy
                                 </c:when>
                                 <c:when test="${car.category == 2}">
-                                    Economy
+                                    Business
                                 </c:when>
                                 <c:when test="${car.category == 3}">
                                     Van

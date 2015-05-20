@@ -57,7 +57,7 @@
                                         </c:choose>
                                     </td>
                                     <td class="hidden-sm hidden-xs">
-                                        <a href="/driver/dashboard/allinfo?action=viewAll&order_id=${list.id}" class="btn btn-default">View All</a>
+                                        <a href="/driver/dashboard/allinfo?action=viewAll&order_id=${list.id}" class="btn btn-default">TO Details</a>
                                     </td>
                                 </c:forEach>
                         </tbody>

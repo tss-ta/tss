@@ -38,70 +38,70 @@
 
                         <tbody>
                             <%--License Plate--%>
-                        <tr class="text-center">
-                            <td>№</td>
-                            <td>${car.getLicPlate()}</td>
-                        </tr>
+                            <tr class="text-center">
+                                <td>№</td>
+                                <td>${car.getLicPlate()}</td>
+                            </tr>
 
                             <%--Car Type--%>
-                        <tr>
-                            <td class="text-center">Type</td>
-                            <td class="text-center">
-                                <c:choose>
-                                    <c:when test="${car.category == 1}">
-                                        Business
-                                    </c:when>
-                                    <c:when test="${car.category == 2}">
-                                        Economy
-                                    </c:when>
-                                    <c:when test="${car.category == 3}">
-                                        Van
-                                    </c:when>
-                                    <c:when test="${car.category == 4}">
-                                        Cargo
-                                    </c:when>
-                                    <c:otherwise>
-                                        Other
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">Type</td>
+                                <td class="text-center">
+                                    <c:choose>
+                                        <c:when test="${car.category == 1}">
+                                            Economy
+                                        </c:when>
+                                        <c:when test="${car.category == 2}">
+                                            Business
+                                        </c:when>
+                                        <c:when test="${car.category == 3}">
+                                            Van
+                                        </c:when>
+                                        <c:when test="${car.category == 4}">
+                                            Cargo
+                                        </c:when>
+                                        <c:otherwise>
+                                            Other
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="text-center">Wi-fi</td>
-                            <td class="text-center">
-                                <c:if test="${car.wifi}">
-                                    <i class="fa fa-wifi"></i>
-                                </c:if>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">Wi-fi</td>
+                                <td class="text-center">
+                                    <c:if test="${car.wifi}">
+                                        <i class="fa fa-wifi"></i>
+                                    </c:if>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="text-center">Conditioner</td>
-                            <td class="text-center">
-                                <c:if test="${car.conditioner}">
-                                    <i class="fa fa-check"></i>
-                                </c:if>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">Conditioner</td>
+                                <td class="text-center">
+                                    <c:if test="${car.conditioner}">
+                                        <i class="fa fa-check"></i>
+                                    </c:if>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="text-center">Animalable</td>
-                            <td class="text-center">
-                                <c:if test="${car.animalable}">
-                                    <i class="fa fa-check"></i>
-                                </c:if>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">Animalable</td>
+                                <td class="text-center">
+                                    <c:if test="${car.animalable}">
+                                        <i class="fa fa-check"></i>
+                                    </c:if>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="text-center">Available</td>
-                            <td class="text-center">
-                                <c:if test="${car.available}">
-                                    <i class="fa fa-check"></i>
-                                </c:if>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">Available</td>
+                                <td class="text-center">
+                                    <c:if test="${car.available}">
+                                        <i class="fa fa-check"></i>
+                                    </c:if>
+                                </td>
+                            </tr>
 
                             <%--<td><a href="/admin?action=edit">Edit</a></td>--%>
                         </tbody>

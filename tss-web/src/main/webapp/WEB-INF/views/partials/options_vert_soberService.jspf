@@ -17,7 +17,6 @@
 		<label class="col-sm-2 col-sm-2 control-label">Driver's gender
 			:</label> <select class="selectpicker" title="Choose driver's gender"
 			name="driverGender">
-			<option></option>
 			<option value="male">Male</option>
 			<option value="female">Female</option>
 		</select>
