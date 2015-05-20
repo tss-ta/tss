@@ -27,6 +27,7 @@
 
                 <form action="/admin${pagerLink.buildParametersLink()}" method="post" class="form-horizontal" data-toggle="validator">
 
+                    <div class="control-group">
                     <div class="form-group">
                         <br/>
                         <input type="hidden" name="id" value="${car.id}">
@@ -118,7 +119,7 @@
                             </button>
                         </div>
                     </div>
-
+                </div>
                 </form>
 
             </div>

@@ -1,8 +1,6 @@
 package com.netcracker.entity;
 
-import com.netcracker.entity.TaxiOrder.Status;
-import com.netcracker.entity.helper.CarCategory;
-import com.netcracker.entity.helper.DriverCar;
+import com.netcracker.entity.helper.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -57,23 +57,32 @@ public class TaxiOrder implements Serializable {
 
     // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
     // consider using these annotations to enforce field validation
+    @NotNull
+    @Min(value = 0)
     @Column(name = "price")
     private Double price;
 
+    @NotNull
+    @Min(value = 0)
     @Column(name = "payment")
     private Integer payment;
 
+    @NotNull
     @Column(name = "booking_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date bookingTime;
 
+    @NotNull
     @Column(name = "order_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderTime;
 
+    @Min(value = 0)
     @Column(name = "music_style")
     private Integer musicStyle;
 
+    @NotNull
+    @Min(value = 0)
     @Column(name = "status")
     private Integer status;
 
@@ -87,6 +96,8 @@ public class TaxiOrder implements Serializable {
     @Column(name = "smoke")
     private Boolean smoke;
 
+    @NotNull
+    @Min(value = 1)
     @Column(name = "car_category")
     private Integer carCategory;
 
@@ -99,6 +110,7 @@ public class TaxiOrder implements Serializable {
     @Column(name = "conditioner")
     private Boolean conditioner;
 
+    @Min(value = 0)
     @Column(name = "service_option_id")
     private Integer serviceOptionId;
 
@@ -110,29 +122,29 @@ public class TaxiOrder implements Serializable {
     @ManyToOne
     private Route routeId;
 
-    @JoinColumn(name = "tariff_id", referencedColumnName = "id")
-    @ManyToOne
-    private Tariff tariffId;
+//    @JoinColumn(name = "tariff_id", referencedColumnName = "id")
+//    @ManyToOne
+//    private Tariff tariffId;
 
     @JoinColumn(name = "contacts_id", referencedColumnName = "id")
     @ManyToOne
     private Contacts contactsId;
 
-    public enum Status {
-
-        QUEUED(0), UPDATED(1), ASSIGNED(2), REFUSED(3), IN_PROGRESS(4), COMPLETED(
-                5);
-
-        private final Integer status;
-
-        Status(Integer status) {
-            this.status = status;
-        }
-
-        public Integer convertToInteger() {
-            return status;
-        }
-    };
+//    public enum Status {
+//
+//        QUEUED(0), UPDATED(1), ASSIGNED(2), REFUSED(3), IN_PROGRESS(4), COMPLETED(
+//                5);
+//
+//        private final Integer status;
+//
+//        Status(Integer status) {
+//            this.status = status;
+//        }
+//
+//        public Integer convertToInteger() {
+//            return status;
+//        }
+//    };
 
     public TaxiOrder() {
     }
@@ -172,7 +184,6 @@ public class TaxiOrder implements Serializable {
         this.serviceOptionId = order.serviceOptionId;
         this.driverCarId = order.driverCarId;
         this.routeId = order.routeId;
-        this.tariffId = order.tariffId;
         this.contactsId = order.contactsId;
     }
 
@@ -185,18 +196,6 @@ public class TaxiOrder implements Serializable {
     // setConditioner(to.conditioner);
     // setDriverCarId(to.driverCarId);
     // setId(to.id);
-    // setMale(to.male);
-    // setMusicStyle(to.musicStyle);
-    // setOrderTime(to.orderTime);
-    // setPayment(to.payment);
-    // setPrice(to.price);
-    // setRouteId(to.routeId);
-    // setServiceOptionId(to.serviceOptionId);
-    // setSmoke(to.smoke);
-    // setStatus(to.status);
-    // setTariffId(to.tariffId);
-    // setContactsId(to.contactsId);
-    // setWifi(to.wifi);
     // }
     public Integer getId() {
         return id;
@@ -254,7 +253,7 @@ public class TaxiOrder implements Serializable {
 //            return convertStatusToEnum().toString();
 //        }
     public Status getEnumStatus() {
-        return convertStatusToEnum();
+        return Status.valueOf(status);
     }
 
     public void setStatus(Integer status) {
@@ -262,25 +261,25 @@ public class TaxiOrder implements Serializable {
     }
 
     public void setStatus(Status status) {
-        this.status = status.convertToInteger();
+        this.status = status.getId();
     }
 
-    private Status convertStatusToEnum() {
-        switch (status) {
-            case 0:
-                return Status.QUEUED;
-            case 1:
-                return Status.UPDATED;
-            case 2:
-                return Status.ASSIGNED;
-            case 3:
-                return Status.REFUSED;
-            case 4:
-                return Status.IN_PROGRESS;
-            default:
-                return Status.COMPLETED;
-        }
-    }
+//    private Status convertStatusToEnum() {
+//        switch (status) {
+//            case 0:
+//                return Status.QUEUED;
+//            case 1:
+//                return Status.UPDATED;
+//            case 2:
+//                return Status.ASSIGNED;
+//            case 3:
+//                return Status.REFUSED;
+//            case 4:
+//                return Status.IN_PROGRESS;
+//            default:
+//                return Status.COMPLETED;
+//        }
+//    }
 
     public String getComment() {
         return comment;
@@ -368,14 +367,6 @@ public class TaxiOrder implements Serializable {
 
     public void setRouteId(Route routeId) {
         this.routeId = routeId;
-    }
-
-    public Tariff getTariffId() {
-        return tariffId;
-    }
-
-    public void setTariffId(Tariff tariffId) {
-        this.tariffId = tariffId;
     }
 
     public Contacts getContactsId() {

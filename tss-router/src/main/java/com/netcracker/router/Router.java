@@ -1,7 +1,7 @@
 package com.netcracker.router;
 
-import com.netcracker.router.container.InstanceAndMethod;
-import com.netcracker.router.container.MetaAction;
+import com.netcracker.router.container.ActionMetaData;
+import com.netcracker.router.container.ActionInfo;
 
 /**
  * @author Kyrylo Berehovyi
@@ -9,9 +9,9 @@ import com.netcracker.router.container.MetaAction;
 
 public interface Router {
 
-    InstanceAndMethod findActionMethod(String menu, String action, HttpMethod method);
+    ActionMetaData findActionMethod(String menu, String action, HttpMethod method);
 
-    void addActionMethod(String menu, String action, HttpMethod httpMethod, InstanceAndMethod instanceAndMethod);
+    void addActionMethod(String menu, String action, HttpMethod httpMethod, ActionMetaData actionMetaData);
 
-    void addActionMethod(MetaAction metaAction);
+    void addActionMethod(ActionInfo actionInfo);
 }

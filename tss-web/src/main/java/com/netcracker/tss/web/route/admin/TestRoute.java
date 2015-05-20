@@ -1,6 +1,7 @@
 package com.netcracker.tss.web.route.admin;
 
-import com.netcracker.router.HttpMethod;
+import com.netcracker.entity.User;
+import com.netcracker.router.ContentType;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
@@ -8,17 +9,20 @@ import com.netcracker.router.container.ActionResponse;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by Kyrylo Berehovyi on 03/05/2015.
+ * @author Kyrylo Berehovyi
  */
 
 @ActionRoute(menu = "test")
 public class TestRoute {
 
-    @Action(action = "test", httpMethod = HttpMethod.GET)
-    public ActionResponse testGet(HttpServletRequest req) {
-        System.out.println("--------URI: " + req.getRequestURI());
+    @Action(action = "test", responseContentType = ContentType.JSON)
+    public ActionResponse test(HttpServletRequest request) {
         ActionResponse actionResponse = new ActionResponse();
-        actionResponse.setPageContent("/WEB-INF/views/admin/content/testPage.jsp");
+        User user = new User();
+        user.setId(1324);
+        user.setPasswordHash("dfdfkirffn");
+        user.setEmail("df@dd.d");
+        actionResponse.setModel(user);
         return actionResponse;
     }
 }

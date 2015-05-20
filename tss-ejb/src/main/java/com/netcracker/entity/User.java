@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -25,12 +28,16 @@ public class User implements Serializable {
     @Column(name = "id", updatable = false)
     private Integer id;
 
+    @Size(min = 1, max = 60)
     @Column(name = "username")
     private String username;
 
     @Column(name = "email")
+    @Size(min = 1, max = 60)
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Incorrect email address")
     private String email;
 
+    @Size(min = 1, max = 60)
     @Column(name = "pass_hash")
     private String passwordHash;
 

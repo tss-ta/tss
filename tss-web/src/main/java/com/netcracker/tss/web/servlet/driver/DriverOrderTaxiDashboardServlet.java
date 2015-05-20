@@ -1,5 +1,7 @@
 package com.netcracker.tss.web.servlet.driver;
 
+import com.netcracker.dao.exceptions.DriverAssignCarException;
+import com.netcracker.dao.exceptions.DriverOrderCountException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,90 +17,108 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.netcracker.dao.UserDAO;
-import com.netcracker.ejb.MapBeanLocal;
-import com.netcracker.ejb.MapBeanLocalHome;
 import com.netcracker.ejb.TaxiOrderBeanLocal;
 import com.netcracker.ejb.TaxiOrderBeanLocalHome;
-import com.netcracker.entity.Address;
-import com.netcracker.entity.TaxiOrder;
-import com.netcracker.entity.User;
+import com.netcracker.entity.helper.Status;
+
+import com.netcracker.entity.helper.StatusDriver;
 import com.netcracker.entity.helper.TaxiOrderHistory;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
 import com.netcracker.tss.web.util.UserUtils;
-
-/**
- * Created by Vitalii Chekaliuk
- */
+import com.netcracker.util.BeansLocator;
+import javax.persistence.NoResultException;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(urlPatterns = "/driver/dashboard")
 public class DriverOrderTaxiDashboardServlet extends HttpServlet {
 
-	private static final int pageSize = 10;
+    public static final String CHANGE_STATUS = "changeStatus";
+    public static final String ORDER_ID = "order_id";
+    private static final int pageSize = 10;
+    public static String statusSt = null;
+    private Integer pageNumber = 1;
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		Integer pageNumber = updatePageNumber(req);
-		getServletContext().setAttribute("pageNumber", pageNumber);
-		List<TaxiOrderHistory> list = getHistory(pageNumber, req);
-		req.setAttribute("history", list);
-		req.setAttribute("pageType", "dashboard");
-		req.setAttribute("pageContent", "content/dashboard.jsp");
-		req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
-				.forward(req, resp);
-	}
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String action = req.getParameter("action");
+        pageNumber = updatePageNumber(req);
+        req.getSession().setAttribute("pageNumber", pageNumber);
+        List<TaxiOrderHistory> list;
+        try {
+            if (statusSt != null) {
+                if (CHANGE_STATUS.equals(action)) {
+                    int taxiOrderId = Integer.parseInt(req.getParameter(ORDER_ID));
+                    TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+                    try {
+                        taxiOrderBeanLocal.setNextStatus(taxiOrderId, UserUtils.findCurrentUser());
+                    } catch (DriverOrderCountException e) {
+                        req.setAttribute("pageType", "dashboard");
+                        req.setAttribute("pageContent", "content/orderInProgressMessage.jsp");
+                        req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
+                                .forward(req, resp);
+                        return;
+                    }
+                    redirect( req, resp, statusSt);
+                    return;
+                }
+            }
+            if (!"filterByStatus".equals(req.getParameter("action"))) {
+                redirect( req, resp, Status.IN_PROGRESS.toString());
+            } else {
+                if ((statusSt != null) && (!statusSt.equals(req.getParameter("status")))) {
+                    pageNumber = 1;
+                }
+                statusSt = req.getParameter("status");
+                redirect( req, resp, statusSt);
+            }
 
-	private List<TaxiOrderHistory> getHistory(Integer pageNumber,
-			HttpServletRequest req) {
-		TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
-		List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderHistory(
-				pageNumber, pageSize, UserUtils.findCurrentUser());
-		if (list.size() == 0 && pageNumber>1) {
-			pageNumber--;
-			getServletContext().setAttribute("pageNumber", pageNumber);
-			list = taxiOrderBeanLocal
-					.getTaxiOrderHistory(pageNumber, pageSize,
-							UserUtils.findCurrentUser());
-		}
-		return list;
-	}
+        } catch (DriverAssignCarException e) {
+            req.setAttribute("pageType", "dashboard");
+            req.setAttribute("pageContent", "content/noassignedcar.jsp");
+            req.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
+                    .forward(req, resp);
+        }
+    }
 
-	private Integer updatePageNumber(HttpServletRequest req) {
-		Integer pageNumber = (Integer) getServletContext().getAttribute(
-				"pageNumber");
-		if (pageNumber == null)
-			pageNumber = 1;
-		if (req.getParameter("previous") != null && pageNumber > 1)
-			pageNumber--;
-		else if (req.getParameter("next") != null) {
-			pageNumber++;
-		}
-		return pageNumber;
-	}
+    private void redirect( HttpServletRequest request, HttpServletResponse response, String status) throws DriverAssignCarException {
+        List<TaxiOrderHistory> list = getHistory(request, Status.getStatusByName(status));
+        request.setAttribute("status_enum", StatusDriver.getDriverStatus());
+        request.setAttribute("param", status);
+        request.setAttribute("history", list);
+        request.setAttribute("pageType", "dashboard");
+        request.setAttribute("pageContent", "content/dashboard.jsp");
+        try {
+            request.getRequestDispatcher("/WEB-INF/views/driver/driver-template.jsp")
+                    .forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(DriverOrderTaxiDashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DriverOrderTaxiDashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-	private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
-		Context context;
-		try {
-			context = new InitialContext();
-			TaxiOrderBeanLocalHome taxiOrderBeanLocalHome = (TaxiOrderBeanLocalHome) context
-					.lookup("java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome");
-			return taxiOrderBeanLocalHome.create();
-		} catch (NamingException ex) {
-			Logger.getLogger(AdminGroupServlet.class.getName())
-					.log(Level.SEVERE,
-							"Can't find taxiOrderBean with name java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome ",
-							ex);
-			throw new RuntimeException("Internal server error!");// maybe have
-																	// to create
-																	// custom
-																	// exception?
-		}
-	}
+    }
+
+    private List<TaxiOrderHistory> getHistory(HttpServletRequest req, Status status) throws DriverAssignCarException {
+        TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+        List<TaxiOrderHistory> list = taxiOrderBeanLocal.getTaxiOrderDriver(
+                pageNumber, pageSize, UserUtils.findCurrentUser(), status);
+
+        if (list.size() == 0 && pageNumber > 1) {
+            pageNumber--;
+            list = taxiOrderBeanLocal.getTaxiOrderDriver(
+                    pageNumber, pageSize, UserUtils.findCurrentUser(), status);
+        }
+        return list;
+    }
+
+    private Integer updatePageNumber(HttpServletRequest req) {
+        if (req.getParameter("previous") != null && pageNumber > 1) {
+            pageNumber--;
+        } else if (req.getParameter("next") != null) {
+            pageNumber++;
+        }
+        return pageNumber;
+    }
 
 }

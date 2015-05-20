@@ -3,12 +3,13 @@ package com.netcracker.router;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
 import com.netcracker.router.container.ActionResponse;
-import com.netcracker.router.container.InstanceAndMethod;
-import com.netcracker.router.container.MetaAction;
+import com.netcracker.router.container.ActionMetaData;
+import com.netcracker.router.container.ActionInfo;
 import com.netcracker.router.exception.RouterInitializationException;
 import org.reflections.Reflections;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -19,8 +20,9 @@ import java.util.*;
 
 public class AnnotationRouterInitializer {
 
-    private static final int MAX_ANNOTATED_METHOD_PARAMETERS_AMOUNT = 1;
+//    private static final int MAX_ANNOTATED_METHOD_PARAMETERS_AMOUNT = 2;
     private static final Class<?> actionMethodReturnType = ActionResponse.class;
+    private static final Class<?>[] validArgumentTypes = {HttpServletRequest.class};
 
     private Reflections reflections;
 
@@ -34,38 +36,36 @@ public class AnnotationRouterInitializer {
         String menu;
         for (Class<?> annotated : annotatedClasses) {
             List<Method> methods = findAllValidAnnotatedMethods(Action.class, annotated,
-                    actionMethodReturnType, HttpServletRequest.class);
+                    actionMethodReturnType, validArgumentTypes);
             if (!methods.isEmpty()) {
                 menu = annotated.getAnnotation(ActionRoute.class).menu();
                 instance = createInstance(annotated);
-                addInstanceAndMethodToRouter(methods, instance, menu, router);
+                addActionsToRouter(methods, instance, menu, router);
             }
         }
     }
 
-    private void addInstanceAndMethodToRouter(List<Method> methods, Object instance, String menu, AnnotationRouter router) {
+    private void addActionsToRouter(List<Method> methods, Object instance, String menu, AnnotationRouter router) {
         for (Method method : methods) {
-            router.addActionMethod(createMetaAction(instance, menu, method));
+            router.addActionMethod(createActionInfo(instance, menu, method));
         }
     }
 
-    private MetaAction createMetaAction(Object instance, String menu, Method method) {
-        MetaAction metaAction = new MetaAction();
+    private ActionInfo createActionInfo(Object instance, String menu, Method method) {
+        ActionInfo actionInfo = new ActionInfo();
         Action actionAnnotation = method.getAnnotation(Action.class);
-        metaAction.setMenu(menu);
-        metaAction.setAction(actionAnnotation.action());
-        metaAction.setMethod(actionAnnotation.httpMethod());
-        metaAction.setInstanceAndMethod(new InstanceAndMethod(instance, method));
-        return metaAction;
+        actionInfo.setMenu(menu);
+        actionInfo.setAction(actionAnnotation.action());
+        actionInfo.setMethod(actionAnnotation.httpMethod());
+        actionInfo.setActionMetaData(new ActionMetaData(instance, method, actionAnnotation.responseContentType()));
+        return actionInfo;
     }
 
     private Object createInstance(Class<?> type) {
         Object instance = null;
         try {
             instance = type.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return instance;
@@ -76,12 +76,11 @@ public class AnnotationRouterInitializer {
     }
 
     private List<Method> findAllValidAnnotatedMethods(Class<? extends Annotation> annotation,
-                                                      Class<?> type, Class<?> returnType, Class<?> parameterType) {
-
+                                                      Class<?> type, Class<?> returnType, Class<?>[] validArgumentTypes) {
         Method[] methods = type.getMethods();
         List<Method> validMethods = new ArrayList<>();
         for (Method method : methods) {
-            if (isValidMethod(annotation, method, returnType, parameterType)) {
+            if (isValidMethod(annotation, method, returnType, validArgumentTypes)) {
                 validMethods.add(method);
             }
         }
@@ -89,7 +88,7 @@ public class AnnotationRouterInitializer {
     }
 
     public boolean isValidMethod(Class<? extends Annotation> annotation, Method method,
-                                 Class<?> returnType, Class<?> parameterType) {
+                                 Class<?> returnType, Class<?>[] validArgumentTypes) {
         if (method.getAnnotation(annotation) == null) {
             return false;
         }
@@ -97,11 +96,17 @@ public class AnnotationRouterInitializer {
             return false;
         }
         Class<?>[] parameterTypes = method.getParameterTypes();
-        if (parameterTypes.length > MAX_ANNOTATED_METHOD_PARAMETERS_AMOUNT) {
-            throw new RouterInitializationException("Method annotated as @Action has declared invalid parameter(s).");
+        if (parameterTypes.length > validArgumentTypes.length) {
+            throw new RouterInitializationException("Method annotated as @Action has declared invalid parameters number.");
         }
-        if (parameterTypes.length > 0 && !parameterTypes[0].equals(parameterType)) {
-            throw new RouterInitializationException("Method annotated as @Action has declared invalid parameter type.");
+//        if (parameterTypes.length > 0 && !parameterTypes[0].equals(parameterType)) {
+//            throw new RouterInitializationException("Method annotated as @Action has declared invalid parameter type.");
+//        }
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (!parameterTypes[i].equals(validArgumentTypes[i])) {
+                throw new RouterInitializationException("Illegal method argument type '" + parameterTypes[i] +
+                        "' was declared in method annotated as @Action." );
+            }
         }
         return true;
     }

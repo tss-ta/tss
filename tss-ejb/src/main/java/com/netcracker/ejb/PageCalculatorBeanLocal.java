@@ -12,7 +12,10 @@ public interface PageCalculatorBeanLocal extends EJBLocalObject {
 
     Pager createSearchCarPager(Integer pageNumber, Integer pageSize, String searchWord);
 
+    Pager createSearchDriverPager(Integer pageNumber, Integer pageSize, String searchWord);
+
     Pager calculatePages(Integer pageNumber, Integer pageSize, Integer amount);
 
     <T> Pager createPager (Class <T> entity, Integer pageNumber, Integer pageSize);
+
 }

@@ -1,15 +1,16 @@
 package com.netcracker.router.servlet;
 
-import com.netcracker.router.AnnotationRouter;
-import com.netcracker.router.HttpMethod;
-import com.netcracker.router.Router;
+import com.netcracker.router.*;
 import com.netcracker.router.container.ActionResponse;
-import com.netcracker.router.container.InstanceAndMethod;
+import com.netcracker.router.container.ActionMetaData;
 import com.netcracker.router.exception.ActionNotFoundException;
 import com.netcracker.router.exception.HttpMethodNotAllowedException;
+import com.netcracker.router.exception.RouterActionInvocationAxception;
 import com.netcracker.router.util.LoggerUtil;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * @author Kyrylo Berehovyi
@@ -85,14 +87,14 @@ public class RouterServlet extends HttpServlet {
     private void process(HttpServletRequest req, HttpServletResponse resp, HttpMethod httpMethod) throws ServletException, IOException {
         String menu = req.getParameter(this.menuAlias);
         String action = req.getParameter(this.actionAlias);
-        InstanceAndMethod instanceAndMethod = null;
+        ActionMetaData actionMetaData = null;
         ActionResponse actionResponse = null;
 
         try {
-            instanceAndMethod = router.findActionMethod(menu, action, httpMethod);
-            actionResponse = (ActionResponse) instanceAndMethod.getMethod()
-                    .invoke(instanceAndMethod.getInstance(), req);
-            sendActionResponse(actionResponse, req, resp);
+            actionMetaData = router.findActionMethod(menu, action, httpMethod);
+            actionResponse = (ActionResponse) actionMetaData.getMethod()
+                    .invoke(actionMetaData.getInstance(), req);
+            sendActionResponse(actionResponse, req, resp, actionMetaData.getResponseContentType());
         } catch (ActionNotFoundException e) {
             forwardTo(req, resp, content404);
             LOGGER.log(Level.INFO, e.getMessage());
@@ -105,14 +107,15 @@ public class RouterServlet extends HttpServlet {
         }
     }
 
-    private void sendActionResponse(ActionResponse actionResponse, HttpServletRequest req, HttpServletResponse resp)
-            throws IOException, ServletException {
+    private void sendActionResponse(ActionResponse actionResponse, HttpServletRequest req, HttpServletResponse resp,
+                                    ContentType responseContentType) throws IOException, ServletException {
         if (actionResponse.getRedirectURI() != null) {
             resp.sendRedirect(actionResponse.getRedirectURI());
-            return;
+        } else if (responseContentType.equals(ContentType.JSON)) {
+            sendJson(actionResponse, req, resp);
+        } else {
+            sendHtml(actionResponse, req, resp);
         }
-        setErrorAndSuccessMessage(req, actionResponse.getErrorMessage(), actionResponse.getSuccessMessage());
-        forwardTo(req, resp, actionResponse.getPageContent());
     }
 
     private void setErrorAndSuccessMessage(HttpServletRequest req, String errorMessage, String successMessage) {
@@ -133,5 +136,23 @@ public class RouterServlet extends HttpServlet {
         }
     }
 
+    private void sendHtml(ActionResponse actionResponse, HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        setErrorAndSuccessMessage(req, actionResponse.getErrorMessage(), actionResponse.getSuccessMessage());
+        forwardTo(req, resp, actionResponse.getPageContent());
+    }
 
+    private void sendJson(ActionResponse actionResponse, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        resp.setContentType(ContentType.JSON.getHeader());
+        mapper.writeValue(resp.getWriter(), actionResponse.getModel());
+//          ObjectMapper mapper = new ObjectMapper();
+
+//          SimpleModule module = new SimpleModule();
+//          module.addSerializer(MultipurposeValue.class, new MultipurposeValueSerializer());
+//          mapper.registerModule(module);
+
+//          String serialized = mapper.writeValueAsString(actionResponse.getModel());
+//        mapper.writeValue(resp.getWriter(), actionResponse.getModel());
+    }
 }

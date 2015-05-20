@@ -1,8 +1,8 @@
 package com.netcracker.router;
 
-import com.netcracker.router.container.InstanceAndMethod;
+import com.netcracker.router.container.ActionMetaData;
 import com.netcracker.router.container.MenuContainer;
-import com.netcracker.router.container.MetaAction;
+import com.netcracker.router.container.ActionInfo;
 import com.netcracker.router.util.ArgumentValidator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -26,7 +26,7 @@ public class AnnotationRouter implements Router {
     }
 
     @Override
-    public InstanceAndMethod findActionMethod(String menu, String action, HttpMethod httpMethod) {
+    public ActionMetaData findActionMethod(String menu, String action, HttpMethod httpMethod) {
         ArgumentValidator.validateOnNull(httpMethod, "httpMethod");
 
         return coreContainer.findActionContainer(menu)
@@ -35,20 +35,20 @@ public class AnnotationRouter implements Router {
     }
 
     @Override
-    public void addActionMethod(String menu, String action, HttpMethod httpMethod, InstanceAndMethod instanceAndMethod) {
+    public void addActionMethod(String menu, String action, HttpMethod httpMethod, ActionMetaData actionMetaData) {
         ArgumentValidator.validateOnNull(httpMethod, "httpMethod");
-        ArgumentValidator.validateOnNull(instanceAndMethod, "instanceAndMethod");
+        ArgumentValidator.validateOnNull(actionMetaData, "instanceAndMethod");
 
         coreContainer.findOrCreateActionContainer(menu)
                      .findOrCreateHttpMethodContainer(action)
-                     .addInstanceAndMethod(httpMethod, instanceAndMethod);
+                     .addInstanceAndMethod(httpMethod, actionMetaData);
     }
 
     @Override
-    public void addActionMethod(MetaAction metaAction) {
-        ArgumentValidator.validateOnNull(metaAction, "metaAction");
+    public void addActionMethod(ActionInfo actionInfo) {
+        ArgumentValidator.validateOnNull(actionInfo, "metaAction");
 
-        addActionMethod(metaAction.getMenu(), metaAction.getAction(), metaAction.getMethod(),
-                metaAction.getInstanceAndMethod());
+        addActionMethod(actionInfo.getMenu(), actionInfo.getAction(), actionInfo.getMethod(),
+                actionInfo.getActionMetaData());
     }
 }

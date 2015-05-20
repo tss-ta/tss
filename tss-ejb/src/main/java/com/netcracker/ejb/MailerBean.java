@@ -63,7 +63,7 @@ public class MailerBean implements SessionBean {
 		}
 	}
         
-        public void sendEmail(User user, String title, String msg){
+	public void sendEmail(User user, String title, String msg){
             sendEmail(user.getEmail(), title, msg);
         }
 
@@ -100,7 +100,23 @@ public class MailerBean implements SessionBean {
 				"Dear, " + user.getUsername() + ". Your Taxi Order (id = "
 						+ to.getId() + ") status was Completed.");
 	}
+    @Deprecated
+	public void sendToken(String email, Integer token) {
+		sendEmail(
+				email,
+				"Driver Registration",
+				"Hello!" +
+						"  Please, register your Driver account using this: " + token + " token."
 
+		);
+	}
+
+    public void sendDriverInvite(String email, String signupURL) {
+        sendEmail(
+                email,
+                "Driver Registration",
+                "Hello user! To register your driver account, please, follow this link: " + signupURL);
+    }
 	@Override
 	public void setSessionContext(SessionContext ctx) throws EJBException,
 			RemoteException {

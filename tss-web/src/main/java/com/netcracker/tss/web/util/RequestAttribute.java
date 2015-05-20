@@ -13,7 +13,13 @@ public enum RequestAttribute {
     SUCCESS_MESSAGE("successMessage"),
     PAGER("pager"),
     PAGER_LINK("pagerLink"),
-    PAGE_TITLE("pageTitle");
+    PAGE_TITLE("pageTitle"),
+    REPORT("report"),
+    REPORT_LIST("reportList"),
+    REPORT_INFO("reportInfo"),
+    FORM_TYPE("formType"),
+    FORM_EDIT_TYPE("edit"),
+    FORM_CREATE_TYPE("create");
 
     private String name;
 

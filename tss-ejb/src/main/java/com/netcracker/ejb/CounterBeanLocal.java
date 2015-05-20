@@ -10,9 +10,9 @@ public interface CounterBeanLocal extends EJBLocalObject {
 
     Integer countAllCars();
 
-    Long countAllCustomers();
+    int countAllCustomers();
 
-    Long countAllDrivers();
+    int countAllDrivers();
 
     Integer countAllOrders();
 

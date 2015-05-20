@@ -1,5 +1,5 @@
 <%--
-  User: Kyrylo Berehovyi
+  User: Kyrylo Berehovyi , maks
   Date: 26/04/2015
   Time: 16:24
 --%>
@@ -37,19 +37,19 @@
         </a>
     </li>
     <li>
-        <a href="/admin?menu=users&action=view" ${activeCustomers}>
+        <a href="/admin?role=CUSTOMER&action=view&menu=users" ${activeCustomers}>
             <span class="icon-container"><i class="fa fa-child"></i></span>
             <span class="icon-label">Users</span>
         </a>
     </li>
     <li>
-        <a href="/admin/driver" ${activeDrivers}>
+        <a href="/admin?menu=driver&action=all" ${activeDrivers}>
             <span class="icon-container"><i class="fa fa-user"></i></span>
             <span class="icon-label">Drivers</span>
         </a>
     </li>
     <li>
-        <a href="/admin/group" ${activeGroups}>
+        <a href="/admin?menu=groups&action=view" ${activeGroups}>
             <span class="icon-container"><i class="fa fa-users"></i></span>
             <span class="icon-label">Groups</span>
         </a>
@@ -61,13 +61,13 @@
         </a>
     </li>
     <li>
-        <a href="/admin/tariff" ${activeTariffs}>
+        <a href="/admin?menu=tariffs&action=view" ${activeTariffs}>
             <span class="icon-container"><i class="fa fa-usd"></i></span>
             <span class="icon-label">Tariffs</span>
         </a>
     </li>
     <li>
-        <a href="/admin/report" ${activeReports}>
+        <a href="/admin?menu=report&action=all" ${activeReports}>
             <span class="icon-container"><i class="fa fa-line-chart"></i></span>
             <span class="icon-label">Reports</span>
         </a>

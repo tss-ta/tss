@@ -37,6 +37,7 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.UserUtils;
 
@@ -58,6 +59,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        try {
         if (req.getParameter("addFrom") != null) {
             addAddressFrom(req);
             resp.sendRedirect("/customer/orderpage");
@@ -74,26 +76,20 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             PriceBeanLocal priceBean = getPriceBean(req);
             float distance = 0;
             double price = 0;
-            try {
-                MapBeanLocal mapBean = getMapBean(req);
-                distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
-                        req.getParameter("toAddr"));
-            } catch (JSONException | IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            if ("".equals(req.getParameter("price"))) {
-                price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(req));
-            }else{
-                price = Double.parseDouble(req.getParameter("price"));
-            }
+
             Route route = new Route(findCurrentUser().getUsername() + " Route");
             route.setDistance(distance);
             Address addFrom = toAddress(req.getParameter("fromAddr"), req);
             Address addTo = toAddress(req.getParameter("toAddr"), req);
-            TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(req));
+            TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
             taxiOrder.setBookingTime(new Date());
+
+                MapBeanLocal mapBean = getMapBean(req);
+                distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
+                        req.getParameter("toAddr"));
+
+            price = priceBean.calculatePrice(distance,
+                    DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
             Date orderTime = DateParser.parseDate(req);
             taxiOrder.setOrderTime(orderTime);
             taxiOrder.setPrice(price);
@@ -106,6 +102,17 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             req.getRequestDispatcher(
                     "/WEB-INF/views/customer/customer-template.jsp").forward(
                             req, resp);
+            }
+        }
+//        catch (JSONException | IOException | ServletException e) {
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+//            req.setAttribute("pageContent", "incorrect-address.jsp");
+//            req.getRequestDispatcher(
+//                    "/WEB-INF/views/customer/customer-template.jsp").forward(
+//                    req, resp);
+            resp.sendRedirect("/customer/orderpage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
         }
     }
 
@@ -137,55 +144,6 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             UserBeanLocal userBeanLocal = getUserBean(req);
             userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
         }
-    }
-
-    private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
-        Integer carType = checkString(req.getParameter("carType"));
-        Integer wayOfPayment = checkString(req.getParameter("paymentType"));
-        Boolean driversGender = checkDriversGender(req
-                .getParameter("driverGender"));
-        Integer musicType = checkString(req.getParameter("musicType"));
-        String[] addParameters = req.getParameterValues("addOptions");
-        Boolean wifi = null;
-        Boolean animal = null;
-        Boolean noSmokeDriver = null;
-        Boolean conditioner = null;
-        if (addParameters != null) {
-            for (String st : addParameters) {
-                if ("wifi".equals(st)) {
-                    wifi = Boolean.TRUE;
-                }
-                if ("animal".equals(st)) {
-                    animal = Boolean.TRUE;
-                }
-                if ("nosmoke".equals(st)) {
-                    noSmokeDriver = Boolean.TRUE;
-                }
-                if ("conditioner".equals(st)) {
-                    conditioner = Boolean.TRUE;
-                }
-            }
-        }
-        return new TaxiOrder(wayOfPayment, musicType, driversGender,
-                noSmokeDriver, carType, animal, wifi, conditioner);
-    }
-
-    private Boolean checkDriversGender(String s) {
-        if (!"".equals(s)) {
-            if ("male".equals(s)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return null;
-    }
-
-    private Integer checkString(String s) {
-        if (!"".equals(s)) {
-            return Integer.parseInt(s);
-        }
-        return null;
     }
 
     private Address toAddress(String addr, HttpServletRequest req) {

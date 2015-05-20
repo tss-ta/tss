@@ -28,10 +28,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by Kyrylo Berehovyi on 25/04/2015.
- *
+ * @author Kyrylo Berehovyi
  * @author maks
  */
+
 @WebServlet(urlPatterns = "/admin/report")
 public class AdminReportServlet extends HttpServlet {
 
@@ -139,7 +139,7 @@ public class AdminReportServlet extends HttpServlet {
         Date begin = dateParser(request.getParameter("begin"));
         Date end = dateParser(request.getParameter("end"));
         File excelFile = new ExcelExport().exportOrdersReport(begin, end,
-                reportsBean.countAllOrders(begin, end), reportsBean.getBookedOrders(begin, end, 1, 1000));
+                reportsBean.countAllOrders(begin, end), reportsBean.getBookedOrders(begin, end));
         sendFile(excelFile, response);
     }
 
@@ -173,7 +173,7 @@ public class AdminReportServlet extends HttpServlet {
         req.setAttribute("report", reportsBean.getCustomerCarOptionsReport(userId));
         req.setAttribute("allTO", reportsBean.countAllOrders(userId));
         req.setAttribute("header", "Most Popular Car Options For " + req.getParameter("email"));
-        req.setAttribute("reptype", "user-car-options&userid="+userId);
+        req.setAttribute("reptype", "user-car-options&userid=" + userId);
         redirectToCarReport(req, resp);
     }
         

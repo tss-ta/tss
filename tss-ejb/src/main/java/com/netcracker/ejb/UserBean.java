@@ -2,9 +2,9 @@ package com.netcracker.ejb;
 
 import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dto.UserDTO;
-import com.netcracker.dao.GroupDAO;
 import com.netcracker.dao.RoleDAO;
 import com.netcracker.dao.UserDAO;
+import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Contacts;
 import com.netcracker.entity.Address;
 import com.netcracker.entity.Group;
@@ -13,14 +13,15 @@ import com.netcracker.entity.User;
 import com.netcracker.entity.helper.Pager;
 import com.netcracker.entity.helper.PersonalAddress;
 import com.netcracker.entity.helper.Roles;
+import com.netcracker.exceptions.InvalidEntityException;
 import com.netcracker.util.BeansLocator;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
 import org.json.JSONException;
+
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
@@ -32,6 +33,14 @@ import javax.persistence.NoResultException;
  */
 public class UserBean implements SessionBean {
 
+    /**
+     * Edit user list of Roles
+     * @param userId - user id
+     * @param roles - List of Roles
+     *
+     * @throws java.lang.IllegalArgumentException - if userId less than zero or can't find user with this id
+     * @throws com.netcracker.exceptions.InvalidEntityException - if List of Roles have illegal Roles for this user
+     */
     public void editRoles(int userId, List<Roles> roles) {
         if (userId < 0) {
             throw new IllegalArgumentException("Id can't be less than zero");
@@ -39,18 +48,31 @@ public class UserBean implements SessionBean {
         UserDAO userDAO = null;
         RoleDAO roleDAO = null;
         try {
-
             userDAO = new UserDAO();
             roleDAO = new RoleDAO();
             User user = userDAO.get(userId);
-            if (roles.contains(Roles.BANNED)) {
-                roles.clear();
-                roles.add(Roles.BANNED);
-                notifyAboutBan(user.getEmail());
+            String errorMessage = validateUserRoles(user, roles, roleDAO);
+            if (errorMessage != null){
+                throw  new InvalidEntityException(errorMessage);
             }
-            user.setRoles(toRoleList(roles, roleDAO));
-            userDAO.update(user);
-        } finally {
+            if (roles.contains(Roles.BANNED)) {
+                user.setRoles(toRoleList(roles, roleDAO));
+                userDAO.update(user);
+                notifyAboutBan(user.getEmail());
+//                notifyAboutBan("maksbrunarskiy@gmail.com");
+            }
+            else {
+                Roles currentMainUserRole = getMainUserRole(user, roleDAO);
+                if (!currentMainUserRole.equals(Roles.BANNED)) {
+                    roles.add(getMainUserRole(user, roleDAO));
+                }
+                user.setRoles(toRoleList(roles, roleDAO));
+                userDAO.update(user);
+
+            }
+        } catch (NoSuchEntityException e) {
+			throw new IllegalArgumentException("User with id = " + userId + " does not exist");
+		} finally {
             if (roleDAO != null) {
                 roleDAO.close();
             }
@@ -60,81 +82,133 @@ public class UserBean implements SessionBean {
         }
     }
 
+    private Roles getMainUserRole (User user, RoleDAO roleDAO){
+        List<Roles> currentUserRoles = toEnumRolesList(user.getRoles());
+        for (Roles permanentRole : Roles.getMainUserRoles()){
+            if (currentUserRoles.contains(permanentRole)){
+                return permanentRole;
+            }
+        }
+        return Roles.BANNED;
+    }
+
+    private String validateUserRoles (User user, List<Roles> roles, RoleDAO roleDAO) {
+        List<Roles> rolesCopy = new ArrayList<>(roles);
+        if (roles.size() > 1 && roles.contains(Roles.BANNED)) {
+            return "BANNED user can't have another roles";
+        }
+        Roles currentRole = getMainUserRole(user, roleDAO);
+        Roles [] allowableSubroles = Roles.getSubroles(currentRole);
+        rolesCopy.removeAll(Arrays.asList(allowableSubroles));
+        if (!rolesCopy.isEmpty()){
+            return "User with main role " + currentRole.getFormattedName()
+                    + " can't have those subroles " + Arrays.toString(rolesCopy.toArray()) ;
+
+        }
+        return null;
+    }
+
+
     private void notifyAboutBan(String email) {
         MailerBeanLocal mailerBean = BeansLocator.getInstance().getBean(MailerBeanLocal.class);
         mailerBean.sendEmail(email, "Taxi Service System notify", "Sorry, but yours account in Taxi Service System was banned!");
-//        System.out.println("==========ban==== notify==========sended===========================");
     }
 
     /**
-     *
-     * @param userId
-     * @param groupId
-     * @return false if this list was alrady contained the specified element
+     * Add user to group
+     * @param userId - id of user
+     * @param groupId - id of group
+     * @return false if this list was already contained the specified element
      */
     public boolean addToGroup(int userId, int groupId) {
         if (groupId < 0 || userId < 0) {
             throw new IllegalArgumentException("Id can't be less than zero");
         }
 
-        GroupDAO groupDAO = null;
+        GroupBeanLocal groupBean = BeansLocator.getInstance().getBean(GroupBeanLocal.class);
         UserDAO userDAO = null;
         try {
-
-            groupDAO = new GroupDAO();
             userDAO = new UserDAO();
             User user = userDAO.get(userId);
-            Group group = groupDAO.get(groupId);
+            Group group = groupBean.getGroup(groupId);
             if (user.getGroups().contains(group)) {
                 return false;
             } else {
                 user.addGroup(group);
                 userDAO.update(user);
-                if (isGroupContainsRole(group, Roles.BANNED)) {
+                if (groupBean.isGroupContainsRole(group, Roles.BANNED)) {
                     notifyAboutBan(user.getEmail());
                 }
                 return true;
             }
-
-        } finally {
+        } catch (NoSuchEntityException e) {
+            throw new IllegalArgumentException("Can't find user with id = " + userId);
+		} finally {
             if (userDAO != null) {
                 userDAO.close();
             }
-            if (groupDAO != null) {
-                groupDAO.close();
-            }
         }
     }
 
-    private boolean isGroupContainsRole(Group group, Roles role) {
-        RoleDAO roleDAO = null;
-        try {
-            roleDAO = new RoleDAO();
-            Role roleEntity = roleDAO.findByRolename(role.toString());
-            return group.getRoles().contains(roleEntity);
-        } finally {
-            if (roleDAO != null) {
-                roleDAO.close();
-            }
-        }
-    }
-
+    /**
+     *
+     * @param pageNumber - number of page
+     * @param pageSize - amount of rows in one page
+     * @return Pager for all users
+     */
 
     public Pager getPager(Integer pageNumber, Integer pageSize) {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         return pageCalculator.createPager(User.class, pageNumber, pageSize);
     }
 
+    /**
+     *
+     * @param pageNumber - number of page
+     * @param pageSize - amount of rows in one page
+     * @param role - user role
+     * @return Pager for all users with specified role
+     */
     public Pager getPager(Integer pageNumber, Integer pageSize, Roles role) {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         UserDAO userDAO = null;
         Pager pager = null;
         try {
             userDAO = new UserDAO();
-//            Long amount = userDAO.countByRolename(role.toString());
-            Long amount = userDAO.countByUserRoleName(role.toString());
-            System.out.println("==========="+ role + "!!!!!!!!!!!!!!!!!!" + amount);
-            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount.intValue());
+            int amount = userDAO.countByUserRoleName(role.toString());
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount);
+        } finally {
+            if (userDAO != null) {
+                userDAO.close();
+            }
+        }
+        return pager;
+    }
+
+    public Pager getPager(Integer pageNumber, Integer pageSize, Roles role, String emailPart) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        UserDAO userDAO = null;
+        Pager pager = null;
+        try {
+            userDAO = new UserDAO();
+            int amount = userDAO.countByEmailAndRolename(emailPart, role.toString());
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount);
+        } finally {
+            if (userDAO != null) {
+                userDAO.close();
+            }
+        }
+        return pager;
+    }
+
+    public Pager getPager(Integer pageNumber, Integer pageSize, String emailPart) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        UserDAO userDAO = null;
+        Pager pager = null;
+        try {
+            userDAO = new UserDAO();
+            int amount = userDAO.countByEmail(emailPart);
+            pager = pageCalculator.calculatePages(pageNumber, pageSize, amount);
         } finally {
             if (userDAO != null) {
                 userDAO.close();
@@ -145,22 +219,21 @@ public class UserBean implements SessionBean {
 
     /**
      *
-     * @param userId
-     * @param groupId
+     * @param userId - user id
+     * @param groupId - group id
      * @return true if this user contained the group
      */
     public boolean deleteFromGroup(int userId, int groupId) {
         if (groupId < 0 || userId < 0) {
             throw new IllegalArgumentException("Id can't be less than zero");
         }
-        GroupDAO groupDAO = null;
+
+        GroupBeanLocal groupBean = BeansLocator.getInstance().getBean(GroupBeanLocal.class);
         UserDAO userDAO = null;
         try {
-
-            groupDAO = new GroupDAO();
             userDAO = new UserDAO();
             User user = userDAO.get(userId);
-            Group group = groupDAO.get(groupId);
+            Group group = groupBean.getGroup(groupId);
             List<Group> userGroups = user.getGroups();
             if (userGroups.remove(group)) {
                 userDAO.update(user);
@@ -168,12 +241,11 @@ public class UserBean implements SessionBean {
             } else {
                 return false;
             }
-        } finally {
+        } catch (NoSuchEntityException e) {
+            throw new IllegalArgumentException("Can't find user with id = " + userId);
+		} finally {
             if (userDAO != null) {
                 userDAO.close();
-            }
-            if (groupDAO != null) {
-                groupDAO.close();
             }
         }
     }
@@ -187,21 +259,15 @@ public class UserBean implements SessionBean {
             User userFromDB = null;
             try {
                 userFromDB = userDAO.get(userId);
-
-            } catch (NoResultException nre) {
+            } catch (NoResultException | NoSuchEntityException nre) {
                 throw new IllegalArgumentException("User with id = " + userId + " is not exist", nre);
             }
             try {
                 contactsDAO = new ContactsDAO();
-                //           contacts = contactsDAO.getByUser(userFromDB);
                 contacts = contactsDAO.getByEmail(userFromDB.getEmail());
-
             } catch (NoResultException nre) {
                 throw new IllegalArgumentException("Contacts for user with id = " + userId + " are not exist", nre);
             }
-//            contactsDAO = new ContactsDAO();
-//            //           contacts = contactsDAO.getByUser(userFromDB);
-//            contacts = contactsDAO.getByEmail(userFromDB.getEmail());
             return contacts;
         } finally {
             if (userDAO != null) {
@@ -226,32 +292,7 @@ public class UserBean implements SessionBean {
         }
         return roleList;
     }
-//
-//    private boolean isGroupPersist(String groupName, GroupDAO dao) {
-//        try {
-//            if (dao.findByName(groupName) != null) {
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        } catch (NoResultException e) {
-//            return false;
-//        } catch (IllegalArgumentException e) {
-//            return false;
-//        }
-//    }
-//
-//    private boolean isGroupPersist(int groupId, GroupDAO dao) {
-//        try {
-//            if (dao.get(groupId) != null) {
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        } catch (IllegalArgumentException e) {
-//            return false;
-//        }
-//    }
+
 
     public List<UserDTO> getCustomers(int pageNumber, int paginationStep) {
         return getUsersByRolename(Roles.CUSTOMER, pageNumber, paginationStep);
@@ -381,9 +422,9 @@ public class UserBean implements SessionBean {
             }
             dao.update(userDB);
         } catch (JSONException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //maybe rethrow?????????
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //maybe rethrow?????????
         } finally {
             if (dao != null) {
                 dao.close();
@@ -402,9 +443,9 @@ public class UserBean implements SessionBean {
             }
             dao.update(userDB);
         } catch (JSONException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //maybe rethrow?????????
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //maybe rethrow?????????
         } finally {
             if (dao != null) {
                 dao.close();

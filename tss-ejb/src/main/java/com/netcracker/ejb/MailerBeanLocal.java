@@ -23,7 +23,7 @@ public interface MailerBeanLocal extends EJBLocalObject {
 
 	public void sendEmail(User user, String title, String msg);
         
-        public void sendEmail(String emailAddress, String title, String msg);
+	public void sendEmail(String emailAddress, String title, String msg);
 	
 	public void changeToUpdated(User user, TaxiOrder to);
 	
@@ -32,5 +32,9 @@ public interface MailerBeanLocal extends EJBLocalObject {
 	public void changeToAssigned(User user, TaxiOrder to, Driver driver);
 	
 	public void changeToCompleted(User user, TaxiOrder to);
+    @Deprecated
+	public void sendToken(String emailAddress, Integer token);
+
+    void sendDriverInvite(String email, String signupURL);
 
 }

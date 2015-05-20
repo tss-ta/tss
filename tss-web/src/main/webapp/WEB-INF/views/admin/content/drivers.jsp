@@ -8,22 +8,23 @@
 <div class="row row-fix">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <h1>Drivers Panel</h1>
+        <h1 class="text-center">Drivers Panel</h1>
 
         <div class="row row-fix">
             <%--<div class="col-md-offset-1 col-md-10">--%>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="col-md-1">
-                            <a href="/admin/driver?menu=drivers&action=adddriver" class="btn btn-default">New Driver</a>
+                            <a href="/admin?menu=drivers&action=add" class="btn btn-default">Invite Driver <i class="fa fa-user"></i></a>
                         </div>
                         <div class="col-md-offset-7 col-md-4">
-                            <form action="/admin/driver?menu=drivers&action=search" method="post" >
+                            <form action="/admin?menu=driver&action=search&page=1" method="post" >
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="search" placeholder="Driver name" value="${param.search}">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                            </span>
+                                    <input type="text" class="form-control" name="search" placeholder="Driver name"
+                                           maxlength="40" value="${param.search}">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                    </span>
                                 </div>
                             </form>
                         </div>
@@ -41,7 +42,7 @@
             <td class="col-md-1">smokes</td>
             <td class="col-md-2">car</td>
             <td class="col-md-1">edit</td>
-            <td class="col-md-1">delete</td>
+            <%--<td class="col-md-1">delete</td>--%>
             </thead>
             <tbody>
 
@@ -74,8 +75,8 @@
                         </c:if>
                     </td>
                     <td>${driver.getCar().getLicPlate()}</td>
-                    <td><a href="/admin/driver?action=editdriver&driverid=${driver.getId()}">edit</a></td>
-                    <td><a href="/admin/driver?action=deletedriver&driverid=${driver.getId()}">X</a></td>
+                    <td><a href="/admin/driver?action=editdriver&driverid=${driver.getId()}" class="btn btn-default">edit</a></td>
+                    <%--<td><a href="/admin/driver?action=deletedriver&driverid=${driver.getId()}">X</a></td>--%>
                 </tr>
             </c:forEach>
 

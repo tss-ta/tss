@@ -8,19 +8,19 @@
     <ul class="pager custom-pager">
 
         <c:if test="${not empty pager.firstPage}">
-            <li><a  href="/admin${link}page=${pager.firstPage}" title="First"><i class="fa fa-angle-double-left fa-lg"></i></a></li>
+            <li><a  href="/admin${link}page=${pager.firstPage}" title="First (${pager.firstPage})"><i class="fa fa-angle-double-left fa-lg"></i></a></li>
         </c:if>
 
         <c:if test="${not empty pager.previousPage}">
-            <li><a href="/admin${link}page=${pager.previousPage}" title="Previous"><i class="fa fa-angle-left fa-lg"></i></a></li>
+            <li><a href="/admin${link}page=${pager.previousPage}" title="Previous (${pager.previousPage})"><i class="fa fa-angle-left fa-lg"></i></a></li>
         </c:if>
 
         <c:if test="${not empty pager.nextPage}">
-            <li><a href="/admin${link}page=${pager.nextPage}" title="Next"><i class="fa fa-angle-right fa-lg"></i></a></li>
+            <li><a href="/admin${link}page=${pager.nextPage}" title="Next (${pager.nextPage})"><i class="fa fa-angle-right fa-lg"></i></a></li>
         </c:if>
 
         <c:if test="${not empty pager.lastPage}">
-            <li><a href="/admin${link}page=${pager.lastPage}" title="Last"><i class="fa fa-angle-double-right fa-lg"></i></a></li>
+            <li><a href="/admin${link}page=${pager.lastPage}" title="Last (${pager.lastPage})"><i class="fa fa-angle-double-right fa-lg"></i></a></li>
         </c:if>
 
     </ul>

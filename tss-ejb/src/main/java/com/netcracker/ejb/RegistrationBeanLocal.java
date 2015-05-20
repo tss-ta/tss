@@ -6,7 +6,11 @@
 package com.netcracker.ejb;
 
 
+import com.netcracker.dao.exceptions.NoSuchEntityException;
+import com.netcracker.entity.Driver;
 import com.netcracker.entity.User;
+import com.netcracker.exceptions.InvalidEntityException;
+
 import javax.ejb.EJBLocalObject;
 
 
@@ -17,5 +21,6 @@ import javax.ejb.EJBLocalObject;
 
 public interface RegistrationBeanLocal extends EJBLocalObject {
     void registrate(User user);
+    void registrateDriver(Driver driver);
     boolean isUserExist(User user);
 }

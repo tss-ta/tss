@@ -21,6 +21,7 @@ import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.tss.web.servlet.admin.AdminGroupServlet;
+import com.netcracker.tss.web.util.AdditionalParameters;
 import com.netcracker.tss.web.util.DateParser;
 import com.netcracker.tss.web.util.UserUtils;
 import java.io.IOException;
@@ -73,56 +74,59 @@ public class CustomerMMGServiceServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("addFrom") != null) {
-            addAddressFrom(request);
-            response.sendRedirect("/customer/orderpage");
-        } else if (request.getParameter("addTo") != null) {
-            addAddressTo(request);
-            response.sendRedirect("/customer/orderpage");
-        } else if (request.getParameter("deleteTo") != null
-                || request.getParameter("deleteFrom") != null) {
-            deleteAddress(request);
-            response.sendRedirect("/customer/orderpage");
-        } else {
-            User user = findCurrentUser();
-            MeetMyGuestBeanLocal myGuestBeanLocal = getMeetMyGuestBean(request);
-            TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
-            PriceBeanLocal priceBean = getPriceBean(request);
-            float distance = 0;
-            double price = 0;
-            try {
-                MapBeanLocal mapBean = getMapBean(request);
-                distance = mapBean.calculateDistance(request.getParameter("fromAddr"),
-                        request.getParameter("toAddr"));
-            } catch (JSONException | IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            if ("".equals(request.getParameter("price"))) {
-                price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request));
+        request.setCharacterEncoding("UTF-8");
+        try {
+            if (request.getParameter("addFrom") != null) {
+                addAddressFrom(request);
+                response.sendRedirect("/customer/orderpage");
+            } else if (request.getParameter("addTo") != null) {
+                addAddressTo(request);
+                response.sendRedirect("/customer/orderpage");
+            } else if (request.getParameter("deleteTo") != null
+                    || request.getParameter("deleteFrom") != null) {
+                deleteAddress(request);
+                response.sendRedirect("/customer/orderpage");
             } else {
-                price = Double.parseDouble(request.getParameter("price"));
+                User user = findCurrentUser();
+                MeetMyGuestBeanLocal myGuestBeanLocal = getMeetMyGuestBean(request);
+                TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
+                PriceBeanLocal priceBean = getPriceBean(request);
+                float distance = 0;
+                double price = 0;
+
+                Route route = new Route(findCurrentUser().getUsername() + " Route");
+                route.setDistance(distance);
+                Address addFrom = toAddress(request.getParameter("fromAddr"), request);
+                Address addTo = toAddress(request.getParameter("toAddr"), request);
+                TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(request));
+                    MapBeanLocal mapBean = getMapBean(request);
+                    distance = mapBean.calculateDistance(request.getParameter("fromAddr"),
+                            request.getParameter("toAddr"));
+
+                price = priceBean.calculatePrice(distance,
+                        DateParser.parseDate(request), taxiOrder, UserUtils.findCurrentUser());
+
+                taxiOrder.setBookingTime(new Date());
+                Date orderTime = DateParser.parseDate(request);
+                taxiOrder.setOrderTime(orderTime);
+                taxiOrder.setPrice(price);
+                String guestName = request.getParameter("guestName");
+                myGuestBeanLocal.addMeetMyGuestService(user, route, addFrom, addTo, taxiOrder, guestName);
+                int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
+                        .get(0).getId();
+                request.setAttribute("taxiOrderId", latestTOId);
+                request.setAttribute("pageContent", "content/confirmation.jsp");
+                request.getRequestDispatcher(
+                        "/WEB-INF/views/customer/customer-template.jsp").forward(
+                        request, response);
             }
-            Route route = new Route(findCurrentUser().getUsername() + " Route");
-            route.setDistance(distance);
-            Address addFrom = toAddress(request.getParameter("fromAddr"), request);
-            Address addTo = toAddress(request.getParameter("toAddr"), request);
-            TaxiOrder taxiOrder = new TaxiOrder(taxiOrderAddParameters(request));
-            taxiOrder.setBookingTime(new Date());
-            Date orderTime = DateParser.parseDate(request);
-            taxiOrder.setOrderTime(orderTime);
-            taxiOrder.setPrice(price);
-            String guestName = request.getParameter("guestName");
-            myGuestBeanLocal.addMeetMyGuestService(user, route, addFrom, addTo, taxiOrder, guestName);
-            int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
-                    .get(0).getId();
-            request.setAttribute("taxiOrderId", latestTOId);
-            request.setAttribute("pageContent", "content/confirmation.jsp");
-            request.getRequestDispatcher(
-                    "/WEB-INF/views/customer/customer-template.jsp").forward(
-                            request, response);
+        } catch (Exception e){
+            Logger.getLogger(CustomerSoberServiceServlet.class.getName())
+                    .log(Level.SEVERE, e.getMessage(), e);
+            response.sendRedirect(
+                    "/customer/mmgServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
         }
+
     }
 
     private void deleteAddress(HttpServletRequest req) {
@@ -172,55 +176,6 @@ public class CustomerMMGServiceServlet extends HttpServlet {
             // custom
             // exception?
         }
-    }
-
-    private TaxiOrder taxiOrderAddParameters(HttpServletRequest req) {
-        Integer carType = checkString(req.getParameter("carType"));
-        Integer wayOfPayment = checkString(req.getParameter("paymentType"));
-        Boolean driversGender = checkDriversGender(req
-                .getParameter("driverGender"));
-        Integer musicType = checkString(req.getParameter("musicType"));
-        String[] addParameters = req.getParameterValues("addOptions");
-        Boolean wifi = null;
-        Boolean animal = null;
-        Boolean noSmokeDriver = null;
-        Boolean conditioner = null;
-        if (addParameters != null) {
-            for (String st : addParameters) {
-                if ("wifi".equals(st)) {
-                    wifi = Boolean.TRUE;
-                }
-                if ("animal".equals(st)) {
-                    animal = Boolean.TRUE;
-                }
-                if ("nosmoke".equals(st)) {
-                    noSmokeDriver = Boolean.TRUE;
-                }
-                if ("conditioner".equals(st)) {
-                    conditioner = Boolean.TRUE;
-                }
-            }
-        }
-        return new TaxiOrder(wayOfPayment, musicType, driversGender,
-                noSmokeDriver, carType, animal, wifi, conditioner);
-    }
-
-    private Boolean checkDriversGender(String s) {
-        if (!"".equals(s)) {
-            if ("male".equals(s)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return null;
-    }
-
-    private Integer checkString(String s) {
-        if (!"".equals(s)) {
-            return Integer.parseInt(s);
-        }
-        return null;
     }
 
     private Address toAddress(String addr, HttpServletRequest req) {

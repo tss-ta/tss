@@ -76,7 +76,7 @@
                         </td>
                         <td class="hidden-sm hidden-xs">
                             <c:if test="${car.wifi}">
-                                <i class="fa fa-wifi"></i>
+                                <i class="fa fa-wifi fa-lg"></i>
                             </c:if>
                             <c:if test="${!car.wifi}">
                                 <i class="fa fa-minus"></i>

@@ -2,6 +2,8 @@ package com.netcracker.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,13 +11,14 @@ import java.util.Objects;
 /**
  *
  * @author Stanislav Zabielin
+ * @author maks
  * 
 */
 @Entity
 @Table(name = "tss_group")
 @NamedQueries({
     @NamedQuery(name = "Group.findAllOrderedByName", query = "SELECT g FROM Group g ORDER BY g.name"),
-    @NamedQuery(name = "Group.findByName", query = "SELECT g FROM Group g WHERE g.name = :name"),
+    @NamedQuery(name = "Group.findByName", query = "SELECT g FROM Group g WHERE g.name = :name ORDER BY g.name"),
     @NamedQuery(name = "Group.searchByName", query = "SELECT g FROM Group g WHERE g.name like :name")})
 public class Group implements Serializable {
 
@@ -23,6 +26,8 @@ public class Group implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Size(min = 1, max = 100, message = "Group name is too short or long")
+    @NotNull
     @Column(name = "name", columnDefinition = "bpchar")
     private String name;
 

@@ -1,12 +1,14 @@
 package com.netcracker.dao;
 
-import com.netcracker.entity.Role;
 import com.netcracker.entity.User;
-import javax.persistence.NoResultException;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
 import java.util.List;
+
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -16,9 +18,9 @@ import javax.persistence.TypedQuery;
 */
 public class UserDAO extends GenericDAO<User> {
 
-    public UserDAO() {
-        super();
-    }
+//    public UserDAO() {
+//        super();
+//    }
 
     /**
      *
@@ -33,7 +35,7 @@ public class UserDAO extends GenericDAO<User> {
     }
 
     public List<User> getByRolename(String rolename, int pageNumber, int paginationStep) {
-        Query query = em.createQuery("SELECT u FROM User u JOIN u.roles r WHERE r.rolename = :rolename", User.class);
+        Query query = em.createQuery("SELECT u FROM User u JOIN u.roles r WHERE r.rolename = :rolename ORDER BY u.email", User.class);
         query.setParameter("rolename", rolename);
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
@@ -50,7 +52,7 @@ public class UserDAO extends GenericDAO<User> {
     
 
     public List<User> searchByEmail(String email, int pageNumber, int paginationStep) {
-        Query query = em.createQuery("SELECT u FROM User u WHERE u.email like :email", User.class);
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.email like :email ORDER BY u.email", User.class);
         query.setParameter("email", "%" + email.toLowerCase() + "%");
         query.setFirstResult((pageNumber - 1) * paginationStep);
         query.setMaxResults(paginationStep);
@@ -58,7 +60,8 @@ public class UserDAO extends GenericDAO<User> {
     }
 
     public List<User> searchByEmailAndRolename(String email, String rolename, int pageNumber, int paginationStep) {
-        Query query = em.createQuery("SELECT u FROM User u JOIN u.roles r WHERE (r.rolename = :rolename) and (u.email like :email)", User.class);
+        Query query = em.createQuery(
+                "SELECT u FROM User u JOIN u.roles r WHERE (r.rolename = :rolename) and (u.email like :email) ORDER BY u.email", User.class);
         query.setParameter("rolename", rolename);
         query.setParameter("email", "%" + email.toLowerCase() + "%");
         query.setFirstResult((pageNumber - 1) * paginationStep);
@@ -66,27 +69,45 @@ public class UserDAO extends GenericDAO<User> {
         return query.getResultList();
     }
 
-    public Long countByRolename(String rolename) {
+    public int countByRolename(String rolename) {
         Query query = em.createQuery("SELECT COUNT(u) FROM User u JOIN u.roles ur JOIN u.groups g JOIN g.roles gr WHERE (ur.rolename = :userRolename) OR (gr.rolename = :groupRolename)");
 //        Query query = em.createQuery("SELECT COUNT(u.id) FROM User u");
         query.setParameter("userRolename", rolename);
         query.setParameter("groupRolename", rolename);
 //        query.setParameter("rolename", rolename);
-        return (Long) query.getSingleResult();
+        return ((Long) query.getSingleResult()).intValue();
 
     }
 
-    public Long countByUserRoleName(String rolename) {
-        Query query = em.createQuery("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE (r.rolename = :rolename) ");
-//        Query query = em.createQuery("SELECT COUNT(u.id) FROM User u");
+    public int countByUserRoleName(String rolename) {
+        Query query = em.createQuery("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE (r.rolename = :rolename)");
         query.setParameter("rolename", rolename);
-//        query.setParameter("groupRolename", rolename);
-//        query.setParameter("rolename", rolename);
-        return (Long) query.getSingleResult();
+        return ((Long) query.getSingleResult()).intValue();
 
     }
+    public int countByEmailAndRolename(String email, String rolename) {
+        Query query = em.createQuery("SELECT count(u) FROM User u JOIN u.roles r WHERE (r.rolename = :rolename) and (u.email like :email)");
+        query.setParameter("rolename", rolename);
+        query.setParameter("email", "%" + email.toLowerCase() + "%");
+        return ((Long) query.getSingleResult()).intValue();
+    }
+
+    public int countByEmail(String email) {
+        Query query = em.createQuery("SELECT count(u) FROM User u WHERE (u.email like :email)");
+        query.setParameter("email", "%" + email.toLowerCase() + "%");
+        return ((Long) query.getSingleResult()).intValue();
+    }
+//
+//
+//    public void deleteUser(User user) {
+//        Query query = em.createQuery("delete User where id = :userId");
+//        query.setParameter("userId", user.getId());
+//        query.executeUpdate();
+//    }
 
     public boolean isOpen() {
         return em.isOpen();
     }
+
+	
 }

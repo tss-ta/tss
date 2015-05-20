@@ -41,10 +41,12 @@ public class CustomerMMGServicePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.getSession().removeAttribute("taxiOrder");
         UserBeanLocal userBeanLocal = getUserBean(request);
         request.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
         request.setAttribute("pageContent", "content/customer-mmgService.jsp");
         request.setAttribute("pageType", "mmgService");
+        request.setAttribute("errorMessage", request.getParameter("err"));
         request.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
                 .forward(request, response);
     }

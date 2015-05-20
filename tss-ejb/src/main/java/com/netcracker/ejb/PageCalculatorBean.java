@@ -1,6 +1,7 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dao.CarDao;
+import com.netcracker.dao.DriverDAO;
 import com.netcracker.dao.GenericDAO;
 import com.netcracker.entity.Car;
 import com.netcracker.entity.helper.Pager;
@@ -46,6 +47,21 @@ public class PageCalculatorBean implements SessionBean {
         } finally {
             if (carDao != null) {
                 carDao.close();
+            }
+        }
+        return pager;
+    }
+
+    public Pager createSearchDriverPager(Integer pageNumber, Integer pageSize, String searchWord) {
+        DriverDAO driverDAO = null;
+        Pager pager = null;
+        try {
+            driverDAO = new DriverDAO();
+            Long amount = driverDAO.countSearchedByNameResults(searchWord);
+            pager = calculatePages(pageNumber, pageSize, amount.intValue());
+        } finally {
+            if (driverDAO != null) {
+                driverDAO.close();
             }
         }
         return pager;
@@ -119,6 +135,7 @@ public class PageCalculatorBean implements SessionBean {
     private int calculateLastPageNumber(int pageSize, int amount) {
         return (int) Math.ceil((float) amount / pageSize);
     }
+
     @Override
     public void setSessionContext(SessionContext sessionContext) throws EJBException, RemoteException {
 

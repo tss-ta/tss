@@ -18,6 +18,9 @@ DROP TABLE IF EXISTS service CASCADE;
 DROP TABLE IF EXISTS meet_my_guest CASCADE;
 DROP TABLE IF EXISTS celebration CASCADE;
 DROP TABLE IF EXISTS celebration_driver_car CASCADE;
+DROP TABLE IF EXISTS report_info;
+DROP TABLE IF EXISTS car_category;
+DROP TABLE IF EXISTS driver_category;
 
 CREATE TABLE tss_user
 (
@@ -77,6 +80,7 @@ CREATE TABLE driver
   is_male boolean,
   smokes boolean,
   car_id integer,
+  token integer,
   CONSTRAINT pk_driv_id PRIMARY KEY (driver_id),
   CONSTRAINT fk_user FOREIGN KEY (driver_id)
   REFERENCES tss_user (id) MATCH SIMPLE
@@ -230,7 +234,6 @@ CREATE TABLE taxi_order
   conditioner boolean,
   contacts_id integer,
   route_id integer,
-  tariff_id integer,
   service_option_id integer,
   CONSTRAINT tx_rdr_pk PRIMARY KEY (id),
   CONSTRAINT tx_rdr_drvr_cr_id_fk FOREIGN KEY (driver_car_id)
@@ -239,14 +242,10 @@ CREATE TABLE taxi_order
   CONSTRAINT tx_rdr_cont_id_fk FOREIGN KEY (contacts_id)
       REFERENCES contacts (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-	    CONSTRAINT tx_rdr_trff_id_fk FOREIGN KEY (tariff_id)
-      REFERENCES tariff (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT tx_rdr_rt_id_fk FOREIGN KEY (route_id)
       REFERENCES route (route_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-
 
 CREATE TABLE service
 (
@@ -316,4 +315,35 @@ CONSTRAINT  meet_my_guest_service_id_pk PRIMARY KEY (service_id),
  CONSTRAINT meet_my_guest_service_id_fk FOREIGN KEY (service_id)
       REFERENCES service (service_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+
+
+---------------------------------------
+-- REPORT SYSTEM ----------------------
+---------------------------------------
+
+CREATE TABLE car_category
+(
+  id integer,
+  name varchar(40)
+);
+
+CREATE TABLE driver_category
+(
+  id integer,
+  name varchar(40)
+);
+
+CREATE TABLE report_info
+(
+id serial NOT NULL,
+name character varying(100),
+description text,
+select_query text,
+count_query text,
+countable boolean,
+page_size integer,
+export_size integer,
+CONSTRAINT report_id_pk PRIMARY KEY (id)
 );
