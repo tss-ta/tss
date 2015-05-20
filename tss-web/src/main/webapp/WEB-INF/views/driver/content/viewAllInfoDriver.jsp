@@ -105,10 +105,13 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">Driver's gender
-                            :</label> <c:if test="${list.male}">
+                            :</label><c:if test="${list.male == null}">
+                            <i class="col-sm-2 col-sm-2 fa fa-minus"></i>
+                        </c:if>
+                        <c:if test="${list.male}">
                                <i class="col-sm-2 col-sm-2 fa fa-male"></i>
                         </c:if>
-                        <c:if test="${!list.male}">
+                        <c:if test="${list.male==false}">
                             <i class="col-sm-2 col-sm-2 fa fa-female"></i>
                         </c:if>
                     </div>

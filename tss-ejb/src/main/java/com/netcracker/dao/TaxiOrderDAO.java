@@ -49,7 +49,7 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
         } else {
             tq = em.createQuery(
                     "SELECT t FROM TaxiOrder t WHERE t.status = :status AND "
-                    + "t.male = :male AND t.carCategory = :carCategory"
+                    + "(t.male = :male OR t.male is NULL) AND t.carCategory = :carCategory"
                     + " ORDER BY t.bookingTime DESC", TaxiOrder.class);
             tq.setParameter("status", status.getId());
             tq.setParameter("male", driver.isMale());

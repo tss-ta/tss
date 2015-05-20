@@ -19,6 +19,7 @@
 <div class="form-group col-md-4 col-sm-6  col-xs-12 text-center">
     <label for="driverGender" class="col-md-12 col-sm-6 col-xs-12">Driver's gender:</label>
     <select class="selectpicker" title="Choose driver's gender" name="driverGender" id="driverGender" class="col-md-12 col-sm-6 col-xs-12">
+        <option></option>
         <option value="male">Male</option>
         <option value="female">Female</option>
     </select>
