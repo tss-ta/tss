@@ -125,6 +125,15 @@ public class ReportDataDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(LIMIT_POSITION, pageSize);
             statement.setInt(OFFSET_POSITION, (pageNumber - 1) * pageSize);
+            ParameterMetaData parameterMetaData = statement.getParameterMetaData();
+            System.out.println("paparameterMetaData: " + parameterMetaData);
+            if (parameterMetaData != null) {
+                System.out.println("count: " + parameterMetaData.getParameterCount());
+                for (int i = 1; i <= parameterMetaData.getParameterCount(); i++) {
+                    System.out.println("param " + i + " type:" + parameterMetaData.getParameterType(i));
+                }
+            }
+
             resultSet = statement.executeQuery();
             initializeReportMetaData(reportData, resultSet.getMetaData());
             generateDataFromResultSet(reportData, resultSet);

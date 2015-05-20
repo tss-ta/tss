@@ -30,7 +30,7 @@
 </div>
 
 <div class="row row-fix">
-    <div class="col-md-offset-2 col-md-8">
+    <div class="col-md-offset-1 col-md-10">
         <div class="panel panel-default">
             <div class="panel-body">
 
@@ -70,14 +70,17 @@
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-8">
                             <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="countable" ${countable} name="countable" /> Paginable
-                                </label>
+                                <%--<label>--%>
+                                    <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
+                                <%--</label>--%>
+
+                                    <input type="checkbox" id="countable" ${countable} name="countable">
+                                    <label for="countable" class="col-md-3"><b>Pagination</b></label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="switcher ${hide}">
+                    <div class="switcher ${hide}" id="countable-switcher">
                         <div class="form-group">
                             <label for="countQuery" class="col-md-3 control-label">Count Query:</label>
                             <div class="col-md-9">
@@ -88,14 +91,14 @@
                         <div class="form-group">
                             <label for="pageSize" class="col-md-3 control-label">Page size:</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control" id="pageSize" placeholder="15" name="pageSize" value="${reportInfo.pageSize}"/>
+                                <input type="text" class="form-control" id="pageSize" placeholder="15" name="pageSize" value="${reportInfo.pageSize}"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="exportSize" class="col-md-3 control-label">Max export size:</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control" id="exportSize" placeholder="1000" name="exportSize" value="${reportInfo.exportSize}"/>
+                                <input type="text" class="form-control" id="exportSize" placeholder="1000" name="exportSize" value="${reportInfo.exportSize}"/>
                             </div>
                         </div>
 
@@ -104,9 +107,37 @@
                     <hr/>
 
                     <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-8">
+                            <div class="checkbox">
+                                <%--<label>--%>
+                                <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
+                                <%--</label>--%>
+
+                                <input type="checkbox" id="filterable" name="filterable">
+                                <label for="filterable" class="col-md-3"><b>Filter</b></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="switcher hide-position" id="filter-switcher">
+
+                        <div class="form-group">
+                            <%--<label for="addCriteriaBtn" class="col-md-3 control-label">Filter:</label>--%>
+                            <div class="col-md-offset-10 col-md-2 text-center">
+                                <a class="btn btn-success" id="addCriteriaBtn"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+
+                        <div id="criteriaContainer"></div>
+
+                    </div>
+
+                    <hr/>
+
+                    <div class="form-group">
                         <div class="col-md-12 text-center">
-                            <a href="${backButton}" class="btn btn-default">Cancel</a>
-                            <button type="submit" class="btn btn-default">${buttonName}</button>
+                            <a href="${backButton}" class="btn btn-danger">Cancel</a>
+                            <button type="submit" class="btn btn-primary">${buttonName}</button>
                         </div>
                     </div>
 
@@ -116,6 +147,45 @@
         </div>
     </div>
 </div>
+
+<div class="invisible" id="criteria-template" data-number="0">
+    <div class="form-group">
+        <label for="criteria" class="col-md-3 control-label">Criteria:</label>
+        <div class="col-md-4 text-right">
+            <input type="text" class="form-control criteria-name" id="criteria" placeholder="Label"/>
+        </div>
+        <div class="col-md-3 text-left">
+            <select class="form-control criteria-type">
+                <option>Type</option>
+                <option>Integer</option>
+                <option>Long</option>
+                <option>String</option>
+            </select>
+        </div>
+        <div class="col-md-2 text-center">
+            <a class="btn btn-danger delete-criteria"><i class="fa fa-trash-o"></i></a>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('#addCriteriaBtn').click(function() {
+        var template = $('#criteria-template');
+        var paramNumber = template.data("number");
+        template.data("number", ++paramNumber);
+        template.find('.criteria-name').attr('name', 'crName' + paramNumber);
+        template.find('.criteria-type').attr('name', 'crType' + paramNumber);
+
+        $('#criteriaContainer').prepend(template.html());
+    });
+
+    $(document).on("click", ".delete-criteria", function() {
+        $(this).closest('.form-group').remove();
+    });
+
+
+</script>
 
 <script>
     $(document).ready(function() {
@@ -205,15 +275,35 @@
         element.formValidation('enableFieldValidators', 'exportSize', enable);
     };
 
+    function stub() {
+    };
+
     $('#countable').change(function() {
-        var switcher = $('.switcher');
-        var form = $('#reportForm');
-        if(this.checked == true) {
-            switchPagerFieldValidation(form, true);
+//        var switcher = $('.switcher');
+//        var form = $('#reportForm');
+//        if(this.checked == true) {
+//            switchPagerFieldValidation(form, true);
+//            switcher.removeClass('hide-position');
+//        } else if (this.checked == false) {
+//            switchPagerFieldValidation(form, false);
+//            switcher.addClass('hide-position');
+//        }
+        invertVisibility("#countable-switcher", '#reportForm', switchPagerFieldValidation, this);
+    });
+
+    $('#filterable').change(function() {
+        invertVisibility("#filter-switcher", '#reportForm', stub, this);
+    });
+
+    function invertVisibility(changableElem, form, validationFunction, checkbox) {
+        var switcher = $(changableElem);
+        var form = $(form);
+        if(checkbox.checked == true) {
+            validationFunction(form, true);
             switcher.removeClass('hide-position');
-        } else if (this.checked == false) {
-            switchPagerFieldValidation(form, false);
+        } else {
+            validationFunction(form, false);
             switcher.addClass('hide-position');
         }
-    });
+    };
 </script>
