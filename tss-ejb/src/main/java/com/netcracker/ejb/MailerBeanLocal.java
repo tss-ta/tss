@@ -29,7 +29,7 @@ public interface MailerBeanLocal extends EJBLocalObject {
 	
 	public void changeToRefused(User user, TaxiOrder to);
 	
-	public void changeToAssigned(User user, TaxiOrder to, Driver driver);
+	public void changeToAssigned(User user, TaxiOrder to, String string);
 	
 	public void changeToCompleted(User user, TaxiOrder to);
     @Deprecated

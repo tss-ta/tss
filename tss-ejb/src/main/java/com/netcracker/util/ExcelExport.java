@@ -231,27 +231,24 @@ public class ExcelExport {
         tableHeader.createCell(11).setCellValue("Wi-Fi");
         tableHeader.createCell(12).setCellValue("Conditioner");
         tableHeader.createCell(13).setCellValue("Service");
-        tableHeader.createCell(14).setCellValue("Driver");
+//        tableHeader.createCell(14).setCellValue("Driver");
         int rowNum = 4;
         for (TaxiOrder order : reportsRows) {
             Row row = sheet.createRow(rowNum);
-//            row.createCell(0).setCellValue(order.getPrice());
-//            row.createCell(1).setCellValue(order.getPayment()); //wtf? null
+            row.createCell(0).setCellValue(order.getPrice());
+            row.createCell(1).setCellValue(order.getPayment());
             row.createCell(2).setCellValue(dateToString(order.getBookingTime()));
             row.createCell(3).setCellValue(dateToString(order.getOrderTime()));
-//            row.createCell(4).setCellValue(order.getMusicStyle());
+            writeNullableValue(row.createCell(4), order.getMusicStyle());
             row.createCell(5).setCellValue(order.getEnumStatus().toString());
-//            row.createCell(6).setCellValue(order.getComment());
-            setNullableData(order.getMale(), row.createCell(7));
-//            row.createCell(7).setCellValue(order.getMale()); //null?
+            writeNullableValue(row.createCell(6), order.getComment());
+            writeNullableValue(row.createCell(7), order.getMale());
+            writeNullableValue(row.createCell(6), order.getSmoke());
+            writeNullableValue(row.createCell(9), order.getEnumCarCategory().toString());
+            writeNullableValue(row.createCell(10), order.getAnimalTransport());//null?
+            writeNullableValue(row.createCell(11), order.getWifi());//null?
+            writeNullableValue(row.createCell(12), order.getConditioner());//null?
 
-            setNullableData(order.getSmoke(), row.createCell(6));
-//            row.createCell(8).setCellValue(order.getSmoke());//null?
-            row.createCell(9).setCellValue(order.getEnumCarCategory().toString());
-            row.createCell(10).setCellValue(order.getAnimalTransport());//null?
-            row.createCell(11).setCellValue(order.getWifi());//null?
-            row.createCell(12).setCellValue(order.getConditioner());//null?
-//            row.createCell(0).setCellValue(order.getPrice());
 
             rowNum++;
         }
@@ -260,80 +257,30 @@ public class ExcelExport {
         footer.createCell(4).setCellValue(allOrders);
     }
 
+    public void writeNullableValue (Cell cell, Object obj){
+        if (obj == null){
+            cell.setCellValue("");
+        } else {
+
+            if (obj instanceof Date)
+                    cell.setCellValue((Date) obj);
+                else if (obj instanceof Boolean)
+                    cell.setCellValue((Boolean) obj);
+                else if (obj instanceof String)
+                    cell.setCellValue((String) obj);
+                else if (obj instanceof Number) {
+                    cell.setCellValue(((Number) obj).doubleValue());
+                } else {
+                cell.setCellValue(obj.toString());
+            }
+        }
+    }
+
     public String dateToString(Date date) { //maybe private?
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US);
         return dateFormat.format(date);
     }
 
-    private void setNullableData(Object data, Cell cell) {
-        if (data == null) {
-            cell.setCellValue("not set");
-        } else {
-            if (data instanceof Date)
-                cell.setCellValue((Date) data);
-            else if (data instanceof Boolean)
-                cell.setCellValue((Boolean) data);
-            else if (data instanceof String)
-                cell.setCellValue((String) data);
-            else if (data instanceof Number) {
-                cell.setCellValue(((Number) data).doubleValue());
-            }
-        }
-    }
-
-//    public File write(String path, List<List> data) throws IOException {
-//
-//        HSSFWorkbook workbook = null;
-//        HSSFSheet sheet = null;
-//        File f = new File(path);
-//
-//        if (!f.exists()) {
-//            workbook = new HSSFWorkbook();
-//            sheet = workbook.createSheet("Sorting time");
-//            formTable(sheet, data);
-//
-//        } else {
-//            try (FileInputStream in = new FileInputStream(new File(path));) {
-//
-//                workbook = new HSSFWorkbook(in);
-//                sheet = workbook.getSheetAt(0);
-//                formTable(sheet, data);
-//            }
-//        }
-//        try (FileOutputStream out = new FileOutputStream(f)) {
-//            workbook.write(out);
-//            return f;
-//        }
-//    }
-//    private void writeTable(Sheet sheet, List<List> data) {
-//        int rownum = 0;
-//        for (List dataRow : data) {
-//            Row row = sheet.getRow(rownum);
-//            if (row == null) {
-//                row = sheet.createRow(rownum);
-//            }
-//            rownum++;
-//
-//            int cellnum = 0;
-//            for (Object obj : dataRow) {
-//                Cell cell = row.getCell(cellnum);
-//                if (cell == null) {
-//                    cell = row.createCell(cellnum);
-//                }
-//                cellnum++;
-//
-//                if (obj instanceof Date)
-//                    cell.setCellValue((Date) obj);
-//                else if (obj instanceof Boolean)
-//                    cell.setCellValue((Boolean) obj);
-//                else if (obj instanceof String)
-//                    cell.setCellValue((String) obj);
-//                else if (obj instanceof Number) {
-//                    cell.setCellValue(((Number) obj).doubleValue());
-//                }
-//            }
-//        }
-//    }
 }
     
 

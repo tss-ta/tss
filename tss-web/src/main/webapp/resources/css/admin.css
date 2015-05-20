@@ -356,3 +356,10 @@ a.list-group-item p {
     display: none;
     visibility: hidden;
 }
+
+.green-color {
+    color: #419641;
+}
+.red-color {
+    color: #D13030;
+}

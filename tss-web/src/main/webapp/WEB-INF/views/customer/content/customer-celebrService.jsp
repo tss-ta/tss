@@ -158,7 +158,7 @@ AnyTime.picker("ordertime", {
 		}).done(function(res) {
 			$('#price_field').val(res);
 		}).fail(function(jqXHR, textStatus, errorThrown) {
-			alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+			alert("Address Error. Please check your address.");
 		});
 	});
 </script>

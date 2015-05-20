@@ -115,7 +115,7 @@
                             </c:if>
 
                             <c:if test="${assign}">
-                                <a class="custom-link hover-green" href="/admin/driver?action=assigncar&carid=${car.id}&driverid=${driverid}"><i class="fa fa-check-circle"></i></a>
+                                <a class="custom-link hover-green" href="/admin/driver?action=assigncar&carid=${car.id}&driverid=${driverid}">Assign <i class="fa fa-check-circle"></i></a>
                             </c:if>
                         </td>
 

@@ -70,6 +70,9 @@ public class RegistrationServlet extends HttpServlet {
         } catch (InvalidEntityException e) {
             request.setAttribute("errorMessage", e.getMessage());
             request.getRequestDispatcher("/signup.jsp").forward(request, response);
+        } catch (Exception e){
+            request.setAttribute("errorMessage", "Sorry, can not register user now! Try again later or call to company hot line!");
+            request.getRequestDispatcher("/signup.jsp").forward(request, response);
         }
     }
 

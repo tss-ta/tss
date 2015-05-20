@@ -50,14 +50,14 @@ body {
 /*.form-sign input[type="text"] {*/
 .form-sign input:first-child {
     margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+    /*border-bottom-right-radius: 0;*/
+    /*border-bottom-left-radius: 0;*/
 }
 /*.form-sign input[type="password"] {*/
 .form-sign input:last-child {
     margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    /*border-top-left-radius: 0;*/
+    /*border-top-right-radius: 0;*/
 }
 .form-sign button[type="submit"] {
     background-color: #181818;

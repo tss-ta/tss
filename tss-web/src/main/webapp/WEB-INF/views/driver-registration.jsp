@@ -52,15 +52,28 @@
         <h2 class="form-sign-heading">Register please</h2>
         <h5 class="form-sign-error-msg">${requestScope.errorMessage}</h5>
 
-        <div class="control-group">
+        <div class="form-group">
             <input type="email" readonly id="inputEmail" name="email" class="form-control" value="${requestScope.email}"
                    maxlength="40" required><br/>
             <input type="text" id="inputUserName" name="userName" class="form-control" placeholder="User name"
                    maxlength="40" required autofocus><br/>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                   maxlength="60" required><br/>
-            <input type="password" id="confirPassword" name="confirPassword" onkeyup="checkPass(); return false;"
-                   class="form-control" placeholder="Confirm Password" maxlength="60" required><br/>
+            <div class="control-group">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                       maxlength="60" minlength="1" required data-validation-required-message="Password is required">
+                <br/>
+                <%--<p class="help-block form-sign-error-msg"></p>--%>
+            </div>
+            <div class="control-group">
+                <input type="password" id="confirPassword" name="confirPassword"
+                <%--onkeyup="checkPass(); return false;"--%>
+                       class="form-control" placeholder="Confirm Password"
+                       maxlength="60" minlength="1"
+                       required data-validation-match-match="password"
+                       data-validation-match-message="Password do not match"
+                       data-validation-required-message="Password with confirmation is required">
+                <%--<br/>--%>
+                <p class="help-block form-sign-error-msg"></p>
+            </div>
 
 
             <label for="inputCategory">
@@ -81,7 +94,7 @@
             <input type="hidden" name="token" value="${param.token}">
             <span id="confirmMessage" class="confirmMessage"></span>
 
-            <p class="help-block form-sign-error-msg"></p>
+            <%--<p class="help-block form-sign-error-msg"></p>--%>
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
         </div>

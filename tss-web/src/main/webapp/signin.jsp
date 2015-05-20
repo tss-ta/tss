@@ -61,7 +61,7 @@
                 <br/>
                 <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required minlength="1" maxlength="60"><br/>
                 <h5 class="help-block form-sign-heading"></h5>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
             </div>
     </form>
 

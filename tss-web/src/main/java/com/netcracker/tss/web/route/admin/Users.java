@@ -115,7 +115,7 @@ public class Users {
             } else {
                 userBeanLocal.editRoles(id, getSubRoles(request));
                 ActionResponse response = getUsersView(request);
-                response.setSuccessMessage("Roles was successfully added");
+                response.setSuccessMessage("User role(s) was successfully added.");
                 return response;
             }
         } catch (InvalidEntityException e){
