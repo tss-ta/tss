@@ -150,7 +150,7 @@ public class TaxiOrderBean implements SessionBean {
         TaxiOrder taxiOrder = getOrderById(orderId);
         taxiOrder.setStatus(Status.REFUSED);
         TaxiOrderDAO dao = null;
-        User currentUser = getOrderById(orderId).getContactsId().getUserId();
+        Contacts currentUser = getOrderById(orderId).getContactsId();
         try {
             dao = new TaxiOrderDAO();
             dao.update(taxiOrder);
@@ -189,7 +189,6 @@ public class TaxiOrderBean implements SessionBean {
         TaxiOrderDAO dao = null;
         DriverCarDAO daoC = null;
         DriverDAO driverDAO = null;
-
         List<TaxiOrder> orders = null;
         try {
             dao = new TaxiOrderDAO();
@@ -237,8 +236,7 @@ public class TaxiOrderBean implements SessionBean {
             taxiOrder = orderDAO.get(taxiOrderId);
             int status = taxiOrder.getStatus();
             DriverCar driverCarId = daoC.getByDriverId(user.getId());
-            User currentUser = getOrderById(taxiOrderId).getContactsId()
-                    .getUserId();
+            Contacts currentUser = getOrderById(taxiOrderId).getContactsId();
             if (status == Status.QUEUED.getId()) {
                 taxiOrder.setDriverCarId(driverCarId);
                 taxiOrder.setStatus(Status.ASSIGNED);
