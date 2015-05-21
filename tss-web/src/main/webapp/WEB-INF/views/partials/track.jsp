@@ -54,7 +54,9 @@
                     <td>${list.bookingTime}</td>
                     <td>${list.orderTime}</td>
                     <td>${list.strStatus}</td>
-                    <td>${list.driverCarId}</td>
+                    <td><c:if test="${list.driverCarId != null }">
+                            DriverCar ${list.driverCarId.drvCarId}
+                        </c:if></td>
                     <td>${list.routeId.pathContent}</td>
                     <td>${list.fromAddr}</td>
                     <td>${list.toAddr}</td>

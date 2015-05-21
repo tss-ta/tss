@@ -43,16 +43,21 @@ public class TrackOrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int orderId = Integer.parseInt(request.getParameter(TRACK_NUMBER));
-        TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
-        TaxiOrder taxiOrder = taxiOrderBeanLocal.getOrderById(orderId);
-        if (taxiOrder == null) {
+        try {
+            int orderId = Integer.parseInt(request.getParameter(TRACK_NUMBER));
+            TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+            TaxiOrder taxiOrder = taxiOrderBeanLocal.getOrderById(orderId);
+            if (taxiOrder == null) {
+                request.setAttribute("error", true);
+                new TrackOrderPageServlet().doGet(request, response);
+            } else {
+                TaxiOrderHistory toh = taxiOrderBeanLocal.getOrderForEdit(taxiOrder);
+                request.setAttribute("list", toh);
+                request.setAttribute("trackId", orderId);
+                new TrackOrderPageServlet().doGet(request, response);
+            }
+        } catch (NumberFormatException e) {
             request.setAttribute("error", true);
-            new TrackOrderPageServlet().doGet(request, response);
-        } else {
-            TaxiOrderHistory toh = taxiOrderBeanLocal.getOrderForEdit(taxiOrder);
-            request.setAttribute("list", toh);
-            request.setAttribute("trackId", orderId);
             new TrackOrderPageServlet().doGet(request, response);
         }
     }
