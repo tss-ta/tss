@@ -30,7 +30,7 @@
 </div>
 
 <div class="row row-fix">
-    <div class="col-md-offset-1 col-md-10">
+    <div class="col-md-offset-1 col-md-10 col-sm-offset-0 col-sm-12 col-xs-offset-0 col-xs-12">
         <div class="panel panel-default">
             <div class="panel-body">
 
@@ -38,14 +38,14 @@
                     <input type="hidden" name="id" value="${reportInfo.id}">
                     <div class="form-group">
                         <br/>
-                        <label for="name" class="col-md-3 control-label">Name:</label>
-                        <div class="col-md-9">
+                        <label for="name" class="col-md-3 col-sm-3 control-label">Name:</label>
+                        <div class="col-md-9 col-sm-9">
                             <input type="text" class="form-control" id="name" placeholder="Report name" name="name" value="${reportInfo.name}" autofocus>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="description" class="col-md-3 control-label">Description:</label>
-                        <div class="col-md-9">
+                        <label for="description" class="col-md-3 col-sm-3 control-label">Description:</label>
+                        <div class="col-md-9 col-sm-9">
                             <textarea class="form-control" id="description" rows="5" placeholder="Report description" name="description">${reportInfo.description}</textarea>
                         </div>
                     </div>
@@ -53,8 +53,8 @@
                     <hr/>
 
                     <div class="form-group">
-                        <label for="selectQuery" class="col-md-3 control-label">Select Query:</label>
-                        <div class="col-md-9">
+                        <label for="selectQuery" class="col-md-3 col-sm-3 control-label">Select Query:</label>
+                        <div class="col-md-9 col-sm-9">
                             <textarea class="form-control" id="selectQuery" rows="5" placeholder="SELECT column FROM table LIMIT ? OFFSET ?" name="selectQuery">${reportInfo.selectQuery}</textarea>
                         </div>
                     </div>
@@ -68,36 +68,36 @@
                         <c:set var="hide" value="hide-position"/>
                     </c:if>
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-8">
+                        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-9">
                             <div class="checkbox">
                                 <%--<label>--%>
                                     <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
                                 <%--</label>--%>
 
                                     <input type="checkbox" id="countable" ${countable} name="countable">
-                                    <label for="countable" class="col-md-3"><b>Pagination</b></label>
+                                    <label for="countable"><b>Pagination</b></label>
                             </div>
                         </div>
                     </div>
 
                     <div class="switcher ${hide}" id="countable-switcher">
                         <div class="form-group">
-                            <label for="countQuery" class="col-md-3 control-label">Count Query:</label>
-                            <div class="col-md-9">
+                            <label for="countQuery" class="col-md-3 col-sm-3 control-label">Count Query:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <textarea class="form-control" id="countQuery" rows="5" placeholder="SELECT count(column) FROM table" name="countQuery">${reportInfo.countQuery}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="pageSize" class="col-md-3 control-label">Page size:</label>
-                            <div class="col-md-2">
+                            <label for="pageSize" class="col-md-3 col-sm-3 control-label">Page size:</label>
+                            <div class="col-md-3 col-sm-3">
                                 <input type="text" class="form-control" id="pageSize" placeholder="15" name="pageSize" value="${reportInfo.pageSize}"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="exportSize" class="col-md-3 control-label">Max export size:</label>
-                            <div class="col-md-2">
+                            <label for="exportSize" class="col-md-3 col-sm-3 control-label">Max export size:</label>
+                            <div class="col-md-3 col-sm-3">
                                 <input type="text" class="form-control" id="exportSize" placeholder="1000" name="exportSize" value="${reportInfo.exportSize}"/>
                             </div>
                         </div>
@@ -107,14 +107,14 @@
                     <hr/>
 
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-8">
+                        <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-9">
                             <div class="checkbox">
                                 <%--<label>--%>
                                 <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
                                 <%--</label>--%>
 
                                 <input type="checkbox" id="filterable" name="filterable">
-                                <label for="filterable" class="col-md-3"><b>Filter</b></label>
+                                <label for="filterable"><b>Filter</b></label>
                             </div>
                         </div>
                     </div>
@@ -123,8 +123,9 @@
 
                         <div class="form-group">
                             <%--<label for="addCriteriaBtn" class="col-md-3 control-label">Filter:</label>--%>
-                            <div class="col-md-offset-10 col-md-2 text-center">
-                                <a class="btn btn-success" id="addCriteriaBtn"><i class="fa fa-plus"></i></a>
+                            <div class="col-md-offset-10 col-md-2 col-sm-offset-10 col-sm-2 col-xs-12 text-center">
+                                <a class="btn btn-success addCriteriaBtn hidden-xs"><i class="fa fa-plus"></i></a>
+                                <a class="btn btn-success addCriteriaBtn visible-xs col-xs-offset-3 col-xs-6"><i class="fa fa-plus"></i></a>
                             </div>
                         </div>
 
@@ -135,7 +136,7 @@
                     <hr/>
 
                     <div class="form-group">
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 col-sm-12 text-center">
                             <a href="${backButton}" class="btn btn-danger">Cancel</a>
                             <button type="submit" class="btn btn-primary">${buttonName}</button>
                         </div>
@@ -148,29 +149,35 @@
     </div>
 </div>
 
-<div class="invisible" id="criteria-template" data-number="0">
+<div class="not-to-show" id="criteria-template" data-number="0">
     <div class="form-group">
-        <label for="criteria" class="col-md-3 control-label">Criteria:</label>
-        <div class="col-md-4 text-right">
+        <label for="criteria" class="col-md-3 col-sm-3 col-xs-12 control-label">Criteria:</label>
+        <div class="col-md-4 col-sm-4 col-xs-12 text-right">
             <input type="text" class="form-control criteria-name" id="criteria" placeholder="Label"/>
+            <div class="visible-xs vertical-margin"></div>
         </div>
-        <div class="col-md-3 text-left">
+
+        <div class="col-md-3 col-sm-3 col-xs-12 text-left">
             <select class="form-control criteria-type">
                 <option>Type</option>
                 <option>Integer</option>
                 <option>Long</option>
                 <option>String</option>
             </select>
+            <div class="visible-xs vertical-margin"></div>
         </div>
-        <div class="col-md-2 text-center">
-            <a class="btn btn-danger delete-criteria"><i class="fa fa-trash-o"></i></a>
+
+        <div class="col-md-2 col-sm-2 col-xs-12 text-center">
+            <a class="btn btn-danger delete-criteria hidden-xs"><i class="fa fa-trash-o"></i></a>
+            <a class="btn btn-danger delete-criteria col-xs-offset-3 col-xs-6 visible-xs"><i class="fa fa-trash-o"></i></a>
         </div>
+
     </div>
 </div>
 
 <script>
 
-    $('#addCriteriaBtn').click(function() {
+    $('.addCriteriaBtn').click(function() {
         var template = $('#criteria-template');
         var paramNumber = template.data("number");
         template.data("number", ++paramNumber);

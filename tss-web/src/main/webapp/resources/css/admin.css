@@ -363,3 +363,13 @@ a.list-group-item p {
 .red-color {
     color: #D13030;
 }
+
+.not-to-show {
+    display: none;
+    visibility: hidden;
+}
+
+.vertical-margin {
+    display: block;
+    height: 5px;
+}
