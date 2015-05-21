@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s"),
     @NamedQuery(name = "Service.findByServiceId", query = "SELECT s FROM Service s WHERE s.serviceId = :serviceId"),
+    @NamedQuery(name = "Service.findByOrderId", query = "SELECT s FROM Service s WHERE s.orderId = :orderId"),
     @NamedQuery(name = "Service.findByServiceName", query = "SELECT s FROM Service s WHERE s.serviceName = :serviceName")})
 public class Service implements Serializable {
 

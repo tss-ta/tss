@@ -1,16 +1,24 @@
 package com.netcracker.entity.helper;
 
+import java.util.List;
+
+import com.netcracker.dao.CelebrationServiceDAO;
+import com.netcracker.dao.ServiceDAO;
+import com.netcracker.ejb.CelebrationServiceBean;
+import com.netcracker.entity.CelebrationService;
+import com.netcracker.entity.Route;
+import com.netcracker.entity.Service;
 import com.netcracker.entity.TaxiOrder;
 
 public class TaxiOrderHistory extends TaxiOrder {
 
 	private String toAddr;
 	private String fromAddr;
-//	private String strStatus;
+	private String service;
 
 	public TaxiOrderHistory(TaxiOrder to) {
 		super(to);
-//		strStatus = to.convertStatusToEnum().toString();
+		findServiceName();
 	}
 
 	public String getToAddr() {
@@ -33,5 +41,50 @@ public class TaxiOrderHistory extends TaxiOrder {
 		return getEnumStatus().toString();
 	}
 
+	public boolean isServiceBool() {
+		if (getService() != null)
+			return true;
+		else
+			return false;
+	}
 
+	public boolean isConvey() {
+		if (!isServiceBool())
+			return false;
+		Service serv = getService();
+		if (serv.getRoutes() != null)
+			return true;
+		else
+			return false;
+	}
+	
+	public List<Route> getAddrConvey(){
+		if (!isConvey())
+			return null;
+		Service serv = getService();
+		return serv.getRoutes();
+	}
+
+	private Service getService() {
+		ServiceDAO dao = null;
+		try {
+			dao = new ServiceDAO();
+			if (dao.getByOrderId(getId()) != null)
+				return dao.getByOrderId(getId());
+			return null;
+		} finally {
+			if (dao != null)
+				dao.close();
+		}
+	}
+
+	public String getServiceName() {
+		return findServiceName();
+	}
+
+	public String findServiceName() {
+		if (isConvey())
+			return "Convey Service";
+		return "";
+	}
 }
