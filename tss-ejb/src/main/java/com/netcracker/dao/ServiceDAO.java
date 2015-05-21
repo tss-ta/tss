@@ -28,12 +28,12 @@ public class ServiceDAO extends GenericDAO<Service> {
 				"Service.findByOrderId", Service.class);
 		try {
 			query.setParameter("orderId", bean.getOrderById(orderId));
+			Service serv = query.getSingleResult();
+			if (serv.getOrderId().equals(bean.getOrderById(orderId)))
+				return serv;
 		} catch (NoResultException e) {
 
 		}
-		Service serv = query.getSingleResult();
-		if (serv.getOrderId().equals(bean.getOrderById(orderId)))
-			return serv;
 		return null;
 	}
 }
