@@ -28,7 +28,7 @@
         <div class="col-md-offset-2 col-md-4 text-center">
             <div class="panel panel-default custom-panel">
                 <div class="panel-body">
-                    <a href="/admin/report?begin=00%3A00%2C+01+01+2015&end=&action=new-orders-per-period"><i class="fa fa-fax fa-5x"></i></a>
+                    <a href="/admin/report?begin=00-00_01-01-2015&end=&action=new-orders-per-period"><i class="fa fa-fax fa-5x"></i></a>
                 </div>
                 <div class="panel-footer">
                     ORDERS: ${orders}
