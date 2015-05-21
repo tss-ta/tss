@@ -106,7 +106,8 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     }
 
     public List<TaxiOrder> findBookedOrdersByPeriod(Date begin, Date end, int pageNumber, int pageSize) {
-        TypedQuery<TaxiOrder> query = em.createQuery("SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end ", TaxiOrder.class);
+        TypedQuery<TaxiOrder> query = em.createQuery(
+                "SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end order by t.bookingTime DESC", TaxiOrder.class);
         query.setParameter("begin", begin);
         query.setParameter("end", end);
         query.setFirstResult((pageNumber - 1) * pageSize);
@@ -115,7 +116,8 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     }
 
     public List<TaxiOrder> findBookedOrdersByPeriod(Date begin, Date end) {
-        TypedQuery<TaxiOrder> query = em.createQuery("SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end ", TaxiOrder.class);
+        TypedQuery<TaxiOrder> query = em.createQuery(
+                "SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end order by t.bookingTime DESC", TaxiOrder.class);
         query.setParameter("begin", begin);
         query.setParameter("end", end);
         return query.getResultList();

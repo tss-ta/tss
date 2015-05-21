@@ -2,8 +2,7 @@ package com.netcracker.tss.web.servlet.admin;
 
 import com.netcracker.ejb.ReportsBeanLocal;
 import com.netcracker.ejb.UserBeanLocal;
-import com.netcracker.tss.web.util.Page;
-import com.netcracker.tss.web.util.RequestAttribute;
+import com.netcracker.tss.web.util.*;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.ExcelExport;
 import com.netcracker.util.reports.ReportsRow;
@@ -34,6 +33,9 @@ import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/admin/report")
 public class AdminReportServlet extends HttpServlet {
+
+    private static final Integer DEFAULT_PAGE_SIZE = 10;
+    private static final Integer MIN_PAGE_NUMBER = 1;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -83,7 +85,7 @@ public class AdminReportServlet extends HttpServlet {
 
     private Date dateParser(String dateString) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm, dd MM yyyy", Locale.US);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm_dd-MM-yyyy", Locale.US);
             Date date = dateFormat.parse(dateString);
             return date;
         } catch (ParseException ex) {
@@ -92,15 +94,18 @@ public class AdminReportServlet extends HttpServlet {
         }
     }
 
-    private void redirectToNewOrdersReport(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void redirectToNewOrdersReport(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+        Integer page = parsePageNumberFromRequest(request);
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-        Date begin = dateParser(req.getParameter("begin"));
-        Date end = dateParser(req.getParameter("end"));
-        req.setAttribute("orders", reportsBean.getBookedOrders(begin, end, 1, 10));//!!!!!!!
-        req.setAttribute("allTO", reportsBean.countAllOrders(begin, end));
-        req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
-        req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_NEW_ORDERS_REPORTS_CONTENT.getAbsolutePath());
-        req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+        Date begin = dateParser(request.getParameter("begin"));
+        Date end = dateParser(request.getParameter("end"));
+        request.setAttribute(RequestAttribute.PAGER.getName(),
+                reportsBean.getOrdersReportPager(page, DEFAULT_PAGE_SIZE, begin, end));
+        request.setAttribute("orders", reportsBean.getBookedOrders(begin, end, page, DEFAULT_PAGE_SIZE));//!!!!!!!
+        request.setAttribute("allTO", reportsBean.countAllOrders(begin, end));
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
+        request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_NEW_ORDERS_REPORTS_CONTENT.getAbsolutePath());
+        request.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(request, resp);
     }
         
     private void redirectToCarCategoryReport(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -191,7 +196,7 @@ public class AdminReportServlet extends HttpServlet {
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CHOOSE_USER_REPORTS_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } catch (RuntimeException e) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(AdminReportServlet.class.getName()).log(Level.SEVERE,
                     "Can't show users", e);
             req.getRequestDispatcher("/500.jsp").forward(req, resp);
         }
@@ -205,9 +210,17 @@ public class AdminReportServlet extends HttpServlet {
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CHOOSE_USER_REPORTS_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
         } catch (RuntimeException e) {
-            Logger.getLogger(AdminGroupServlet.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(AdminReportServlet.class.getName()).log(Level.SEVERE,
                     "Can't show users", e);
             req.getRequestDispatcher("/500.jsp").forward(req, resp);
         }
+    }
+
+    private Integer parsePageNumberFromRequest(HttpServletRequest request) {
+        Integer pageNumber = RequestParameterParser.parseInteger(request, RequestParameter.PAGE.getValue());
+        if (pageNumber == null || pageNumber < MIN_PAGE_NUMBER) {
+            return MIN_PAGE_NUMBER;
+        }
+        return pageNumber;
     }
 }
