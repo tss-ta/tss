@@ -335,15 +335,36 @@ CREATE TABLE driver_category
   name varchar(40)
 );
 
+CREATE TABLE criterion_type
+(
+  id integer,
+  name varchar(40),
+  index integer,
+  CONSTRAINT criterion_type_id_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE criterion
+(
+  id serial NOT NULL,
+  name varchar(40),
+  type integer,
+  report_info integer,
+  CONSTRAINT criterion_id_pk PRIMARY KEY (id),
+  CONSTRAINT report_info_fk FOREIGN KEY (report_info)
+    REFERENCES report_info (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+
 CREATE TABLE report_info
 (
-id serial NOT NULL,
-name character varying(100),
-description text,
-select_query text,
-count_query text,
-countable boolean,
-page_size integer,
-export_size integer,
-CONSTRAINT report_id_pk PRIMARY KEY (id)
+  id serial NOT NULL,
+  name character varying(100),
+  description text,
+  select_query text,
+  count_query text,
+  countable boolean,
+  page_size integer,
+  export_size integer,
+  CONSTRAINT report_id_pk PRIMARY KEY (id)
 );

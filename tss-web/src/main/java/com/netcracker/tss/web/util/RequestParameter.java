@@ -13,7 +13,12 @@ public enum RequestParameter {
     REPORT_COUNT_QUERY("countQuery"),
     REPORT_PAGE_SIZE("pageSize"),
     REPORT_EXPORT_SIZE("exportSize"),
-    REPORT_COUNTABLE("countable");
+    REPORT_COUNTABLE("countable"),
+    REPORT_FILTER_CRITERIA_AMOUNT("criteriaAmount"),
+    REPORT_FILTER_CRITERION_ID_PREFIX("crId"),
+    REPORT_FILTER_CRITERION_NAME_PREFIX("crName"),
+    REPORT_FILTER_CRITERION_TYPE_PREFIX("crType"),
+    REPORT_FILTERABLE("filterable");
 
     private String value;
 

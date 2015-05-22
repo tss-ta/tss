@@ -1,6 +1,8 @@
 package com.netcracker.entity;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Kyrylo Berehovyi
@@ -29,6 +31,9 @@ public class ReportInfo {
 
     @Column(name = "export_size")
     private Integer exportSize;
+
+    @OneToMany(mappedBy = "reportInfo", cascade = CascadeType.PERSIST)
+    private List<Criterion> filter = new LinkedList<>();
 
     public ReportInfo() {}
 
@@ -96,6 +101,14 @@ public class ReportInfo {
         this.exportSize = exportSize;
     }
 
+    public List<Criterion> getFilter() {
+        return filter;
+    }
+
+    public void setFilter(List<Criterion> filter) {
+        this.filter = filter;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,6 +120,7 @@ public class ReportInfo {
         if (countQuery != null ? !countQuery.equals(that.countQuery) : that.countQuery != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (exportSize != null ? !exportSize.equals(that.exportSize) : that.exportSize != null) return false;
+        if (filter != null ? !filter.equals(that.filter) : that.filter != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (pageSize != null ? !pageSize.equals(that.pageSize) : that.pageSize != null) return false;
@@ -125,6 +139,7 @@ public class ReportInfo {
         result = 31 * result + (countQuery != null ? countQuery.hashCode() : 0);
         result = 31 * result + (pageSize != null ? pageSize.hashCode() : 0);
         result = 31 * result + (exportSize != null ? exportSize.hashCode() : 0);
+        result = 31 * result + (filter != null ? filter.hashCode() : 0);
         return result;
     }
 
@@ -139,6 +154,7 @@ public class ReportInfo {
         sb.append(", countQuery='").append(countQuery).append('\'');
         sb.append(", pageSize=").append(pageSize);
         sb.append(", exportSize=").append(exportSize);
+        sb.append(", filter=").append(filter);
         sb.append('}');
         return sb.toString();
     }

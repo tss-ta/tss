@@ -2,6 +2,7 @@ package com.netcracker.tss.web.route.admin.report;
 
 import com.netcracker.ejb.PageCalculatorBeanLocal;
 import com.netcracker.ejb.ReportsBeanLocal;
+import com.netcracker.entity.Criterion;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.report.Report;
 import com.netcracker.router.HttpMethod;
@@ -12,6 +13,7 @@ import com.netcracker.tss.web.util.*;
 import com.netcracker.util.BeansLocator;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -185,8 +187,50 @@ public class ReportRoute {
             reportInfo.setPageSize(RequestParameterParser.parseInteger(request,
                     RequestParameter.REPORT_PAGE_SIZE.getValue()));
         }
+
+        boolean filterable = RequestParameterParser.parseBoolean(request, RequestParameter.REPORT_FILTERABLE.getValue());
+        System.out.println("filterable: " + filterable);
+
+        if (filterable) {
+            reportInfo.setFilter(createCriterionListFromRequest(request, reportInfo));
+        }
+
+
         return reportInfo;
     }
+
+    private List<Criterion> createCriterionListFromRequest(HttpServletRequest request, ReportInfo reportInfo) {
+        List<Criterion> criterionList;
+        Integer criterionAmount = RequestParameterParser.parseInteger(request,
+                RequestParameter.REPORT_FILTER_CRITERIA_AMOUNT.getValue());
+        if (criterionAmount == null) {
+            return null;
+        }
+
+        System.out.println("crAmount: " + criterionAmount);
+
+        criterionList = new LinkedList<>();
+        for (int criterionIndex = 1; criterionIndex <= criterionAmount; criterionIndex++) {
+                criterionList.add(createCriterionFromRequest(request, criterionIndex, reportInfo));
+        }
+
+        return criterionList;
+    }
+
+    private Criterion createCriterionFromRequest(HttpServletRequest request, int index, ReportInfo reportInfo) {
+        Integer id = RequestParameterParser.parseInteger(request,
+                RequestParameter.REPORT_FILTER_CRITERION_ID_PREFIX.getValue() + index);
+        String name = request.getParameter(RequestParameter.REPORT_FILTER_CRITERION_NAME_PREFIX.getValue() + index);
+        Integer type = RequestParameterParser.parseInteger(request, RequestParameter.REPORT_FILTER_CRITERION_TYPE_PREFIX.getValue() + index);
+
+        System.out.println("crId" + index + " : " + id);
+        System.out.println("crName" + index + " : " + name);
+        System.out.println("crType" + index + " : " + type);
+
+        return new Criterion(id, name, type, reportInfo);
+
+    }
+
 
     @Action(action = "all")
     public ActionResponse getPageOfReports(HttpServletRequest request) {

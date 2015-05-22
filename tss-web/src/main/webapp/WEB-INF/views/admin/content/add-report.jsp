@@ -74,7 +74,7 @@
                                     <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
                                 <%--</label>--%>
 
-                                    <input type="checkbox" id="countable" ${countable} name="countable">
+                                    <input type="checkbox" id="countable" ${countable} name="countable" style="styled">
                                     <label for="countable"><b>Pagination</b></label>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                                 <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
                                 <%--</label>--%>
 
-                                <input type="checkbox" id="filterable" name="filterable">
+                                <input type="checkbox" id="filterable" name="filterable" style="styled">
                                 <label for="filterable"><b>Filter</b></label>
                             </div>
                         </div>
@@ -121,15 +121,17 @@
 
                     <div class="switcher hide-position" id="filter-switcher">
 
+                        <input type="hidden" name="criteriaAmount" id="criteriaAmount">
+
+                        <div id="criteriaContainer"></div>
+
                         <div class="form-group">
                             <%--<label for="addCriteriaBtn" class="col-md-3 control-label">Filter:</label>--%>
                             <div class="col-md-offset-10 col-md-2 col-sm-offset-10 col-sm-2 col-xs-12 text-center">
-                                <a class="btn btn-success addCriteriaBtn hidden-xs"><i class="fa fa-plus"></i></a>
-                                <a class="btn btn-success addCriteriaBtn visible-xs col-xs-offset-3 col-xs-6"><i class="fa fa-plus"></i></a>
+                                <a class="btn btn-success addCriterionBtn hidden-xs"><i class="fa fa-plus"></i></a>
+                                <a class="btn btn-success addCriterionBtn visible-xs col-xs-offset-3 col-xs-6"><i class="fa fa-plus"></i></a>
                             </div>
                         </div>
-
-                        <div id="criteriaContainer"></div>
 
                     </div>
 
@@ -149,27 +151,27 @@
     </div>
 </div>
 
-<div class="not-to-show" id="criteria-template" data-number="0">
+<div class="not-to-show" id="criterion-template" data-number="0">
     <div class="form-group">
-        <label for="criteria" class="col-md-3 col-sm-3 col-xs-12 control-label">Criteria:</label>
+        <label for="criterion" class="col-md-3 col-sm-3 col-xs-12 control-label criterion-label"></label>
         <div class="col-md-4 col-sm-4 col-xs-12 text-right">
-            <input type="text" class="form-control criteria-name" id="criteria" placeholder="Label"/>
+            <input type="text" class="form-control criterion-name" id="criterion" placeholder="Label"/>
             <div class="visible-xs vertical-margin"></div>
         </div>
 
         <div class="col-md-3 col-sm-3 col-xs-12 text-left">
-            <select class="form-control criteria-type">
+            <select class="form-control criterion-type">
                 <option>Type</option>
-                <option>Integer</option>
-                <option>Long</option>
-                <option>String</option>
+                <option value="1">Integer</option>
+                <option value="2">Long</option>
+                <option value="3">String</option>
             </select>
             <div class="visible-xs vertical-margin"></div>
         </div>
 
         <div class="col-md-2 col-sm-2 col-xs-12 text-center">
-            <a class="btn btn-danger delete-criteria hidden-xs"><i class="fa fa-trash-o"></i></a>
-            <a class="btn btn-danger delete-criteria col-xs-offset-3 col-xs-6 visible-xs"><i class="fa fa-trash-o"></i></a>
+            <a class="btn btn-danger delete-criterion hidden-xs"><i class="fa fa-trash-o"></i></a>
+            <a class="btn btn-danger delete-criterion col-xs-offset-3 col-xs-6 visible-xs"><i class="fa fa-trash-o"></i></a>
         </div>
 
     </div>
@@ -177,20 +179,30 @@
 
 <script>
 
-    $('.addCriteriaBtn').click(function() {
-        var template = $('#criteria-template');
-        var paramNumber = template.data("number");
-        template.data("number", ++paramNumber);
-        template.find('.criteria-name').attr('name', 'crName' + paramNumber);
-        template.find('.criteria-type').attr('name', 'crType' + paramNumber);
-
-        $('#criteriaContainer').prepend(template.html());
+    $('.addCriterionBtn').click(function() {
+        $('#criteriaContainer').append($('#criterion-template').html());
+        updateCriteria();
     });
 
-    $(document).on("click", ".delete-criteria", function() {
+    $(document).on("click", ".delete-criterion", function() {
         $(this).closest('.form-group').remove();
+        updateCriteria();
     });
 
+    function updateCriteria() {
+        $('#criteriaAmount').val(updateCriteriaSerialNumbers());
+    }
+
+    function updateCriteriaSerialNumbers() {
+        var counter = 0;
+        $('#criteriaContainer .form-group').each(function() {
+            counter++;
+            $(this).find('.criterion-label').html('Criterion ' + counter + ":");
+            $(this).find('.criterion-name').attr('name','crName' + counter);
+            $(this).find('.criterion-type').attr('name','crType' + counter);
+        })
+        return counter;
+    }
 
 </script>
 
@@ -313,4 +325,5 @@
             switcher.addClass('hide-position');
         }
     };
+
 </script>
