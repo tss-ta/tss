@@ -4,6 +4,7 @@
  */
 package com.netcracker.dao;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import org.apache.poi.ss.formula.functions.T;
@@ -25,10 +26,14 @@ public class ServiceDAO extends GenericDAO<Service> {
 		TaxiOrderBean bean = new TaxiOrderBean();
 		TypedQuery<Service> query = em.createNamedQuery(
 				"Service.findByOrderId", Service.class);
-		query.setParameter("orderId", bean.getOrderById(orderId));
-		Service serv = query.getSingleResult();
-		if (serv.getOrderId().equals(bean.getOrderById(orderId)))
-			return serv;
+		try {
+			query.setParameter("orderId", bean.getOrderById(orderId));
+			Service serv = query.getSingleResult();
+			if (serv.getOrderId().equals(bean.getOrderById(orderId)))
+				return serv;
+		} catch (NoResultException e) {
+
+		}
 		return null;
 	}
 }

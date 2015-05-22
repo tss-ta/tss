@@ -114,9 +114,10 @@
                         </div>
 
                         <div class="col-md-4">
-                            <form action="/admin/driver" method="post">
-                                <input type="hidden" name="action" value="assign">
-                                <input type="hidden" name="driverid" value="${driver.getId()}">
+                            <form action="/admin">
+                                <input type="hidden" name="menu" value="drivers">
+                                <input type="hidden" name="action" value="getCarPage">
+                                <input type="hidden" name="id" value="${driver.getId()}">
                                 <button id="assign_car_btn" class="btn btn btn-info" type="submit">Assign</button>
                             </form>
                         </div>
