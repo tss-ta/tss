@@ -92,8 +92,12 @@ public class Contacts implements Serializable {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hash(email, username, userId);
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        return result;
     }
 
     @Override
