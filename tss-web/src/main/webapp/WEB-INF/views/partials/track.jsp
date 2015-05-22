@@ -10,7 +10,7 @@
 <form action="/track/order" class="form-horizontal style-form"
       method="post">
     <div class="text-center">
-        <div class="row mt bottom_line">
+        <div class="row mt">
             <div class="text-center">
                 <h1>Track Order</h1>
 
@@ -83,7 +83,7 @@
         </div>
     </c:when>
     <c:otherwise>
-        <h3 class="text-center">Please, enter your tracking number to view taxi order status</h3>
+        <h5 class="text-center text-muted">Please, enter your tracking number to view taxi order status</h5>
     </c:otherwise>
 </c:choose>
 <br>&nbsp;<br>

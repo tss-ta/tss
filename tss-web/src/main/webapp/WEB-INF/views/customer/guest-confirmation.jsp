@@ -30,7 +30,7 @@
                     <%@ include file="/WEB-INF/views/partials/non-dasboard-header.jspf"%>
             </div>
             <div class="text-center">
-                <div class="row mt bottom_line">
+                <div class="row mt">
                     <div class="text-center">
                         <h1>Taxi was successfully ordered!</h1>
                         <br/>
@@ -38,8 +38,8 @@
                             Your Taxi Order Tracking Number is <b style="color: crimson">${taxiOrderId}</b>.
                         </h3>
                         <br/>
-                        <h4>
-                            Please, remember your tracking number, because it's can be needed to track status of your order.
+                        <h4 class="text-muted">
+                            Please, remember your tracking number, because you can track status of your order with this number.
                         </h4>
                     <br/><br/><br/>
                     </div>

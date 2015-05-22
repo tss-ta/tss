@@ -3,7 +3,7 @@
 
 
 <div class="row">
-    <div class="col-lg-9 main-chart">
+    <div class="col-md-12 main-chart">
         <div class="text-center">
             <h1>Taxi Orders History</h1>
         </div>
@@ -17,32 +17,34 @@
                         <thead>
                             <tr>
                                 <th>Price</th>
-                                <th>Booking Time</th>
+                                <th class="hidden-sm hidden-md">Booking Time</th>
                                 <th>Order Time</th>
-                                <th>Status</th>
-                                <th>Driver</th>
-                                <th>Route</th>
+                                <th class="hidden-md hidden-sm hidden-xs">Driver</th>
+                                <%--<th class="hidden-md hidden-sm hidden-xs">Route</th>--%>
                                 <th>From Address</th>
                                 <th>To Address</th>
+                                <th class="hidden-sm">Service</th>
                                 <th>Comment</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach items="${history}" var="list">
                                 <tr>
                                     <td class="numeric">${list.price}</td>
-                                    <td>${list.bookingTime}</td>
+                                    <td class="hidden-sm hidden-md">${list.bookingTime}</td>
                                     <td>${list.orderTime}</td>
-                                    <td>${list.strStatus}</td>
-                                    <td> <c:if test="${list.driverCarId != null }">
-                                            DriverCar ${list.driverCarId.drvCarId}
-                                        </c:if>
+                                    <td class="hidden-md hidden-sm hidden-xs">
+                                            Driver-Car ID = ${list.driverCarId.drvCarId}
                                     </td>
-                                    <td>${list.routeId.pathContent}</td>
+                                    <%--<td class="hidden-md hidden-sm hidden-xs">${list.routeId.pathContent}</td>--%>
                                     <td>${list.fromAddr}</td>
                                     <td>${list.toAddr}</td>
+                                    <td class="hidden-sm">
+                                            ${list.serviceName}
+                                    </td>
                                     <td>${list.comment}</td>
-                                    <td><a
+                                    <td><a class="btn btn-default"
                                             href="/customer/comment?taxiOrderId=${list.getId()}">Comment</a></td>
                                 </tr>
                             </c:forEach>
