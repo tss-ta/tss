@@ -11,10 +11,10 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-1">
-                    <a href="/admin/report" class="btn btn-default"> Back </a>
+                    <a href="/admin/report?action=customer-popular-car-options" class="btn btn-default"><i class="fa fa-reply"></i>Back</a>
                 </div>
                 <div class="col-md-1">
-                    <a href="/admin/report?action=to-excel&reptype=${requestScope.reptype}" class="btn btn-default">
+                    <a href="/admin/report?action=to-excel&reptype=${requestScope.reptype}&header=${requestScope.header}" class="btn btn-default">
                         Export to excel file <i class="fa fa-download"></i>
                     </a>
                 </div>
@@ -42,9 +42,6 @@
         </table>
         <br>
         <h3 class="text-right">All analized taxi orders are ${requestScope.allTO}</h3>
-
-        <%--       <%@ include file="../partials/pagination.jspf" %>  --%>
-
     </div>
     <div class="col-md-1"></div>
 </div>

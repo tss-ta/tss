@@ -4,6 +4,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<link href="/resources/customer_assets/css/bootstrap-select.css"
+      rel="stylesheet">
+
 <div class="row row-fix">
     <div class="col-md-offset-1 col-md-10">
         <div class="text-center page-title">
@@ -25,7 +28,7 @@
                     <div class="col-md-offset-1 col-md-2 col-sm-offset-1 col-sm-2 col-xs-offset-4 col-xs-4">
                         <form action = "/admin" class="text-center">
 
-                            <select class="bootstrap-select" name ="role" onchange="this.form.submit()" style="margin-top: 5px">
+                            <select class="bootstrap-select selectpicker" name ="role" onchange="this.form.submit()" style="margin-top: 5px">
                                 <c:forEach var = "role" items = "${requestScope.rolesEnum}">
                                     <option ${role == param.role ? 'selected="selected"' : ''}> ${role} </option>
                                 </c:forEach>
@@ -124,3 +127,6 @@
         </div>
     </div>
 </c:if>
+
+<script src="/resources/customer_assets/js/bootstrap-select.min.js"></script>
+<script>$('.selectpicker').selectpicker();</script>

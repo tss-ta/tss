@@ -2,6 +2,7 @@ package com.netcracker.tss.web.servlet.admin;
 
 import com.netcracker.ejb.ReportsBeanLocal;
 import com.netcracker.ejb.UserBeanLocal;
+import com.netcracker.entity.helper.Roles;
 import com.netcracker.tss.web.util.*;
 import com.netcracker.util.BeansLocator;
 import com.netcracker.util.ExcelExport;
@@ -101,7 +102,7 @@ public class AdminReportServlet extends HttpServlet {
         Date end = dateParser(request.getParameter("end"));
         request.setAttribute(RequestAttribute.PAGER.getName(),
                 reportsBean.getOrdersReportPager(page, DEFAULT_PAGE_SIZE, begin, end));
-        request.setAttribute("orders", reportsBean.getBookedOrders(begin, end, page, DEFAULT_PAGE_SIZE));//!!!!!!!
+        request.setAttribute("orders", reportsBean.getBookedOrders(begin, end, page, DEFAULT_PAGE_SIZE));
         request.setAttribute("allTO", reportsBean.countAllOrders(begin, end));
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
         request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_NEW_ORDERS_REPORTS_CONTENT.getAbsolutePath());
@@ -119,7 +120,7 @@ public class AdminReportServlet extends HttpServlet {
 
     private void sendCarCategoryReport(HttpServletResponse response) throws ServletException, IOException {
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-        File excelFile = new ExcelExport().exportReportRows("Most Popular Car Categories",
+        File excelFile = new ExcelExport().exportReportRows("Most Popular Car Categories for customer ",
                 reportsBean.countAllOrders(), reportsBean.getCarCategoryReport());
         sendFile(excelFile, response);
     }
@@ -134,7 +135,7 @@ public class AdminReportServlet extends HttpServlet {
     private void sendUserCarOptionsReport(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
         int userId = Integer.parseInt(req.getParameter("userid"));
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-        File excelFile = new ExcelExport().exportReportRows("Most Popular Car Options Overall",
+        File excelFile = new ExcelExport().exportReportRows(req.getParameter("header"),
                 reportsBean.countAllOrders(userId), reportsBean.getCustomerCarOptionsReport(userId));
         sendFile(excelFile, response);
     }
@@ -162,7 +163,7 @@ public class AdminReportServlet extends HttpServlet {
          out.flush();
         excelFile.delete();
     }
-        
+        @Deprecated
     private void redirectToOverallCarOptionsReports(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         req.setAttribute("report", reportsBean.getCarOptionsReport());
@@ -177,35 +178,42 @@ public class AdminReportServlet extends HttpServlet {
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         req.setAttribute("report", reportsBean.getCustomerCarOptionsReport(userId));
         req.setAttribute("allTO", reportsBean.countAllOrders(userId));
-        req.setAttribute("header", "Most Popular Car Options For " + req.getParameter("email"));
+        req.setAttribute("header", "Popular Car Options For " + req.getParameter("email"));
         req.setAttribute("reptype", "user-car-options&userid=" + userId);
         redirectToCarReport(req, resp);
     }
-        
+        @Deprecated
     private void redirectToCarReport(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
         req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CAR_OPTIONS_REPORTS_CONTENT.getAbsolutePath());
         req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
     }
 
-    private void redirectToUsers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void redirectToUsers(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-            req.setAttribute("customers", userBeanLocal.getCustomers(1, 10));
-            req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
-            req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CHOOSE_USER_REPORTS_CONTENT.getAbsolutePath());
-            req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
+            Integer page = parsePageNumberFromRequest(request);
+            UserBeanLocal userBean = BeansLocator.getInstance().getBean(UserBeanLocal.class);
+            request.setAttribute(RequestAttribute.PAGER.getName(),
+                    userBean.getPager(page, DEFAULT_PAGE_SIZE, Roles.CUSTOMER));
+            request.setAttribute("customers", userBean.getCustomers(page, DEFAULT_PAGE_SIZE));
+            request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
+            request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CHOOSE_USER_REPORTS_CONTENT.getAbsolutePath());
+            request.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(request, resp);
         } catch (RuntimeException e) {
             Logger.getLogger(AdminReportServlet.class.getName()).log(Level.SEVERE,
-                    "Can't show users", e);
-            req.getRequestDispatcher("/500.jsp").forward(req, resp);
+                    "Can't show customers", e);
+            request.getRequestDispatcher("/500.jsp").forward(request, resp);
         }
     }
 
     private void searchUsers(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            Integer page = parsePageNumberFromRequest(req);
             UserBeanLocal userBeanLocal = BeansLocator.getInstance().getBean(UserBeanLocal.class);
-            req.setAttribute("customers", userBeanLocal.searchUsersByEmail(req.getParameter("email"), 1, 10));
+            String emailPart = req.getParameter("email");
+            req.setAttribute(RequestAttribute.PAGER.getName(),
+                    userBeanLocal.getPager(page, DEFAULT_PAGE_SIZE, Roles.CUSTOMER, emailPart));
+            req.setAttribute("customers", userBeanLocal.searchUsersByEmail(emailPart, page, DEFAULT_PAGE_SIZE));
             req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
             req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.ADMIN_CHOOSE_USER_REPORTS_CONTENT.getAbsolutePath());
             req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);

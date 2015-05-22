@@ -19,7 +19,7 @@
 	media="all" />
 <link href='http://fonts.googleapis.com/css?family=Raleway'
 	rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="css/responsiveslides.css">
+<%--<link rel="stylesheet" href="css/responsiveslides.css">--%>
 <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 <link href="/resources/css/customer.css" rel="stylesheet">

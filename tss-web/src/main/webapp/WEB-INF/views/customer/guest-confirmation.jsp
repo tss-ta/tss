@@ -1,5 +1,5 @@
 <%--
-  by Stanislav Zabielin
+  by Stanislav Zabielin, maks
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -11,37 +11,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Taxi Service System</title>
 
+        <link href="/resources/img/favicon.ico" rel="shortcut icon"
+              type="image/x-icon" />
+        <link href="/resources/css/style.css" rel="stylesheet" type="text/css"
+              media="all" />
+        <link href='http://fonts.googleapis.com/css?family=Raleway'
+              rel='stylesheet' type='text/css'>
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
         <link href="/resources/css/customer.css" rel="stylesheet">
-        <link href="/resources/customer_assets/css/anytime.5.1.0.css"
-              rel="stylesheet">
-        <link href="/resources/customer_assets/css/bootstrap-select.css"
-              rel="stylesheet">
-        <link href="/resources/img/favicon.ico" rel="shortcut icon"
-              type="image/x-icon" />
+
     </head>
 
     <body>
-
-        <div id="sidebar-wrapper"
-             style="display: block !important; height: auto !important; padding-bottom: 0; overflow: visible !important;">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand"><a href="/">Taxi Service</a></li>
-            </ul>
-        </div>
-
         <div id="page-content-wrapper">
             <div class="container-fluid">
-                <%@ include file="partials/guest-header.jspf"%>
+                <%--<%@ include file="partials/guest-header.jspf"%>--%>
+                    <%@ include file="/WEB-INF/views/partials/non-dasboard-header.jspf"%>
             </div>
             <div class="text-center">
                 <div class="row mt bottom_line">
                     <div class="text-center">
                         <h1>Taxi was successfully ordered!</h1>
+                        <br/>
                         <h3>
-                            Your TaxiOrder ID is = <b style="color: crimson">${taxiOrderId}</b>
+                            Your Taxi Order Tracking Number is <b style="color: crimson">${taxiOrderId}</b>.
                         </h3>
+                        <br/>
+                        <h4>
+                            Please, remember your tracking number, because it's can be needed to track status of your order.
+                        </h4>
+
                     </div>
                 </div>
             </div>

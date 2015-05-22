@@ -1,7 +1,7 @@
 <div class="form-group">
 	<label class="col-sm-2 col-sm-2 control-label">Order Time</label>
 	<div class="col-sm-4">
-		<input type="text" id="ordertime" name="ordertime"
+		<input type="text" id="ordertime" name="ordertime" placeholder="Click here to enter order time"
                        class="form-control" value="${orderTime}" />
 	</div>
 	<div class="col-sm-6">

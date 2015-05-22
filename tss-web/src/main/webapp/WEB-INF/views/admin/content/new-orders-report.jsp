@@ -14,7 +14,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-1">
-                    <a href="/admin?menu=report&action=all" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Back</a>
+                    <a href="/admin?menu=report&action=all" class="btn btn-default"><i class="fa fa-reply"></i>Back</a>
                 </div>
                 <div class="col-md-1">
                     <a href="/admin/report?action=new-orders-excel&begin=${param.begin}&end=${param.end}" class="btn btn-default">
@@ -29,16 +29,16 @@
             <form class="panel-body" action="/admin/report">
                 <table>
                     <thead>
-                    <th class=" col-md-offset-1 text-center">Begin Time</th>
-                    <th class="col-md-offset-1  text-center">End Time</th>
+                    <th class=" col-md-offset-1 text-center">Start of the period</th>
+                    <th class="col-md-offset-1  text-center">End of the period</th>
                     </thead>
                     <tbody>
                     <td class="col-md-offset-1 ">
-                        <input type="text" id="begin" name="begin"
+                        <input type="text" id="begin" name="begin" placeholder="Click here to choose date"
                                class="form-control" value="${param.begin}">
                     </td>
                     <td class="col-md-offset-1 ">
-                        <input type="text" id="end" name="end"
+                        <input type="text" id="end" name="end" placeholder="Click here to choose date"
                                class="form-control" value="${param.end}">
                     </td>
                     <td class="col-md-offset-1 ">

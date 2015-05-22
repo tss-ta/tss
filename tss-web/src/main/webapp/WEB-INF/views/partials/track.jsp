@@ -4,6 +4,9 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<div class="row row-fix">
+<div class="col-md-offset-1 col-md-10 text-center">
 <form action="/track/order" class="form-horizontal style-form"
       method="post">
     <div class="text-center">
@@ -19,7 +22,7 @@
 
     <div class="row">
         <div class="col-lg-4 col-lg-offset-4">
-            <div class="input-group">
+            <div class="control-group">
                 <input type="number" class="form-control" name ="trackNumber" value="${trackId}"
                        placeholder="Tracking number" min="1" max="4000000000" />
                 <span class="input-group-btn">
@@ -37,17 +40,20 @@
     <c:when test="${not empty list}">
         <br>&nbsp;<br>
         <section id="unseen">
-            <table class="table table-bordered table-striped table-condensed">
+            <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Price</th>
-                    <th>Booking Time</th>
-                    <th>Order Time</th>
-                    <th>Status</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Booking Time</th>
+                    <th class="text-center">Order Time</th>
+                    <th class="text-center">Status</th>
                         <%--<th>Driver</th>--%>
-                    <th>Route</th>
-                    <th>From Address</th>
-                    <th>To Address</th>
+                    <%--<th class="text-center">Route</th>--%>
+                    <th class="text-center">From Address</th>
+                    <th class="text-center">To Address</th>
+                    <th class="hidden-xs hidden-sm text-center">Wi-Fi</th>
+                    <th class="hidden-xs hidden-sm hidden-md text-center">Conditioner</th>
+                    <th class="hidden-xs hidden-sm hidden-md text-center">Animalable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,9 +65,12 @@
                         <%--<td><c:if test="${list.driverCarId != null }">--%>
                         <%--DriverCar ${list.driverCarId.drvCarId}--%>
                         <%--</c:if></td>--%>
-                    <td>${list.routeId.pathContent}</td>
+                    <%--<td>${list.routeId.pathContent}</td>--%>
                     <td>${list.fromAddr}</td>
                     <td>${list.toAddr}</td>
+                    <td class="hidden-xs hidden-sm"> ${list.wifi} </td>
+                    <td class="hidden-xs hidden-sm hidden-md">${list.conditioner}</td>
+                    <td class="hidden-xs hidden-sm hidden-md">${list.animalTransport}</td>
                 </tr>
                 </tbody>
             </table>
@@ -79,3 +88,5 @@
 <br>&nbsp;<br>
 <br>&nbsp;<br>
 <br>&nbsp;<br>
+    </div>
+</div>
