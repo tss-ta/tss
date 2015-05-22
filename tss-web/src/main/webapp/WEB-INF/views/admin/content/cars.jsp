@@ -109,13 +109,13 @@
                         </td>
 
                         <td>
-                            <c:if test="${not assign}">
+                            <c:if test="${empty assign}">
                                 <a class="custom-link" href="/admin?menu=car&action=edit&id=${car.id}" title="Edit"><i class="fa fa-pencil fa-lg"></i></a>
                                 <%--<a class="custom-link trash" href="/admin?menu=car&action=remove&id=${car.id}" title="Delete"><i class="fa fa-trash-o fa-lg"></i></a>--%>
                             </c:if>
 
-                            <c:if test="${assign}">
-                                <a class="custom-link hover-green" href="/admin/driver?action=assigncar&carid=${car.id}&driverid=${driverid}">Assign <i class="fa fa-check-circle"></i></a>
+                            <c:if test="${not empty assign}">
+                                <a class="custom-link hover-green" href="/admin?menu=drivers&action=assigncar&carid=${car.id}&id=${id}">Assign <i class="fa fa-check-circle"></i></a>
                             </c:if>
                         </td>
 
