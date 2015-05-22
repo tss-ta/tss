@@ -22,12 +22,13 @@
 
     <div class="row">
         <div class="col-lg-4 col-lg-offset-4">
-            <div class="control-group">
+            <div class="input-group">
                 <input type="number" class="form-control" name ="trackNumber" value="${trackId}"
                        placeholder="Tracking number" min="1" max="4000000000" />
                 <span class="input-group-btn">
                     <button class="btn btn-primary" name="submit_track_number" type="submit">Ok</button>
                 </span>
+                <br/>
             </div><!-- /input-group -->
         </div><!-- /.col-lg-4 -->
     </div>

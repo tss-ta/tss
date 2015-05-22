@@ -76,8 +76,8 @@
 			<!---start-footer-grids--->
 			<div class="footer-grids">
 				<div class="footer-grid2 last-footer-grid">
-					<span> EMail: team.a.taxi@gmail.com <br> <%@ include
-							file="partials/footer.jspf"%></span>
+                        <%@ include
+							file="partials/footer.jspf"%>
 				</div>
 				<div class="clear"></div>
 			</div>

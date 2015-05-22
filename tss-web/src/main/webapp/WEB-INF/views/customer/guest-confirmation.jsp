@@ -41,13 +41,25 @@
                         <h4>
                             Please, remember your tracking number, because it's can be needed to track status of your order.
                         </h4>
-
+                    <br/><br/><br/>
                     </div>
                 </div>
             </div>
             <!--/wrapper -->
             <!--main content end-->
             <!--footer start-->
+            <div class="content">
+                <div class="wrap">
+                    <!---start-footer-grids--->
+                    <div class="footer-grids">
+                        <div class="footer-grid2 last-footer-grid">
+                        <%@ include file="/WEB-INF/views/partials/footer.jspf"%>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <!---End-footer-grids--->
+                </div>
+            </div>
         </div>
 
         <!-- js placed at the end of the document so the pages load faster -->
