@@ -8,11 +8,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<div class="row">
-    <div class="col-lg-9 main-chart">
+<div class="row row-fix">
+    <div class="col-md-offset-1 col-md-10">
         <div class="text-center">
             <h1>You can have only one order in progress.</h1>
         </div>
-       
     </div>
 </div>

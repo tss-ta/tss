@@ -11,7 +11,8 @@
 
 <!--sidebar start-->
 <ul class="sidebar-nav">
-	<li class="sidebar-brand"><a href="/">Taxi Service</a></li>
+	<li class="sidebar-brand sidebar-brand-high"><a href="/">Taxi Service</a></li>
+    <li class="sidebar-brand sidebar-brand-mini"><a href="/">TS</a></li>
 	<li><a href="/driver" ${activeDashboard}> <span
 			class="icon-container"><i class="fa fa-tachometer"></i></span> <span
 			class="icon-label">Dashboard</span>
