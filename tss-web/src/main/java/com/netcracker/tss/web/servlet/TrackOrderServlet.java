@@ -56,7 +56,7 @@ public class TrackOrderServlet extends HttpServlet {
                 request.setAttribute("trackId", orderId);
                 new TrackOrderPageServlet().doGet(request, response);
             }
-        } catch (NumberFormatException e) {
+        } catch (Exception e) { //TODO
             request.setAttribute("error", true);
             new TrackOrderPageServlet().doGet(request, response);
         }

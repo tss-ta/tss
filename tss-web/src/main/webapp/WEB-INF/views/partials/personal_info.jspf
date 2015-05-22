@@ -1,7 +1,7 @@
 <div class="form-group">
 	<label class="col-sm-2 col-sm-2 control-label">Name</label>
 	<div class="col-sm-4">
-		<input type="text" class="form-control" id="name" name="name"
+		<input type="text" class="form-control" id="name" name="name" placeholder="Your name"
 			maxlength="40" required autofocus>
 	</div>
 	<label class="col-sm-2 control-label">E-Mail</label>
