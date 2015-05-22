@@ -21,7 +21,7 @@
         <div class="col-lg-4 col-lg-offset-4">
             <div class="input-group">
                 <input type="number" class="form-control" name ="trackNumber" value="${trackId}"
-                       placeholder="Tracking number" min="1" max="400000000" />
+                       placeholder="Tracking number" min="1" max="4000000000" />
                 <span class="input-group-btn">
                     <button class="btn btn-primary" name="submit_track_number" type="submit">Ok</button>
                 </span>
@@ -68,10 +68,13 @@
         </section>
     </c:when>
     <c:when test="${error}">
-        <div class="alert alert-warning">
-            Order not found.
+        <div class="alert alert-warning text-center">
+            Sorry, this order not found.
         </div>
     </c:when>
+    <c:otherwise>
+        <h3 class="text-center">Please, enter your tracking number to view taxi order status</h3>
+    </c:otherwise>
 </c:choose>
 <br>&nbsp;<br>
 <br>&nbsp;<br>
