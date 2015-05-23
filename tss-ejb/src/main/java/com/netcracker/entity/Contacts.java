@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -35,9 +37,12 @@ public class Contacts implements Serializable {
     private Integer id;
 
     @Column(name = "username")
+    @Size(min = 1, max = 40)
     private String username;
 
     @Column(name = "email")
+    @Size(min = 1, max = 40)
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Incorrect email address")
     private String email;
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
