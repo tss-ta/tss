@@ -18,14 +18,15 @@
 				<div class="col-lg-12">
 					<div class="form-panel">
 						<%@ include file="../../partials/order_time_buttons.jspf"%>
+                        <%@ include file="../../partials/from_addr.jspf"%>
+                        <%@ include file="../../partials/from_pers_addr.jspf"%>
+                        <%@ include file="../../partials/to_addr.jspf"%>
+                        <%@ include file="../../partials/to_pers_addr.jspf"%>
+                        <%@ include file="../../partials/price.jspf"%>
 					</div>
 				</div>
-				<br>&nbsp;<br>
-				<%@ include file="../../partials/from_addr.jspf"%>
-				<%@ include file="../../partials/from_pers_addr.jspf"%>
-				<%@ include file="../../partials/to_addr.jspf"%>
-				<%@ include file="../../partials/to_pers_addr.jspf"%>
-				<%@ include file="../../partials/price.jspf"%>
+				<%--<br>&nbsp;<br>--%>
+
 			</div>
 			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-6">

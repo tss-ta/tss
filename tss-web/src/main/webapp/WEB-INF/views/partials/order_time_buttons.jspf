@@ -1,14 +1,13 @@
 <div class="form-group">
-	<label class="col-sm-2 col-sm-2 control-label">Order Time</label>
+	<label class="col-sm-2 control-label">Order Time:</label>
 	<div class="col-sm-4">
 		<input type="text" id="ordertime" name="ordertime" placeholder="Click here to enter order time"
                        class="form-control" value="${orderTime}" />
 	</div>
 	<div class="col-sm-6">
 		<div class="text-right">
-			<input type="button" class="btn btn-primary" onclick="geoloc()"
-				value="Find Me" /> <input type="button" class="btn btn-primary"
-				onclick="showonmap()" value="Show on Map" />
+            <a class="btn btn-primary"  onclick="geoloc()">Find Me <i class="fa fa-street-view"></i></a>
+            <a class="btn btn-primary"	onclick="showonmap()">Show on Map <i class="fa fa-map-marker"></i></a>
 		</div>
 	</div>
 </div>
