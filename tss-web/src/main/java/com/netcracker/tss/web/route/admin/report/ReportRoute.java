@@ -13,6 +13,7 @@ import com.netcracker.tss.web.util.*;
 import com.netcracker.util.BeansLocator;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +35,43 @@ public class ReportRoute {
     public static final String REPORT_SUCCESS_UPDATE_MESSAGE = "Report was successfully updated.";
     public static final String ALL_REPORTS_URI = "/admin?menu=report&action=all";
 
+
+//    @Action(action = "view")
+//    public ActionResponse getReport(HttpServletRequest request) {
+//        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
+//        Integer page = parsePageNumberFromRequest(request);
+//        ActionResponse response = new ActionResponse();
+//        ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+//
+//        if (id == null) {
+//            return createIncorrectIdResponse(response);
+//        }
+//
+//        ReportInfo reportInfo = reportsBean.getReportInfoById(id);
+//
+//        if (reportInfo == null) {
+//            return createIncorrectIdResponse(response);
+//        }
+//        Report report = new Report();
+//        report.setInfo(reportInfo);
+//        request.setAttribute(RequestAttribute.REPORT.getName(), report);
+//
+//        response.setPageContent(Page.ADMIN_REPORT_CONTENT.getAbsolutePath());
+//        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORT_CONTENT.getType());
+//        return response;
+//    }
+
+    @Action(action = "test")
+    public ActionResponse getTest(HttpServletRequest request) {
+        ActionResponse response = new ActionResponse();
+
+        Timestamp timestamp = RequestParameterParser.parseTimestamp(request, "crName8");
+        System.out.println("timestamp: " + timestamp);
+
+        response.setPageContent(Page.ERROR_404_CONTENT.getAbsolutePath());
+        return response;
+    }
+
     @Action(action = "view")
     public ActionResponse getReport(HttpServletRequest request) {
         Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
@@ -52,6 +90,8 @@ public class ReportRoute {
         }
 
         request.setAttribute(RequestAttribute.REPORT.getName(), report);
+
+        System.out.println(report);
 
         if(report.getInfo().isCountable()) {
             request.setAttribute(RequestAttribute.PAGER.getName(), reportsBean.getReportPager(report.getInfo(), page));
@@ -188,10 +228,10 @@ public class ReportRoute {
                     RequestParameter.REPORT_PAGE_SIZE.getValue()));
         }
 
-        boolean filterable = RequestParameterParser.parseBoolean(request, RequestParameter.REPORT_FILTERABLE.getValue());
-        System.out.println("filterable: " + filterable);
+        reportInfo.setFilterable(RequestParameterParser.parseBoolean(request, RequestParameter.REPORT_FILTERABLE.getValue()));
+        System.out.println("filterable: " + reportInfo.isFilterable());
 
-        if (filterable) {
+        if (reportInfo.isFilterable()) {
             reportInfo.setFilter(createCriterionListFromRequest(request, reportInfo));
         }
 

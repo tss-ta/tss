@@ -98,7 +98,7 @@ public class Criterion {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", type=").append(type);
-        sb.append(", reportInfo=").append(reportInfo);
+        sb.append(", reportInfo=").append(reportInfo == null ? reportInfo : reportInfo.getId());
         sb.append('}');
         return sb.toString();
     }

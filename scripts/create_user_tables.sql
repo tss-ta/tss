@@ -366,5 +366,6 @@ CREATE TABLE report_info
   countable boolean,
   page_size integer,
   export_size integer,
+  filterable boolean,
   CONSTRAINT report_id_pk PRIMARY KEY (id)
 );

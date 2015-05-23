@@ -165,6 +165,9 @@
                 <option value="1">Integer</option>
                 <option value="2">Long</option>
                 <option value="3">String</option>
+                <option value="4">Double</option>
+                <option value="5">Boolean</option>
+                <option value="6">Timestamp</option>
             </select>
             <div class="visible-xs vertical-margin"></div>
         </div>
