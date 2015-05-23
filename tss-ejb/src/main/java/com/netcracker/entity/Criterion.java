@@ -1,7 +1,5 @@
 package com.netcracker.entity;
 
-import com.netcracker.report.Report;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -23,17 +21,21 @@ public class Criterion {
     @NotNull
     private Integer type;
 
+    @Column(name = "seq_number")
+    private Integer sequentialNumber;
+
     @ManyToOne
     @JoinColumn(name = "report_info")
     private ReportInfo reportInfo;
 
     public Criterion() {}
 
-    public Criterion(Integer id, String name, Integer type, ReportInfo reportInfo) {
+    public Criterion(Integer id, String name, Integer type, ReportInfo reportInfo, Integer sequentialNumber) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.reportInfo = reportInfo;
+        this.sequentialNumber = sequentialNumber;
     }
 
     public Integer getId() {
@@ -68,6 +70,14 @@ public class Criterion {
         this.reportInfo = reportInfo;
     }
 
+    public Integer getSequentialNumber() {
+        return sequentialNumber;
+    }
+
+    public void setSequentialNumber(Integer sequentialNumber) {
+        this.sequentialNumber = sequentialNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,6 +88,8 @@ public class Criterion {
         if (id != null ? !id.equals(criterion.id) : criterion.id != null) return false;
         if (name != null ? !name.equals(criterion.name) : criterion.name != null) return false;
         if (reportInfo != null ? !reportInfo.equals(criterion.reportInfo) : criterion.reportInfo != null) return false;
+        if (sequentialNumber != null ? !sequentialNumber.equals(criterion.sequentialNumber) : criterion.sequentialNumber != null)
+            return false;
         if (type != null ? !type.equals(criterion.type) : criterion.type != null) return false;
 
         return true;
@@ -88,6 +100,7 @@ public class Criterion {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (sequentialNumber != null ? sequentialNumber.hashCode() : 0);
         result = 31 * result + (reportInfo != null ? reportInfo.hashCode() : 0);
         return result;
     }
@@ -98,7 +111,7 @@ public class Criterion {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", type=").append(type);
-        sb.append(", reportInfo=").append(reportInfo == null ? reportInfo : reportInfo.getId());
+        sb.append(", sequentialNumber=").append(sequentialNumber);
         sb.append('}');
         return sb.toString();
     }

@@ -343,18 +343,6 @@ CREATE TABLE criterion_type
   CONSTRAINT criterion_type_id_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE criterion
-(
-  id serial NOT NULL,
-  name varchar(40),
-  type integer,
-  report_info integer,
-  CONSTRAINT criterion_id_pk PRIMARY KEY (id),
-  CONSTRAINT report_info_fk FOREIGN KEY (report_info)
-    REFERENCES report_info (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE
-);
-
 
 CREATE TABLE report_info
 (
@@ -368,4 +356,18 @@ CREATE TABLE report_info
   export_size integer,
   filterable boolean,
   CONSTRAINT report_id_pk PRIMARY KEY (id)
+);
+
+
+CREATE TABLE criterion
+(
+  id serial NOT NULL,
+  name varchar(40),
+  type integer,
+  report_info integer,
+  seq_number integer,
+  CONSTRAINT criterion_id_pk PRIMARY KEY (id),
+  CONSTRAINT report_info_fk FOREIGN KEY (report_info)
+  REFERENCES report_info (id) MATCH SIMPLE
+  ON UPDATE NO ACTION ON DELETE CASCADE
 );

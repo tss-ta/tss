@@ -68,28 +68,99 @@
                     <div class="row">
                         <form class="form-horizontal" id="filter-form" method="get">
 
+                            <div id="btnParams"></div>
+
+                            <input type="hidden" name="id" value="${report.info.id}">
+
+                            <input type="hidden" name="page" id="pageNumber">
+
+                            <input type="hidden" value="${report.info.filter.size()}" name="crAmount">
+
                             <c:forEach items="${report.info.filter}" var="criterion">
                                 <div class="col-md-6">
                                     <div class="form-group">
+
+                                        <input type="hidden" name="crType${criterion.sequentialNumber}" value="${criterion.type}">
+
+                                        <c:if test="${not empty filter}">
+                                            <c:set var="rowColumn" value="${filter.get(criterion.sequentialNumber - 1)}"/>
+                                            <c:choose>
+                                                <c:when test="${rowColumn.type eq 'INTEGER'}">
+                                                    <c:set var="criterionValue" value="${rowColumn.intValue}"/>
+                                                </c:when>
+                                                <c:when test="${rowColumn.type eq 'STRING'}">
+                                                    <c:set var="criterionValue" value="${rowColumn.stringValue}"/>
+                                                </c:when>
+                                                <c:when test="${rowColumn.type eq 'DOUBLE'}">
+                                                    <c:set var="criterionValue" value="${rowColumn.doubleValue}"/>
+                                                </c:when>
+                                                <c:when test="${rowColumn.type eq 'BOOLEAN'}">
+                                                    <c:if test="${rowColumn.booleanValue}">
+                                                        <c:set var="criterionValue" value="checked"/>
+                                                    </c:if>
+                                                </c:when>
+                                                <c:when test="${rowColumn.type eq 'TIMESTAMP'}">
+                                                    <c:set var="criterionValue" value="${rowColumn.timestampValue}"/>
+                                                </c:when>
+                                                <c:when test="${rowColumn.type eq 'LONG'}">
+                                                    <c:set var="criterionValue" value="${rowColumn.longValue}"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    unknown
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:if>
+
                                         <c:choose>
-                                            <c:when test="${(criterion.type eq 1) or (criterion.type eq 2) or (criterion.type eq 3) or (criterion.type eq 4)}">
+
+                                            <%-- STRING --%>
+                                            <c:when test="${criterion.type eq 0}">
                                                 <label for="cr${criterion.id}" class="control-label col-md-6">${criterion.name}:</label>
                                                 <div class=" col-md-6">
-                                                    <input type="text" class="form-control" id="cr${criterion.id}" name="crName${criterion.id}">
+                                                    <input type="text" class="form-control" id="cr${criterion.id}" name="crName${criterion.sequentialNumber}" value="${criterionValue}">
                                                 </div>
                                             </c:when>
-                                            <c:when test="${criterion.type eq 5}">
+
+                                            <%-- INTEGER --%>
+                                            <c:when test="${criterion.type eq 1}">
+                                                <label for="cr${criterion.id}" class="control-label col-md-6">${criterion.name}:</label>
+                                                <div class=" col-md-6">
+                                                    <input type="text" class="form-control" id="cr${criterion.id}" name="crName${criterion.sequentialNumber}" value="${criterionValue}">
+                                                </div>
+                                            </c:when>
+
+                                            <%-- BOOLEAN --%>
+                                            <c:when test="${criterion.type eq 2}">
                                                 <div class="checkbox col-md-offset-5 col-md-7 text-left">
-                                                    <input type="checkbox" id="cr${criterion.id}" name="crName${criterion.id}" style="styled">
+                                                    <input type="checkbox" id="cr${criterion.id}" name="crName${criterion.sequentialNumber}" ${criterionValue} style="styled">
                                                     <label for="cr${criterion.id}"><b>${criterion.name}</b></label>
                                                 </div>
                                             </c:when>
-                                            <c:when test="${criterion.type eq 6}">
-                                                <label for="for${criterion.id}" class="control-label col-md-6">${criterion.name}:</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" id="cr${criterion.id}" name="crName${criterion.id}" class="form-control datePicker">
+
+                                            <%-- DOUBLE --%>
+                                            <c:when test="${criterion.type eq 3}">
+                                                <label for="cr${criterion.id}" class="control-label col-md-6">${criterion.name}:</label>
+                                                <div class=" col-md-6">
+                                                    <input type="text" class="form-control" id="cr${criterion.id}" name="crName${criterion.sequentialNumber}" value="${criterionValue}">
                                                 </div>
                                             </c:when>
+
+                                            <%-- TIMESTAMP --%>
+                                            <c:when test="${criterion.type eq 4}">
+                                                <label for="for${criterion.id}" class="control-label col-md-6">${criterion.name}:</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" id="cr${criterion.id}" name="crName${criterion.sequentialNumber}" class="form-control datePicker" value="${criterionValue}">
+                                                </div>
+                                            </c:when>
+
+                                            <%-- LONG --%>
+                                            <c:when test="${criterion.type eq 5}">
+                                                <label for="cr${criterion.id}" class="control-label col-md-6">${criterion.name}:</label>
+                                                <div class=" col-md-6">
+                                                    <input type="text" class="form-control" id="cr${criterion.id}" name="crName${criterion.sequentialNumber}" value="${criterionValue}">
+                                                </div>
+                                            </c:when>
+
                                         </c:choose>
                                     </div>
                                 </div>
@@ -99,10 +170,8 @@
                                 <hr/>
                             </div>
 
-                            <div id="btnParams"></div>
-
                             <div class="col-md-12 text-center">
-                                <button type="button" class="btn btn-success" id="applyBtn" data-action="/admin?menu=report&action=test"><i class="fa fa-check"></i> Apply</button>
+                                <button type="button" class="btn btn-success" id="applyBtn" data-action="/admin"><i class="fa fa-check"></i> Apply</button>
                                 <button type="button" class="btn btn-success" id="excelBtn" data-action="/excel"><i class="fa fa-download"></i> Excel</button>
                             </div>
                         </form>
@@ -187,7 +256,32 @@
                 </tbody>
             </table>
 
-            <%@ include file="../partials/pagination.jspf"%>
+            <c:if test="${!filterPager}">
+                <%@ include file="../partials/pagination.jspf"%>
+            </c:if>
+            <c:if test="${filterPager}">
+                <nav>
+                    <ul class="pager custom-pager">
+
+                        <c:if test="${not empty pager.firstPage}">
+                            <li><a href="#" class="pagerBtn" data-page="${pager.firstPage}" title="First (${pager.firstPage})"><i class="fa fa-angle-double-left fa-lg"></i></a></li>
+                        </c:if>
+
+                        <c:if test="${not empty pager.previousPage}">
+                            <li><a href="#" class="pagerBtn" data-page="${pager.previousPage}" title="Previous (${pager.previousPage})"><i class="fa fa-angle-left fa-lg"></i></a></li>
+                        </c:if>
+
+                        <c:if test="${not empty pager.nextPage}">
+                            <li><a href="#" class="pagerBtn" data-page="${pager.nextPage}" title="Next (${pager.nextPage})"><i class="fa fa-angle-right fa-lg"></i></a></li>
+                        </c:if>
+
+                        <c:if test="${not empty pager.lastPage}">
+                            <li><a href="#" class="pagerBtn" data-page="${next.previousPage}"  title="Last (${pager.lastPage})"><i class="fa fa-angle-double-right fa-lg"></i></a></li>
+                        </c:if>
+
+                    </ul>
+                </nav>
+            </c:if>
 
         </div>
     </div>
@@ -204,7 +298,7 @@
 
 <div class="not-to-show" id="applyActionParams-template" data-number="0">
     <input type="hidden" name="menu" value="report">
-    <input type="hidden" name="action" value="test">
+    <input type="hidden" name="action" value="filter">
 </div>
 
 <script src="/resources/customer_assets/js/anytime.5.1.0.js"></script>
@@ -215,10 +309,22 @@
         addParams($("#applyActionParams-template"))
         sendForm("#applyBtn")
     });
+
+    $(".pagerBtn").click(function() {
+        addParams($("#applyActionParams-template"))
+        addPageParam($(this));
+        sendForm("#applyBtn")
+    });
+
     $("#excelBtn").click(function() {
         clearParams();
         sendForm("#excelBtn")
     });
+
+    function addPageParam(elem) {
+        var page = elem.data("page");
+        $("#pageNumber").attr("value", page);
+    }
 
     function addParams(templateElem) {
         $("#btnParams").append(templateElem.html());
@@ -235,18 +341,11 @@
         form.submit();
     };
 
-    $("#filterBtn").click(function() {
-        var arrowState = $(this).data("arrow");
-        if(arrowState == 0) {
-            changeFilterBtnArrowState($(this), 1, "<i class=\"fa fa-chevron-up\"></i> Filter");
-        }
-        else {
-            changeFilterBtnArrowState($(this), 0, "<i class=\"fa fa-chevron-down\"></i> Filter");
-        }
+    $('#filter').on('hide.bs.collapse', function () {
+        $("#filterBtn").html("<i class=\"fa fa-chevron-down\"></i> Filter");
     });
 
-    function changeFilterBtnArrowState(elem, arrowState, content) {
-        elem.data("arrow", arrowState);
-        elem.html(content);
-    }
+    $('#filter').on('show.bs.collapse', function () {
+        $("#filterBtn").html("<i class=\"fa fa-chevron-up\"></i> Filter");
+    });
 </script>

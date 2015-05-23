@@ -1,5 +1,6 @@
 package com.netcracker.dao;
 
+import com.netcracker.entity.helper.ReportFilter;
 import com.netcracker.report.container.MultipurposeValue;
 import com.netcracker.report.container.RowData;
 import com.netcracker.report.mapper.DataType;
@@ -11,6 +12,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kyrylo Berehovyi
@@ -33,6 +36,26 @@ public class ReportDataDAO {
         try {
             connection = dataSource.getConnection();
             resultSet = connection.prepareStatement(query).executeQuery();
+            count = getCountFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
+        return count;
+    }
+
+    public long countResults(String query, ReportFilter filter) {
+        Connection connection = null;
+        ResultSet resultSet;
+        long count = 0;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            setParametersIntoPreparedStatement(statement, filter);
+            resultSet = statement.executeQuery();
             count = getCountFromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,6 +92,67 @@ public class ReportDataDAO {
             }
         }
         return reportData;
+    }
+
+    public ReportData createReportData(String query, ReportFilter filter) {
+        Connection connection = null;
+        ReportData reportData = new ReportData();
+        ResultSet resultSet;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            setParametersIntoPreparedStatement(statement, filter);
+            resultSet = statement.executeQuery();
+            initializeReportMetaData(reportData, resultSet.getMetaData());
+            generateDataFromResultSet(reportData, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
+        return reportData;
+    }
+
+    public ReportData createReportData(String query, int pageNumber, Integer pageSize, ReportFilter filter) {
+        Connection connection = null;
+        ReportData reportData = new ReportData();
+        ResultSet resultSet;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            setParametersIntoPreparedStatement(statement, filter);
+            statement.setInt(filter.getCriterionAmount() + LIMIT_POSITION, pageSize);
+            statement.setInt(filter.getCriterionAmount() + OFFSET_POSITION, (pageNumber - 1) * pageSize);
+
+//            ParameterMetaData parameterMetaData = statement.getParameterMetaData();
+//            System.out.println("paparameterMetaData: " + parameterMetaData);
+//            if (parameterMetaData != null) {
+//                System.out.println("count: " + parameterMetaData.getParameterCount());
+//                for (int i = 1; i <= parameterMetaData.getParameterCount(); i++) {
+//                    System.out.println("param " + i + " type:" + parameterMetaData.getParameterType(i));
+//                }
+//            }
+
+            resultSet = statement.executeQuery();
+            initializeReportMetaData(reportData, resultSet.getMetaData());
+            generateDataFromResultSet(reportData, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
+        return reportData;
+    }
+
+    private void setParametersIntoPreparedStatement(PreparedStatement statement, ReportFilter filter) throws SQLException {
+        List<MultipurposeValue> valueList = filter.getCriteria();
+        for (int index = 1; index <= filter.getCriterionAmount(); index++) {
+            mapper.setValueInStatement(index, statement, valueList.get(index - 1));
+        }
     }
 
     private void generateDataFromResultSet(ReportData reportData, ResultSet resultSet) throws SQLException {

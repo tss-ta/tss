@@ -35,7 +35,9 @@
             <div class="panel-body">
 
                 <form action="/admin?menu=report${formAction}" method="post" class="form-horizontal" id="reportForm">
+
                     <input type="hidden" name="id" value="${reportInfo.id}">
+
                     <div class="form-group">
                         <br/>
                         <label for="name" class="col-md-3 col-sm-3 control-label">Name:</label>
@@ -121,7 +123,7 @@
 
                     <div class="switcher hide-position" id="filter-switcher">
 
-                        <input type="hidden" name="criteriaAmount" id="criteriaAmount">
+                        <input type="hidden" name="crAmount" id="criteriaAmount">
 
                         <div id="criteriaContainer"></div>
 
@@ -161,16 +163,20 @@
 
         <div class="col-md-3 col-sm-3 col-xs-12 text-left">
             <select class="form-control criterion-type">
-                <option>Type</option>
-                <option value="1">Integer</option>
-                <option value="2">Long</option>
-                <option value="3">String</option>
-                <option value="4">Double</option>
-                <option value="5">Boolean</option>
-                <option value="6">Timestamp</option>
+                <c:forEach var="type" items="${dataTypes}">
+                    <option value="${type.ordinal()}">${type.name()}</option>
+                </c:forEach>
+                <%--<option value="1">Integer</option>--%>
+                <%--<option value="2">Long</option>--%>
+                <%--<option value="3">String</option>--%>
+                <%--<option value="4">Double</option>--%>
+                <%--<option value="5">Boolean</option>--%>
+                <%--<option value="6">Timestamp</option>--%>
             </select>
             <div class="visible-xs vertical-margin"></div>
         </div>
+
+        <input type="hidden" class="criterion-seq-num">
 
         <div class="col-md-2 col-sm-2 col-xs-12 text-center">
             <a class="btn btn-danger delete-criterion hidden-xs"><i class="fa fa-trash-o"></i></a>
@@ -181,40 +187,67 @@
 </div>
 
 <script>
+    var criteriaNameValidators = {
+                validators: {
+                    notEmpty: {
+                        message: 'The criteria name is required'
+                    }
+                }
+            };
 
     $('.addCriterionBtn').click(function() {
         $('#criteriaContainer').append($('#criterion-template').html());
         updateCriteria();
+        var name = 'crName' + $('#criteriaAmount').val();
+        $('#reportForm').formValidation('addField', name, criteriaNameValidators);
     });
 
     $(document).on("click", ".delete-criterion", function() {
         $(this).closest('.form-group').remove();
         updateCriteria();
+
     });
 
     function updateCriteria() {
         $('#criteriaAmount').val(updateCriteriaSerialNumbers());
+        $("#reportForm").formValidation('revalidateField', "filterable");
     }
 
     function updateCriteriaSerialNumbers() {
         var counter = 0;
         $('#criteriaContainer .form-group').each(function() {
             counter++;
+
             $(this).find('.criterion-label').html('Criterion ' + counter + ":");
             $(this).find('.criterion-name').attr('name','crName' + counter);
             $(this).find('.criterion-type').attr('name','crType' + counter);
-        })
+            $(this).find('.criterion-seq-num').attr('name','crSeqNum' + counter);
+            $(this).find('.criterion-seq-num').attr('value', counter);
+        });
         return counter;
     }
 
 </script>
 
 <script>
+
     $(document).ready(function() {
-        $('#reportForm').formValidation(getOptions(false));
+        FormValidation.Validator.filter = {
+            validate: function(validator, $field, options) {
+                var container = $("#criteriaContainer");
+                if (container.children().length == 0) {
+                    return false;
+                }
+                return true;
+            }
+        };
+
+        $(document).ready(function() {
+            $('#reportForm').formValidation(getOptions(false, false));
+        });
     });
 
-    function getOptions(enabled) {
+    function getOptions(paggingState, filterState) {
         return {
             framework: 'bootstrap',
             icon: {
@@ -245,7 +278,7 @@
                 countQuery: {
                     validators: {
                         notEmpty: {
-                            enabled: enabled,
+                            enabled: paggingState,
                             message: 'The count query is required'
                         }
                     }
@@ -253,15 +286,15 @@
                 pageSize: {
                     validators: {
                         notEmpty: {
-                            enabled: enabled,
+                            enabled: paggingState,
                             message: 'The page size is required'
                         },
                         numeric: {
-                            enabled: enabled,
+                            enabled: paggingState,
                             message: 'The page size must be a number'
                         },
                         between: {
-                            enabled: enabled,
+                            enabled: paggingState,
                             min: 1,
                             max: 100,
                             message: 'The page size must be between 1 and 100'
@@ -271,18 +304,26 @@
                 exportSize: {
                     validators: {
                         notEmpty: {
-                            enabled: enabled,
+                            enabled: paggingState,
                             message: 'The export size is required'
                         },
                         numeric: {
-                            enabled: enabled,
+                            enabled: paggingState,
                             message: 'The export size must be a number'
                         },
                         between: {
-                            enabled: enabled,
+                            enabled: paggingState,
                             min: 1,
                             max: 10000,
                             message: 'The export size must be between 1 and 10000'
+                        }
+                    }
+                },
+                filterable: {
+                    validators: {
+                        filter: {
+                            enabled: filterState,
+                            message: 'If filter selected, filter must not be empty'
                         }
                     }
                 }
@@ -297,24 +338,16 @@
         element.formValidation('enableFieldValidators', 'exportSize', enable);
     };
 
-    function stub() {
+    function switchFilterFieldValidation(element, enable) {
+        element.formValidation('enableFieldValidators', 'filterable', enable);
     };
 
     $('#countable').change(function() {
-//        var switcher = $('.switcher');
-//        var form = $('#reportForm');
-//        if(this.checked == true) {
-//            switchPagerFieldValidation(form, true);
-//            switcher.removeClass('hide-position');
-//        } else if (this.checked == false) {
-//            switchPagerFieldValidation(form, false);
-//            switcher.addClass('hide-position');
-//        }
         invertVisibility("#countable-switcher", '#reportForm', switchPagerFieldValidation, this);
     });
 
     $('#filterable').change(function() {
-        invertVisibility("#filter-switcher", '#reportForm', stub, this);
+        invertVisibility("#filter-switcher", '#reportForm', switchFilterFieldValidation, this);
     });
 
     function invertVisibility(changableElem, form, validationFunction, checkbox) {

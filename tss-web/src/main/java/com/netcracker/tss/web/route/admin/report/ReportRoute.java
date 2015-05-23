@@ -4,7 +4,10 @@ import com.netcracker.ejb.PageCalculatorBeanLocal;
 import com.netcracker.ejb.ReportsBeanLocal;
 import com.netcracker.entity.Criterion;
 import com.netcracker.entity.ReportInfo;
+import com.netcracker.entity.helper.Pager;
+import com.netcracker.entity.helper.ReportFilter;
 import com.netcracker.report.Report;
+import com.netcracker.report.mapper.DataType;
 import com.netcracker.router.HttpMethod;
 import com.netcracker.router.annotation.Action;
 import com.netcracker.router.annotation.ActionRoute;
@@ -14,6 +17,7 @@ import com.netcracker.util.BeansLocator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +38,8 @@ public class ReportRoute {
     public static final String REPORT_SUCCESS_CREATE_MESSAGE = "New report was successfully created.";
     public static final String REPORT_SUCCESS_UPDATE_MESSAGE = "Report was successfully updated.";
     public static final String ALL_REPORTS_URI = "/admin?menu=report&action=all";
+    public static final String INCORRECT_FILTER_VALUES_MESSAGE = "Incorrect Filter value(s)";
+    public static final String FILTERABLE = "filterable";
 
 
 //    @Action(action = "view")
@@ -61,23 +67,17 @@ public class ReportRoute {
 //        return response;
 //    }
 
-    @Action(action = "test")
-    public ActionResponse getTest(HttpServletRequest request) {
-        ActionResponse response = new ActionResponse();
-
-        Timestamp timestamp = RequestParameterParser.parseTimestamp(request, "crName8");
-        System.out.println("timestamp: " + timestamp);
-
-        response.setPageContent(Page.ERROR_404_CONTENT.getAbsolutePath());
-        return response;
-    }
 
     @Action(action = "view")
     public ActionResponse getReport(HttpServletRequest request) {
         Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
         Integer page = parsePageNumberFromRequest(request);
         ActionResponse response = new ActionResponse();
+
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+        ReportFilter filter = createReportFilter(request, response);
+
+        System.out.println("FILTER: " + filter);
 
         if (id == null) {
             return createIncorrectIdResponse(response);
@@ -91,10 +91,9 @@ public class ReportRoute {
 
         request.setAttribute(RequestAttribute.REPORT.getName(), report);
 
-        System.out.println(report);
-
         if(report.getInfo().isCountable()) {
-            request.setAttribute(RequestAttribute.PAGER.getName(), reportsBean.getReportPager(report.getInfo(), page));
+            request.setAttribute(RequestAttribute.PAGER.getName(),
+                    reportsBean.getReportPager(report.getInfo(), page));
             request.setAttribute(RequestAttribute.PAGER_LINK.getName(), createPagerLinkForViewAction(id));
         }
 
@@ -103,31 +102,55 @@ public class ReportRoute {
         return response;
     }
 
+    @Action(action = "filter")
+    public ActionResponse getFilteredReport(HttpServletRequest request) {
+        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
+        Integer page = parsePageNumberFromRequest(request);
+        ActionResponse response = new ActionResponse();
+        ReportFilter filter = createReportFilter(request, response);
+        ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
+
+        System.out.println("FILTER: " + filter);
+
+        if (id == null) {
+            return createIncorrectIdResponse(response);
+        }
+
+        ReportInfo reportInfo = reportsBean.getReportInfoById(id);
+        if (reportInfo == null) {
+            return createIncorrectIdResponse(response);
+        }
+
+        Report report = reportsBean.getReport(reportInfo, page, filter);
+
+        request.setAttribute(RequestAttribute.REPORT.getName(), report);
+
+        Pager pager = reportsBean.getFilterableReportPager(report.getInfo(), page, filter);
+        System.out.println("Pager" + pager);
+        if(report.getInfo().isCountable()) {
+            request.setAttribute(RequestAttribute.PAGER.getName(), pager);
+        }
+
+        if (filter != null) {
+            request.setAttribute(RequestAttribute.FILTER.getName(), filter.getCriteria());
+        }
+        response.setPageContent(Page.ADMIN_REPORT_CONTENT.getAbsolutePath());
+        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORT_CONTENT.getType());
+        request.setAttribute(RequestAttribute.FILTER_PAGER.getName(), true);
+        return response;
+    }
+
+
     private ActionResponse createIncorrectIdResponse(ActionResponse response) {
         response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
         return response;
     }
 
-//    @Action(action = "json", responseContentType = ContentType.JSON)
-//    public ActionResponse getReportJson(HttpServletRequest request) {
-//        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
-//        Integer page = parsePageNumberFromRequest(request);
-//        ActionResponse response = new ActionResponse();
-//        ReportsBeanLocal reportsBean;
-//        if (id != null) {
-//            reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-//            Report report = reportsBean.getReport(id, page);
-//            response.setModel(report);
-//
-//        } else {
-//            response.setPageContent(Page.INCORRECT_ID_CONTENT.getAbsolutePath());
-//        }
-//        return response;
-//    }
 
     @Action(action = "add")
     public ActionResponse viewAddPage(HttpServletRequest request) {
         ActionResponse response = new ActionResponse();
+        request.setAttribute(RequestAttribute.DATA_TYPE.getName(), Arrays.asList(DataType.values()));
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
         request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_CREATE_TYPE.getName());
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
@@ -239,6 +262,18 @@ public class ReportRoute {
         return reportInfo;
     }
 
+    public ReportFilter createReportFilter(HttpServletRequest request, ActionResponse response) {
+        ReportFilter filter = null;
+
+        try {
+            filter = new ReportFilterParser().parse(request);
+        } catch (Exception e) {
+            response.setErrorMessage(INCORRECT_FILTER_VALUES_MESSAGE);
+            e.printStackTrace();
+        }
+        return filter;
+    }
+
     private List<Criterion> createCriterionListFromRequest(HttpServletRequest request, ReportInfo reportInfo) {
         List<Criterion> criterionList;
         Integer criterionAmount = RequestParameterParser.parseInteger(request,
@@ -262,12 +297,14 @@ public class ReportRoute {
                 RequestParameter.REPORT_FILTER_CRITERION_ID_PREFIX.getValue() + index);
         String name = request.getParameter(RequestParameter.REPORT_FILTER_CRITERION_NAME_PREFIX.getValue() + index);
         Integer type = RequestParameterParser.parseInteger(request, RequestParameter.REPORT_FILTER_CRITERION_TYPE_PREFIX.getValue() + index);
+        Integer seqNum = RequestParameterParser.parseInteger(request, RequestParameter.REPORT_FILTER_SEQUENTIAL_NUMBER_PREFIX.getValue() + index);
 
         System.out.println("crId" + index + " : " + id);
         System.out.println("crName" + index + " : " + name);
         System.out.println("crType" + index + " : " + type);
+        System.out.println("crSeqNum" + index + " : " + seqNum);
 
-        return new Criterion(id, name, type, reportInfo);
+        return new Criterion(id, name, type, reportInfo, seqNum);
 
     }
 

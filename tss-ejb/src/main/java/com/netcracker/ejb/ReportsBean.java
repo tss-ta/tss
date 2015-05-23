@@ -9,6 +9,7 @@ import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.helper.CarCategory;
 import com.netcracker.entity.helper.Pager;
+import com.netcracker.entity.helper.ReportFilter;
 import com.netcracker.report.Report;
 import com.netcracker.report.container.ReportData;
 import com.netcracker.util.BeansLocator;
@@ -86,9 +87,20 @@ public class ReportsBean implements SessionBean {
         return counter.intValue();
     }
 
+    public int countFilterableReports(ReportInfo info, ReportFilter filter) {
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        Long counter = dataDAO.countResults(info.getCountQuery(), filter);
+        return counter.intValue();
+    }
+
     public Pager getReportPager(ReportInfo info, int page) {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         return pageCalculator.calculatePages(page, info.getPageSize(), countReports(info));
+    }
+
+    public Pager getFilterableReportPager(ReportInfo info, int page, ReportFilter filter) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        return pageCalculator.calculatePages(page, info.getPageSize(), countFilterableReports(info, filter));
     }
 
     public int countAllReportsInfo() {
@@ -165,6 +177,34 @@ public class ReportsBean implements SessionBean {
                 infoDAO.close();
             }
         }
+        return report;
+    }
+
+    public Report getReport(ReportInfo reportInfo, int pageNumber, ReportFilter filter) {
+
+        System.out.println("Filter: " + filter);
+
+        if (filter == null)
+            return new Report(reportInfo, null);
+
+
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        ReportData reportData = null;
+        Report report = null;
+
+        if (reportInfo.isCountable() && !reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), pageNumber, reportInfo.getPageSize());
+        } else if (!reportInfo.isCountable() && !reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+        } else if (reportInfo.isCountable() && reportInfo.isFilterable()) {
+            reportData = dataDAO.
+                    createReportData(reportInfo.getSelectQuery(), pageNumber, reportInfo.getPageSize(), filter);
+        } else if (!reportInfo.isCountable() && reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), filter);
+        }
+
+        report = new Report(reportInfo, reportData);
+
         return report;
     }
 
