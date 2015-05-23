@@ -52,7 +52,6 @@
 
 
 <script src="/resources/js/jquery-1.11.2.min.js"></script>
-<%--<script src="https://code.jquery.com/jquery-1.10.2.js"></script>--%>
 <script type="text/javascript"
 	src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
 

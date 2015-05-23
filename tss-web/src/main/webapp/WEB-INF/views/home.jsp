@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -97,13 +98,12 @@
 	</div>
 	<!---End-wrap---->
 	<!-- js placed at the end of the document so the pages load faster -->
-	<script src="/resources/customer_assets/js/jquery-1.8.3.min.js"></script>
+
+    <%--<script src="/resources/js/jquery-1.11.2.min.js"></script>--%>
 	<script src="/resources/customer_assets/js/bootstrap.min.js"></script>
-	<script class="include" type="text/javascript"
-		src="/resources/customer_assets/js/jquery.dcjqaccordion.2.7.js"></script>
-	<script src="/resources/customer_assets/js/jquery.scrollTo.min.js"></script>
-	<%--<script src="/resources/customer_assets/js/jquery.nicescroll.js"--%>
-		<%--type="text/javascript"></script>--%>
+	<%--<script class="include" type="text/javascript"--%>
+		<%--src="/resources/customer_assets/js/jquery.dcjqaccordion.2.7.js"></script>--%>
+
 	<script src="/resources/customer_assets/js/jquery.sparkline.js"></script>
 
 
@@ -117,7 +117,7 @@
 
 	<!--script for this page-->
 	<script src="/resources/customer_assets/js/sparkline-chart.js"></script>
-	<script src="/resources/customer_assets/js/zabuto_calendar.js"></script>
+
 
 
 	<script type="text/javascript"
