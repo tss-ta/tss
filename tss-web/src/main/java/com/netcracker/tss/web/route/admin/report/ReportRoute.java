@@ -125,9 +125,9 @@ public class ReportRoute {
 
         request.setAttribute(RequestAttribute.REPORT.getName(), report);
 
-        Pager pager = reportsBean.getFilterableReportPager(report.getInfo(), page, filter);
-        System.out.println("Pager" + pager);
         if(report.getInfo().isCountable()) {
+            Pager pager = reportsBean.getFilterableReportPager(report.getInfo(), page, filter);
+            System.out.println("Pager" + pager);
             request.setAttribute(RequestAttribute.PAGER.getName(), pager);
         }
 
