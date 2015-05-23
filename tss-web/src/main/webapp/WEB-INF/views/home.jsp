@@ -70,6 +70,17 @@
 		</div>
 	</div>
 	<div class="clear"></div>
+    <c:if test="${not empty errorMessage}">
+        <div class="row row-fix">
+            <div class="col-md-offset-1 col-md-10">
+                <br/>
+                <div class="alert alert-danger alert-dismissible text-center" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <i class="fa fa-exclamation"></i> ${errorMessage}
+                </div>
+            </div>
+        </div>
+    </c:if>
 	<jsp:include page="partials/guest.jsp" />
 	<div class="content">
 		<div class="wrap">
