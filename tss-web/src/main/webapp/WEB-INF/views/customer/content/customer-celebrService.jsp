@@ -28,7 +28,7 @@
 						cars?</label>
 					<div class="col-sm-6">
 						<input type="number" class="form-control" id="driversAmountId"
-							name="driversAmount" placeholder="Insert cars amount here" min="1" max="1000" />
+							name="driversAmount" placeholder="Insert cars amount here" min="5" max="100" />
 						<div id="alert_drivers_amount"></div>
 					</div>
 				</div>
@@ -37,7 +37,7 @@
 						would you celebrate?</label>
 					<div class="col-sm-6">
 						<input type="number" class="form-control" id="duration"
-							name="duration" placeholder="Insert duration in hours here" min="1" max="100"/>
+							name="duration" placeholder="Insert duration in hours here" min="8" max="1000"/>
 						<div id="alert_duration"></div>
 					</div>
 				</div>

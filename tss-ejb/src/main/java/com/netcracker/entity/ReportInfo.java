@@ -1,6 +1,8 @@
 package com.netcracker.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 /**
  * @author Kyrylo Berehovyi
@@ -25,6 +27,8 @@ public class ReportInfo {
     private String countQuery;
 
     @Column(name = "page_size")
+    @Min(value = 1)
+    @Max(value = 10000)
     private Integer pageSize;
 
     @Column(name = "export_size")

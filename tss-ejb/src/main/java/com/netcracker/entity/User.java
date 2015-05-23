@@ -28,12 +28,12 @@ public class User implements Serializable {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @Size(min = 1, max = 60)
+    @Size(min = 1, max = 40)
     @Column(name = "username")
     private String username;
 
     @Column(name = "email")
-    @Size(min = 1, max = 60)
+    @Size(min = 1, max = 40)
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Incorrect email address")
     private String email;
 
