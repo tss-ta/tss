@@ -1,5 +1,4 @@
 <div class="form-group">
-	<div class="col-sm-1"></div>
 	<label class="col-sm-2 col-sm-2 control-label">Price :</label>
 	<div class="col-sm-6">
 		<input id="price_field" class="form-control" name="price" type="text"

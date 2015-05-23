@@ -1,5 +1,4 @@
 <div class="form-group">
-	<div class="col-sm-2"></div>
 	<label class="col-sm-2 col-sm-2 control-label">To :</label>
 	<div class="col-sm-6">
 		<input type="text" class="form-control" id="toAddr" name="toAddr" placeholder="Enter address or click on map"
