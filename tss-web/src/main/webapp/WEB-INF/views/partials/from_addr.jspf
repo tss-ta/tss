@@ -3,7 +3,7 @@
 	<div class="col-sm-6">
 		<input type="text" class="form-control" id="fromAddr" name="fromAddr"
                placeholder="Enter address or click on map"
-                       value="${toh.fromAddr}" maxlength="140" required autofocus />
+                       value="${empty toh ?  param.fromAddr : toh.fromAddr}" maxlength="140" required autofocus />
 	</div>
 	<div class="col-sm-4">
         <a onclick="showonmap()">

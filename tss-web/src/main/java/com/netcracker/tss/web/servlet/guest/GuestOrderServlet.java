@@ -27,6 +27,7 @@ import com.netcracker.tss.web.util.UserUtils;
 
 /**
  * Servlet for quick taxi order on home page as guest
+ *
  * @author maks
  */
 @WebServlet(urlPatterns = "/guest/order")
@@ -43,46 +44,49 @@ public class GuestOrderServlet extends HttpServlet {
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         try {
-        String name = req.getParameter("name");
-        String email = req.getParameter("email");
-        User user = new User(name, email);
-        TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
-        PriceBeanLocal priceBean = getPriceBean(req);
-        float distance = 0;
-        double price;
+            Date bookingTime = new Date();
+            Date orderTime = DateParser.parseDate(req);
+            if (orderTime.before(bookingTime)) {
+                req.setAttribute("errorMessage", "It is impossible to order taxi at the past! Please input the correct order time.");
+                req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
+            } else {
+                String name = req.getParameter("name");
+                String email = req.getParameter("email");
+                User user = new User(name, email);
+                TaxiOrderBeanLocal taxiOrderBeanLocal = BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+                PriceBeanLocal priceBean = BeansLocator.getInstance().getBean(PriceBeanLocal.class);
+                MapBeanLocal mapBean = BeansLocator.getInstance().getBean(MapBeanLocal.class);
+                float distance = 0;
+                double price;
 
-        Route route = new Route("Guest Route");
-        route.setDistance(distance);
-        Address addFrom = toAddress(req.getParameter("fromAddr"), req);
-        Address addTo = toAddress(req.getParameter("toAddr"), req);
-        TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
-
-            MapBeanLocal mapBean = getMapBean(req);
-            distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
-                    req.getParameter("toAddr"));
+                Route route = new Route("Guest Route");
+                route.setDistance(distance);
+                Address addFrom = toAddress(req.getParameter("fromAddr"), mapBean);
+                Address addTo = toAddress(req.getParameter("toAddr"), mapBean);
+                TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
 
 
-        price = priceBean.calculatePrice(distance,
-                DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
-        taxiOrder.setBookingTime(new Date());
-        Date orderTime = DateParser.parseDate(req);
-        taxiOrder.setOrderTime(orderTime);
-        taxiOrder.setPrice(price);
-        taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
-        int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user).get(0).getId();
-        req.setAttribute("taxiOrderId", latestTOId);
-        req.getRequestDispatcher("/WEB-INF/views/customer/guest-confirmation.jsp")
-                .forward(req, resp);
-
+                distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
+                        req.getParameter("toAddr"));
+                price = priceBean.calculatePrice(distance,
+                        orderTime, taxiOrder, UserUtils.findCurrentUser());
+                taxiOrder.setBookingTime(bookingTime);
+                taxiOrder.setOrderTime(orderTime);
+                taxiOrder.setPrice(price);
+                taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo, taxiOrder);
+                int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user).get(0).getId();
+                req.setAttribute("taxiOrderId", latestTOId);
+                req.getRequestDispatcher("/WEB-INF/views/customer/guest-confirmation.jsp")
+                        .forward(req, resp);
+            }
         } catch (Exception e) {
-            // TODO
+            // TODO Multicatch
             Logger.getLogger(GuestOrderServlet.class.getName()).log(Level.SEVERE, e.getMessage(), e);
             resp.sendRedirect("/incorrect-address.jsp");
         }
     }
 
-    private Address toAddress(String addr, HttpServletRequest req) {
-        MapBeanLocal mapBeanLocal = getMapBean(req);
+    private Address toAddress(String addr, MapBeanLocal mapBeanLocal) {
         double[] to = {0, 0};
         try {
             to = mapBeanLocal.geocodeAddress(addr);
@@ -92,15 +96,12 @@ public class GuestOrderServlet extends HttpServlet {
         return new Address((float) to[1], (float) to[0]);
     }
 
-    private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
-        return BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
-    }
+//    private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
+//        return BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+//    }
 
-    private MapBeanLocal getMapBean(HttpServletRequest req) {
-        return BeansLocator.getInstance().getBean(MapBeanLocal.class);
-    }
+//    private MapBeanLocal getMapBean(HttpServletRequest req) {
+//        return BeansLocator.getInstance().getBean(MapBeanLocal.class);
+//    }
 
-    private PriceBeanLocal getPriceBean(HttpServletRequest req) {
-        return BeansLocator.getInstance().getBean(PriceBeanLocal.class);
-    }
 }

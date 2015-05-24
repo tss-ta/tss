@@ -25,7 +25,8 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Guest Name:</label>
 					<div class="col-sm-6">
-						<input type="text" class="form-control" id="name" name="guestName" maxlength="60" minLength="2" required autofocus>
+						<input type="text" class="form-control" id="name" name="guestName"
+                               value="${param.guestName}" maxlength="60" minLength="2" required autofocus>
 					</div>
 				</div>
 				<%@ include file="../../partials/from_addr.jspf"%>

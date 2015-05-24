@@ -23,7 +23,7 @@
 					<label class="col-sm-6 col-sm-6 control-label">How many
 						cars?</label>
 					<div class="col-sm-6">
-						<input type="number" class="form-control" id="driversAmountId"
+						<input type="number" class="form-control" id="driversAmountId" value="driversAmount"
 							name="driversAmount" placeholder="Insert cars amount here" min="5" max="100" />
 						<div id="alert_drivers_amount"></div>
 					</div>
@@ -32,7 +32,7 @@
 					<label class="col-sm-6 col-sm-6 control-label">How long
 						would you celebrate?</label>
 					<div class="col-sm-6">
-						<input type="number" class="form-control" id="duration"
+						<input type="number" class="form-control" id="duration" value="${param.duration}"
 							name="duration" placeholder="Insert duration in hours here" min="8" max="1000"/>
 						<div id="alert_duration"></div>
 					</div>
