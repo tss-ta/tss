@@ -42,32 +42,6 @@ public class ReportRoute {
     public static final String FILTERABLE = "filterable";
 
 
-//    @Action(action = "view")
-//    public ActionResponse getReport(HttpServletRequest request) {
-//        Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
-//        Integer page = parsePageNumberFromRequest(request);
-//        ActionResponse response = new ActionResponse();
-//        ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-//
-//        if (id == null) {
-//            return createIncorrectIdResponse(response);
-//        }
-//
-//        ReportInfo reportInfo = reportsBean.getReportInfoById(id);
-//
-//        if (reportInfo == null) {
-//            return createIncorrectIdResponse(response);
-//        }
-//        Report report = new Report();
-//        report.setInfo(reportInfo);
-//        request.setAttribute(RequestAttribute.REPORT.getName(), report);
-//
-//        response.setPageContent(Page.ADMIN_REPORT_CONTENT.getAbsolutePath());
-//        request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORT_CONTENT.getType());
-//        return response;
-//    }
-
-
     @Action(action = "view")
     public ActionResponse getReport(HttpServletRequest request) {
         Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
@@ -76,8 +50,6 @@ public class ReportRoute {
 
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         ReportFilter filter = createReportFilter(request, response);
-
-        System.out.println("FILTER: " + filter);
 
         if (id == null) {
             return createIncorrectIdResponse(response);
@@ -110,8 +82,6 @@ public class ReportRoute {
         ReportFilter filter = createReportFilter(request, response);
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
 
-        System.out.println("FILTER: " + filter);
-
         if (id == null) {
             return createIncorrectIdResponse(response);
         }
@@ -122,12 +92,10 @@ public class ReportRoute {
         }
 
         Report report = reportsBean.getReport(reportInfo, page, filter);
-
         request.setAttribute(RequestAttribute.REPORT.getName(), report);
 
         if(report.getInfo().isCountable()) {
             Pager pager = reportsBean.getFilterableReportPager(report.getInfo(), page, filter);
-            System.out.println("Pager" + pager);
             request.setAttribute(RequestAttribute.PAGER.getName(), pager);
         }
 
@@ -193,8 +161,6 @@ public class ReportRoute {
             return createIncorrectIdResponse(response);
         }
 
-        System.out.println("ReportInfo: " + reportInfo);
-
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
         request.setAttribute(RequestAttribute.DATA_TYPE.getName(), Arrays.asList(DataType.values()));
         request.setAttribute(RequestAttribute.REPORT_INFO.getName(), reportInfo);
@@ -205,13 +171,10 @@ public class ReportRoute {
 
     @Action(action = "edit", httpMethod = HttpMethod.POST)
     public ActionResponse edirReportInfo(HttpServletRequest request) {
-        System.out.println("-------START------------");
         ActionResponse response = new ActionResponse();
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         ReportInfo reportInfo = createReportInfoFromRequest(request);
         ReportFilterParser parser = new ReportFilterParser();
-
-        System.out.println("RepInf: " + reportInfo);
 
         if (reportInfo.getId() == null) {
             return createIncorrectIdResponse(response);
@@ -220,7 +183,7 @@ public class ReportRoute {
         response.setErrorMessage(reportsBean.validateReportInfo(reportInfo, parser.createDefaultFilter(reportInfo.getFilter())));
         if (response.getErrorMessage() == null) {
             reportsBean.updateReportInfo(reportInfo);
-            response.setSuccessMessage(REPORT_SUCCESS_CREATE_MESSAGE);
+            response.setSuccessMessage(REPORT_SUCCESS_UPDATE_MESSAGE);
         }
 
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
@@ -270,13 +233,10 @@ public class ReportRoute {
         }
 
         reportInfo.setFilterable(RequestParameterParser.parseBoolean(request, RequestParameter.REPORT_FILTERABLE.getValue()));
-        System.out.println("filterable: " + reportInfo.isFilterable());
 
         if (reportInfo.isFilterable()) {
             reportInfo.setFilter(createCriterionListFromRequest(request, reportInfo));
         }
-
-
         return reportInfo;
     }
 
@@ -300,9 +260,8 @@ public class ReportRoute {
             return null;
         }
 
-        System.out.println("crAmount: " + criterionAmount);
-
         criterionList = new LinkedList<>();
+
         for (int criterionIndex = 1; criterionIndex <= criterionAmount; criterionIndex++) {
                 criterionList.add(createCriterionFromRequest(request, criterionIndex, reportInfo));
         }
@@ -317,11 +276,6 @@ public class ReportRoute {
         Integer type = RequestParameterParser.parseInteger(request, RequestParameter.REPORT_FILTER_CRITERION_TYPE_PREFIX.getValue() + index);
         Integer seqNum = RequestParameterParser.parseInteger(request, RequestParameter.REPORT_FILTER_SEQUENTIAL_NUMBER_PREFIX.getValue() + index);
 
-        System.out.println("crId" + index + " : " + id);
-        System.out.println("crName" + index + " : " + name);
-        System.out.println("crType" + index + " : " + type);
-        System.out.println("crSeqNum" + index + " : " + seqNum);
-
         return new Criterion(id, name, type, reportInfo, seqNum);
 
     }
@@ -332,6 +286,7 @@ public class ReportRoute {
         Integer page = parsePageNumberFromRequest(request);
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         PageCalculatorBeanLocal pageCalculatorBean = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+
         if(page >= MIN_PAGE_NUMBER) {
             List<ReportInfo> reportInfoList = reportsBean.getPageOfReportsInfo(page, DEFAULT_PAGE_SIZE);
             PagerLink pagerLink = new PagerLink();
@@ -342,6 +297,7 @@ public class ReportRoute {
             request.setAttribute(RequestAttribute.PAGER_LINK.getName(), pagerLink);
             request.setAttribute(RequestAttribute.REPORT_LIST.getName(), reportInfoList);
         }
+
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_REPORTS_CONTENT.getType());
         return new ActionResponse(Page.ADMIN_REPORTS_CONTENT.getAbsolutePath());
     }

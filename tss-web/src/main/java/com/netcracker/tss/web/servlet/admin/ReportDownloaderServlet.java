@@ -1,7 +1,10 @@
 package com.netcracker.tss.web.servlet.admin;
 
 import com.netcracker.ejb.ReportsBeanLocal;
+import com.netcracker.entity.ReportInfo;
+import com.netcracker.entity.helper.ReportFilter;
 import com.netcracker.report.Report;
+import com.netcracker.tss.web.util.ReportFilterParser;
 import com.netcracker.tss.web.util.RequestParameter;
 import com.netcracker.tss.web.util.RequestParameterParser;
 import com.netcracker.util.BeansLocator;
@@ -28,14 +31,18 @@ public class ReportDownloaderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer id = RequestParameterParser.parseInteger(req, RequestParameter.ID.getValue());
+        ReportFilterParser reportFilterParser = new ReportFilterParser();
+        ReportInfo info;
         ReportsBeanLocal reportsBean;
+        ReportFilter reportFilter;
         if (id != null) {
+            reportFilter = reportFilterParser.parse(req);
             reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
-            Report report = reportsBean.getBigReport(id);
+            info = reportsBean.getReportInfoById(id);
+            Report report = reportsBean.getBigReport(info, reportFilter);
             ExcelExport excelExport = new ExcelExport();
             File file = excelExport.createExcelReport(report);
             sendFile(file, resp);
-
         }
     }
 

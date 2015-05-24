@@ -180,7 +180,7 @@ public class ReportDataDAO {
             resultSet = connection.prepareStatement(query).executeQuery();
             count = getCountFromResultSet(resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             if (connection != null) {
                 closeConnection(connection);
@@ -364,7 +364,7 @@ public class ReportDataDAO {
             initializeReportMetaData(reportData, resultSet.getMetaData());
             generateDataFromResultSet(reportData, resultSet);
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             if (connection != null) {
                 closeConnection(connection);
