@@ -52,13 +52,33 @@ public class TaxiOrderHistory extends TaxiOrder {
 		if (!isServiceBool())
 			return false;
 		Service serv = getService();
-		if (serv.getRoutes() != null)
+		if (serv.getServiceName().equals("conveycorp"))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isMeetMyGuest() {
+		if (!isServiceBool())
+			return false;
+		Service serv = getService();
+		if (serv.getServiceName().equals("meetMyGuest"))
 			return true;
 		else
 			return false;
 	}
 	
-	public List<Route> getAddrConvey(){
+	public boolean isSoberDriver() {
+		if (!isServiceBool())
+			return false;
+		Service serv = getService();
+		if (serv.getServiceName().equals("sober"))
+			return true;
+		else
+			return false;
+	}
+
+	public List<Route> getAddrConvey() {
 		if (!isConvey())
 			return null;
 		Service serv = getService();
@@ -85,6 +105,10 @@ public class TaxiOrderHistory extends TaxiOrder {
 	public String findServiceName() {
 		if (isConvey())
 			return "Convey Service";
+		if (isMeetMyGuest())
+			return "Meet My Guest";
+		if (isSoberDriver())
+			return "Sober Driver";
 		return "";
 	}
 }
