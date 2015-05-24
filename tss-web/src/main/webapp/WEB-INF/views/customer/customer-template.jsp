@@ -24,6 +24,7 @@
 
 <link href="/resources/img/favicon.ico" rel="shortcut icon"
 	type="image/x-icon" />
+    <link href="/resources/css/map.css" rel="stylesheet"/>
 </head>
 
 <body>

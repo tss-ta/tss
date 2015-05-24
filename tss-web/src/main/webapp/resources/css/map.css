@@ -1,0 +1,38 @@
+
+
+#map_canvas {
+    position: relative;
+    width: 47em;
+    height: 400px;
+    border: 1px solid #C0C0C0;
+    display: block;
+}
+
+@media screen and (max-width: 1680px) {
+    #map_canvas {
+        position: relative;
+        width: 36em;
+        height: 380px;
+        border: 1px solid #C0C0C0;
+        display: block;
+    }
+}
+@media screen and (max-width: 1360px) {
+    #map_canvas {
+        position: relative;
+        width: 30em;
+        height: 380px;
+        border: 1px solid #C0C0C0;
+        display: block;
+    }
+}
+@media screen and (max-width: 1200px) {
+    #map_canvas {
+        position: relative;
+        width: 25em;
+        height: 380px;
+        border: 1px solid #C0C0C0;
+        display: block;
+    }
+}
+

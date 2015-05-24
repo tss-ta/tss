@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="row row-fix">
-    <div class="col-md-offset-1 col-md-10">
+    <div class="col-md-10">
         <div class="text-center">
             <h1>Taxi Order Options</h1>
         </div>
@@ -22,7 +22,7 @@
                 <div class="col-md-5">
                     <%--<div class="col-lg-12">--%>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Order Time :</label>
+                        <label class="col-md-3 control-label">Order Time:</label>
 
                         <div class="col-md-9">
                             <input type="text" id="ordertime" name="ordertime" value="${orderTime}"
@@ -32,7 +32,7 @@
                     <%--</div>--%>
                     <div class="form-group">
 
-                        <label class="col-md-3 control-label">From :</label>
+                        <label class="col-md-3 control-label">From:</label>
 
                         <div class="col-md-9">
                             <input type="text" class="form-control" id="fromAddr" name="fromAddr"
@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
 
-                        <label class="col-md-3 control-label">To :</label>
+                        <label class="col-md-3 control-label">To:</label>
 
                         <div class="col-md-9">
                             <input type="text" class="form-control" id="toAddr" name="toAddr"
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Price :</label>
+                        <label class="col-md-3 control-label">Price:</label>
 
                         <div class="col-md-9">
                             <input class="form-control" name="price" type="text"
@@ -64,7 +64,7 @@
                     <table class="table" width="100%">
                         <tbody>
                         <tr>
-                            <td class="text-right">Car type :</td>
+                            <td class="text-right">Car type:</td>
                             <td>
                                 <c:choose>
                                     <c:when test="${list.carCategory == 1}">
@@ -88,7 +88,7 @@
 
                         <tr>
                             <td class="text-right">
-                                Way of payment :
+                                Way of payment:
                             </td>
                             <td>
                                 <c:choose>
@@ -109,7 +109,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                Driver's gender :
+                                Driver's gender:
                             </td>
                             <td>
                                 <c:if test="${list.male == null}">
@@ -125,7 +125,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                Music type :
+                                Music type:
                             </td>
                             <td>
                                 <c:choose>
@@ -143,7 +143,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                Wi-Fi :
+                                Wi-Fi:
                             </td>
                             <td>
                                 <c:if test="${list.wifi}">
@@ -156,7 +156,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                Animal transportation :
+                                Animal transportation:
                             </td>
                             <td>
                                 <c:if
@@ -170,7 +170,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                Non-smoking driver :
+                                Non-smoking driver:
                             </td>
                             <td>
                                 <c:if test="${list.smoke}">
@@ -183,7 +183,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                Air-conditioner :
+                                Air-conditioner:
                             </td>
                             <td>
                                 <c:if test="${list.conditioner}">
@@ -203,12 +203,12 @@
                 <div class="col-md-6">
                     <%@ include file="../../partials/map.jspf" %>
                 </div>
-                <div class="col-lg-12">
+                <%--<div class="col-lg-12">--%>
 
-                </div>
+                <%--</div>--%>
                 <!-- /col-lg-12 -->
                 <div class="row">
-                    <div class="col-lg-12 text-center">
+                    <div class="col-sm-12 text-center">
                         <button class="btn btn-info" OnClick="history.go(-1);">Back</button>
                         <c:if test="${list.status != 5}">
                             <c:if test="${list.status != 3}">

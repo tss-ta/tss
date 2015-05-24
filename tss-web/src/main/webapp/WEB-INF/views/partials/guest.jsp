@@ -32,6 +32,7 @@
 			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-8 col-lg-6 text-right">
 				<br>&nbsp;<br>
+                <link href="/resources/css/map-guest.css" rel="stylesheet"/>
 				<%@ include file="map.jspf"%>
 			</div>
 
@@ -53,7 +54,7 @@
 
 <script src="/resources/js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript"
-	src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
+	src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en-GB">
 
 </script>
 
