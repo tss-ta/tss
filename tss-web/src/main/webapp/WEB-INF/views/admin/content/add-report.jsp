@@ -84,7 +84,7 @@
                                     <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
                                 <%--</label>--%>
 
-                                    <input type="checkbox" id="countable" ${countable} name="countable" style="styled">
+                                    <input type="checkbox" id="countable" ${countable} name="countable" >
                                     <label for="countable"><b>Pagination</b></label>
                             </div>
                         </div>
@@ -122,8 +122,8 @@
                                 <%--<label>--%>
                                 <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
                                 <%--</label>--%>
-
-                                <input type="checkbox" id="filterable" name="filterable" ${filterable} style="styled">
+                                <%--<label for="filterable"><b>Filter</b></label>--%>
+                                <input type="checkbox" id="filterable" name="filterable" ${filterable}>
                                 <label for="filterable"><b>Filter</b></label>
                             </div>
                         </div>

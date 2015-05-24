@@ -172,7 +172,7 @@
 
                             <div class="col-md-12 text-center">
                                 <button type="button" class="btn btn-success" id="applyBtn" data-action="/admin"><i class="fa fa-check"></i> Apply</button>
-                                <button type="button" class="btn btn-success" id="excelBtn" data-action="/excel"><i class="fa fa-download"></i> Excel</button>
+                                <button type="button" class="btn btn-success" id="excelBtn" data-action="/admin/report/download"><i class="fa fa-download"></i> Excel</button>
                             </div>
                         </form>
                     </div>
@@ -276,7 +276,7 @@
                         </c:if>
 
                         <c:if test="${not empty pager.lastPage}">
-                            <li><a href="#" class="pagerBtn" data-page="${next.lastPage}"  title="Last (${pager.lastPage})"><i class="fa fa-angle-double-right fa-lg"></i></a></li>
+                            <li><a href="#" class="pagerBtn" data-page="${pager.lastPage}"  title="Last (${pager.lastPage})"><i class="fa fa-angle-double-right fa-lg"></i></a></li>
                         </c:if>
 
                     </ul>

@@ -209,6 +209,7 @@ public class ReportRoute {
         ActionResponse response = new ActionResponse();
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         ReportInfo reportInfo = createReportInfoFromRequest(request);
+        ReportFilterParser parser = new ReportFilterParser();
 
         System.out.println("RepInf: " + reportInfo);
 
@@ -216,9 +217,12 @@ public class ReportRoute {
             return createIncorrectIdResponse(response);
         }
 
-        reportsBean.updateReportInfo(reportInfo);
+        response.setErrorMessage(reportsBean.validateReportInfo(reportInfo, parser.createDefaultFilter(reportInfo.getFilter())));
+        if (response.getErrorMessage() == null) {
+            reportsBean.updateReportInfo(reportInfo);
+            response.setSuccessMessage(REPORT_SUCCESS_CREATE_MESSAGE);
+        }
 
-        response.setSuccessMessage(REPORT_SUCCESS_UPDATE_MESSAGE);
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
         request.setAttribute(RequestAttribute.DATA_TYPE.getName(), Arrays.asList(DataType.values()));
         request.setAttribute(RequestAttribute.REPORT_INFO.getName(), reportInfo);
