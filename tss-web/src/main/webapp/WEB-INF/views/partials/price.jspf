@@ -2,7 +2,7 @@
 	<label class="col-sm-2 col-sm-2 control-label">Price:</label>
 	<div class="col-sm-6">
 		<input id="price_field" class="form-control" name="price" type="text"
-			placeholder="Click Calculate Price" readonly>
+			placeholder="Click Calculate Price to view price" readonly>
 	</div>
 	<div class="col-sm-2">
 		<button id="update_price" name="update_price" type="button"

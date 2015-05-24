@@ -66,6 +66,15 @@ public class CustomerCceServiceServlet extends HttpServlet {
             deleteAddress(req);
             resp.sendRedirect("/customer/cceServicePage");
         } else {
+            try {
+                Date bookingTime = new Date();
+                Date orderTime = DateParser.parseDate(req);
+                if (orderTime.before(bookingTime)) {
+                    req.setAttribute("errorMessage", "It is impossible to order taxi at the past! Please input the correct order time.");
+                    redirectToTaxiOrder(req,resp);
+//                req.getRequestDispatcher("/customer/orderpage").forward(req, resp);
+//                resp.sendRedirect("/customer/orderpage?err=It is impossible to order taxi at the past! Please input the correct order time.");
+                } else {
             User user = findCurrentUser();
             PriceBeanLocal priceBean = getPriceBean(req);
             ConveyCorpServiceBeanLocal taxiConveyCorpServiceBeanLocal = getConveyCorpServiceBean(req);
@@ -76,40 +85,44 @@ public class CustomerCceServiceServlet extends HttpServlet {
                 double price = 0;
                 String toAddr = req.getParameter("toAddr");
                 MapBeanLocal mapBean = getMapBean(req);
-                try {
-                    Address addTo = toAddress(toAddr, req);
-                    List<Address> addFrom = new ArrayList<Address>();
-                    List<Route> routes = new ArrayList<>();
-                    for (String fa : fromListAddr) {
-                        addFrom.add(toAddress(fa, req));
-                        Route r = new Route(user.getUsername() + " Route");
 
-                        currentdistance = mapBean.calculateDistance(fa, toAddr);
-                        distance = distance + currentdistance;
+                Address addTo = toAddress(toAddr, req);
+                List<Address> addFrom = new ArrayList<Address>();
+                List<Route> routes = new ArrayList<>();
+                for (String fa : fromListAddr) {
+                    addFrom.add(toAddress(fa, req));
+                    Route r = new Route(user.getUsername() + " Route");
 
-                        r.setDistance(currentdistance);
-                        routes.add(r);
-                    }
-                    TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
-                    taxiOrder.setBookingTime(new Date());
-                    Date orderTime = DateParser.parseDate(req);
-                    //orderTime.setYear(new Date().getYear());
-                    taxiOrder.setOrderTime(orderTime);
-                    price = priceBean.calculatePriceForCceService(distance,
-                            DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
-                    taxiOrder.setPrice(price);
+                    currentdistance = mapBean.calculateDistance(fa, toAddr);
+                    distance = distance + currentdistance;
 
-                    Integer latestTOId = taxiConveyCorpServiceBeanLocal.addCorpService(user, routes, addFrom, addTo, taxiOrder);
-                    req.setAttribute("taxiOrderId", latestTOId);
-                    req.setAttribute("pageContent", "content/confirmation.jsp");
-                    req.getRequestDispatcher(
-                            "/WEB-INF/views/customer/customer-template.jsp").forward(
-                            req, resp);
-                } catch (Exception e) {
-                    resp.sendRedirect("/customer/cceServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
+                    r.setDistance(currentdistance);
+                    routes.add(r);
                 }
-            } else {
-                resp.sendRedirect("/customer/cceServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
+                TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
+                taxiOrder.setBookingTime(bookingTime);
+                taxiOrder.setOrderTime(orderTime);
+                price = priceBean.calculatePriceForCceService(distance,
+                        orderTime, taxiOrder, UserUtils.findCurrentUser());
+                taxiOrder.setPrice(price);
+
+                Integer latestTOId = taxiConveyCorpServiceBeanLocal.addCorpService(user, routes, addFrom, addTo, taxiOrder);
+                req.setAttribute("taxiOrderId", latestTOId);
+                req.setAttribute("pageContent", "content/confirmation.jsp");
+                req.getRequestDispatcher(
+                        "/WEB-INF/views/customer/customer-template.jsp").forward(
+                        req, resp);
+            }
+             else {
+                //resp.sendRedirect("/customer/cceServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
+                req.setAttribute("errorMessage", "Sorry, we can not make this order! Please, check all input parameters ad try again.");
+                redirectToTaxiOrder(req, resp);
+            }
+            }
+            } catch (Exception e) {
+//                resp.sendRedirect("/customer/cceServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
+                req.setAttribute("errorMessage", "Sorry, we can not make this order! Please, check all input parameters ad try again.");
+                redirectToTaxiOrder(req, resp);
             }
         }
     }
@@ -158,6 +171,17 @@ public class CustomerCceServiceServlet extends HttpServlet {
         User user = userDao.getByEmail(userDetails.getUsername());
         userDao.close();
         return user;
+    }
+
+    private void redirectToTaxiOrder(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        req.getSession().removeAttribute("taxiOrder");
+        UserBeanLocal userBeanLocal = getUserBean(req);
+        req.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
+        req.setAttribute("pageContent", "content/customer-cceService.jsp");
+        req.setAttribute("pageType", "cceService");
+        req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
+                .forward(req, resp);
     }
 
     private ConveyCorpServiceBeanLocal getConveyCorpServiceBean(HttpServletRequest req) {

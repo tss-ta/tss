@@ -16,6 +16,7 @@
             <div class="col-lg-12">
                 <div class="text-center">
                     <h3>TaxiOrder id = <b style="color:crimson">${taxiOrderId}</b></h3>
+                    <h5 class="text-muted">If you refuse taxi more than tree times you will be banned!</h5>
                 </div>
             </div>
         </div>

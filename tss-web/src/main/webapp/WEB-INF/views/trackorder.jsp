@@ -22,14 +22,14 @@
               media="all" />
         <link href='http://fonts.googleapis.com/css?family=Raleway'
               rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="css/responsiveslides.css">
+        <%--<link rel="stylesheet" href="css/responsiveslides.css">--%>
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
         <link href="/resources/css/customer.css" rel="stylesheet">
-        <link href="/resources/customer_assets/css/anytime.5.1.0.css"
-              rel="stylesheet">
-        <link href="/resources/customer_assets/css/bootstrap-select.css"
-              rel="stylesheet">
+        <%--<link href="/resources/customer_assets/css/anytime.5.1.0.css"--%>
+              <%--rel="stylesheet">--%>
+        <%--<link href="/resources/customer_assets/css/bootstrap-select.css"--%>
+              <%--rel="stylesheet">--%>
     </head>
     <body>
         <!-----start-header----->
@@ -91,11 +91,8 @@
             <!-- js placed at the end of the document so the pages load faster -->
             <script src="/resources/customer_assets/js/jquery-1.8.3.min.js"></script>
             <script src="/resources/customer_assets/js/bootstrap.min.js"></script>
-            <script class="include" type="text/javascript"
-            src="/resources/customer_assets/js/jquery.dcjqaccordion.2.7.js"></script>
-            <script src="/resources/customer_assets/js/jquery.scrollTo.min.js"></script>
-            <%--<script src="/resources/customer_assets/js/jquery.nicescroll.js"--%>
-            <%--type="text/javascript"></script>--%>
+            <%--<script class="include" type="text/javascript"--%>
+            <%--src="/resources/customer_assets/js/jquery.dcjqaccordion.2.7.js"></script>--%>
             <script src="/resources/customer_assets/js/jquery.sparkline.js"></script>
 
 
@@ -109,7 +106,6 @@
 
             <!--script for this page-->
             <script src="/resources/customer_assets/js/sparkline-chart.js"></script>
-            <script src="/resources/customer_assets/js/zabuto_calendar.js"></script>
 
 
             <script type="text/javascript"

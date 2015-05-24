@@ -40,24 +40,4 @@ public class CustomerSoberServicePageServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
                 .forward(req, resp);
     }
-
-    @Deprecated
-    private UserBeanLocal getUserBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            UserBeanLocalHome userBeanLocalHome = (UserBeanLocalHome) context
-                    .lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
-            return userBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName())
-                    .log(Level.SEVERE,
-                    "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
-                    ex);
-            throw new RuntimeException("Internal server error!");// maybe have
-            // to create
-            // custom
-            // exception?
-        }
-    }
 }
