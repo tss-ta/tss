@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s"),
     @NamedQuery(name = "Service.findByServiceId", query = "SELECT s FROM Service s WHERE s.serviceId = :serviceId"),
+    @NamedQuery(name = "Service.findByOrderId", query = "SELECT s FROM Service s WHERE s.orderId = :orderId"),
     @NamedQuery(name = "Service.findByServiceName", query = "SELECT s FROM Service s WHERE s.serviceName = :serviceName")})
 public class Service implements Serializable {
 
@@ -116,8 +117,13 @@ public class Service implements Serializable {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hash(serviceName, orderId, meetMyGuest);
+    public int hashCode() {
+        int result = serviceId != null ? serviceId.hashCode() : 0;
+        result = 31 * result + (serviceName != null ? serviceName.hashCode() : 0);
+        result = 31 * result + (orderId != null ? orderId.hashCode() : 0);
+        result = 31 * result + (routes != null ? routes.hashCode() : 0);
+        result = 31 * result + (meetMyGuest != null ? meetMyGuest.hashCode() : 0);
+        return result;
     }
 
     @Override

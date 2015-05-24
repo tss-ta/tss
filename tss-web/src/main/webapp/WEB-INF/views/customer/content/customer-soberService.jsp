@@ -15,28 +15,23 @@
     <div class="row mt bottom_line">
         <div class="form-group">
             <div class="col-md-6">
-                <div class="col-lg-12">
-                    <div class="form-panel">
                         <%@ include file="../../partials/order_time_buttons.jspf"%>
-                    </div>
-                </div>
-                <%@ include file="../../partials/from_addr.jspf"%>
-
-                <%@ include file="../../partials/from_pers_addr.jspf"%>
-                <%@ include file="../../partials/to_addr.jspf"%>
-                <%@ include file="../../partials/to_pers_addr.jspf"%>
-                <%@ include file="../../partials/price.jspf"%>
+                        <%@ include file="../../partials/from_addr.jspf"%>
+                        <%@ include file="../../partials/from_pers_addr.jspf"%>
+                        <%@ include file="../../partials/to_addr.jspf"%>
+                        <%@ include file="../../partials/to_pers_addr.jspf"%>
+                        <%@ include file="../../partials/price.jspf"%>
             </div>
             <div class="col-md-6">
                 <%@ include file="../../partials/map.jspf"%>
-                <img src="/resources/customer_assets/img/from.png" width="32" height="32" alt="from"/>from
-                <img src="/resources/customer_assets/img/to.png" width="32" height="32" alt="to"/>to
+                <%--<img src="/resources/customer_assets/img/from.png" width="32" height="32" alt="from"/>from--%>
+                <%--<img src="/resources/customer_assets/img/to.png" width="32" height="32" alt="to"/>to--%>
             </div>
             <div class="col-lg-12">
                 <%@ include file="../../partials/options_vert_soberService.jspf"%>
                 <!-- /col-lg-12 -->
                 <div class="row">
-                    <div class="col-lg-12 text-center">
+                    <div class="col-md-offset-1 col-md-10 text-center">
                         <button class="btn btn-success btn-lg btn-block"  type="submit">Order
                             Now</button>
                     </div>

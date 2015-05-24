@@ -49,4 +49,6 @@ public interface ReportsBeanLocal extends EJBLocalObject {
     void updateReportInfo(ReportInfo reportInfo);
 
     void deleteReportInfo(ReportInfo reportInfo);
+
+    Pager getOrdersReportPager(int page, int pageSize, Date begin, Date end);
 }

@@ -49,9 +49,12 @@
         <div class="col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12">
             <div class="list-group custom-list-group">
                 <a href="/admin/report?action=new-orders-report" class="list-group-item">
-                    <h4 class="list-group-item-heading">New orders Report <small>All new orders by specified period</small></h4>
-
+                    <h4 class="list-group-item-heading">New orders report <small>All new orders by specified period</small></h4>
                         <%--<p class="list-group-item-text">${report.description}</p>--%>
+                </a>
+                <a href="/admin/report?action=customer-popular-car-options" class="list-group-item">
+                    <h4 class="list-group-item-heading">Popular user's car options report
+                        <small>This report shows how often user order taxi with each car option</small></h4>
                 </a>
                 <c:forEach items="${reportList}" var="report" >
                     <a href="/admin?menu=report&action=view&id=${report.id}" class="list-group-item">

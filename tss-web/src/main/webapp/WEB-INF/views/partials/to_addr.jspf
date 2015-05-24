@@ -1,8 +1,12 @@
 <div class="form-group">
-	<div class="col-sm-2"></div>
-	<label class="col-sm-2 col-sm-2 control-label">To :</label>
+	<label class="col-sm-2 control-label">To:</label>
 	<div class="col-sm-6">
-		<input type="text" class="form-control" id="toAddr" name="toAddr"
+		<input type="text" class="form-control" id="toAddr" name="toAddr" placeholder="Enter address or click on map"
 			value="${toh.toAddr}" maxlength="140" required autofocus />
 	</div>
+    <div class="col-sm-4">
+        <a	onclick="showonmap()">
+            <img src="/resources/customer_assets/img/to.png" width="32" height="32" alt="from"/>
+        </a>
+    </div>
 </div>

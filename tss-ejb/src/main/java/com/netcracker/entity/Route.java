@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -51,6 +52,7 @@ public class Route implements Serializable {
 
     @NotNull
     @Column(name = "distance")
+    @Min(value = 0)
     private Float distance;
 
     @OneToMany(mappedBy = "routeId")

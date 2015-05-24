@@ -1,11 +1,13 @@
 <%--
-  User: Kyrylo Berehovyi
+  User: Kyrylo Berehovyi, maks
   Date: 19/04/2015
   Time: 19:59
 --%>
 
 <footer class="footer">
     <div class="container">
+        <p class="text-muted"><i class="fa fa-envelope-o"></i> team.a.taxi@gmail.com
+            <i class="fa fa-phone"></i> +380459478980</p>
         <p class="text-muted">&copy; 2015 A-Team, ver. 1.0</p>
     </div>
 </footer>

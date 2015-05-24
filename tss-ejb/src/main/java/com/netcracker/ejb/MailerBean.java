@@ -19,6 +19,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.netcracker.entity.Contacts;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.User;
 import com.netcracker.util.GlobalVariables;
@@ -65,11 +66,11 @@ public class MailerBean implements SessionBean {
 		}
 	}
         
-	public void sendEmail(User user, String title, String msg){
+	public void sendEmail(Contacts user, String title, String msg){
             sendEmail(user.getEmail(), title, msg);
         }
 
-	public void changeToUpdated(User user, TaxiOrder to) {
+	public void changeToUpdated(Contacts user, TaxiOrder to) {
 		sendEmail(
 				user,
 				"Yours Taxi Order was Updated",
@@ -78,7 +79,7 @@ public class MailerBean implements SessionBean {
 						+ ") status was changed from “Queued” to “Updated”.");
 	}
 
-	public void changeToRefused(User user, TaxiOrder to) {
+	public void changeToRefused(Contacts user, TaxiOrder to) {
 		sendEmail(
 				user,
 				"Yours Taxi Order was Refused",
@@ -89,13 +90,13 @@ public class MailerBean implements SessionBean {
 						+ ") was Refused. We apologise for any inconveniences.");
 	}
 
-	public void changeToAssigned(User user, TaxiOrder to, String driver) {
+	public void changeToAssigned(Contacts user, TaxiOrder to, String driver) {
 		sendEmail(user, "Driver was assigned to your Taxi Order", "Dear, "
 				+ user.getUsername() + ". Driver was assigned to your Taxi Order (id = " + to.getId()
 				+ "). Information about driver: "+ driver);
 	}
 
-	public void changeToCompleted(User user, TaxiOrder to) {
+	public void changeToCompleted(Contacts user, TaxiOrder to) {
 		sendEmail(
 				user,
 				"Yours Taxi Order was Completed",

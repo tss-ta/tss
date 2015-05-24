@@ -15,12 +15,8 @@
 	<div class="row mt bottom_line">
 		<div class="control-group">
 			<div class="col-md-6">
-				<div class="col-lg-12">
-					<div class="form-panel">
-						<%@ include file="../../partials/order_time_buttons.jspf"%>
-					</div>
-				</div>
-				<br>&nbsp;<br>
+                <%@ include file="../../partials/order_time_buttons.jspf"%>
+				<br/>
 				<%@ include file="../../partials/from_addr.jspf"%>
 				<%@ include file="../../partials/from_pers_addr.jspf"%>
 				<div class="form-group">
@@ -28,7 +24,7 @@
 						cars?</label>
 					<div class="col-sm-6">
 						<input type="number" class="form-control" id="driversAmountId"
-							name="driversAmount" placeholder="Insert cars amount here" min="1" max="1000" />
+							name="driversAmount" placeholder="Insert cars amount here" min="5" max="100" />
 						<div id="alert_drivers_amount"></div>
 					</div>
 				</div>
@@ -37,26 +33,27 @@
 						would you celebrate?</label>
 					<div class="col-sm-6">
 						<input type="number" class="form-control" id="duration"
-							name="duration" placeholder="Insert duration in hours here" min="1" max="100"/>
+							name="duration" placeholder="Insert duration in hours here" min="8" max="1000"/>
 						<div id="alert_duration"></div>
 					</div>
 				</div>
+                <br/>
 				<%@ include file="../../partials/price.jspf"%>
+
 			</div>
 			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-6">
 				<%@ include file="../../partials/map.jspf"%>
 			</div>
-		</div>
-		<div class="col-lg-12">
-			<!-- /col-lg-12 -->
-			<div class="col-lg-12 text-center">
-				<input type="hidden" name="menu" value="celebration"> <input
-					type="hidden" name="action" value="addCelebration">
-				<button class="btn btn-success btn-lg btn-block" type="submit">Order
-					Now</button>
-			</div>
-		</div>
+            <div class="col-md-offset-1 col-md-10 text-center">
+                <br/>
+                <br/>
+                <input type="hidden" name="menu" value="celebration"> <input
+                    type="hidden" name="action" value="addCelebration">
+                <button class="btn btn-success btn-lg btn-block" type="submit">
+                    Order Now</button>
+            </div>
+        </div>
 	</div>
 </form>
 

@@ -90,6 +90,10 @@ public class ReportsBean implements SessionBean {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         return pageCalculator.calculatePages(page, info.getPageSize(), countReports(info));
     }
+    public Pager getOrdersReportPager(int page, int pageSize, Date begin, Date end) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        return pageCalculator.calculatePages(page, pageSize, countAllOrders(begin, end));
+    }
 
     public int countAllReportsInfo() {
         ReportInfoDAO infoDAO = null;

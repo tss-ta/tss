@@ -1,5 +1,5 @@
 <%--
-  User: Kyrylo Berehovyi
+  User: Kyrylo Berehovyi, maks
   Date: 06/05/2015
   Time: 14:28
 --%>
@@ -15,7 +15,7 @@
         <!----start-main-header----->
         <div class="main-header">
             <div class="logo">
-                <a href="index.html"><img src="/resources/images/logo1.png"
+                <a href="/home"><img src="/resources/images/logo1.png"
                                           title="logo" /></a>
             </div>
             <div class="top-nav">
@@ -36,12 +36,15 @@
                             <li><a href="/customer">Dashboard</a></li>
                         </c:when>
                         <c:when test="${anonymous}">
-                            <li><a href="/track">Track Order</a></li>
                             <li><a href="/signin.jsp">Sign In</a></li>
                             <li><a href="/signup.jsp">Sign Up</a></li>
+                            <li><a href="/track">Track Order</a></li>
                         </c:when>
                         <c:otherwise>
-                            <li><a href="/signout">Sign Out</a></li>
+                            <li><a href="/signin.jsp">Sign In</a></li>
+                            <li><a href="/signup.jsp">Sign Up</a></li>
+                            <li><a href="/track">Track Order</a></li>
+                            <%--<li><a href="/signout">Sign Out</a></li>--%>
                         </c:otherwise>
                     </c:choose>
                     <div class="clear"></div>

@@ -3,30 +3,34 @@
 	method="post">
 	<div class="row mt bottom_line">
 		<div class="control-group">
-			<div class="col-md-6">
+			<div class="col-md-4 col-lg-6">
 				<div class="col-lg-12">
 					<div class="form-panel">
 						<div class="form-group">
-							<div class="col-sm-12">
+							<%--<div class="col-sm-12">--%>
 								<div class="text-center">
 									<h3 class="mb">
-										<i class="fa"></i> Order Taxi Now!
+										Order Taxi Now!
 									</h3>
 								</div>
-							</div>
+							<%--</div>--%>
 						</div>
 						<%@ include file="personal_info.jspf"%>
 						<%@ include file="order_time_buttons.jspf"%>
+                        <br/>
+                        <%@ include file="from_addr.jspf"%>
+                        <%@ include file="to_addr.jspf"%>
+                        <br/>
+                        <%@ include file="price.jspf"%>
 					</div>
 				</div>
-				<br>&nbsp;<br>
-				<%@ include file="from_addr.jspf"%>
-				<%@ include file="to_addr.jspf"%>
-				<%@ include file="price.jspf"%>
+
+
+
                 <p class="help-block error-msg  text-center"></p>
 			</div>
 			<div class="clearfix visible-xs-block"></div>
-			<div class="col-md-6">
+			<div class="col-md-8 col-lg-6 text-right">
 				<br>&nbsp;<br>
 				<%@ include file="map.jspf"%>
 			</div>
@@ -34,7 +38,7 @@
             <br/>
 		</div>
 
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <%@ include file="options.jspf"%>
             <div class="form-group col-md-4 col-sm-6 col-xs-12">
                 <button class="btn btn-success btn-lg btn-block col-lg-8 col-sm-8 col-xs-12" type="submit">Order Now</button>
@@ -48,7 +52,6 @@
 
 
 <script src="/resources/js/jquery-1.11.2.min.js"></script>
-<%--<script src="https://code.jquery.com/jquery-1.10.2.js"></script>--%>
 <script type="text/javascript"
 	src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;language=en-GB">
 

@@ -44,7 +44,7 @@
                 <!----start-main-header----->
                 <div class="main-header">
                     <div class="logo">
-                        <a href="index.html"><img src="/resources/images/logo1.png"
+                        <a href="/home"><img src="/resources/images/logo1.png"
                                                   title="logo" /></a>
                     </div>
                     <div class="top-nav">

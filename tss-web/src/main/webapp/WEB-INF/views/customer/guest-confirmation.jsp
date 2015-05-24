@@ -1,5 +1,5 @@
 <%--
-  by Stanislav Zabielin
+  by Stanislav Zabielin, maks
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -11,43 +11,55 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Taxi Service System</title>
 
+        <link href="/resources/img/favicon.ico" rel="shortcut icon"
+              type="image/x-icon" />
+        <link href="/resources/css/style.css" rel="stylesheet" type="text/css"
+              media="all" />
+        <link href='http://fonts.googleapis.com/css?family=Raleway'
+              rel='stylesheet' type='text/css'>
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
         <link href="/resources/css/customer.css" rel="stylesheet">
-        <link href="/resources/customer_assets/css/anytime.5.1.0.css"
-              rel="stylesheet">
-        <link href="/resources/customer_assets/css/bootstrap-select.css"
-              rel="stylesheet">
-        <link href="/resources/img/favicon.ico" rel="shortcut icon"
-              type="image/x-icon" />
+
     </head>
 
     <body>
-
-        <div id="sidebar-wrapper"
-             style="display: block !important; height: auto !important; padding-bottom: 0; overflow: visible !important;">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand"><a href="/">Taxi Service</a></li>
-            </ul>
-        </div>
-
         <div id="page-content-wrapper">
             <div class="container-fluid">
-                <%@ include file="partials/guest-header.jspf"%>
+                <%--<%@ include file="partials/guest-header.jspf"%>--%>
+                    <%@ include file="/WEB-INF/views/partials/non-dasboard-header.jspf"%>
             </div>
             <div class="text-center">
-                <div class="row mt bottom_line">
+                <div class="row mt">
                     <div class="text-center">
                         <h1>Taxi was successfully ordered!</h1>
+                        <br/>
                         <h3>
-                            Your TaxiOrder ID is = <b style="color: crimson">${taxiOrderId}</b>
+                            Your Taxi Order Tracking Number is <b style="color: crimson">${taxiOrderId}</b>.
                         </h3>
+                        <br/>
+                        <h4 class="text-muted">
+                            Please, remember your tracking number, because you can track status of your order with this number.
+                        </h4>
+                    <br/><br/><br/>
                     </div>
                 </div>
             </div>
             <!--/wrapper -->
             <!--main content end-->
             <!--footer start-->
+            <div class="content">
+                <div class="wrap">
+                    <!---start-footer-grids--->
+                    <div class="footer-grids">
+                        <div class="footer-grid2 last-footer-grid">
+                        <%@ include file="/WEB-INF/views/partials/footer.jspf"%>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <!---End-footer-grids--->
+                </div>
+            </div>
         </div>
 
         <!-- js placed at the end of the document so the pages load faster -->
