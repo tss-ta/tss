@@ -35,7 +35,7 @@
                                     <td class="hidden-sm hidden-md">${list.bookingTime}</td>
                                     <td>${list.orderTime}</td>
                                     <td class="hidden-md hidden-sm hidden-xs">
-                                            Driver-Car ID = ${list.driverCarId.drvCarId}
+                                            Driver ID = ${list.driverCarId.driverId}
                                     </td>
                                     <%--<td class="hidden-md hidden-sm hidden-xs">${list.routeId.pathContent}</td>--%>
                                     <td>${list.fromAddr}</td>

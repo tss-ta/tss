@@ -390,6 +390,10 @@ public class TaxiOrderBean implements SessionBean {
 			return toAddress(a.getAltitude(), a.getLongtitude());
 		} else if (toh.isServiceBool()) {
 			StringBuffer addr = new StringBuffer();
+			if (toh.isMeetMyGuest() || toh.isSoberDriver()) {
+				Address a = toh.getRouteId().getFromAddrId();
+				return toAddress(a.getAltitude(), a.getLongtitude());
+			}
 			if (toh.isConvey()) {
 				for (Route route : toh.getAddrConvey()) {
 					Address a = route.getFromAddrId();
