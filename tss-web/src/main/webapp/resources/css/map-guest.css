@@ -1,6 +1,6 @@
 #map_canvas {
     position: relative;
-    width: 55em;
+    width: 53em;
     height: 400px;
     border: 1px solid #C0C0C0;
     display: block;
@@ -9,7 +9,7 @@
 @media screen and (max-width: 1680px) {
     #map_canvas {
         position: relative;
-        width: 45em;
+        width: 43em;
         height: 380px;
         border: 1px solid #C0C0C0;
         display: block;
@@ -18,16 +18,7 @@
 @media screen and (max-width: 1360px) {
     #map_canvas {
         position: relative;
-        width: 40em;
-        height: 380px;
-        border: 1px solid #C0C0C0;
-        display: block;
-    }
-}
-@media screen and (max-width: 1024px) {
-    #map_canvas {
-        position: relative;
-        width: 35em;
+        width: 37em;
         height: 380px;
         border: 1px solid #C0C0C0;
         display: block;
