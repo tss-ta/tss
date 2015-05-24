@@ -77,6 +77,16 @@ public class TaxiOrderHistory extends TaxiOrder {
 		else
 			return false;
 	}
+	
+	public boolean isCelebration() {
+		if (!isServiceBool())
+			return false;
+		Service serv = getService();
+		if (serv.getServiceName().equals("celebration"))
+			return true;
+		else
+			return false;
+	}
 
 	public List<Route> getAddrConvey() {
 		if (!isConvey())
@@ -109,6 +119,8 @@ public class TaxiOrderHistory extends TaxiOrder {
 			return "Meet My Guest";
 		if (isSoberDriver())
 			return "Sober Driver";
+		if (isCelebration())
+			return "Celebration Taxi";
 		return "";
 	}
 }

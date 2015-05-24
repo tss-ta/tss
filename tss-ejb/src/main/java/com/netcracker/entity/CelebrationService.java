@@ -19,7 +19,7 @@ public class CelebrationService implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "serviceId", updatable = false)
+    @Column(name = "service_id")
     private Integer serviceId;
 
     @JoinColumn(name = "order_id", referencedColumnName = "id")
@@ -43,7 +43,7 @@ public class CelebrationService implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "celebration_driver_car",
-            joinColumns = @JoinColumn(name = "serviceId", referencedColumnName = "serviceId"),
+            joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "driver_car_id", referencedColumnName = "id"))
     private List<DriverCar> driverCars = new ArrayList<DriverCar>();
 
