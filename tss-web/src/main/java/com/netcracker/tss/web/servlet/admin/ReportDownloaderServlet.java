@@ -37,6 +37,11 @@ public class ReportDownloaderServlet extends HttpServlet {
             reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
             info = reportsBean.getReportInfoById(id);
 
+            if (info == null) {
+                sendIncorrectIdContent(req, resp);
+                return;
+            }
+
             if (info.isFilterable() && reportFilter == null) {
                 req.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.INCORRECT_FILTER_STATE.getAbsolutePath());
                 req.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(req, resp);
@@ -47,7 +52,14 @@ public class ReportDownloaderServlet extends HttpServlet {
             ExcelExport excelExport = new ExcelExport();
             File file = excelExport.createExcelReport(report);
             sendFile(file, resp);
+        } else {
+            sendIncorrectIdContent(req, resp);
         }
+    }
+
+    private void sendIncorrectIdContent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute(RequestAttribute.PAGE_CONTENT.getName(), Page.INCORRECT_ID_CONTENT.getAbsolutePath());
+        request.getRequestDispatcher(Page.ADMIN_TEMPLATE.getAbsolutePath()).forward(request, response);
     }
 
     private ReportFilter createReportFilterFromRequest(HttpServletRequest req) {

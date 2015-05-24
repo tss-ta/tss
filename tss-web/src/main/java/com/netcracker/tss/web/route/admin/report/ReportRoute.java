@@ -47,7 +47,7 @@ public class ReportRoute {
         Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
         Integer page = parsePageNumberFromRequest(request);
         ActionResponse response = new ActionResponse();
-
+        Report report = null;
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         ReportFilter filter = createReportFilter(request, response);
 
@@ -55,7 +55,7 @@ public class ReportRoute {
             return createIncorrectIdResponse(response);
         }
 
-        Report report = reportsBean.getReport(id, page);
+        report = reportsBean.getReport(id, page);
 
         if (report == null) {
             return createIncorrectIdResponse(response);
@@ -74,6 +74,11 @@ public class ReportRoute {
         return response;
     }
 
+    private ActionResponse createIncorrectFilterStateResponse(ActionResponse response) {
+        response.setPageContent(Page.INCORRECT_FILTER_STATE.getAbsolutePath());
+        return response;
+    }
+
     @Action(action = "filter")
     public ActionResponse getFilteredReport(HttpServletRequest request) {
         Integer id = RequestParameterParser.parseInteger(request, RequestParameter.ID.getValue());
@@ -89,6 +94,11 @@ public class ReportRoute {
         ReportInfo reportInfo = reportsBean.getReportInfoById(id);
         if (reportInfo == null) {
             return createIncorrectIdResponse(response);
+        }
+
+        if (reportInfo.isFilterable() && filter == null) {
+            response.setPageContent(Page.INCORRECT_FILTER_STATE.getAbsolutePath());
+            return response;
         }
 
         Report report = reportsBean.getReport(reportInfo, page, filter);
@@ -247,7 +257,7 @@ public class ReportRoute {
             filter = new ReportFilterParser().parse(request);
         } catch (Exception e) {
             response.setErrorMessage(INCORRECT_FILTER_VALUES_MESSAGE);
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return filter;
     }
