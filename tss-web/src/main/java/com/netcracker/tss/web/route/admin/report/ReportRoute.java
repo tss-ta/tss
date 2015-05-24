@@ -162,8 +162,14 @@ public class ReportRoute {
         ActionResponse response = new ActionResponse();
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         ReportInfo reportInfo = createReportInfoFromRequest(request);
-        reportsBean.createReportInfo(reportInfo);
-        response.setSuccessMessage(REPORT_SUCCESS_CREATE_MESSAGE);
+        ReportFilterParser parser = new ReportFilterParser();
+
+        response.setErrorMessage(reportsBean.validateReportInfo(reportInfo, parser.createDefaultFilter(reportInfo.getFilter())));
+        if (response.getErrorMessage() == null) {
+            reportsBean.createReportInfo(reportInfo);
+            response.setSuccessMessage(REPORT_SUCCESS_CREATE_MESSAGE);
+        }
+        request.setAttribute(RequestAttribute.DATA_TYPE.getName(), Arrays.asList(DataType.values()));
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
         request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_CREATE_TYPE.getName());
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
@@ -187,7 +193,10 @@ public class ReportRoute {
             return createIncorrectIdResponse(response);
         }
 
+        System.out.println("ReportInfo: " + reportInfo);
+
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
+        request.setAttribute(RequestAttribute.DATA_TYPE.getName(), Arrays.asList(DataType.values()));
         request.setAttribute(RequestAttribute.REPORT_INFO.getName(), reportInfo);
         request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_EDIT_TYPE.getName());
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());
@@ -196,17 +205,22 @@ public class ReportRoute {
 
     @Action(action = "edit", httpMethod = HttpMethod.POST)
     public ActionResponse edirReportInfo(HttpServletRequest request) {
+        System.out.println("-------START------------");
         ActionResponse response = new ActionResponse();
         ReportsBeanLocal reportsBean = BeansLocator.getInstance().getBean(ReportsBeanLocal.class);
         ReportInfo reportInfo = createReportInfoFromRequest(request);
+
+        System.out.println("RepInf: " + reportInfo);
 
         if (reportInfo.getId() == null) {
             return createIncorrectIdResponse(response);
         }
 
         reportsBean.updateReportInfo(reportInfo);
+
         response.setSuccessMessage(REPORT_SUCCESS_UPDATE_MESSAGE);
         response.setPageContent(Page.ADMIN_ADD_REPORT_CONTENT.getAbsolutePath());
+        request.setAttribute(RequestAttribute.DATA_TYPE.getName(), Arrays.asList(DataType.values()));
         request.setAttribute(RequestAttribute.REPORT_INFO.getName(), reportInfo);
         request.setAttribute(RequestAttribute.FORM_TYPE.getName(), RequestAttribute.FORM_EDIT_TYPE.getName());
         request.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.ADMIN_ADD_REPORT_CONTENT.getType());

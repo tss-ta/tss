@@ -1,6 +1,8 @@
 package com.netcracker.dao;
 
+import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.helper.ReportFilter;
+import com.netcracker.report.Report;
 import com.netcracker.report.container.MultipurposeValue;
 import com.netcracker.report.container.RowData;
 import com.netcracker.report.mapper.DataType;
@@ -13,7 +15,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kyrylo Berehovyi
@@ -21,14 +22,155 @@ import java.util.Map;
 
 public class ReportDataDAO {
 
+    private static final int EMPTY_VALUE = 0;
     private static final int FIRST_COLUMN = 1;
     private static final int LIMIT_POSITION = 1;
     private static final int OFFSET_POSITION = 2;
     public static final String DATA_SOURCE = "java:jboss/datasources/PostgreSQLDS";
+    public static final String SELECT_QUERY_INVALID_SYNTAX_MESSAGE = "Select query has invalid syntax.";
+    public static final String FILTERABLE_INVALID_SYNTAX_MESSAGE = "Select query has invalid syntax or invalid criterion parameters amount/type";
+    public static final String FILTERABLE_COUNT_QUERY_INVALID_SYNTAX_MESSAGE = "Count query has invalid syntax or invalid criterion parameters amount/type";
+    public static final String COUNT_QUERY_INVALID_SYNTAX_MESSAGE = "Count query has invalid syntax";
 
     private DataSource dataSource = getDataSource();
     private ResultSetTypeMapper mapper = new ResultSetTypeMapper();
 
+    public String validateQuery(ReportInfo reportInfo, ReportFilter filter) {
+        Connection connection = null;
+        String message = null;
+        try {
+            connection = dataSource.getConnection();
+            if (reportInfo.isFilterable()) {
+                message = validateFilterableByPreparedStatement(connection,reportInfo, filter);
+            } else {
+                message = validateUnfilterableByPreparedStatement(connection, reportInfo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                closeConnection(connection);
+            }
+        }
+        return message;
+    }
+
+    private String validateUnfilterableByPreparedStatement(Connection connection, ReportInfo reportInfo) {
+        if (!reportInfo.isFilterable() && !reportInfo.isCountable()) {
+            return validateUnfilterableUncaunableQuery(connection, reportInfo);
+        } else if (!reportInfo.isFilterable() && reportInfo.isCountable()) {
+            return validateUnfilterableCountableQuery(connection, reportInfo);
+        }
+        return null;
+    }
+
+    private String validateFilterableByPreparedStatement(Connection connection, ReportInfo reportInfo,
+                                                         ReportFilter filter) {
+        if (reportInfo.isFilterable() && !reportInfo.isCountable()) {
+            return validateFilterableUncountableQuery(connection, reportInfo, filter);
+        } else if (reportInfo.isFilterable() && reportInfo.isCountable()) {
+            return validateFilterableCountableQuery(connection, reportInfo, filter);
+        }
+        return null;
+    }
+
+    private String validateFilterableCountableQuery(Connection connection, ReportInfo reportInfo, ReportFilter filter) {
+        if (!isValidFilterableCountableQuery(connection, reportInfo, filter)) {
+            return FILTERABLE_INVALID_SYNTAX_MESSAGE;
+        }
+        if (!isValidFilterableCountQuery(connection, reportInfo, filter)) {
+            return FILTERABLE_COUNT_QUERY_INVALID_SYNTAX_MESSAGE;
+        }
+        return null;
+    }
+
+    private boolean isValidFilterableCountQuery(Connection connection, ReportInfo reportInfo, ReportFilter filter) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(reportInfo.getCountQuery());
+            setParametersIntoPreparedStatement(statement, filter);
+            statement.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private boolean isValidFilterableCountableQuery(Connection connection, ReportInfo reportInfo, ReportFilter filter) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(reportInfo.getSelectQuery());
+            setParametersIntoPreparedStatement(statement, filter);
+            statement.setInt(filter.getCriterionAmount() + LIMIT_POSITION, EMPTY_VALUE);
+            statement.setInt(filter.getCriterionAmount() + OFFSET_POSITION, EMPTY_VALUE);
+            statement.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private String validateFilterableUncountableQuery(Connection connection, ReportInfo reportInfo, ReportFilter filter) {
+        if (!isValidFilterableSelectQuery(connection, reportInfo, filter)) {
+            return FILTERABLE_INVALID_SYNTAX_MESSAGE;
+        }
+        return null;
+    }
+
+    private boolean isValidFilterableSelectQuery(Connection connection, ReportInfo reportInfo, ReportFilter filter) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(reportInfo.getSelectQuery());
+            setParametersIntoPreparedStatement(statement, filter);
+            statement.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private void setDefaultParametersIntoPreparedStatement(PreparedStatement statement, ReportFilter filter) throws SQLException {
+        List<MultipurposeValue> valueList = filter.getCriteria();
+        for (int index = 1; index <= filter.getCriterionAmount(); index++) {
+            mapper.setDefaultValueInStatement(index, statement, valueList.get(index - 1));
+        }
+    }
+
+    private String validateUnfilterableCountableQuery(Connection connection, ReportInfo reportInfo) {
+        if (!isValidCountableSelectQuery(connection, reportInfo.getSelectQuery())) {
+            return SELECT_QUERY_INVALID_SYNTAX_MESSAGE;
+        }
+        if (!isValidQuery(connection, reportInfo.getCountQuery())) {
+            return COUNT_QUERY_INVALID_SYNTAX_MESSAGE;
+        }
+        return null;
+    }
+
+    private boolean isValidCountableSelectQuery(Connection connection, String selectQuery) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(selectQuery);
+            statement.setInt(LIMIT_POSITION, EMPTY_VALUE);
+            statement.setInt(OFFSET_POSITION, EMPTY_VALUE);
+            statement.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    private String validateUnfilterableUncaunableQuery(Connection connection, ReportInfo reportInfo) {
+        if (!isValidQuery(connection, reportInfo.getSelectQuery())) {
+            return SELECT_QUERY_INVALID_SYNTAX_MESSAGE;
+        }
+        return null;
+    }
+
+    private boolean isValidQuery(Connection connection, String query) {
+        try {
+            connection.prepareStatement(query).executeQuery();
+            return true;
+        } catch (SQLException e) {
+           return false;
+        }
+    }
+    
     public long countResults(String query) {
         Connection connection = null;
         ResultSet resultSet;
@@ -210,13 +352,13 @@ public class ReportDataDAO {
             statement.setInt(LIMIT_POSITION, pageSize);
             statement.setInt(OFFSET_POSITION, (pageNumber - 1) * pageSize);
             ParameterMetaData parameterMetaData = statement.getParameterMetaData();
-            System.out.println("paparameterMetaData: " + parameterMetaData);
-            if (parameterMetaData != null) {
-                System.out.println("count: " + parameterMetaData.getParameterCount());
-                for (int i = 1; i <= parameterMetaData.getParameterCount(); i++) {
-                    System.out.println("param " + i + " type:" + parameterMetaData.getParameterType(i));
-                }
-            }
+//            System.out.println("paparameterMetaData: " + parameterMetaData);
+//            if (parameterMetaData != null) {
+//                System.out.println("count: " + parameterMetaData.getParameterCount());
+//                for (int i = 1; i <= parameterMetaData.getParameterCount(); i++) {
+//                    System.out.println("param " + i + " type:" + parameterMetaData.getParameterType(i));
+//                }
+//            }
 
             resultSet = statement.executeQuery();
             initializeReportMetaData(reportData, resultSet.getMetaData());

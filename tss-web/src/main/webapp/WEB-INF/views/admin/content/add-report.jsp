@@ -69,6 +69,14 @@
                     <c:if test="${!reportInfo.countable}">
                         <c:set var="hide" value="hide-position"/>
                     </c:if>
+
+                    <c:if test="${reportInfo.filterable}">
+                        <c:set var="filterable" value="checked"/>
+                    </c:if>
+                    <c:if test="${!reportInfo.filterable}">
+                        <c:set var="filterHide" value="hide-position"/>
+                    </c:if>
+
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-9 col-sm-offset-3 col-sm-9">
                             <div class="checkbox">
@@ -115,17 +123,62 @@
                                 <%--<input type="checkbox" id="countable" ${countable} name="countable" /> Paginable--%>
                                 <%--</label>--%>
 
-                                <input type="checkbox" id="filterable" name="filterable" style="styled">
+                                <input type="checkbox" id="filterable" name="filterable" ${filterable} style="styled">
                                 <label for="filterable"><b>Filter</b></label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="switcher hide-position" id="filter-switcher">
+                    <div class="switcher ${filterHide}" id="filter-switcher">
 
-                        <input type="hidden" name="crAmount" id="criteriaAmount">
+                        <input type="hidden" name="crAmount" id="criteriaAmount" value="${reportInfo.filter.size()}">
 
-                        <div id="criteriaContainer"></div>
+                        <div id="criteriaContainer">
+
+                            <c:if test="${not empty reportInfo.filter and reportInfo.filter.size() gt 0}">
+                                <c:forEach begin="0" end="${reportInfo.filter.size() - 1}" var="counter">
+                                    <c:set var="filterCriterion" value="${reportInfo.filter.get(counter)}"/>
+
+                                    <div class="form-group">
+
+                                        <input type="hidden" name="crId${filterCriterion.sequentialNumber}" value="${filterCriterion.id}">
+
+                                        <label for="criterion" class="col-md-3 col-sm-3 col-xs-12 control-label criterion-label">Criterion ${filterCriterion.sequentialNumber}:</label>
+                                        <div class="col-md-4 col-sm-4 col-xs-12 text-right">
+                                            <input type="text" class="form-control criterion-name" id="criterion" placeholder="Label" name="crName${filterCriterion.sequentialNumber}" value="${filterCriterion.name}"/>
+                                            <div class="visible-xs vertical-margin"></div>
+                                        </div>
+
+                                        <div class="col-md-3 col-sm-3 col-xs-12 text-left">
+                                            <select class="form-control criterion-type" name="crType${filterCriterion.sequentialNumber}">
+                                                <c:forEach var="type" items="${dataTypes}">
+                                                    <c:if test="${type.ordinal() == filterCriterion.type}">
+                                                        <c:set value="selected" var="selected"/>
+                                                    </c:if>
+                                                    <c:if test="${type.ordinal() != filterCriterion.type}">
+                                                        <c:set value="" var="selected"/>
+                                                    </c:if>
+                                                    <option value="${type.ordinal()}" ${selected}>${type.name()}</option>
+                                                </c:forEach>
+
+                                            </select>
+                                            <div class="visible-xs vertical-margin"></div>
+                                        </div>
+
+                                        <input type="hidden" class="criterion-seq-num" name="crSeqNum${filterCriterion.sequentialNumber}" value="${filterCriterion.sequentialNumber}">
+
+                                        <div class="col-md-2 col-sm-2 col-xs-12 text-center">
+                                            <a class="btn btn-danger delete-criterion hidden-xs"><i class="fa fa-trash-o"></i></a>
+                                            <a class="btn btn-danger delete-criterion col-xs-offset-3 col-xs-6 visible-xs"><i class="fa fa-trash-o"></i></a>
+                                        </div>
+
+                                    </div>
+
+                                </c:forEach>
+                            </c:if>
+
+
+                        </div>
 
                         <div class="form-group">
                             <%--<label for="addCriteriaBtn" class="col-md-3 control-label">Filter:</label>--%>
@@ -166,12 +219,6 @@
                 <c:forEach var="type" items="${dataTypes}">
                     <option value="${type.ordinal()}">${type.name()}</option>
                 </c:forEach>
-                <%--<option value="1">Integer</option>--%>
-                <%--<option value="2">Long</option>--%>
-                <%--<option value="3">String</option>--%>
-                <%--<option value="4">Double</option>--%>
-                <%--<option value="5">Boolean</option>--%>
-                <%--<option value="6">Timestamp</option>--%>
             </select>
             <div class="visible-xs vertical-margin"></div>
         </div>
@@ -204,8 +251,8 @@
 
     $(document).on("click", ".delete-criterion", function() {
         $(this).closest('.form-group').remove();
+        $("#reportForm").formValidation('enableFieldValidators', 'filterable', true);
         updateCriteria();
-
     });
 
     function updateCriteria() {
@@ -227,11 +274,21 @@
         return counter;
     }
 
+    function addCriterionValidator() {
+        var amount = $("#criteriaContainer .criterion-name").length;
+//        alert(amount);
+        var form = $('#reportForm');
+        for ( var i = 1; i <= amount; i++) {
+            form.formValidation('addField', "crName" + i, criteriaNameValidators);
+        }
+
+    }
 </script>
 
 <script>
 
     $(document).ready(function() {
+
         FormValidation.Validator.filter = {
             validate: function(validator, $field, options) {
                 var container = $("#criteriaContainer");
@@ -242,9 +299,13 @@
             }
         };
 
-        $(document).ready(function() {
-            $('#reportForm').formValidation(getOptions(false, false));
-        });
+        $('#reportForm').formValidation(getOptions(false, false));
+
+//        $(document).ready(function() {
+//            $('#reportForm').formValidation(getOptions(false, false));
+//        });
+
+        addCriterionValidator();
     });
 
     function getOptions(paggingState, filterState) {

@@ -276,7 +276,7 @@
                         </c:if>
 
                         <c:if test="${not empty pager.lastPage}">
-                            <li><a href="#" class="pagerBtn" data-page="${next.previousPage}"  title="Last (${pager.lastPage})"><i class="fa fa-angle-double-right fa-lg"></i></a></li>
+                            <li><a href="#" class="pagerBtn" data-page="${next.lastPage}"  title="Last (${pager.lastPage})"><i class="fa fa-angle-double-right fa-lg"></i></a></li>
                         </c:if>
 
                     </ul>

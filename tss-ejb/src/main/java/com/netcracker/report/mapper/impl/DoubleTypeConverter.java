@@ -14,6 +14,7 @@ import java.sql.SQLException;
 public class DoubleTypeConverter implements TypeConverter {
 
     public static final DataType TYPE = DataType.DOUBLE;
+    public static final Double DEFAULT_VALUE = 0.0;
 
     @Override
     public MultipurposeValue convert(ResultSet resultSet, int index, DataType type) throws SQLException {
@@ -31,7 +32,17 @@ public class DoubleTypeConverter implements TypeConverter {
     }
 
     @Override
+    public MultipurposeValue dafaultValue() {
+        return new MultipurposeValue(TYPE, DEFAULT_VALUE);
+    }
+
+    @Override
     public DataType type() {
         return TYPE;
+    }
+
+    @Override
+    public void insertDefaultValueIntoPreparedStatement(PreparedStatement statement, int index) throws SQLException {
+        statement.setDouble(index, DEFAULT_VALUE);
     }
 }

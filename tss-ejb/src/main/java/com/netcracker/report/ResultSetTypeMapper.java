@@ -62,4 +62,9 @@ public class ResultSetTypeMapper {
         TypeConverter converter = converterMap.get(value.getType());
         converter.insertValueIntoPreparedStatement(statement, index, value);
     }
+
+    public void setDefaultValueInStatement(int index, PreparedStatement statement, MultipurposeValue value) throws SQLException {
+        TypeConverter converter = converterMap.get(value.getType());
+        converter.insertDefaultValueIntoPreparedStatement(statement, index);
+    }
 }

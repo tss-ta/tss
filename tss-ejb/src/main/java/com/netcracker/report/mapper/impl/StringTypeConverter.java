@@ -15,6 +15,7 @@ import java.sql.SQLException;
 public class StringTypeConverter implements TypeConverter {
 
     public static final DataType TYPE = DataType.STRING;
+    public static final String DEFAULT_VALUE = "empty";
 
     @Override
     public MultipurposeValue convert(ResultSet resultSet, int index, DataType type) throws SQLException {
@@ -34,5 +35,15 @@ public class StringTypeConverter implements TypeConverter {
     @Override
     public DataType type() {
         return TYPE;
+    }
+
+    @Override
+    public MultipurposeValue dafaultValue() {
+        return new MultipurposeValue(TYPE, DEFAULT_VALUE);
+    }
+
+    @Override
+    public void insertDefaultValueIntoPreparedStatement(PreparedStatement statement, int index) throws SQLException {
+        statement.setString(index, DEFAULT_VALUE);
     }
 }

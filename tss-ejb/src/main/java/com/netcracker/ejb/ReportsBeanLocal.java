@@ -43,6 +43,8 @@ public interface ReportsBeanLocal extends EJBLocalObject {
 
     int countFilterableReports(ReportInfo info, ReportFilter filter);
 
+    String validateReportInfo(ReportInfo reportInfo, ReportFilter filter);
+
     Pager getFilterableReportPager(ReportInfo info, int page, ReportFilter filter);
 
     List<TaxiOrder> getBookedOrders (Date begin, Date end);

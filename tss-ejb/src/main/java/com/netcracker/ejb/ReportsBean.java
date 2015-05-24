@@ -5,6 +5,7 @@ import com.netcracker.dao.ReportInfoDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Criterion;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.helper.CarCategory;
@@ -129,15 +130,57 @@ public class ReportsBean implements SessionBean {
         }
     }
 
+    public String validateReportInfo(ReportInfo reportInfo, ReportFilter filter) {
+        return new ReportDataDAO().validateQuery(reportInfo, filter);
+    }
+
     public void updateReportInfo(ReportInfo reportInfo) {
         ReportInfoDAO infoDAO = null;
+        ReportInfo oldReportInfo = null;
         try {
             infoDAO = new ReportInfoDAO();
+            oldReportInfo = infoDAO.get(reportInfo.getId());
+            updateReportFilter(oldReportInfo.getFilter(), reportInfo.getFilter());
             infoDAO.update(reportInfo);
+        } catch(NoSuchEntityException e) {
+            e.printStackTrace();
         } finally {
             if (infoDAO != null) {
                 infoDAO.close();
             }
+        }
+    }
+
+    private void updateReportFilter(List<Criterion> oldFilter, List<Criterion> newFilter) {
+        CriterionBeanLocal criterionBean = BeansLocator.getInstance().getBean(CriterionBeanLocal.class);
+
+        if (oldFilter.size() == newFilter.size()) {
+
+            System.out.println("---- '==' -----");
+
+            for (int index = 0; index < newFilter.size(); index++) {
+                newFilter.get(index).setId(oldFilter.get(index).getId());
+            }
+            criterionBean.updateCriterionList(newFilter);
+        } else if (oldFilter.size() > newFilter.size()) {
+
+            System.out.println("---- '=' -----");
+
+
+            for (int index = 0; index < newFilter.size(); index++) {
+                newFilter.get(index).setId(oldFilter.get(index).getId());
+            }
+            criterionBean.updateCriterionList(newFilter);
+            criterionBean.removeCriterionList(oldFilter.subList(newFilter.size(), oldFilter.size()));
+        } else if (oldFilter.size() < newFilter.size()) {
+
+            System.out.println("---- '<' -----");
+
+            for (int index = 0; index < oldFilter.size(); index++) {
+                newFilter.get(index).setId(oldFilter.get(index).getId());
+            }
+            criterionBean.updateCriterionList(newFilter.subList(0, oldFilter.size()));
+            criterionBean.insertCriterionList(newFilter.subList(oldFilter.size(), newFilter.size()));
         }
     }
 

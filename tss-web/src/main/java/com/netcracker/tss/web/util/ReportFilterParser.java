@@ -1,5 +1,6 @@
 package com.netcracker.tss.web.util;
 
+import com.netcracker.entity.Criterion;
 import com.netcracker.entity.helper.ReportFilter;
 import com.netcracker.report.container.MultipurposeValue;
 import com.netcracker.report.mapper.TypeConverter;
@@ -7,6 +8,7 @@ import com.netcracker.report.mapper.impl.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +39,15 @@ public class ReportFilterParser {
         }
 
         return generateReportFilterFromRequest(amount, request);
+    }
+
+    public ReportFilter createDefaultFilter(List<Criterion> criterionList) {
+        ReportFilter filter = new ReportFilter();
+        filter.setCriterionAmount(criterionList.size());
+        for (Criterion criterion : criterionList) {
+            filter.getCriteria().add(typeConverterMap.get(criterion.getType()).dafaultValue());
+        }
+        return filter;
     }
 
     private ReportFilter generateReportFilterFromRequest(int amount, HttpServletRequest request) {

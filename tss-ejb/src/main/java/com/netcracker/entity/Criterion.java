@@ -18,7 +18,7 @@ public class Criterion {
     @Column(length = 40)
     private String name;
 
-    @NotNull
+    @NotNull(message = "Type may not be null.")
     private Integer type;
 
     @Column(name = "seq_number")
@@ -101,7 +101,7 @@ public class Criterion {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (sequentialNumber != null ? sequentialNumber.hashCode() : 0);
-        result = 31 * result + (reportInfo != null ? reportInfo.hashCode() : 0);
+        result = 31 * result + (reportInfo != null ? reportInfo.getId() : 0);
         return result;
     }
 

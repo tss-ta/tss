@@ -14,6 +14,7 @@ import java.sql.SQLException;
 public class LongTypeConverter implements TypeConverter {
 
     public static final DataType TYPE = DataType.LONG;
+    public static final Long DEFAULT_VALUE = 0L;
 
     @Override
     public MultipurposeValue convert(ResultSet resultSet, int index, DataType type) throws SQLException {
@@ -33,5 +34,15 @@ public class LongTypeConverter implements TypeConverter {
     @Override
     public DataType type() {
         return TYPE;
+    }
+
+    @Override
+    public MultipurposeValue dafaultValue() {
+        return new MultipurposeValue(TYPE, DEFAULT_VALUE);
+    }
+
+    @Override
+    public void insertDefaultValueIntoPreparedStatement(PreparedStatement statement, int index) throws SQLException {
+        statement.setLong(index, DEFAULT_VALUE);
     }
 }
