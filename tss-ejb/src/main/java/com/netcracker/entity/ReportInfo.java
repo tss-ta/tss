@@ -28,6 +28,8 @@ public class ReportInfo {
     private String countQuery;
 
     @Column(name = "page_size")
+//    @Min(value = 1)
+//    @Max(value = 10000)
     private Integer pageSize;
 
     @Column(name = "export_size")

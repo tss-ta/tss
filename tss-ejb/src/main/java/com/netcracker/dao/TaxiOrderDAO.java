@@ -5,7 +5,9 @@
  */
 package com.netcracker.dao;
 
+import com.netcracker.entity.Car;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Driver;
 import com.netcracker.entity.TaxiOrder;
 import java.util.Date;
 import com.netcracker.entity.helper.Status;
@@ -26,7 +28,8 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     public TaxiOrderDAO() {
     }
 
-    public List<TaxiOrder> getTaxiOrderHistoryDriver(int pageNumber, int pageSize, DriverCar driverCar, Status status) {
+    public List<TaxiOrder> getTaxiOrderHistoryDriver(int pageNumber, int pageSize,
+            DriverCar driverCar, Status status, Driver driver, Car car) {
         if (pageNumber <= 0) {
             throw new IllegalArgumentException("Argument 'pageNumber' <= 0");
         }
@@ -36,7 +39,7 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
         TypedQuery<TaxiOrder> tq;
         if (status != Status.QUEUED) {
             tq = em.createQuery(
-                    "SELECT t FROM TaxiOrder t WHERE t.driverCarId = :driverCarId AND t.status = :status ORDER BY t.orderTime DESC", TaxiOrder.class);
+                    "SELECT t FROM TaxiOrder t WHERE t.driverCarId = :driverCarId AND t.status = :status ORDER BY t.bookingTime DESC", TaxiOrder.class);
             tq.setParameter("driverCarId", driverCar);
             tq.setParameter("status", status.getId());
             tq.setFirstResult((pageNumber - 1) * pageSize);
@@ -45,8 +48,12 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
             return taxiOrders;
         } else {
             tq = em.createQuery(
-                    "SELECT t FROM TaxiOrder t WHERE t.status = :status ORDER BY t.orderTime DESC", TaxiOrder.class);
+                    "SELECT t FROM TaxiOrder t WHERE t.status = :status AND "
+                    + "(t.male = :male OR t.male is NULL) AND t.carCategory = :carCategory"
+                    + " ORDER BY t.bookingTime DESC", TaxiOrder.class);
             tq.setParameter("status", status.getId());
+            tq.setParameter("male", driver.isMale());
+            tq.setParameter("carCategory", car.getCategory());
             tq.setFirstResult((pageNumber - 1) * pageSize);
             tq.setMaxResults(pageSize);
             List<TaxiOrder> taxiOrders = tq.getResultList();
@@ -99,7 +106,8 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     }
 
     public List<TaxiOrder> findBookedOrdersByPeriod(Date begin, Date end, int pageNumber, int pageSize) {
-        TypedQuery<TaxiOrder> query = em.createQuery("SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end ", TaxiOrder.class);
+        TypedQuery<TaxiOrder> query = em.createQuery(
+                "SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end order by t.bookingTime DESC", TaxiOrder.class);
         query.setParameter("begin", begin);
         query.setParameter("end", end);
         query.setFirstResult((pageNumber - 1) * pageSize);
@@ -108,7 +116,8 @@ public class TaxiOrderDAO extends GenericDAO<TaxiOrder> {
     }
 
     public List<TaxiOrder> findBookedOrdersByPeriod(Date begin, Date end) {
-        TypedQuery<TaxiOrder> query = em.createQuery("SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end ", TaxiOrder.class);
+        TypedQuery<TaxiOrder> query = em.createQuery(
+                "SELECT t FROM TaxiOrder t WHERE t.bookingTime BETWEEN :begin AND :end order by t.bookingTime DESC", TaxiOrder.class);
         query.setParameter("begin", begin);
         query.setParameter("end", end);
         return query.getResultList();

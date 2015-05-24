@@ -3,6 +3,8 @@ package com.netcracker.entity;
 import com.netcracker.entity.helper.DriverCar;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ public class CelebrationService implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "serviceId", updatable = false)
+    @Column(name = "service_id")
     private Integer serviceId;
 
     @JoinColumn(name = "order_id", referencedColumnName = "id")
@@ -29,15 +31,19 @@ public class CelebrationService implements Serializable {
     private Address fromAddress;
 
     @Column(name = "duration")
+    @Min(value = 8)
+    @Max(value = 1000)
     private Integer duration;
 
     @Column(name = "drivers_amount")
+    @Min(value = 5)
+    @Max(value = 100)
     private Integer driversAmount;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "celebration_driver_car",
-            joinColumns = @JoinColumn(name = "serviceId", referencedColumnName = "serviceId"),
+            joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "service_id"),
             inverseJoinColumns = @JoinColumn(name = "driver_car_id", referencedColumnName = "id"))
     private List<DriverCar> driverCars = new ArrayList<DriverCar>();
 

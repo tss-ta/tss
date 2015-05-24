@@ -67,6 +67,16 @@ public class CelebrationRoute {
                 checkParameter(durationStr) &&
                 checkParameter(fromAddress)) {
             Date orderTime = DateParser.parseDate(req);
+            Date bookingTime = new Date();
+            if (orderTime.before(bookingTime)){
+                actResp.setErrorMessage("It is impossible to order taxi at the past! Please input the correct order time.");
+                req.getSession().removeAttribute(ATTRIBUTE_TAXI_ORDER);
+
+                req.setAttribute(ATTRIBUTE_PERSONAL_ADDRESS, getPersonalAddresses());
+                req.setAttribute(RequestAttribute.PAGE_TYPE.getName(), Page.CUSTOMER_CELEBRATION_SERVICE_CONTENT.getType());
+                actResp.setPageContent(Page.CUSTOMER_CELEBRATION_SERVICE_CONTENT.getAbsolutePath());
+                return actResp;
+            }
             Integer driversAmount = Integer.parseInt(driversAmountStr);
             Integer duration = Integer.parseInt(durationStr);
 
@@ -106,7 +116,7 @@ public class CelebrationRoute {
             req.setAttribute(ATTRIBUTE_TAXI_ORDER_ID, latestTOId);
             actResp.setPageContent(Page.TAXI_ORDER_CONFIRMATION_CONTENT.getAbsolutePath());
         } else {
-            actResp.setErrorMessage("Please, fill all mandatory fields!");
+            actResp.setErrorMessage("Please, check all input parameters and correct it!");
             req.getSession().removeAttribute(ATTRIBUTE_TAXI_ORDER);
 
             req.setAttribute(ATTRIBUTE_PERSONAL_ADDRESS, getPersonalAddresses());

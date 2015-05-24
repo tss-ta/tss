@@ -15,11 +15,7 @@
 	<div class="row mt bottom_line">
 		<div class="control-group">
 			<div class="col-md-6">
-				<div class="col-lg-12">
-					<div class="form-panel">
-						<%@ include file="../../partials/order_time_buttons.jspf"%>
-					</div>
-				</div>
+						<%@ include file="../../partials/order_time_buttons.jspf"%>>
 				<div class="form-group">
 					<label class="col-md-2 control-label">From list:</label>
 					<div class="col-sm-12 col-md-12 col-lg-10">
@@ -39,12 +35,14 @@
 						</div>
 					</div>
 				</div>
+                <div class="form-group">
 				<%@ include file="../../partials/from_addr.jspf"%>
 
 				<%@ include file="../../partials/from_pers_addr.jspf"%>
 				<%@ include file="../../partials/to_addr.jspf"%>
 				<%@ include file="../../partials/to_pers_addr.jspf"%>
 				<%@ include file="../../partials/price.jspf"%>
+                    </div>
 			</div>
 			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-6">

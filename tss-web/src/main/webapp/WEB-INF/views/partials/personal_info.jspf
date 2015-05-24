@@ -1,15 +1,15 @@
 <div class="form-group">
-	<label class="col-sm-2 col-sm-2 control-label">Name</label>
-	<div class="col-sm-4">
-		<input type="text" class="form-control" id="name" name="name"
-			maxlength="40" required autofocus>
+	<label class="col-lg-2 control-label">Your Name:</label>
+	<div class=" col-lg-4">
+		<input type="text" class="form-control" id="name" name="name" placeholder="Your name"
+			maxlength="40" value="${param.name}" required autofocus>
 	</div>
-	<label class="col-sm-2 control-label">E-Mail</label>
-	<div class="col-sm-4">
+	<label class=" col-lg-2 control-label">Your Email:</label>
+	<div class=" col-lg-4">
             <input type="email" data-validation-email-message="Sorry, incorrect email address!"
-                   class="form-control" id="input_email" placeholder="Email" name="email"
+                   class="form-control" id="input_email" placeholder="Your Email" name="email"
                    minlength="5" data-validation-minlength-message="Sorry, incorrect email address!"
-                   maxlength="40" required
+                   maxlength="40" required value="${param.email}"
                    data-validation-maxlength-message="Sorry, incorrect email address. It's too long!" autofocus/>
             <br/>
 	</div>

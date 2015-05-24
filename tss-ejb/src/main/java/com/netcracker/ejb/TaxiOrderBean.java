@@ -6,6 +6,7 @@
 package com.netcracker.ejb;
 
 import com.netcracker.dao.AddressDAO;
+import com.netcracker.dao.CarDao;
 import com.netcracker.dao.ContactsDAO;
 import com.netcracker.dao.DriverCarDAO;
 import com.netcracker.dao.DriverDAO;
@@ -16,7 +17,9 @@ import com.netcracker.dao.exceptions.DriverAssignCarException;
 import com.netcracker.dao.exceptions.DriverOrderCountException;
 import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Address;
+import com.netcracker.entity.Car;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Driver;
 import com.netcracker.entity.Route;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.helper.Status;
@@ -30,6 +33,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
@@ -145,7 +150,7 @@ public class TaxiOrderBean implements SessionBean {
 		TaxiOrder taxiOrder = getOrderById(orderId);
 		taxiOrder.setStatus(Status.REFUSED);
 		TaxiOrderDAO dao = null;
-		User currentUser = getOrderById(orderId).getContactsId().getUserId();
+		Contacts currentUser = getOrderById(orderId).getContactsId();
 		try {
 			dao = new TaxiOrderDAO();
 			dao.update(taxiOrder);
@@ -189,12 +194,22 @@ public class TaxiOrderBean implements SessionBean {
 			dao = new TaxiOrderDAO();
 			daoC = new DriverCarDAO();
 			driverDAO = new DriverDAO();
-			if (new DriverBean().getDriver(user.getId()).getCar() == null) {
+			Car car = new DriverBean().getDriver(user.getId()).getCar();
+			if (car == null) {
 				throw new DriverAssignCarException("no assigned car");
 			}
 			DriverCar driverCar = daoC.getByDriverId(user.getId());
+			Driver driver = null;
+
+			try {
+				driver = driverDAO.get(user.getId());
+
+			} catch (NoSuchEntityException ex) {
+				Logger.getLogger(TaxiOrderBean.class.getName()).log(
+						Level.SEVERE, null, ex);
+			}
 			orders = dao.getTaxiOrderHistoryDriver(pageNumber, pageSize,
-					driverCar, status);
+					driverCar, status, driver, car);
 		} finally {
 			if (dao != null) {
 				dao.close();
@@ -205,6 +220,7 @@ public class TaxiOrderBean implements SessionBean {
 			if (driverDAO != null) {
 				driverDAO.close();
 			}
+
 		}
 		List<TaxiOrderHistory> taxiOrderHistory = createTOHistory(orders);
 		return taxiOrderHistory;
@@ -221,8 +237,7 @@ public class TaxiOrderBean implements SessionBean {
 			taxiOrder = orderDAO.get(taxiOrderId);
 			int status = taxiOrder.getStatus();
 			DriverCar driverCarId = daoC.getByDriverId(user.getId());
-			User currentUser = getOrderById(taxiOrderId).getContactsId()
-					.getUserId();
+			Contacts currentUser = getOrderById(taxiOrderId).getContactsId();
 			if (status == Status.QUEUED.getId()) {
 				taxiOrder.setDriverCarId(driverCarId);
 				taxiOrder.setStatus(Status.ASSIGNED);
@@ -370,21 +385,37 @@ public class TaxiOrderBean implements SessionBean {
 	}
 
 	private String getFromAddr(TaxiOrderHistory toh) {
-		if (toh.getRouteId() != null) {
+		if (toh.getRouteId() != null && !toh.isServiceBool()) {
 			Address a = toh.getRouteId().getFromAddrId();
 			return toAddress(a.getAltitude(), a.getLongtitude());
-		} else {
-			return "";
+		} else if (toh.isServiceBool()) {
+			StringBuffer addr = new StringBuffer();
+			if (toh.isConvey()) {
+				for (Route route : toh.getAddrConvey()) {
+					Address a = route.getFromAddrId();
+					addr.append(toAddress(a.getAltitude(), a.getLongtitude())
+							+ " ");
+				}
+				return addr.toString();
+			}
 		}
+		return "";
 	}
 
 	private String getToAddr(TaxiOrderHistory toh) {
 		if (toh.getRouteId() != null) {
 			Address a = toh.getRouteId().getToAddrId();
 			return toAddress(a.getAltitude(), a.getLongtitude());
-		} else {
-			return "";
+		} else if (toh.isServiceBool()) {
+			StringBuffer addr = new StringBuffer();
+			if (toh.isConvey()) {
+				Route route = toh.getAddrConvey().get(0);
+				Address a = route.getToAddrId();
+				addr.append(toAddress(a.getAltitude(), a.getLongtitude()));
+			}
+			return addr.toString();
 		}
+		return "";
 	}
 
 	private String toAddress(float lng, float alt) {

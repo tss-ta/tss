@@ -88,8 +88,13 @@ public class DriverCar implements Serializable {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hash(driverId, carId, assignedTime, unassignedTime);
+    public int hashCode() {
+        int result = drvCarId != null ? drvCarId.hashCode() : 0;
+        result = 31 * result + (driverId != null ? driverId.hashCode() : 0);
+        result = 31 * result + (carId != null ? carId.hashCode() : 0);
+        result = 31 * result + (assignedTime != null ? assignedTime.hashCode() : 0);
+        result = 31 * result + (unassignedTime != null ? unassignedTime.hashCode() : 0);
+        return result;
     }
 
     @Override

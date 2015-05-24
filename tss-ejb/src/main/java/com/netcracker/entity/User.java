@@ -28,12 +28,12 @@ public class User implements Serializable {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @Size(min = 1, max = 60)
+    @Size(min = 1, max = 40)
     @Column(name = "username")
     private String username;
 
     @Column(name = "email")
-    @Size(min = 1, max = 60)
+    @Size(min = 1, max = 40)
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Incorrect email address")
     private String email;
 
@@ -143,7 +143,14 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, email, passwordHash);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (passwordHash != null ? passwordHash.hashCode() : 0);
+        result = 31 * result + (roles != null ? roles.hashCode() : 0);
+        result = 31 * result + (groups != null ? groups.hashCode() : 0);
+        result = 31 * result + (addresses != null ? addresses.hashCode() : 0);
+        return result;
     }
 
     @Override

@@ -1,8 +1,13 @@
 <div class="form-group">
-	<div class="col-sm-2"></div>
-	<label class="col-sm-2 col-sm-2 control-label">From :</label>
+	<label class="col-sm-2 control-label">From:</label>
 	<div class="col-sm-6">
 		<input type="text" class="form-control" id="fromAddr" name="fromAddr"
-                       value="${toh.fromAddr}" maxlength="140" required autofocus />
+               placeholder="Enter address or click on map"
+                       value="${empty toh ?  param.fromAddr : toh.fromAddr}" maxlength="140" required autofocus />
 	</div>
+	<div class="col-sm-4">
+        <a onclick="showonmap()">
+            <img src="/resources/customer_assets/img/from.png" width="32" height="32" alt="from"/>
+        </a>
+    </div>
 </div>

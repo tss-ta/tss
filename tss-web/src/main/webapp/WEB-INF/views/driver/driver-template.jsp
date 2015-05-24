@@ -15,7 +15,7 @@
 
 <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
-<link href="/resources/css/customer.css" rel="stylesheet">
+<link href="/resources/css/admin.css" rel="stylesheet">
 <link href="/resources/customer_assets/css/anytime.5.1.0.css"
 	rel="stylesheet">
 <link href="/resources/customer_assets/css/bootstrap-select.css"
@@ -31,11 +31,39 @@
 		<div id="sidebar-wrapper">
 			<%@ include file="partials/sidebar.jspf"%>
 		</div>
-		<div id="page-content-wrapper">
-			<div class="container-fluid">
-				<%@ include file="partials/driver-header.jspf"%>
-			</div>
+
+
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+
+                    <%@ include file="partials/driver-header.jspf"%>
+
+                    <c:if test="${not empty errorMessage}">
+                        <div class="row row-fix">
+                            <div class="col-md-offset-1 col-md-10">
+                                <div class="alert alert-danger alert-dismissible text-center" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <i class="fa fa-exclamation"></i> ${errorMessage}
+                                </div>
+                            </div>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${not empty successMessage}">
+                        <div class="row row-fix">
+                            <div class="col-md-offset-1 col-md-10">
+                                <div class="alert alert-success alert-dismissible text-center" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <i class="fa fa-exclamation"></i> ${successMessage}
+                                </div>
+                            </div>
+                        </div>
+                    </c:if>
+                </div>
+
+                <%--<div class="col-md-offset-1 col-md-11"--%>
 			<jsp:include page="${pageContent}" />
+                <%--</div>--%>
 
 		</div>
 	</div>
@@ -106,7 +134,7 @@
 			},
 			legend: [
 			{type: "text", label: "Special event", badge: "00"},
-			{type: "block", label: "Regular event", }
+			{type: "block", label: "Regular event" }
 			]
 		});
 	});

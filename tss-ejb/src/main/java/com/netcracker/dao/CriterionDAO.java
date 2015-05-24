@@ -1,7 +1,6 @@
 package com.netcracker.dao;
 
 import com.netcracker.entity.Criterion;
-import com.netcracker.entity.ReportInfo;
 
 import javax.persistence.Query;
 import java.util.List;

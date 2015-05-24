@@ -25,7 +25,7 @@ public class Driver extends User {
     private boolean available;
 
     @Column(name = "is_male")
-    private boolean isMale;
+    private Boolean isMale;
 
     @Column(name = "smokes")
     private boolean smokes;
@@ -87,7 +87,7 @@ public class Driver extends User {
         this.available = available;
     }
 
-    public boolean isMale() {
+    public Boolean isMale() {
         return isMale;
     }
 

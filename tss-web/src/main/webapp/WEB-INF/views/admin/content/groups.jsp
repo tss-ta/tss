@@ -36,8 +36,8 @@
     <div class="col-md-1"></div>
     <div class="col-md-10">
 
-        <table class="table table-striped table-bordered">
-            <thead class="tablehead">
+        <table class="table table-bordered">
+            <thead>
             <td>Group</td>
             <td>Roles</td>
             <td></td>

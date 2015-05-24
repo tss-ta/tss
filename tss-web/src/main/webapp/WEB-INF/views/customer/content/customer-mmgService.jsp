@@ -21,15 +21,12 @@
 	<div class="row mt bottom_line">
 		<div class="control-group">
 			<div class="col-md-6">
-				<div class="col-lg-12">
-					<div class="form-panel">
-						<%@ include file="../../partials/order_time_buttons.jspf"%>
-					</div>
-				</div>
+                <%@ include file="../../partials/order_time_buttons.jspf"%>
 				<div class="form-group">
-					<label class="col-sm-2 col-sm-2 control-label">Guest Name</label>
-					<div class="col-sm-9">
-						<input type="text" class="form-control" id="name" name="guestName" maxlength="60" minLength="2" required autofocus>
+					<label class="col-sm-2 control-label">Guest Name:</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="name" name="guestName"
+                               value="${param.guestName}" maxlength="60" minLength="2" required autofocus>
 					</div>
 				</div>
 				<%@ include file="../../partials/from_addr.jspf"%>
@@ -37,6 +34,7 @@
 				<%@ include file="../../partials/to_addr.jspf"%>
 				<%@ include file="../../partials/to_pers_addr.jspf"%>
 				<%@ include file="../../partials/price.jspf"%>
+
 			</div>
 			<div class="clearfix visible-xs-block"></div>
 			<div class="col-md-6">

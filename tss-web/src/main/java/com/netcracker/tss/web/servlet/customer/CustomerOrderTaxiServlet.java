@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.netcracker.util.BeansLocator;
 import org.json.JSONException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,6 +46,7 @@ import java.util.Map;
 
 /**
  * Created by Stanislav Zabielin
+ * @author maks
  */
 @WebServlet(urlPatterns = "/customer/order")
 public class CustomerOrderTaxiServlet extends HttpServlet {
@@ -71,48 +73,54 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             deleteAddress(req);
             resp.sendRedirect("/customer/orderpage");
         } else {
-            User user = findCurrentUser();
-            TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
-            PriceBeanLocal priceBean = getPriceBean(req);
-            float distance = 0;
-            double price = 0;
+            Date bookingTime = new Date();
+            Date orderTime = DateParser.parseDate(req);
+            if (orderTime.before(bookingTime)) {
+                req.setAttribute("errorMessage", "It is impossible to order taxi at the past! Please input the correct order time.");
+                redirectToTaxiOrder(req,resp);
+//                req.getRequestDispatcher("/customer/orderpage").forward(req, resp);
+//                resp.sendRedirect("/customer/orderpage?err=It is impossible to order taxi at the past! Please input the correct order time.");
+            } else {
+                User user = findCurrentUser();
+                TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(req);
+                PriceBeanLocal priceBean = getPriceBean(req);
+                float distance = 0;
+                double price = 0;
 
-            Route route = new Route(findCurrentUser().getUsername() + " Route");
-            route.setDistance(distance);
-            Address addFrom = toAddress(req.getParameter("fromAddr"), req);
-            Address addTo = toAddress(req.getParameter("toAddr"), req);
-            TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
-            taxiOrder.setBookingTime(new Date());
+                Route route = new Route(findCurrentUser().getUsername() + " Route");
+                route.setDistance(distance);
+                Address addFrom = toAddress(req.getParameter("fromAddr"), req);
+                Address addTo = toAddress(req.getParameter("toAddr"), req);
+                TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(req));
+                taxiOrder.setBookingTime(bookingTime);
 
                 MapBeanLocal mapBean = getMapBean(req);
                 distance = mapBean.calculateDistance(req.getParameter("fromAddr"),
                         req.getParameter("toAddr"));
 
-            price = priceBean.calculatePrice(distance,
-                    DateParser.parseDate(req), taxiOrder, UserUtils.findCurrentUser());
-            Date orderTime = DateParser.parseDate(req);
-            taxiOrder.setOrderTime(orderTime);
-            taxiOrder.setPrice(price);
-            taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo,
-                    taxiOrder);
-            int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
-                    .get(0).getId();
-            req.setAttribute("taxiOrderId", latestTOId);
-            req.setAttribute("pageContent", "content/confirmation.jsp");
-            req.getRequestDispatcher(
-                    "/WEB-INF/views/customer/customer-template.jsp").forward(
-                            req, resp);
+                price = priceBean.calculatePrice(distance,
+                        orderTime, taxiOrder, UserUtils.findCurrentUser());
+                taxiOrder.setOrderTime(orderTime);
+                taxiOrder.setPrice(price);
+                taxiOrderBeanLocal.addTaxiOrder(user, route, addFrom, addTo,
+                        taxiOrder);
+                int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
+                        .get(0).getId();
+                req.setAttribute("taxiOrderId", latestTOId);
+                req.setAttribute("pageContent", "content/confirmation.jsp");
+                req.getRequestDispatcher(
+                        "/WEB-INF/views/customer/customer-template.jsp").forward(
+                        req, resp);
             }
+        }
         }
 //        catch (JSONException | IOException | ServletException e) {
         catch (Exception e) {
-            // TODO Auto-generated catch block
+            // TODO catch block
             e.printStackTrace();
-//            req.setAttribute("pageContent", "incorrect-address.jsp");
-//            req.getRequestDispatcher(
-//                    "/WEB-INF/views/customer/customer-template.jsp").forward(
-//                    req, resp);
-            resp.sendRedirect("/customer/orderpage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
+            req.setAttribute("errorMessage", "Sorry, we can not make this order! Please, check all input parameters ad try again.");
+            redirectToTaxiOrder(req, resp);
+//            resp.sendRedirect("/customer/orderpage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
         }
     }
 
@@ -124,7 +132,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
             addr = req.getParameter("pers_addr_to");
         }
         if (addr != null) {
-            UserBeanLocal userBeanLocal = getUserBean(req);
+            UserBeanLocal userBeanLocal = getUserBean();
             userBeanLocal.removeFromPersonalList(UserUtils.findCurrentUser(),
                     addr);
         }
@@ -133,7 +141,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
     private void addAddressFrom(HttpServletRequest req) {
         String addr = req.getParameter("fromAddr");
         if (addr != null) {
-            UserBeanLocal userBeanLocal = getUserBean(req);
+            UserBeanLocal userBeanLocal = getUserBean();
             userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
         }
     }
@@ -141,7 +149,7 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
     private void addAddressTo(HttpServletRequest req) {
         String addr = req.getParameter("toAddr");
         if (addr != null) {
-            UserBeanLocal userBeanLocal = getUserBean(req);
+            UserBeanLocal userBeanLocal = getUserBean();
             userBeanLocal.addToPersonalList(UserUtils.findCurrentUser(), addr);
         }
     }
@@ -166,75 +174,31 @@ public class CustomerOrderTaxiServlet extends HttpServlet {
         return user;
     }
 
-    private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            TaxiOrderBeanLocalHome taxiOrderBeanLocalHome = (TaxiOrderBeanLocalHome) context
-                    .lookup("java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome");
-            return taxiOrderBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName())
-                    .log(Level.SEVERE,
-                            "Can't find taxiOrderBean with name java:app/tss-ejb/TaxiOrderBean!com.netcracker.ejb.TaxiOrderBeanLocalHome ",
-                            ex);
-            throw new RuntimeException("Internal server error!");// maybe have
-            // to create
-            // custom
-            // exception?
-        }
+    private void redirectToTaxiOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getSession().removeAttribute("taxiOrder");
+        UserBeanLocal userBeanLocal = getUserBean();
+        req.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
+        req.setAttribute("pageContent", "content/customer-order.jsp");
+        req.setAttribute("pageType", "orderpage");
+        req.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
+                .forward(req, resp);
     }
 
-    private MapBeanLocal getMapBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            MapBeanLocalHome mapBeanLocalHome = (MapBeanLocalHome) context
-                    .lookup("java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome");
-            return mapBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName())
-                    .log(Level.SEVERE,
-                            "Can't find taxiOrderBean with name java:app/tss-ejb/MapBean!com.netcracker.ejb.MapBeanLocalHome ",
-                            ex);
-            throw new RuntimeException("Internal server error!");// maybe have
-            // to create
-            // custom
-            // exception?
-        }
-    }
 
-    private UserBeanLocal getUserBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            UserBeanLocalHome userBeanLocalHome = (UserBeanLocalHome) context
-                    .lookup("java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome");
-            return userBeanLocalHome.create();
-        } catch (NamingException ex) {
-            Logger.getLogger(AdminGroupServlet.class.getName())
-                    .log(Level.SEVERE,
-                            "Can't find userBean with name java:app/tss-ejb/UserBean!com.netcracker.ejb.UserBeanLocalHome ",
-                            ex);
-            throw new RuntimeException("Internal server error!");// maybe have
-            // to create
-            // custom
-            // exception?
-        }
+
+    private UserBeanLocal getUserBean() {
+        return BeansLocator.getInstance().getBean(UserBeanLocal.class);
     }
 
     private PriceBeanLocal getPriceBean(HttpServletRequest req) {
-        Context context;
-        try {
-            context = new InitialContext();
-            PriceBeanLocalHome priceBeanLocalHome = (PriceBeanLocalHome) context
-                    .lookup("java:app/tss-ejb/PriceBean!com.netcracker.ejb.PriceBeanLocalHome");
-            return priceBeanLocalHome.create();
-        } catch (NamingException ex) {
-            throw new RuntimeException("Internal server error!");// maybe have
-            // to create
-            // custom
-            // exception?
-        }
+        return BeansLocator.getInstance().getBean(PriceBeanLocal.class);
+    }
+
+    private TaxiOrderBeanLocal getTaxiOrderBean(HttpServletRequest req) {
+        return BeansLocator.getInstance().getBean(TaxiOrderBeanLocal.class);
+    }
+
+    private MapBeanLocal getMapBean(HttpServletRequest req) {
+        return BeansLocator.getInstance().getBean(MapBeanLocal.class);
     }
 }

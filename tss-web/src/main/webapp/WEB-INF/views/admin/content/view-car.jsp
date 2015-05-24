@@ -86,10 +86,10 @@
                         <p>
                             <c:choose>
                                 <c:when test="${car.category == 1}">
-                                    Business
+                                    Economy
                                 </c:when>
                                 <c:when test="${car.category == 2}">
-                                    Economy
+                                    Business
                                 </c:when>
                                 <c:when test="${car.category == 3}">
                                     Van

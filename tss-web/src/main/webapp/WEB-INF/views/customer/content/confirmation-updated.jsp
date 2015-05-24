@@ -10,7 +10,14 @@
         <div class="row mt bottom_line">
             <div class="col-lg-12">
                 <div class="text-center">
-                    <h3>Your TaxiOrder ID is = <b style="color:crimson">${taxiOrderId}</b></h3>
+                    <br/>
+                    <h3>
+                        Your Taxi Order Tracking Number is <b style="color: crimson">${taxiOrderId}</b>.
+                    </h3>
+                    <br/>
+                    <h4>
+                        Please, remember your tracking number, because it's can be needed to track status of your order.
+                    </h4>
                 </div>
             </div>
         </div>

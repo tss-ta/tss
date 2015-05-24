@@ -16,7 +16,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-1">
-                        <a href="/admin/report" class="btn btn-default"> Back </a>
+                        <a href="/admin?menu=report&action=all" class="btn btn-default"><i class="fa fa-reply"></i>Back </a>
                     </div>
                     <div class="col-md-offset-7 col-md-4">
                         <form action="/admin/report" method="get">
@@ -65,7 +65,39 @@
                     </c:forEach> 
                 </tbody>
             </table>
-            <%@ include file="../partials/pagination.jspf" %>
+            <%--<%@ include file="../partials/pagination.jspf" %>--%>
+
+            <c:if test="${not empty pager}">
+                <nav>
+                    <ul class="pager custom-pager">
+
+                        <c:if test="${not empty pager.firstPage}">
+                            <li>
+                                <a  href="/admin/report?action=${param.action}&email=${param.email}&page=${pager.firstPage}"
+                                    title="First (${pager.firstPage})"><i class="fa fa-angle-double-left fa-lg"></i>
+                                </a>
+                            </li>
+                        </c:if>
+
+                        <c:if test="${not empty pager.previousPage}">
+                            <li><a href="/admin/report?action=${param.action}&email=${param.email}&page=${pager.previousPage}"
+                                   title="Previous (${pager.previousPage})"><i class="fa fa-angle-left fa-lg"></i></a></li>
+                        </c:if>
+
+                        <c:if test="${not empty pager.nextPage}">
+                            <li><a href="/admin/report?action=${param.action}&email=${param.email}&page=${pager.nextPage}"
+                                   title="Next (${pager.nextPage})"><i class="fa fa-angle-right fa-lg"></i></a></li>
+                        </c:if>
+
+                        <c:if test="${not empty pager.lastPage}">
+                            <li><a href="/admin/report?action=${param.action}&email=${param.email}&page=${pager.lastPage}"
+                                   title="Last (${pager.lastPage})"><i class="fa fa-angle-double-right fa-lg"></i></a></li>
+                        </c:if>
+
+                    </ul>
+                </nav>
+            </c:if>
+
         </div>
         <div class="col-md-1"></div>
     </div>

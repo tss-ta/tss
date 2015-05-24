@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public enum CarCategory {
     
-    ECONOM(1), VAN(2), BUSINESS(3), CARGO(4);
+    ECONOM(1), BUSINESS(2),VAN(3), CARGO(4);
     
     private int id;
     

@@ -77,8 +77,11 @@ public class MeetMyGuest implements Serializable {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hash(guestName, service);
+    public int hashCode() {
+        int result = serviceId != null ? serviceId.hashCode() : 0;
+        result = 31 * result + (guestName != null ? guestName.hashCode() : 0);
+        result = 31 * result + (service != null ? service.getServiceId().hashCode() : 0);
+        return result;
     }
 
     @Override

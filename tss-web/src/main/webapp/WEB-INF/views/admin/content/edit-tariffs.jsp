@@ -13,7 +13,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-1">
-                    <a href="/admin?menu=tariffs&action=view" class="btn btn-default"> Back </a>
+                    <a href="/admin?menu=tariffs&action=view" class="btn btn-default"><i class="fa fa-reply"></i>Back</a>
                 </div>
                 <div class="col-md-offset-7 col-md-4">
                     <form action="/admin" method="get">

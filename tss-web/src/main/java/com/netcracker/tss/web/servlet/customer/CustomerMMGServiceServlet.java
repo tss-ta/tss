@@ -44,11 +44,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  *
  * @author Виктор
+ * @author maks
  */
 @WebServlet(urlPatterns = "/customer/meetMyGuest")
 public class CustomerMMGServiceServlet extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -87,44 +88,54 @@ public class CustomerMMGServiceServlet extends HttpServlet {
                 deleteAddress(request);
                 response.sendRedirect("/customer/orderpage");
             } else {
-                User user = findCurrentUser();
-                MeetMyGuestBeanLocal myGuestBeanLocal = getMeetMyGuestBean(request);
-                TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
-                PriceBeanLocal priceBean = getPriceBean(request);
-                float distance = 0;
-                double price = 0;
+                Date bookingTime = new Date();
+                Date orderTime = DateParser.parseDate(request);
+                if (orderTime.before(bookingTime)) {
+                    request.setAttribute("errorMessage", "It is impossible to order taxi at the past! Please input the correct order time.");
+                    redirectToTaxiOrder(request, response);
+//                req.getRequestDispatcher("/customer/orderpage").forward(req, resp);
+//                resp.sendRedirect("/customer/orderpage?err=It is impossible to order taxi at the past! Please input the correct order time.");
+                } else {
+                    User user = findCurrentUser();
+                    MeetMyGuestBeanLocal myGuestBeanLocal = getMeetMyGuestBean(request);
+                    TaxiOrderBeanLocal taxiOrderBeanLocal = getTaxiOrderBean(request);
+                    PriceBeanLocal priceBean = getPriceBean(request);
+                    float distance = 0;
+                    double price = 0;
 
-                Route route = new Route(findCurrentUser().getUsername() + " Route");
-                route.setDistance(distance);
-                Address addFrom = toAddress(request.getParameter("fromAddr"), request);
-                Address addTo = toAddress(request.getParameter("toAddr"), request);
-                TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(request));
+                    Route route = new Route(findCurrentUser().getUsername() + " Route");
+                    route.setDistance(distance);
+                    Address addFrom = toAddress(request.getParameter("fromAddr"), request);
+                    Address addTo = toAddress(request.getParameter("toAddr"), request);
+                    TaxiOrder taxiOrder = new TaxiOrder(AdditionalParameters.taxiOrderAddParameters(request));
                     MapBeanLocal mapBean = getMapBean(request);
                     distance = mapBean.calculateDistance(request.getParameter("fromAddr"),
                             request.getParameter("toAddr"));
 
-                price = priceBean.calculatePrice(distance,
-                        DateParser.parseDate(request), taxiOrder, UserUtils.findCurrentUser());
+                    price = priceBean.calculatePrice(distance,
+                            DateParser.parseDate(request), taxiOrder, UserUtils.findCurrentUser());
 
-                taxiOrder.setBookingTime(new Date());
-                Date orderTime = DateParser.parseDate(request);
-                taxiOrder.setOrderTime(orderTime);
-                taxiOrder.setPrice(price);
-                String guestName = request.getParameter("guestName");
-                myGuestBeanLocal.addMeetMyGuestService(user, route, addFrom, addTo, taxiOrder, guestName);
-                int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
-                        .get(0).getId();
-                request.setAttribute("taxiOrderId", latestTOId);
-                request.setAttribute("pageContent", "content/confirmation.jsp");
-                request.getRequestDispatcher(
-                        "/WEB-INF/views/customer/customer-template.jsp").forward(
-                        request, response);
+                    taxiOrder.setBookingTime(bookingTime);
+                    taxiOrder.setOrderTime(orderTime);
+                    taxiOrder.setPrice(price);
+                    String guestName = request.getParameter("guestName");
+                    myGuestBeanLocal.addMeetMyGuestService(user, route, addFrom, addTo, taxiOrder, guestName);
+                    int latestTOId = taxiOrderBeanLocal.getTaxiOrderHistory(1, 1, user)
+                            .get(0).getId();
+                    request.setAttribute("taxiOrderId", latestTOId);
+                    request.setAttribute("pageContent", "content/confirmation.jsp");
+                    request.getRequestDispatcher(
+                            "/WEB-INF/views/customer/customer-template.jsp").forward(
+                            request, response);
+                }
             }
         } catch (Exception e){
             Logger.getLogger(CustomerSoberServiceServlet.class.getName())
                     .log(Level.SEVERE, e.getMessage(), e);
-            response.sendRedirect(
-                    "/customer/mmgServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
+            request.setAttribute("errorMessage", "Sorry, we can not make this order! Please, check all input parameters ad try again.");
+            redirectToTaxiOrder(request, response);
+//            response.sendRedirect(
+//                    "/customer/mmgServicePage?err=Sorry, we can not make this order! Please, check all input parameters ad try again.");
         }
 
     }
@@ -196,6 +207,17 @@ public class CustomerMMGServiceServlet extends HttpServlet {
         User user = userDao.getByEmail(userDetails.getUsername());
         userDao.close();
         return user;
+    }
+
+    private void redirectToTaxiOrder(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getSession().removeAttribute("taxiOrder");
+        UserBeanLocal userBeanLocal = getUserBean(request);
+        request.setAttribute("personal_addr", userBeanLocal.toPersonalAddress(UserUtils.findCurrentUser()));
+        request.setAttribute("pageContent", "content/customer-mmgService.jsp");
+        request.setAttribute("pageType", "mmgService");
+        request.getRequestDispatcher("/WEB-INF/views/customer/customer-template.jsp")
+                .forward(request, response);
     }
 
     private MapBeanLocal getMapBean(HttpServletRequest req) {

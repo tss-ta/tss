@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -35,9 +37,12 @@ public class Contacts implements Serializable {
     private Integer id;
 
     @Column(name = "username")
+    @Size(min = 1, max = 40)
     private String username;
 
     @Column(name = "email")
+    @Size(min = 1, max = 40)
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Incorrect email address")
     private String email;
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -92,8 +97,12 @@ public class Contacts implements Serializable {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hash(email, username, userId);
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        return result;
     }
 
     @Override

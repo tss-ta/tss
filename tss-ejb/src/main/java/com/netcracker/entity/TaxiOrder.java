@@ -378,9 +378,26 @@ public class TaxiOrder implements Serializable {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hash(bookingTime, orderTime, carCategory, driverCarId,
-                routeId, contactsId);
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (payment != null ? payment.hashCode() : 0);
+        result = 31 * result + (bookingTime != null ? bookingTime.hashCode() : 0);
+        result = 31 * result + (orderTime != null ? orderTime.hashCode() : 0);
+        result = 31 * result + (musicStyle != null ? musicStyle.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        result = 31 * result + (male != null ? male.hashCode() : 0);
+        result = 31 * result + (smoke != null ? smoke.hashCode() : 0);
+        result = 31 * result + (carCategory != null ? carCategory.hashCode() : 0);
+        result = 31 * result + (animalTransport != null ? animalTransport.hashCode() : 0);
+        result = 31 * result + (wifi != null ? wifi.hashCode() : 0);
+        result = 31 * result + (conditioner != null ? conditioner.hashCode() : 0);
+        result = 31 * result + (serviceOptionId != null ? serviceOptionId.hashCode() : 0);
+        result = 31 * result + (driverCarId != null ? driverCarId.hashCode() : 0);
+        result = 31 * result + (routeId != null ? routeId.hashCode() : 0);
+        result = 31 * result + (contactsId != null ? contactsId.hashCode() : 0);
+        return result;
     }
 
     @Override
