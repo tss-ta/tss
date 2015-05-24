@@ -33,11 +33,9 @@ public class ReportFilterParser {
         ReportFilter filter = null;
         Integer amount = RequestParameterParser.parseInteger(request,
                 RequestParameter.REPORT_FILTER_CRITERIA_AMOUNT.getValue());
-
         if (amount == null) {
             return null;
         }
-
         return generateReportFilterFromRequest(amount, request);
     }
 
@@ -59,9 +57,6 @@ public class ReportFilterParser {
             name = RequestParameter.REPORT_FILTER_CRITERION_NAME_PREFIX.getValue() + i;
             typeIndex = RequestParameterParser.parseInteger(request, RequestParameter.REPORT_FILTER_CRITERION_TYPE_PREFIX.getValue() + i);
             temp = parseCriterionValue(request, name, typeIndex);
-
-            System.out.println("TEMP: " + temp);
-
             filter.getCriteria().add(temp);
         }
         return filter;
@@ -69,14 +64,9 @@ public class ReportFilterParser {
 
     private MultipurposeValue parseCriterionValue(HttpServletRequest request, String name, Integer type) {
         String unparsedValue = request.getParameter(name);
-
-        System.out.println("Name: " + name);
-        System.out.println("Type: " + type);
-
         if (unparsedValue == null && type != DATA_TYPE_BOOLEAN) {
             return null;
         }
-
         return typeConverterMap.get(type).convert(unparsedValue);
     }
 

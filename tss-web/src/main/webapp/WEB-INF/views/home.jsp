@@ -6,7 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,6 +62,9 @@
 							<li><a href="/signup.jsp">Sign Up</a></li>
 							<li><a href="/track">Track Order</a></li>
 						</sec:authorize>
+						<sec:authorize access="hasRole('BANNED')">
+							<li><a href="/signout">Sign Out</a></li>
+						</sec:authorize>
 						<div class="clear"></div>
 					</ul>
 				</div>
@@ -71,25 +74,28 @@
 		</div>
 	</div>
 	<div class="clear"></div>
-    <c:if test="${not empty errorMessage}">
-        <div class="row row-fix">
-            <div class="col-md-offset-1 col-md-10">
-                <br/>
-                <div class="alert alert-danger alert-dismissible text-center" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <i class="fa fa-exclamation"></i> ${errorMessage}
-                </div>
-            </div>
-        </div>
-    </c:if>
+	<c:if test="${not empty errorMessage}">
+		<div class="row row-fix">
+			<div class="col-md-offset-1 col-md-10">
+				<br />
+				<div class="alert alert-danger alert-dismissible text-center"
+					role="alert">
+					<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<i class="fa fa-exclamation"></i> ${errorMessage}
+				</div>
+			</div>
+		</div>
+	</c:if>
 	<jsp:include page="partials/guest.jsp" />
 	<div class="content">
 		<div class="wrap">
 			<!---start-footer-grids--->
 			<div class="footer-grids">
 				<div class="footer-grid2 last-footer-grid">
-                        <%@ include
-							file="partials/footer.jspf"%>
+					<%@ include file="partials/footer.jspf"%>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -99,10 +105,10 @@
 	<!---End-wrap---->
 	<!-- js placed at the end of the document so the pages load faster -->
 
-    <%--<script src="/resources/js/jquery-1.11.2.min.js"></script>--%>
+	<%--<script src="/resources/js/jquery-1.11.2.min.js"></script>--%>
 	<script src="/resources/customer_assets/js/bootstrap.min.js"></script>
 	<%--<script class="include" type="text/javascript"--%>
-		<%--src="/resources/customer_assets/js/jquery.dcjqaccordion.2.7.js"></script>--%>
+	<%--src="/resources/customer_assets/js/jquery.dcjqaccordion.2.7.js"></script>--%>
 
 	<script src="/resources/customer_assets/js/jquery.sparkline.js"></script>
 

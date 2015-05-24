@@ -33,6 +33,8 @@ import javax.ejb.SessionContext;
 
 public class ReportsBean implements SessionBean {
 
+    public static final int ONE_PAGE = 1;
+
     public ReportInfo getReportInfoById(Integer id) {
         ReportInfoDAO dao = null;
         try {
@@ -227,13 +229,22 @@ public class ReportsBean implements SessionBean {
         return report;
     }
 
-    public Report getReport(ReportInfo reportInfo, int pageNumber, ReportFilter filter) {
+    public Report getBigReport(ReportInfo info) {
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        ReportData reportData;
+        Report report;
+        if (info.isCountable()) {
+            reportData = dataDAO.createReportData(info.getSelectQuery(), ONE_PAGE, info.getExportSize());
+        } else {
+            reportData = dataDAO.createReportData(info.getSelectQuery());
+        }
+        return new Report(info, reportData);
+    }
 
-        System.out.println("Filter: " + filter);
+    public Report getReport(ReportInfo reportInfo, int pageNumber, ReportFilter filter) {
 
         if (filter == null)
             return new Report(reportInfo, null);
-
 
         ReportDataDAO dataDAO = new ReportDataDAO();
         ReportData reportData = null;
@@ -255,7 +266,32 @@ public class ReportsBean implements SessionBean {
         return report;
     }
 
-    public Report getBigReport(int id) {
+    public Report getBigReport(ReportInfo reportInfo, ReportFilter filter) {
+
+        if (filter == null)
+            return getBigReport(reportInfo);
+
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        ReportData reportData = null;
+        Report report = null;
+
+        if (reportInfo.isCountable() && !reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), ONE_PAGE, reportInfo.getExportSize());
+        } else if (!reportInfo.isCountable() && !reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+        } else if (reportInfo.isCountable() && reportInfo.isFilterable()) {
+            reportData = dataDAO.
+                    createReportData(reportInfo.getSelectQuery(), ONE_PAGE, reportInfo.getExportSize(), filter);
+        } else if (!reportInfo.isCountable() && reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), filter);
+        }
+        report = new Report(reportInfo, reportData);
+
+        return report;
+    }
+
+
+    public Report getBigReport(int id, ReportFilter filter) {
         ReportDataDAO dataDAO = new ReportDataDAO();
         ReportInfoDAO infoDAO = null;
         ReportInfo reportInfo;
@@ -264,12 +300,16 @@ public class ReportsBean implements SessionBean {
         try {
             infoDAO = new ReportInfoDAO();
             reportInfo = infoDAO.get(id);
-            if (reportInfo.isCountable()) {
-                reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), 1, reportInfo.getExportSize());
+            if (reportInfo.isFilterable()) {
+                report = getReport(reportInfo, ONE_PAGE, filter);
             } else {
-                reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+                if (reportInfo.isCountable()) {
+                    reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), ONE_PAGE, reportInfo.getExportSize());
+                } else {
+                    reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+                }
+                report = new Report(reportInfo, reportData);
             }
-            report = new Report(reportInfo, reportData);
         } catch (NoSuchEntityException e) {
 			e.printStackTrace();
 		} finally {
