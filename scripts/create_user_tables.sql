@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS meet_my_guest CASCADE;
 DROP TABLE IF EXISTS celebration CASCADE;
 DROP TABLE IF EXISTS celebration_driver_car CASCADE;
 DROP TABLE IF EXISTS report_info CASCADE;
+DROP TABLE IF EXISTS criterion CASCADE;
 DROP TABLE IF EXISTS car_category;
 DROP TABLE IF EXISTS driver_category;
 
