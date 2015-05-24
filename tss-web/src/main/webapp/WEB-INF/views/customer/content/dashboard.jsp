@@ -39,7 +39,7 @@
                             <td>${list.strStatus}</td>
                             <td class="hidden-sm hidden-md">
                                 <c:if test="${list.driverCarId != null }">
-                                    Driver-Car ID = ${list.driverCarId.drvCarId}
+                                    Driver ID = ${list.driverCarId.driverId}
                                 </c:if>
                             </td>
                             <%--<td class="hidden-sm hidden-md">${list.routeId.pathContent}</td>--%>
