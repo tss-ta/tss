@@ -34,7 +34,7 @@ public enum Page {
     ERROR_404_CONTENT("", "content/404.jsp"),
     INCORRECT_ID_CONTENT("", "content/incorrect-id.jsp"),
     INCORRECT_ROLE_CONTENT("", "content/incorrect-role.jsp"),
-
+    INCORRECT_FILTER_STATE("", "content/incorrect-filter-state.jsp"),
     CUSTOMER_CELEBRATION_SERVICE_CONTENT("celebrService", "customer/content/customer-celebrService.jsp"),
     CUSTOMER_TEMPLATE_CONTENT("", "customer/customer-template.jsp"),
     TAXI_ORDER_CONFIRMATION_CONTENT("", "customer/content/confirmation.jsp");
