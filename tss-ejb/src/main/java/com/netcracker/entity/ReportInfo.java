@@ -1,8 +1,8 @@
 package com.netcracker.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Kyrylo Berehovyi
@@ -19,6 +19,7 @@ public class ReportInfo {
     private String name;
     private String description;
     private boolean countable;
+    private boolean filterable;
 
     @Column(name = "select_query")
     private String selectQuery;
@@ -27,12 +28,15 @@ public class ReportInfo {
     private String countQuery;
 
     @Column(name = "page_size")
-    @Min(value = 1)
-    @Max(value = 10000)
+//    @Min(value = 1)
+//    @Max(value = 10000)
     private Integer pageSize;
 
     @Column(name = "export_size")
     private Integer exportSize;
+
+    @OneToMany(mappedBy = "reportInfo", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private List<Criterion> filter = new LinkedList<>();
 
     public ReportInfo() {}
 
@@ -100,6 +104,22 @@ public class ReportInfo {
         this.exportSize = exportSize;
     }
 
+    public List<Criterion> getFilter() {
+        return filter;
+    }
+
+    public void setFilter(List<Criterion> filter) {
+        this.filter = filter;
+    }
+
+    public boolean isFilterable() {
+        return filterable;
+    }
+
+    public void setFilterable(boolean filterable) {
+        this.filterable = filterable;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,9 +128,11 @@ public class ReportInfo {
         ReportInfo that = (ReportInfo) o;
 
         if (countable != that.countable) return false;
+        if (filterable != that.filterable) return false;
         if (countQuery != null ? !countQuery.equals(that.countQuery) : that.countQuery != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (exportSize != null ? !exportSize.equals(that.exportSize) : that.exportSize != null) return false;
+        if (filter != null ? !filter.equals(that.filter) : that.filter != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (pageSize != null ? !pageSize.equals(that.pageSize) : that.pageSize != null) return false;
@@ -125,10 +147,12 @@ public class ReportInfo {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (countable ? 1 : 0);
+        result = 31 * result + (filterable ? 1 : 0);
         result = 31 * result + (selectQuery != null ? selectQuery.hashCode() : 0);
         result = 31 * result + (countQuery != null ? countQuery.hashCode() : 0);
         result = 31 * result + (pageSize != null ? pageSize.hashCode() : 0);
         result = 31 * result + (exportSize != null ? exportSize.hashCode() : 0);
+        result = 31 * result + (filter != null ? filter.hashCode() : 0);
         return result;
     }
 
@@ -139,10 +163,12 @@ public class ReportInfo {
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", countable=").append(countable);
+        sb.append(", filterable=").append(filterable);
         sb.append(", selectQuery='").append(selectQuery).append('\'');
         sb.append(", countQuery='").append(countQuery).append('\'');
         sb.append(", pageSize=").append(pageSize);
         sb.append(", exportSize=").append(exportSize);
+        sb.append(", filter=").append(filter);
         sb.append('}');
         return sb.toString();
     }

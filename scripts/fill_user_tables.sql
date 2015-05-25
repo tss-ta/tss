@@ -415,57 +415,57 @@ INSERT INTO car_category (id, name) VALUES (3, 'Business');
 INSERT INTO car_category (id, name) VALUES (4, 'Cargo');
 
 
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,
 'The most popular Car category',
 'This report shows all popular Car category in Taxi Service System',
 'SELECT cc.name AS "Category", count(txo.car_category) AS "Orders Amount" FROM taxi_order AS txo JOIN car_category AS cc ON txo.car_category = cc.id GROUP BY txo.car_category, cc.name ORDER BY count(txo.car_category) DESC;',
-null, false, 0, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+null, false, 0, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,
 'The most popular Driver category',
 'This report shows all popular Driver category in Taxi Service System',
 'SELECT dct.name AS "Category", count(d.category) AS "Orders Amount" FROM driver AS d JOIN driver_car AS dc	ON d.driver_id = dc.driver_id JOIN taxi_order AS o ON dc.id = o.driver_car_id JOIN driver_category AS dct ON dct.id = d.category GROUP BY d.category, dct.name ORDER BY count(d.category) DESC',
-null, false, 0, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+null, false, 0, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,
 'The most popular Car options',
 'This report shows all popular Car options in Taxi Service System',
 'SELECT * FROM (SELECT ''Animal Transport'' AS "Option Name", sum(animal_transport::int) AS "Orders with this option"	FROM taxi_order	UNION	SELECT ''WI-FI'' AS "Option Name", sum(wifi::int) AS "Orders with this option" FROM taxi_order	UNION	SELECT ''Conditioner'' AS "Option Name", sum(conditioner::int) AS "Orders with this option" FROM taxi_order) AS T ORDER BY "Orders with this option" DESC',
-null, false, 0, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+null, false, 0, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,'The most popular Car options by User',
 'This report shows all popular Car options for each User in Taxi Service System',
 'SELECT t.email AS "User Email", t."Option Name", t."Orders with option" FROM (SELECT c.email, ''Animal Transport'' AS "Option Name", sum(animal_transport::int) AS "Orders with option"	FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email UNION	SELECT c.email, ''WI-FI'' AS "Option Name", sum(wifi::int) AS "Orders with option" FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email UNION	SELECT c.email, ''Conditioner'' AS "Option Name", sum(conditioner::int) AS "Orders with option"	FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email) AS t ORDER BY t.email, t."Orders with option" DESC LIMIT ? OFFSET ?',
 'SELECT count(t."Option Name") FROM (SELECT c.email, ''Animal Transport'' AS "Option Name", sum(animal_transport::int) AS "Orders with option"	FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email UNION	SELECT c.email, ''WI-FI'' AS "Option Name", sum(wifi::int) AS "Orders with option" FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email UNION	SELECT c.email, ''Conditioner'' AS "Option Name", sum(conditioner::int) AS "Orders with option" FROM taxi_order	JOIN contacts AS c ON c.id = contacts_id	GROUP BY c.email) AS t',
-true, 15, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+true, 15, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,'Service profitability by last one day',
 'This report shows profitability for each Service options by last one day in Taxi Service System',
 'WITH last_order as (SELECT id, price FROM taxi_order WHERE order_time >  CURRENT_DATE - INTERVAL ''1 day'')SELECT t.service_type AS "Service", t.total_price AS "Total price", t.orders_amount AS "Orders amount" FROM (SELECT ''Convey corporation'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''conveycorp'' GROUP BY s.service_name UNION SELECT ''Sober driver'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''sober'' GROUP BY s.service_name UNION SELECT ''Meet my guest'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''meetMyGuest'' GROUP BY s.service_name UNION SELECT ''Celebration'' AS service_type, ceiling(sum(lo.price)) as total_price, count(lo.id) as orders_amount FROM celebration AS c JOIN last_order AS lo ON c.order_id = lo.id) as t ORDER BY t.total_price DESC NULLS LAST, t.orders_amount DESC NULLS LAST',
-null, false, 0, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+null, false, 0, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,'Service profitability by last 7 days',
 'This report shows profitability for each Service options by 7 days in Taxi Service System',
 'WITH last_order as (SELECT id, price FROM taxi_order WHERE order_time >  CURRENT_DATE - INTERVAL ''7 day'')SELECT t.service_type AS "Service", t.total_price AS "Total price", t.orders_amount AS "Orders amount" FROM (SELECT ''Convey corporation'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''conveycorp'' GROUP BY s.service_name UNION SELECT ''Sober driver'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''sober'' GROUP BY s.service_name UNION SELECT ''Meet my guest'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''meetMyGuest'' GROUP BY s.service_name UNION SELECT ''Celebration'' AS service_type, ceiling(sum(lo.price)) as total_price, count(lo.id) as orders_amount FROM celebration AS c JOIN last_order AS lo ON c.order_id = lo.id) as t ORDER BY t.total_price DESC NULLS LAST, t.orders_amount DESC NULLS LAST',
-null, false, 0, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+null, false, 0, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,'Service profitability by last month',
 'This report shows profitability for each Service options by last month in Taxi Service System',
 'WITH last_order as (SELECT id, price FROM taxi_order WHERE order_time >  CURRENT_DATE - INTERVAL ''1 month'')SELECT t.service_type AS "Service", t.total_price AS "Total price", t.orders_amount AS "Orders amount" FROM (SELECT ''Convey corporation'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''conveycorp'' GROUP BY s.service_name UNION SELECT ''Sober driver'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''sober'' GROUP BY s.service_name UNION SELECT ''Meet my guest'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''meetMyGuest'' GROUP BY s.service_name UNION SELECT ''Celebration'' AS service_type, ceiling(sum(lo.price)) as total_price, count(lo.id) as orders_amount FROM celebration AS c JOIN last_order AS lo ON c.order_id = lo.id) as t ORDER BY t.total_price DESC NULLS LAST, t.orders_amount DESC NULLS LAST',
-null, false, 0, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+null, false, 0, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,'Service profitability by last 3 month',
 'This report shows profitability for each Service options by last 3 month in Taxi Service System',
 'WITH last_order as (SELECT id, price FROM taxi_order WHERE order_time >  CURRENT_DATE - INTERVAL ''3 month'')SELECT t.service_type AS "Service", t.total_price AS "Total price", t.orders_amount AS "Orders amount" FROM (SELECT ''Convey corporation'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''conveycorp'' GROUP BY s.service_name UNION SELECT ''Sober driver'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''sober'' GROUP BY s.service_name UNION SELECT ''Meet my guest'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''meetMyGuest'' GROUP BY s.service_name UNION SELECT ''Celebration'' AS service_type, ceiling(sum(lo.price)) as total_price, count(lo.id) as orders_amount FROM celebration AS c JOIN last_order AS lo ON c.order_id = lo.id) as t ORDER BY t.total_price DESC NULLS LAST, t.orders_amount DESC NULLS LAST',
-null, false, 0, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+null, false, 0, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,'Service profitability by last 6 month',
 'This report shows profitability for each Service options by last 6 month in Taxi Service System',
 'WITH last_order as (SELECT id, price FROM taxi_order WHERE order_time >  CURRENT_DATE - INTERVAL ''6 month'')SELECT t.service_type AS "Service", t.total_price AS "Total price", t.orders_amount AS "Orders amount" FROM (SELECT ''Convey corporation'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''conveycorp'' GROUP BY s.service_name UNION SELECT ''Sober driver'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''sober'' GROUP BY s.service_name UNION SELECT ''Meet my guest'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''meetMyGuest'' GROUP BY s.service_name UNION SELECT ''Celebration'' AS service_type, ceiling(sum(lo.price)) as total_price, count(lo.id) as orders_amount FROM celebration AS c JOIN last_order AS lo ON c.order_id = lo.id) as t ORDER BY t.total_price DESC NULLS LAST, t.orders_amount DESC NULLS LAST',
-null, false, 0, 1000);
-INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size) values
+null, false, 0, 1000, false);
+INSERT INTO report_info (id, name, description, select_query, count_query, countable, page_size, export_size, filterable) values
 (DEFAULT,'Service profitability by last 1 year',
 'This report shows profitability for each Service options by last 1 year in Taxi Service System',
 'WITH last_order as (SELECT id, price FROM taxi_order WHERE order_time >  CURRENT_DATE - INTERVAL ''1 year'')SELECT t.service_type AS "Service", t.total_price AS "Total price", t.orders_amount AS "Orders amount" FROM (SELECT ''Convey corporation'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''conveycorp'' GROUP BY s.service_name UNION SELECT ''Sober driver'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''sober'' GROUP BY s.service_name UNION SELECT ''Meet my guest'' AS service_type, ceiling(sum(lo.price)) as total_price, count(s.service_name) as orders_amount FROM service AS s JOIN last_order AS lo ON s.order_id = lo.id WHERE s.service_name = ''meetMyGuest'' GROUP BY s.service_name UNION SELECT ''Celebration'' AS service_type, ceiling(sum(lo.price)) as total_price, count(lo.id) as orders_amount FROM celebration AS c JOIN last_order AS lo ON c.order_id = lo.id) as t ORDER BY t.total_price DESC NULLS LAST, t.orders_amount DESC NULLS LAST',
-null, false, 0, 1000);
+null, false, 0, 1000, false);

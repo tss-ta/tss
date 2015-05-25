@@ -6,6 +6,7 @@ import com.netcracker.report.mapper.TypeConverter;
 import com.netcracker.report.mapper.exception.TypeConverterException;
 import com.netcracker.report.mapper.impl.*;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -55,5 +56,15 @@ public class ResultSetTypeMapper {
             throw new TypeConverterException("Type converter for type '" + type.name() + "' does not exist.");
         }
         return converter.convert(resultSet, index, type);
+    }
+
+    public void setValueInStatement(int index, PreparedStatement statement, MultipurposeValue value) throws SQLException {
+        TypeConverter converter = converterMap.get(value.getType());
+        converter.insertValueIntoPreparedStatement(statement, index, value);
+    }
+
+    public void setDefaultValueInStatement(int index, PreparedStatement statement, MultipurposeValue value) throws SQLException {
+        TypeConverter converter = converterMap.get(value.getType());
+        converter.insertDefaultValueIntoPreparedStatement(statement, index);
     }
 }

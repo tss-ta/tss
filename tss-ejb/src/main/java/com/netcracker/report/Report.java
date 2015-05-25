@@ -33,4 +33,13 @@ public class Report {
     public void setData(ReportData data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Report{");
+        sb.append("info=").append(info);
+        sb.append(", data=").append(data);
+        sb.append('}');
+        return sb.toString();
+    }
 }

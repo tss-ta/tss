@@ -1,6 +1,4 @@
-<%--
-  by Vitalii Chekaliuk
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec"
@@ -22,6 +20,7 @@
 	rel="stylesheet">
 <link href="/resources/img/favicon.ico" rel="shortcut icon"
 	type="image/x-icon" />
+    <link href="/resources/css/map-guest.css" rel="stylesheet"/>
 </head>
 
 <body>

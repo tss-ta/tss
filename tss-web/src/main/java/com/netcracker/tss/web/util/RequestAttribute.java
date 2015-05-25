@@ -20,7 +20,10 @@ public enum RequestAttribute {
     FORM_TYPE("formType"),
     FORM_EDIT_TYPE("edit"),
     FORM_CREATE_TYPE("create"),
-    MAILER_STATE("mailerState");
+    MAILER_STATE("mailerState"),
+    FILTER_PAGER("filterPager"),
+    FILTER("filter"),
+    DATA_TYPE("dataTypes");
 
     private String name;
 

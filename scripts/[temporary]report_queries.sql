@@ -124,3 +124,42 @@ SELECT t.service_type AS "Service", t.total_price AS "Total price", t.orders_amo
 		JOIN last_order AS lo
 			ON c.order_id = lo.id) t
 	ORDER BY t.total_price, t.orders_amount;
+
+
+-------------------------------------------------------
+-- Presentation Report... -----------------------------
+-------------------------------------------------------
+
+-- Name: All available Cars
+
+-- Description: All available Cars in Taxi Service
+
+--  Select Query:
+ SELECT c.lic_plate AS "License Plate", u.email as "Email", c.conditioner AS "Conditioner", cc.name as "Car type"
+	FROM car c
+	JOIN car_category cc
+		ON c.category = cc.id
+	JOIN driver d
+		ON d.car_id = c.id
+	JOIN tss_user u
+		ON u.id = d.driver_id
+	WHERE
+		c.available = true
+  ORDER BY lic_plate
+	LIMIT ?
+	OFFSET ?;
+
+-- 	Count Query:
+  SELECT count(c.id)
+	FROM car c
+	JOIN car_category cc
+		ON c.category = cc.id
+	JOIN driver d
+		ON d.car_id = c.id
+	JOIN tss_user u
+		ON u.id = d.driver_id
+	WHERE
+		c.available = true;
+
+-- 	pageSize: 15
+-- 	exportSize 1000

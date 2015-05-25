@@ -124,6 +124,7 @@ public class ExcelExport {
 
     public void createBodyTitle(HSSFSheet sheet, Report report) {
         Row title = sheet.createRow(TITLE_ROW_NUMBER);
+//        System.out.println(report);
         for (int i = DB_FIRST_COLUMN_INDEX; i <= report.getData().columnAmount(); i++) {
             title.createCell(DATA_START_CELL_NUMBER + i).setCellValue(report.getData().columnName(i));
         }

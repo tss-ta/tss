@@ -15,7 +15,7 @@
 	<div class="row mt bottom_line">
 		<div class="control-group">
 			<div class="col-md-6">
-						<%@ include file="../../partials/order_time_buttons.jspf"%>>
+						<%@ include file="../../partials/order_time_buttons.jspf"%>
 				<div class="form-group">
 					<label class="col-md-2 control-label">From list:</label>
 					<div class="col-sm-12 col-md-12 col-lg-10">
@@ -48,12 +48,12 @@
 			<div class="col-md-6">
 				<%@ include file="../../partials/map.jspf"%>
 			</div>
-			<div class="col-md-6">
-				<img src="/resources/customer_assets/img/from.png" width="32"
-					height="32" alt="from" />from <img
-					src="/resources/customer_assets/img/to.png" width="32" height="32"
-					alt="to" />to
-			</div>
+			<%--<div class="col-md-6">--%>
+				<%--<img src="/resources/customer_assets/img/from.png" width="32"--%>
+					<%--height="32" alt="from" />from <img--%>
+					<%--src="/resources/customer_assets/img/to.png" width="32" height="32"--%>
+					<%--alt="to" />to--%>
+			<%--</div>--%>
             <div class="col-lg-12">
                 <%@ include file="../../partials/options.jspf"%>
                 <div class="form-group col-md-4 col-sm-6 col-xs-12">

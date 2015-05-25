@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS meet_my_guest CASCADE;
 DROP TABLE IF EXISTS celebration CASCADE;
 DROP TABLE IF EXISTS celebration_driver_car CASCADE;
 DROP TABLE IF EXISTS report_info CASCADE;
+DROP TABLE IF EXISTS criterion CASCADE;
 DROP TABLE IF EXISTS car_category;
 DROP TABLE IF EXISTS driver_category;
 
@@ -335,15 +336,39 @@ CREATE TABLE driver_category
   name varchar(40)
 );
 
+CREATE TABLE criterion_type
+(
+  id integer,
+  name varchar(40),
+  index integer,
+  CONSTRAINT criterion_type_id_pk PRIMARY KEY (id)
+);
+
+
 CREATE TABLE report_info
 (
-id serial NOT NULL,
-name character varying(100),
-description text,
-select_query text,
-count_query text,
-countable boolean,
-page_size integer,
-export_size integer,
-CONSTRAINT report_id_pk PRIMARY KEY (id)
+  id serial NOT NULL,
+  name character varying(100),
+  description text,
+  select_query text,
+  count_query text,
+  countable boolean,
+  page_size integer,
+  export_size integer,
+  filterable boolean,
+  CONSTRAINT report_id_pk PRIMARY KEY (id)
+);
+
+
+CREATE TABLE criterion
+(
+  id serial NOT NULL,
+  name varchar(40),
+  type integer,
+  report_info integer,
+  seq_number integer,
+  CONSTRAINT criterion_id_pk PRIMARY KEY (id),
+  CONSTRAINT report_info_fk FOREIGN KEY (report_info)
+  REFERENCES report_info (id) MATCH SIMPLE
+  ON UPDATE NO ACTION ON DELETE CASCADE
 );

@@ -37,7 +37,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="col-md-offset-0 col-md-1 col-sm-offset-0 col-sm-2 col-xs-offset-4 col-xs-4">
-                    <a href="/admin?menu=report&action=add" class="btn btn-default">Add Report</a>
+                    <a href="/admin?menu=report&action=add" class="btn btn-info"><i class="fa fa-plus"></i> Report</a>
                 </div>
             </div>
         </div>

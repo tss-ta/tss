@@ -5,10 +5,12 @@ import com.netcracker.dao.ReportInfoDAO;
 import com.netcracker.dao.TaxiOrderDAO;
 import com.netcracker.dao.exceptions.NoSuchEntityException;
 import com.netcracker.entity.Contacts;
+import com.netcracker.entity.Criterion;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.helper.CarCategory;
 import com.netcracker.entity.helper.Pager;
+import com.netcracker.entity.helper.ReportFilter;
 import com.netcracker.report.Report;
 import com.netcracker.report.container.ReportData;
 import com.netcracker.util.BeansLocator;
@@ -30,6 +32,8 @@ import javax.ejb.SessionContext;
  */
 
 public class ReportsBean implements SessionBean {
+
+    public static final int ONE_PAGE = 1;
 
     public ReportInfo getReportInfoById(Integer id) {
         ReportInfoDAO dao = null;
@@ -86,6 +90,12 @@ public class ReportsBean implements SessionBean {
         return counter.intValue();
     }
 
+    public int countFilterableReports(ReportInfo info, ReportFilter filter) {
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        Long counter = dataDAO.countResults(info.getCountQuery(), filter);
+        return counter.intValue();
+    }
+
     public Pager getReportPager(ReportInfo info, int page) {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         return pageCalculator.calculatePages(page, info.getPageSize(), countReports(info));
@@ -93,6 +103,11 @@ public class ReportsBean implements SessionBean {
     public Pager getOrdersReportPager(int page, int pageSize, Date begin, Date end) {
         PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
         return pageCalculator.calculatePages(page, pageSize, countAllOrders(begin, end));
+    }
+
+    public Pager getFilterableReportPager(ReportInfo info, int page, ReportFilter filter) {
+        PageCalculatorBeanLocal pageCalculator = BeansLocator.getInstance().getBean(PageCalculatorBeanLocal.class);
+        return pageCalculator.calculatePages(page, info.getPageSize(), countFilterableReports(info, filter));
     }
 
     public int countAllReportsInfo() {
@@ -121,15 +136,57 @@ public class ReportsBean implements SessionBean {
         }
     }
 
+    public String validateReportInfo(ReportInfo reportInfo, ReportFilter filter) {
+        return new ReportDataDAO().validateQuery(reportInfo, filter);
+    }
+
     public void updateReportInfo(ReportInfo reportInfo) {
         ReportInfoDAO infoDAO = null;
+        ReportInfo oldReportInfo = null;
         try {
             infoDAO = new ReportInfoDAO();
+            oldReportInfo = infoDAO.get(reportInfo.getId());
+            updateReportFilter(oldReportInfo.getFilter(), reportInfo.getFilter());
             infoDAO.update(reportInfo);
+        } catch(NoSuchEntityException e) {
+            e.printStackTrace();
         } finally {
             if (infoDAO != null) {
                 infoDAO.close();
             }
+        }
+    }
+
+    private void updateReportFilter(List<Criterion> oldFilter, List<Criterion> newFilter) {
+        CriterionBeanLocal criterionBean = BeansLocator.getInstance().getBean(CriterionBeanLocal.class);
+
+        if (oldFilter.size() == newFilter.size()) {
+
+            System.out.println("---- '==' -----");
+
+            for (int index = 0; index < newFilter.size(); index++) {
+                newFilter.get(index).setId(oldFilter.get(index).getId());
+            }
+            criterionBean.updateCriterionList(newFilter);
+        } else if (oldFilter.size() > newFilter.size()) {
+
+            System.out.println("---- '=' -----");
+
+
+            for (int index = 0; index < newFilter.size(); index++) {
+                newFilter.get(index).setId(oldFilter.get(index).getId());
+            }
+            criterionBean.updateCriterionList(newFilter);
+            criterionBean.removeCriterionList(oldFilter.subList(newFilter.size(), oldFilter.size()));
+        } else if (oldFilter.size() < newFilter.size()) {
+
+            System.out.println("---- '<' -----");
+
+            for (int index = 0; index < oldFilter.size(); index++) {
+                newFilter.get(index).setId(oldFilter.get(index).getId());
+            }
+            criterionBean.updateCriterionList(newFilter.subList(0, oldFilter.size()));
+            criterionBean.insertCriterionList(newFilter.subList(oldFilter.size(), newFilter.size()));
         }
     }
 
@@ -172,7 +229,69 @@ public class ReportsBean implements SessionBean {
         return report;
     }
 
-    public Report getBigReport(int id) {
+    public Report getBigReport(ReportInfo info) {
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        ReportData reportData;
+        Report report;
+        if (info.isCountable()) {
+            reportData = dataDAO.createReportData(info.getSelectQuery(), ONE_PAGE, info.getExportSize());
+        } else {
+            reportData = dataDAO.createReportData(info.getSelectQuery());
+        }
+        return new Report(info, reportData);
+    }
+
+    public Report getReport(ReportInfo reportInfo, int pageNumber, ReportFilter filter) {
+
+        if (filter == null)
+            return new Report(reportInfo, null);
+
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        ReportData reportData = null;
+        Report report = null;
+
+        if (reportInfo.isCountable() && !reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), pageNumber, reportInfo.getPageSize());
+        } else if (!reportInfo.isCountable() && !reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+        } else if (reportInfo.isCountable() && reportInfo.isFilterable()) {
+            reportData = dataDAO.
+                    createReportData(reportInfo.getSelectQuery(), pageNumber, reportInfo.getPageSize(), filter);
+        } else if (!reportInfo.isCountable() && reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), filter);
+        }
+
+        report = new Report(reportInfo, reportData);
+
+        return report;
+    }
+
+    public Report getBigReport(ReportInfo reportInfo, ReportFilter filter) {
+
+        if (filter == null)
+            return getBigReport(reportInfo);
+
+        ReportDataDAO dataDAO = new ReportDataDAO();
+        ReportData reportData = null;
+        Report report = null;
+
+        if (reportInfo.isCountable() && !reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), ONE_PAGE, reportInfo.getExportSize());
+        } else if (!reportInfo.isCountable() && !reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+        } else if (reportInfo.isCountable() && reportInfo.isFilterable()) {
+            reportData = dataDAO.
+                    createReportData(reportInfo.getSelectQuery(), ONE_PAGE, reportInfo.getExportSize(), filter);
+        } else if (!reportInfo.isCountable() && reportInfo.isFilterable()) {
+            reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), filter);
+        }
+        report = new Report(reportInfo, reportData);
+
+        return report;
+    }
+
+
+    public Report getBigReport(int id, ReportFilter filter) {
         ReportDataDAO dataDAO = new ReportDataDAO();
         ReportInfoDAO infoDAO = null;
         ReportInfo reportInfo;
@@ -181,12 +300,16 @@ public class ReportsBean implements SessionBean {
         try {
             infoDAO = new ReportInfoDAO();
             reportInfo = infoDAO.get(id);
-            if (reportInfo.isCountable()) {
-                reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), 1, reportInfo.getExportSize());
+            if (reportInfo.isFilterable()) {
+                report = getReport(reportInfo, ONE_PAGE, filter);
             } else {
-                reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+                if (reportInfo.isCountable()) {
+                    reportData = dataDAO.createReportData(reportInfo.getSelectQuery(), ONE_PAGE, reportInfo.getExportSize());
+                } else {
+                    reportData = dataDAO.createReportData(reportInfo.getSelectQuery());
+                }
+                report = new Report(reportInfo, reportData);
             }
-            report = new Report(reportInfo, reportData);
         } catch (NoSuchEntityException e) {
 			e.printStackTrace();
 		} finally {

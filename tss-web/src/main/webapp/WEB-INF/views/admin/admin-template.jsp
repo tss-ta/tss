@@ -16,6 +16,7 @@
         <title>Taxi Service System ${pageTitle}</title>
 
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+        <%--<link href="/resources/css/awesome-bootstrap-checkbox.css" rel="stylesheet">--%>
         <link href="/resources/css/font-awesome.min.css" rel="stylesheet">
         <link href="/resources/css/validator/formValidation.min.css" rel="stylesheet">
         <link href="/resources/css/admin.css" rel="stylesheet">

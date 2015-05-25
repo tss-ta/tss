@@ -3,6 +3,7 @@ package com.netcracker.entity.helper;
 import java.util.List;
 
 import com.netcracker.dao.CelebrationServiceDAO;
+import com.netcracker.dao.DriverDAO;
 import com.netcracker.dao.ServiceDAO;
 import com.netcracker.ejb.CelebrationServiceBean;
 import com.netcracker.entity.CelebrationService;
@@ -14,7 +15,6 @@ public class TaxiOrderHistory extends TaxiOrder {
 
 	private String toAddr;
 	private String fromAddr;
-	private String service;
 
 	public TaxiOrderHistory(TaxiOrder to) {
 		super(to);

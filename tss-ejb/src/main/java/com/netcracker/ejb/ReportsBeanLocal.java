@@ -3,6 +3,7 @@ package com.netcracker.ejb;
 import com.netcracker.entity.ReportInfo;
 import com.netcracker.entity.TaxiOrder;
 import com.netcracker.entity.helper.Pager;
+import com.netcracker.entity.helper.ReportFilter;
 import com.netcracker.report.Report;
 import com.netcracker.util.reports.ReportsRow;
 import java.util.Date;
@@ -40,15 +41,25 @@ public interface ReportsBeanLocal extends EJBLocalObject {
 
     Pager getReportPager(ReportInfo info, int page);
 
+    int countFilterableReports(ReportInfo info, ReportFilter filter);
+
+    String validateReportInfo(ReportInfo reportInfo, ReportFilter filter);
+
+    Pager getFilterableReportPager(ReportInfo info, int page, ReportFilter filter);
+
     List<TaxiOrder> getBookedOrders (Date begin, Date end);
 
-    Report getBigReport(int id);
+    Report getBigReport(int id, ReportFilter filter);
+
+    Report getBigReport(ReportInfo reportInfo, ReportFilter filter);
 
     void createReportInfo(ReportInfo reportInfo);
 
     void updateReportInfo(ReportInfo reportInfo);
 
     void deleteReportInfo(ReportInfo reportInfo);
+
+    Report getReport(ReportInfo reportInfo, int pageNumber, ReportFilter filter);
 
     Pager getOrdersReportPager(int page, int pageSize, Date begin, Date end);
 }
